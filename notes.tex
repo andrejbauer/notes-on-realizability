@@ -1,0 +1,100 @@
+\documentclass[11pt,a4paper,twoside]{book}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{theorem}
+\usepackage{fancyheadings}
+
+\input{macros}
+
+%% A4 stran = 210mm x 297mm
+%% sirino besedila nastavimo na 170mm, visino na 247mm
+
+\setlength{\textwidth}{15cm}
+\setlength{\textheight}{224mm}
+
+\setlength{\topmargin}{0cm}
+\setlength{\evensidemargin}{0cm}
+\setlength{\oddsidemargin}{\paperwidth}
+
+\addtolength{\oddsidemargin}{-\textwidth}
+\addtolength{\oddsidemargin}{-2in}
+
+\addtolength{\headwidth}{\marginparsep}
+\addtolength{\headwidth}{\marginparwidth}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% For Draft versions uncomment this:
+\newcommand{\draftnote}{{\textsc{[DRAFT: \today]}}}
+%% For official non-draft version, uncomment this:
+%\newcommand{\draftnote}{}
+
+\pagestyle{fancyplain}
+
+\setlength{\headrulewidth}{0.2pt}
+\addtolength{\headheight}{2pt}
+
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
+\lhead[\fancyplain{}{{\thepage}}]{\fancyplain{}{{\rightmark}}}
+\rhead[\fancyplain{}{{\leftmark}}]{\fancyplain{}{\thepage}}
+\cfoot{}
+\lfoot[]{\fancyplain{{\scriptsize\draftnote}}{{\scriptsize\draftnote}}}
+\rfoot[\fancyplain{{\scriptsize\draftnote}}{{\scriptsize\draftnote}}]{}
+
+\newcommand{\clearemptydoublepage}{\newpage{\pagestyle{empty}\cleardoublepage}}
+
+
+\begin{document}
+
+\title{
+  The Realizability Approach to\\
+  Computable Analysis and Topology\\
+  (Lecture notes)
+}
+
+\author{Andrej Bauer}
+
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Table of contents
+
+\clearemptydoublepage
+
+\markboth{}{Contents}
+{
+\renewcommand{\markboth}[2]{}
+\tableofcontents
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Chapters
+
+\include{introduction}
+\include{models} % Week 1, 2
+\include{representations} % Week 3, 4
+\include{internal_language} % Week 5, 6
+\include{computable_spaces} % Week 7, 8
+\include{constructive_math}
+\include{implementation}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Bibliography
+
+\clearemptydoublepage
+
+\bibliographystyle{plain}
+\addcontentsline{toc}{chapter}{\numberline{}Bibliography}
+\markboth{}{Bibliography}
+
+{
+\renewcommand{\markboth}[2]{}
+\bibliography{notes}
+}
+
+
+\end{document}
