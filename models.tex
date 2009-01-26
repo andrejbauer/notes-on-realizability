@@ -1,16 +1,78 @@
 \chapter{Models of Computation\label{cha:models}}
 
 
+In this chapter we review basic notions of computability theory. We
+start with the notions of Turing machine and computable function and
+prove their basic properties. We then consider other models of
+computability, such as Turing machines with infinite input and output,
+Scott's graph model, and the general notion of partial combinatory
+algebras.
+
 
 \section{Turing machines}
 \label{sec:turing-machines}
 
-\subsection{Type 1 machines}
-\label{sec:type-1}
+A \emph{Turing machine} is a given by:
+%
+\begin{enumerate}
+\item A finite \emph{alphabet} of symbols. We assume that there is a
+  special symbol `blank' and at least two other symbols, say $0$ and
+  $1$. We assume that the letters $L$ and $R$ are \emph{not} among the
+  symbols.
+\item A \emph{tape}, which is an infinite succession of \emph{cells}.
+  Each cell holds a symbol from the alphabet. A cell is said to be
+  \emph{empty} if it holds the blank symbol.
+\item A \emph{head} which moves along the tape, reads and writes
+  the contents of the cells.
+\item A finite set of \emph{states} and a distinguished \emph{starting
+    state}.
+\item A \emph{program}, which is a finite list of \emph{instructions},
+  whicha are quadruples of the form
+  %
+  \begin{equation*}
+    q \, s \, u \, r
+  \end{equation*}
+  %
+  where $q$ and $q'$ are states, $s$ is a symbol, and $u$ is either
+  the letter $L$, the letter $R$, or a symbol from the alphabet. The
+  informal meaning of an instruction is ``if in state $q$ and the
+  symbol under the head is $s$, then perform $u$ and go to state
+  $r$''. Here ``perform $u$'' means ``move the head to the left'' if
+  $u = L$, ``move the head to the right if $u = R$'', and ``write
+  symbol $u$ to the cell under the head'' if $u$ is a symbol.
+\end{enumerate}
+
+ carries out basic steps, one at a time, as described by a
+finite set of instructions, called the \emph{program}. The machine is
+equipped with a tape consisting of cells that hold
 
 
-\subsection{Type 2 machines}
-\label{sec:type-2}
+ and a read/write head which can
+move along the tape, in both directions, and
+
+
+Informal description.
+
+Formal description
+
+Enumeration of Turing machines.
+
+Partial computable functions.
+
+Halting oracle.
+
+s-m-n
+
+u-t-m
+
+\subsection{Robustness of computability}
+\label{sec:robustness}
+
+Equivalence with RAM machines and other forms.
+
+
+\subsection{Type 1 and type 2 machines}
+\label{sec:type-1-2}
 
 
 \section{The graph model}
