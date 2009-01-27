@@ -1,6 +1,12 @@
 \newcommand{\set}[1]{\{#1\}}
 \newcommand{\such}{\mid}
 
+%%% Theorems
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{definition}[theorem]{Definition}
+
+\newenvironment{proof}{\medskip\noindent\emph{Proof.}}{\hfill$\Box$\medskip}
+
 %%% Blackboard bold letters
 \newcommand{\NN}{\mathbb{N}}
 \newcommand{\NNx}{{\NN^{+}}}
@@ -28,3 +34,8 @@
 \newcommand{\xulam}[2]{\lambda #1 .\,#2}
 \newcommand{\tlam}[3]{\lambda #1 \,{:}\, #2\,.\,\left(#3\right)}
 \newcommand{\xtlam}[3]{\lambda #1 \,{:}\, #2\,.\,#3}
+
+%%% Local Variables: 
+%%% mode: plain-tex
+%%% TeX-master: "notes"
+%%% End: 

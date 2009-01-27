@@ -1,59 +1,142 @@
-\chapter{Models of Computation\label{cha:models}}
+\chapter{Models of Computation}
+\label{cha:models}
 
 
-In this chapter we review basic notions of computability theory. We
-start with the notions of Turing machine and computable function and
-prove their basic properties. We then consider other models of
-computability, such as Turing machines with infinite input and output,
-Scott's graph model, and the general notion of partial combinatory
-algebras.
+A \emph{model of computation} describes what computation is and how it
+is done. The best known is Alan Turing's model~\cite{Turing} in which
+a machine manipulates the contents of a tape according to a finite set
+of instructions. It has become the yardstick with which we measure
+other models of computation. Turing's notion of computability is very
+robust. First it is robust because changes to the definition of Turing
+machines, such as increasing the number of tapes or heads, or allowing
+the head to jump around, does not change the computational
+power.\footnote{We are ignoring questions of computational
+  \emph{complexity}.} The notion is also robust because many other
+definitions of computation turned out to be equivalent to Turing's in
+the sense that machines of one kind can simulate those of the other
+kind, and vice versa.
+
+However, we would commit a serious mistake if we concluded that by
+studying only Turing machines we will learn everything there is to
+learn about computable mathematics. Our inquiry into the nature of
+computation, especially computation with infinite structures, will
+reveal a plethora of possibilities which are \emph{not} equivalent.
+Thus we begin the chapter with a review of several models of
+computation. We then discuss the question of what a model of
+computation might be in general, and how such models are compared.
 
 
 \section{Turing machines}
 \label{sec:turing-machines}
 
-A \emph{Turing machine} is a given by:
+We recall informally how a Turing machine operates. There is little
+point in giving a formal definition because we do not intend to
+actually write programs for Turing machines. If you are not familiar
+with Turing machines, see the section on further reading at the end of
+the chapter.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.5\textwidth]{turing_machine}
+  \caption{A Turing machine operates with tapes}
+  \label{fig:turing-machine}
+\end{figure}
+
+A Turing machine is a device which operates on a number of tapes and
+heads, see Figure~\ref{fig:turing-machine}:
 %
-\begin{enumerate}
-\item A finite \emph{alphabet} of symbols. We assume that there is a
-  special symbol `blank' and at least two other symbols, say $0$ and
-  $1$. We assume that the letters $L$ and $R$ are \emph{not} among the
-  symbols.
-\item A \emph{tape}, which is an infinite succession of \emph{cells}.
-  Each cell holds a symbol from the alphabet. A cell is said to be
-  \emph{empty} if it holds the blank symbol.
-\item A \emph{head} which moves along the tape, reads and writes
-  the contents of the cells.
-\item A finite set of \emph{states} and a distinguished \emph{starting
-    state}.
-\item A \emph{program}, which is a finite list of \emph{instructions},
-  whicha are quadruples of the form
+\begin{itemize}
+\item the input tape is equipped with a reading head which can move
+  left and right, and read the symbols but cannot write them.
+\item The working tapes are equipped with heads that move left and
+  right, and can both read and write symbols.
+\item The output tape is equipped with a write-once head which starts
+  at the left-most end. Each time the head writes a symbol it
+  automatically moves to the right by one place. It cannot move to the
+  left, and only moves to the right after writing a symbol.
+\end{itemize}
+%
+The tapes are infinite\footnote{If you are worried about having actual
+  infinite tapes in your room, note that at each step of the
+  computation only a finite portion of tapes has been inspected. In
+  this sense the tapes are \emph{potentially} infinite.} and contain
+symbols from a given finite alphabet. A common choice for the alphabet
+is $0$, $1$, and a special symbol `blank'. The machine manipulates the
+contents of the tapes according to a \emph{program}, which is a finite
+list of simple instructions that manipulate the heads and the tapes.
+The machine executes one instruction at a time in a sequential manner.
+It may stop after having executed finitely many computation steps, in
+which case it \emph{terminates}. If it does not terminate then it runs
+forever, in which case we say that it \emph{diverges}.
+
+Our version of Turing machine is different from the usual one, where a
+machine is equipped with only a single tape that serves for input,
+output, and intermediate work. The two formulations are equivalent in
+the sense that a single-tape machine can simulate the workings of a
+Turing machine with several tapes, and vice versa. Our description
+will ease the description of infinite computations in
+Section~\ref{sec:type-2}.
+
+The current state of a Turing machine may be encoded onto a single
+tape as follows. First we write down the program, suitably encoded by
+the symbols from the alphabet, then the current state
+(the next instruction to be executed) and positions of the heads.
+Finally we copy the contents of all the tapes by interleaving them
+into a single tape.
+
+\begin{theorem}[Turing]
+  There exists a universal machine.
+\end{theorem}
+
+\noindent
+The theorem says that there is a special machine which takes a
+description of another machine, as explained above, and simulates it.
+If the original machine terminates with a given output then the
+universal one does as well, and if the original one diverges then so
+does the universal one.
+
+If we were going to build only one Turing machine, we would build a
+universal one. Then it would be just
+\href{http://www.catb.org/jargon/html/S/SMOP.html}{``a simple matter
+  of programming''} to tell the machine what to do. In fact, modern
+computers are universal Turing machines,\footnote{More precisely, they
+  are universal \emph{Von Neumann} machines~\cite{} because they have
+  a central processing unit and random access memory instead of a
+  tape.} if we gloss over the fact that several hundred gigabytes of
+storage is not quite the same as an infinite tape.
+
+We mentioned in the introduction that many kinds of computing devices
+are equivalent to Turing machines. We shall therefore not insist on
+describing computation solely in terms of Turnig machines, but rather
+rely on familiarity with modern computers and programming languages.
+After all, programs can actually be tested and run on computers,
+whereas Turing machines are rather hard to get by. Let us demonstrate
+this with the proof of a theorem.
+
+\begin{theorem}
+  There does not exist a Turing machine $H$ which upon accepting the
+  description of a Turing machine determines whether the machine
+  halts.
+\end{theorem}
+
+\begin{proof}
+  In terms of programming languages the theorem says that there is no
+  procedure $H$ which accepts (the source code) of a program $p$ and
+  returns
   %
   \begin{equation*}
-    q \, s \, u \, r
+    H(p) =
+    \begin{cases}
+      \mathtt{true} & \text{if $p$ halts,}\\
+      \mathtt{false} & \text{if $p$ diverges.}
+    \end{cases}
   \end{equation*}
   %
-  where $q$ and $q'$ are states, $s$ is a symbol, and $u$ is either
-  the letter $L$, the letter $R$, or a symbol from the alphabet. The
-  informal meaning of an instruction is ``if in state $q$ and the
-  symbol under the head is $s$, then perform $u$ and go to state
-  $r$''. Here ``perform $u$'' means ``move the head to the left'' if
-  $u = L$, ``move the head to the right if $u = R$'', and ``write
-  symbol $u$ to the cell under the head'' if $u$ is a symbol.
-\end{enumerate}
-
- carries out basic steps, one at a time, as described by a
-finite set of instructions, called the \emph{program}. The machine is
-equipped with a tape consisting of cells that hold
+\end{proof}
 
 
- and a read/write head which can
-move along the tape, in both directions, and
-
-
-Informal description.
-
-Formal description
+\subsection{Type 1 machines}
+\label{sec:type-1}
 
 Enumeration of Turing machines.
 
@@ -65,14 +148,9 @@ s-m-n
 
 u-t-m
 
-\subsection{Robustness of computability}
-\label{sec:robustness}
+\subsection{Type 2 machines}
+\label{sec:type-2}
 
-Equivalence with RAM machines and other forms.
-
-
-\subsection{Type 1 and type 2 machines}
-\label{sec:type-1-2}
 
 
 \section{The graph model}
@@ -95,6 +173,17 @@ Equivalence with RAM machines and other forms.
 \section{Comparison of models of computation}
 \label{sec:models-comparison}
 
+
+
+\section{Further reading}
+\label{sec:models-further-reading}
+
+As a general introduction to Turing machines and classical
+computability theory I recommend Piergiorgio Oddifreddi's
+book~\cite{Oddifreddi}. Also suitable and perhaps more readily
+available textbook is Hartley Rogers~\cite{Rogers}. If you would like
+to see Turing machines done rigorously and in gory detail, look at
+Martin Davis's booklet~\cite{Davis}.
 
 
 
