@@ -65,75 +65,57 @@ is $0$, $1$, and a special symbol `blank'. The machine manipulates the
 contents of the tapes according to a \emph{program}, which is a finite
 list of simple instructions that manipulate the heads and the tapes.
 The machine executes one instruction at a time in a sequential manner.
-It may stop after having executed finitely many computation steps, in
-which case it \emph{terminates}. If it does not terminate then it runs
-forever, in which case we say that it \emph{diverges}.
+It may \emph{terminate} after having executed finitely many
+computation steps. If it does not terminate then it runs forever, in
+which case we say that it \emph{diverges}.
 
 Our version of Turing machine is different from the usual one, where a
 machine is equipped with only a single tape that serves for input,
 output, and intermediate work. The two formulations are equivalent in
 the sense that a single-tape machine can simulate the workings of a
-Turing machine with several tapes, and vice versa. Our description
+Turing maechine with several tapes, and vice versa. Our formulation
 will ease the description of infinite computations in
 Section~\ref{sec:type-2}.
 
-The current state of a Turing machine may be encoded onto a single
-tape as follows. First we write down the program, suitably encoded by
-the symbols from the alphabet, then the current state
-(the next instruction to be executed) and positions of the heads.
-Finally we copy the contents of all the tapes by interleaving them
-into a single tape.
+The state of a Turing machine may be encoded onto a single tape as
+follows. First we write down the program, suitably encoded by the
+symbols from the alphabet, then the current state (the next
+instruction to be executed), and positions of the heads. Finally, we
+copy the contents of all the tapes by interleaving them into a single
+tape.
+
+If we were going to build just one machine, which one would we build?
+The answer was given by Turing.
 
 \begin{theorem}[Turing]
-  There exists a universal machine.
-\end{theorem}
-
-\noindent
-The theorem says that there is a special machine which takes a
-description of another machine, as explained above, and simulates it.
-If the original machine terminates with a given output then the
-universal one does as well, and if the original one diverges then so
-does the universal one.
-
-If we were going to build only one Turing machine, we would build a
-universal one. Then it would be just
-\href{http://www.catb.org/jargon/html/S/SMOP.html}{``a simple matter
-  of programming''} to tell the machine what to do. In fact, modern
-computers are universal Turing machines,\footnote{More precisely, they
-  are universal \emph{Von Neumann} machines~\cite{} because they have
-  a central processing unit and random access memory instead of a
-  tape.} if we gloss over the fact that several hundred gigabytes of
-storage is not quite the same as an infinite tape.
-
-We mentioned in the introduction that many kinds of computing devices
-are equivalent to Turing machines. We shall therefore not insist on
-describing computation solely in terms of Turnig machines, but rather
-rely on familiarity with modern computers and programming languages.
-After all, programs can actually be tested and run on computers,
-whereas Turing machines are rather hard to get by. Let us demonstrate
-this with the proof of a theorem.
-
-\begin{theorem}
-  There does not exist a Turing machine $H$ which upon accepting the
-  description of a Turing machine determines whether the machine
-  halts.
+  There exists a \emph{universal} machine---a machine that takes a
+  description of another machine, as explained above, and simulates
+  it.
 \end{theorem}
 
 \begin{proof}
-  In terms of programming languages the theorem says that there is no
-  procedure $H$ which accepts (the source code) of a program $p$ and
-  returns
-  %
-  \begin{equation*}
-    H(p) =
-    \begin{cases}
-      \mathtt{true} & \text{if $p$ halts,}\\
-      \mathtt{false} & \text{if $p$ diverges.}
-    \end{cases}
-  \end{equation*}
-  %
+  A traditional proof may be found in any book on computability
+  theory, and there is nothing wrong with reading the original
+  proof~\cite{Turing} either. A different kind of a proof is the
+  observation that you use universal machines every day.\footnote{You
+    have to ignore the fact the several hundred gigabytes of storage
+    are not quite the same thing as an infinite tape. Also, modern
+    compuers are really universal \emph{Von Neumann}
+    machines~\cite{vonNeumann} because they have a central processing
+    unit and random access memory instead of a tape.}
 \end{proof}
 
+Once we have a universal machine, we can make it behave like any other
+machine. It is just
+\href{http://www.catb.org/jargon/html/S/SMOP.html}{``a simple matter
+  of programming''} to tell it what to do.
+
+We mentioned in the introduction that many kinds of computing devices
+are equivalent to Turing machines. We shall therefore not insist on
+describing computation solely in terms of Turing machines, but rather
+rely on familiarity with modern computers and programming languages.
+After all, programs can actually be run on computers, whereas Turing
+machines are rather hard to get by.
 
 \subsection{Type 1 machines}
 \label{sec:type-1}
@@ -151,6 +133,8 @@ u-t-m
 \subsection{Type 2 machines}
 \label{sec:type-2}
 
+\subsection{Sequential machines}
+\label{sec:sequential-machines}
 
 
 \section{The graph model}
