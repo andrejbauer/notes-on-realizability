@@ -46,14 +46,14 @@ A Turing machine is a device which operates on a number of tapes and
 heads, see Figure~\ref{fig:turing-machine}:
 %
 \begin{itemize}
-\item the input tape is equipped with a reading head which can move
-  left and right, and read the symbols but cannot write them.
+\item the input tape is equipped with a reading head that can move
+  left and right, and read the symbols, but cannot write them.
 \item The working tapes are equipped with heads that move left and
   right, and can both read and write symbols.
-\item The output tape is equipped with a write-once head which starts
-  at the left-most end. Each time the head writes a symbol it
-  automatically moves to the right by one place. It cannot move to the
-  left, and only moves to the right after writing a symbol.
+\item The output tape is equipped with a write-once head which can
+  move left and right, and it can write into each cell exactly once.
+  Once a cell is filled with a non-blank symbol all subsequent writes
+  to it are ignored.
 \end{itemize}
 %
 The tapes are infinite\footnote{If you are worried about having actual
@@ -88,6 +88,7 @@ If we were going to build just one machine, which one would we build?
 The answer was given by Turing.
 
 \begin{theorem}[Turing]
+  \label{thm:universal-machine}
   There exists a \emph{universal} machine---a machine that takes a
   description of another machine, as explained above, and simulates
   it.
@@ -135,27 +136,28 @@ It is convenient to view every Turing machine as one computing a
 function $\NN \parto \NN$. This can be arranged as long as we read the
 result off the output tape correctly. Suppose the alphabet contains
 symbols $0$, $1$ and `blank'. We encode the input $n$ onto the input
-tape in binary, and run the machine. If and when it terminates it has
-written at most finally many symbols onto the output tape, and the
-output head indicates how far it got. Some of the symbols it has
-written might be different from $0$ and $1$. If we ignore everything
-that comes after the first symbol which is neither $0$ nor $1$, we can
-interpret the output tape as a number written in binary (the empty
-sequence must also be interpreted, say as $0$).
+tape in binary followed by blanks, and run the machine. If and when it
+terminates it has written at most finally many symbols onto the output
+tape. Some of the symbols it has written might be different from $0$
+and $1$. If we ignore everything that comes after the first blank, we
+can interpret the output tape as a number written in binary (the empty
+sequence encodes zero).
 
 We could similarly define how a Turing machine computes a multivariate
-partial function $f : \NN^k \parto \NN$. The only trick is to encode
-the input correctly. We must place special markers between the
-arguments so that we can tell where one ends and another begins.
+partial function $f : \NN^k \parto \NN$. We just have to take care
+that the input is encoded correctly by placing special markers between
+the arguments so that we can tell where one ends and the next one
+begins.
 
 It is common knowledge that computers encode everything with $0$'s and
 $1$'s, but logicians prefer to encode everything with natural numbers.
 For example, a pair of numbers $(m, n)$ may be encoded into a single
 number, say $2^n (2 m + 1)$, in such a way that the original numbers
-can be recovered. We call a computable function which does this a
-\emph{pairing function} and denote the encoded pairs as $\pair{m,n}$.
-The computable projection functions which recover $m$ and $n$ from
-$\pair{m, n}$ are denoted by $\xfst$ and $\xsnd$, respectively.
+can be recovered uniquely. We call a computable function which does
+this a \emph{pairing function} and denote the encoded pair as
+$\pair{m,n}$. The computable projection functions which recover $m$
+and $n$ from $\pair{m, n}$ are denoted by $\xfst$ and $\xsnd$,
+respectively.
 
 We may also encode Turing machines with numbers. A program is a finite
 list of instructions, so it can be encoded as a finite sequence of
@@ -191,8 +193,8 @@ the predicate $T(x,y,z)$ whose meaning is
 %
 The amazing thing is that $T$ may be defined in Peano arithmetic just
 in terms of basic arithmetical operations on numbers. There is an
-associated partial function $U(z)$ whose meaning is ``the number
-encoded by the contents of the output tape in the last step of
+associated computable partial function $U(z)$ whose meaning is ``the
+number encoded by the contents of the output tape in the last step of
 computation encoded by $z$''. The function $U$ allows us to extract
 the result of a computation. If $z$ does not encode a terminating
 computation then $U(z)$ is undefined.
@@ -221,41 +223,139 @@ partial recursive functions. Let
   \pr{x}{y} = U(\min \set{z \in \NN \such T(x,y,z)}).
 \end{equation*}
 %
-The sequence $\xpr_0, \xpr_1, \xpr_2, \ldots$ is an enumeration of
-computable partial functions (with repetitions) with the following two
-important properties.
+The sequence $\xpr_0, \xpr_1, \xpr_2, \ldots$ is an enumeration of all
+computable partial functions (with repetitions).
 
-\begin{theorem}[u-t-m]
-  There exists a partial computable function $u \in \NN \times \NN \parto
-  \NN$ such that for every $x$ and $y$,
+The preceding discussion may be generalized to functions of several
+variables. For each $k \in \NN$ there is Kleene's predicate
+$T^{(k)}(x,y_1,\ldots,y_k,z)$ and the corresponding $U^{(k)}(z)$ that
+extracts results from computations. Similarly, there is a standard
+enumeration of $k$-place computable partial functions
+%
+\begin{equation*}
+  \prm{k}{x}{y_1, \ldots, y_k} =
+  U^{(k)}(\min \set{z \in \NN \such T^{(k)}(x,y_1, \ldots, y_k,z)}).
+\end{equation*}
+%
+These enumerations are not arbitrary. They have the following
+important properties, where $a \simeq b$ is \emph{Kleene's equality}
+whose meaning is that if one of $a$, $b$ is defined then so is the
+other and they are equal.
+
+\begin{theorem}[utm]
+  There exists a partial computable function $u : \NN \times
+  \NN \parto \NN$ such that, for all $x, y \in \NN$,
   %
   \begin{equation*}
     u(x,y) \simeq \pr{x}{y}.
   \end{equation*}
 \end{theorem}
 
-\begin{theorem}[s-m-n]
-  There exists a computable function $s : \NN \times \NN \to \NN$ such
-  that
+\begin{theorem}[smn]
+  For each $n$ and $m$ there exists a computable function $s_n^m :
+  \NN^{m+1} \to \NN$ such that, for all $x, y_1, \ldots, y_m, z_1,
+  \ldots, z_n \in \NN$,
   %
   \begin{equation*}
-    \pr{s(x,y)}{z} \simeq \pr{x}{\pair{y, z}}.
+    \prm{n}{s_n^m(x,y_1, \ldots, y_m)}{z_1, \ldots z_n} \simeq
+    \prm{n+m}{x}{y_1, \ldots, y_m, z_1, \ldots, z_m}.
   \end{equation*}
 \end{theorem}
 
+\noindent
+The utm theorem is essentially a restatement of
+Theorem~\ref{thm:universal-machine} in terms of computable partial
+functions. A detailed proof of the utm and smn theorems would involve
+a lot of technical manipulations of Turing machines. Rather than
+losing time with such a historical exercise, let us see how these two
+theorems manifest themselves in modern programming languages, say in
+Haskell. Keeping in mind that numbers are just codes for programs and
+data, the universal function $u$ from the utm theorem is
+%
+\begin{lstlisting}[language=Haskell]
+  u (f, y) = f y
+\end{lstlisting}
+%
+and the $s_n^m$ function for the case $n = m = 1$ is the currying
+operation\footnote{In Haskell the notation \texttt{{\char92}x -> e}
+  stands for $\lambda$-abstraction $\xulam{x}{e}$, which in turn means
+  ``the function which maps $x$ to $e$''.}
+%
+\begin{lstlisting}[language=Haskell]
+  s (f, y) = \z -> f (y, z)
+\end{lstlisting}
+%
+This may seem like a triviality to the programmer but is surely not
+considered one by those who implemented the Haskell compiler.
+Application and currying are ``the essence'' of functional
+programming, just like the utm and smn theorems are the essence of
+partial computable functions.
 
+We finish this section with a theorem which we shall often use to show
+\emph{non}-computability results.
 
-The preceding discussion may be generalized to functions of several
-variables. For each $k \in \NN$ there is Kleene's predicate
-$T^{(k)}(x,y_1,\ldots,y_k,z)$ and the corresponding $U^{(k)}(z)$ that
-extracts results from computations.
+\begin{theorem}[Halting oracle]
+  The \emph{halting oracle},
+  %
+  \begin{equation*}
+    h(x) =
+    \begin{cases}
+      1 & \text{if $\pr{x}{0}$ is defined,}\\
+      0 & \text{if $\pr{x}{0}$ is not defined,}
+    \end{cases}
+  \end{equation*}
+  %
+  is \emph{not} computable.
+\end{theorem}
 
-
-Halting oracle.
+\begin{proof}
+  Let us prove the theorem in Haskell. We must show that there is no
+  %
+  \begin{lstlisting}[language=Haskell]
+    h :: (Integer -> Integer) -> Integer
+  \end{lstlisting}
+  %
+  such that, for all \lstinline!f :: Integer -> Integer!,
+  %
+  \begin{equation*}
+    \text{\lstinline!h f!} =
+    \begin{cases}
+      \text{\lstinline!1!} & \text{if \lstinline!f 0! terminates,}\\
+      \text{\lstinline!0!} & \text{if \lstinline!f 0! diverges.}
+    \end{cases}
+  \end{equation*}
+  %
+  Suppose there were such an \lstinline!h!. Define
+  %
+  \begin{lstlisting}[language=Haskell]
+    g n = if h g == 1 then g n else 0
+  \end{lstlisting}
+  %
+  By assumption \lstinline!h g! is either \lstinline!0! or
+  \lstinline!1!. In either case there is a contradiction because
+  \lstinline!g! does just the opposite of what \lstinline!h! says it
+  will do.
+\end{proof}
 
 
 \subsection{Type 2 machines}
 \label{sec:type-2}
+
+Type 1 machines from previous section only operate on finite inputs.
+In practice we often see programs whose input and output are
+(potentially) infinite. For example, when you listen to an internet
+radio station, the player accepts a never-ending stream of data which
+it outputs to the speakers. Also, just because a program does not
+terminate that does not automatically make it useless. We therefore
+also need a model of computation that describes non-terminating
+programs with infinite inputs and outputs.
+
+A popular model is \emph{type 2} Turing machine. It is a machine which
+accepts an infinite sequence, written on its input tape, and
+eventually fills every cell on the output tape with a non-blank
+symbol. Obviously such a machine does not terminate.
+
+
 
 \subsection{Sequential machines}
 \label{sec:sequential-machines}
