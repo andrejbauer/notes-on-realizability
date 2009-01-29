@@ -117,18 +117,142 @@ rely on familiarity with modern computers and programming languages.
 After all, programs can actually be run on computers, whereas Turing
 machines are rather hard to get by.
 
+
 \subsection{Type 1 machines}
 \label{sec:type-1}
 
-Enumeration of Turing machines.
+How do we use Turing machines to compute a partial\footnote{We use
+  notation $f : A \parto B$ to denote a function $f$ which is defined
+  on a subset of~$A$ and maps into $B$.} function $f : \NN \parto
+\NN$? A natural idea is to write the argument $n$ onto the input tape,
+run the machine until it terminates, and read the result $f(n)$ off
+the output tape. If the machine diverges then $f(n)$ is undefined. Of
+course, the input $n$ must be suitably encoded onto the input tape,
+for example it can be written in binary form. Similarly, we expect the
+output tape to contain the result encoded in the same manner.
 
-Partial computable functions.
+It is convenient to view every Turing machine as one computing a
+function $\NN \parto \NN$. This can be arranged as long as we read the
+result off the output tape correctly. Suppose the alphabet contains
+symbols $0$, $1$ and `blank'. We encode the input $n$ onto the input
+tape in binary, and run the machine. If and when it terminates it has
+written at most finally many symbols onto the output tape, and the
+output head indicates how far it got. Some of the symbols it has
+written might be different from $0$ and $1$. If we ignore everything
+that comes after the first symbol which is neither $0$ nor $1$, we can
+interpret the output tape as a number written in binary (the empty
+sequence must also be interpreted, say as $0$).
+
+We could similarly define how a Turing machine computes a multivariate
+partial function $f : \NN^k \parto \NN$. The only trick is to encode
+the input correctly. We must place special markers between the
+arguments so that we can tell where one ends and another begins.
+
+It is common knowledge that computers encode everything with $0$'s and
+$1$'s, but logicians prefer to encode everything with natural numbers.
+For example, a pair of numbers $(m, n)$ may be encoded into a single
+number, say $2^n (2 m + 1)$, in such a way that the original numbers
+can be recovered. We call a computable function which does this a
+\emph{pairing function} and denote the encoded pairs as $\pair{m,n}$.
+The computable projection functions which recover $m$ and $n$ from
+$\pair{m, n}$ are denoted by $\xfst$ and $\xsnd$, respectively.
+
+We may also encode Turing machines with numbers. A program is a finite
+list of instructions, so it can be encoded as a finite sequence of
+$0$'s and $1$'s (your computer does this everytime you save a piece of
+source code in a file), which in turn represents a number in binary
+form. In fact, every number may be thought of as a code of a program
+by the reverse process. Given a number, write it in binary form and
+interpret it as a sequence of $0$'s and $1$'s and decode from it a
+list of instructions. It may happen that the binary sequence does not
+properly encode a list of instructions, in which case we interpret it
+as the program that keeps moving the input head to the right forever.
+
+The next step is to encode tapes and entire computations with numbers.
+Because an infinite tape cannot be encoded in a single natural number,
+we limit attention to the so-called \emph{type 1} machines which
+accept only \emph{finite} inputs. More precisely, the input always
+consists of a finite string of $0$'s and $1$'s followed by blanks.
+Such input may be encoded by a single number. Furthermore, at every
+step of computation the machine has used up only a finite portion of
+its working tapes. The contents of each tape may be encoded by a
+single number, and a sequence of numbers may again be encoded by a
+single number (how?). Continuing in this manner, we may encode with a
+single number a finite sequence of computatation steps, including the
+contents of the tapes and positions of the heads at each step. Stephen
+Kleene~\cite{kleeneT} worked out the details of all this and defined
+the predicate $T(x,y,z)$ whose meaning is
+%
+\begin{quote}
+  ``Machine encoded by $x$ with input tape that encodes the number $y$
+  performs a sequence of computation steps encoded by $z$ and
+  terminates.''
+\end{quote}
+%
+The amazing thing is that $T$ may be defined in Peano arithmetic just
+in terms of basic arithmetical operations on numbers. There is an
+associated partial function $U(z)$ whose meaning is ``the number
+encoded by the contents of the output tape in the last step of
+computation encoded by $z$''. The function $U$ allows us to extract
+the result of a computation. If $z$ does not encode a terminating
+computation then $U(z)$ is undefined.
+
+Kleene's normal form theorem says that every parital computable
+function $f : \NN \parto \NN$ may be written in the form
+%
+\begin{equation}
+  \label{eq:kleene-normal-form}
+  y \mapsto U(\min \set{z \in \NN \such T(x,y,z)}).
+\end{equation}
+%
+The number $x$ is not uniquely determined, as we may take it to be the
+encoding of any machine that computes~$f$. We are completely ignoring
+questions of computational efficiency. Just consider how we would
+computing $f(y)$ according to~\eqref{eq:kleene-normal-form}: for each
+$z = 0, 1, 2, \ldots$, test whether~$z$ encodes a computation of
+machine $x$ with input $y$. When you find the first such~$z$, extract
+the result $U(z)$ from it. I dare you to compute the constant function
+$y \mapsto 0$ this way!
+
+Kleene's normal form may be used to define a standard enumeration of
+partial recursive functions. Let
+%
+\begin{equation*}
+  \pr{x}{y} = U(\min \set{z \in \NN \such T(x,y,z)}).
+\end{equation*}
+%
+The sequence $\xpr_0, \xpr_1, \xpr_2, \ldots$ is an enumeration of
+computable partial functions (with repetitions) with the following two
+important properties.
+
+\begin{theorem}[u-t-m]
+  There exists a partial computable function $u \in \NN \times \NN \parto
+  \NN$ such that for every $x$ and $y$,
+  %
+  \begin{equation*}
+    u(x,y) \simeq \pr{x}{y}.
+  \end{equation*}
+\end{theorem}
+
+\begin{theorem}[s-m-n]
+  There exists a computable function $s : \NN \times \NN \to \NN$ such
+  that
+  %
+  \begin{equation*}
+    \pr{s(x,y)}{z} \simeq \pr{x}{\pair{y, z}}.
+  \end{equation*}
+\end{theorem}
+
+
+
+The preceding discussion may be generalized to functions of several
+variables. For each $k \in \NN$ there is Kleene's predicate
+$T^{(k)}(x,y_1,\ldots,y_k,z)$ and the corresponding $U^{(k)}(z)$ that
+extracts results from computations.
+
 
 Halting oracle.
 
-s-m-n
-
-u-t-m
 
 \subsection{Type 2 machines}
 \label{sec:type-2}

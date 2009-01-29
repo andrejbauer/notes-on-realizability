@@ -1,9 +1,7 @@
-\newcommand{\set}[1]{\{#1\}}
-\newcommand{\such}{\mid}
-
 %%% Theorems
 \newtheorem{theorem}{Theorem}[chapter]
 \newtheorem{definition}[theorem]{Definition}
+\newtheorem{exercise}[theorem]{Exercise}
 
 \newenvironment{proof}{\medskip\noindent\emph{Proof.}}{\hfill$\Box$\medskip}
 
@@ -35,7 +33,24 @@
 \newcommand{\tlam}[3]{\lambda #1 \,{:}\, #2\,.\,\left(#3\right)}
 \newcommand{\xtlam}[3]{\lambda #1 \,{:}\, #2\,.\,#3}
 
+%%% Sets
+\newcommand{\set}[1]{\{#1\}}
+\newcommand{\such}{\mid}
+
+%%% Functions
+\newcommand{\parto}{\mathbin{\rightharpoonup}}
+
+%%% Pairing
+\newcommand{\pair}[1]{\langle #1, \rangle}
+\newcommand{\xfst}{\mathtt{fst}}
+\newcommand{\fst}[1]{\xfst,#1}
+\newcommand{\xsnd}{\mathtt{snd}}
+\newcommand{\snd}[1]{\xsnd,#1}
+
+\newcommand{\xpr}{\text{\boldmath{$\varphi$}}}
+\newcommand{\pr}[2]{\xpr_{#1}(#2)}
+
 %%% Local Variables: 
-%%% mode: plain-tex
+%%% mode: latex
 %%% TeX-master: "notes"
 %%% End: 
