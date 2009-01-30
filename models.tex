@@ -351,15 +351,21 @@ also need a model of computation that describes non-terminating
 programs with infinite inputs and outputs.
 
 A popular one is \emph{type 2} Turing machine. It is a machine which
-accepts an infinite sequence on its input tape, and eventually fills
-every cell on the output tape with a non-blank symbol. Obviously such
-a machine keeps working and never terminates. We envision that we
-would let it work until it produces a sufficient amount of output.
-Note that the requirement for the output tape to be write-once makes
-it possible to tell when the machine has produced a given amount of
-output. Had we allowed the machine to write to each output cell many
-times, it could keep coming back and changing what it has already
-written.
+accepts an infinite sequence on its input tape and is allowed to work
+forever. It may or may not fill the output tape entirely with
+non-blank symbols. Note that the requirement for the output tape to be
+write-once makes it possible to tell when the machine has produced an
+output in a given cell. Had we allowed the machine to write to each
+output cell many times, it could keep coming back and changing what it
+has already written. We envision that we would let it work until it
+produces a sufficient amount of output.
+
+A type 2 machine computes a partial function $f : \two^\NN \parto
+\two^\NN$ where $\two = \set{0,1}$, as follows. We write the input
+sequence $\alpha \in \two^\NN$ onto the input tape and run the
+machine. The output $f(\alpha)$ is defined if the machine eventually
+fills every cell of the output tape with $0$ or $1$, otherwise it is
+undefined.
 
 
 \subsection{Sequential machines}
