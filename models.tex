@@ -152,12 +152,11 @@ begins.
 It is common knowledge that computers encode everything with $0$'s and
 $1$'s, but logicians prefer to encode everything with natural numbers.
 For example, a pair of numbers $(m, n)$ may be encoded into a single
-number, say $2^n (2 m + 1)$, in such a way that the original numbers
-can be recovered uniquely. We call a computable function which does
-this a \emph{pairing function} and denote the encoded pair as
-$\pair{m,n}$. The computable projection functions which recover $m$
-and $n$ from $\pair{m, n}$ are denoted by $\xfst$ and $\xsnd$,
-respectively.
+number, say $\pair{m, n} = 2^m (2 n + 1)$, in such a way that the
+original numbers can be recovered uniquely. We call a computable
+function which does this a \emph{pairing function}. The
+\emph{projections} $\xfst$ and $\xsnd$ recover $m$ and $n$ from
+$\pair{m, n}$, respectively. They are computable as well.
 
 We may also encode Turing machines with numbers. A program is a finite
 list of instructions, so it can be encoded as a finite sequence of
@@ -178,12 +177,22 @@ consists of a finite string of $0$'s and $1$'s followed by blanks.
 Such input may be encoded by a single number. Furthermore, at every
 step of computation the machine has used up only a finite portion of
 its working tapes. The contents of each tape may be encoded by a
-single number, and a sequence of numbers may again be encoded by a
-single number (how?). Continuing in this manner, we may encode with a
-single number a finite sequence of computatation steps, including the
-contents of the tapes and positions of the heads at each step. Stephen
-Kleene~\cite{kleeneT} worked out the details of all this and defined
-the predicate $T(x,y,z)$ whose meaning is
+single number, and a finite sequence of numbers $n_0, \ldots, n_k$ may
+again be encoded by a single number $[n_0, \ldots, n_k]$, which we can
+define as iterated pairing:
+%
+\begin{align*}
+  [] &= 0 \\
+  [n_0, \ldots, n_k] &= \pair{n_0, [n_1, \ldots, n_k]}.
+\end{align*}
+%
+Because we defined $\pair{m,n}$ so that it is never zero, the elements
+of a sequence may be uniquely reconstructed from its code. By
+continuing in this manner we may encode with a single number a finite
+sequence of computatation steps, including the contents of the tapes
+and positions of the heads at each step. Stephen Kleene~\cite{kleeneT}
+worked out the details of all this and defined the predicate
+$T(x,y,z)$ whose meaning is
 %
 \begin{quote}
   ``Machine encoded by $x$ with input tape that encodes the number $y$
@@ -350,21 +359,92 @@ terminate that does not automatically make it useless. We therefore
 also need a model of computation that describes non-terminating
 programs with infinite inputs and outputs.
 
-A popular one is \emph{type 2} Turing machine. It is a machine which
-accepts an infinite sequence on its input tape and is allowed to work
-forever. It may or may not fill the output tape entirely with
-non-blank symbols. Note that the requirement for the output tape to be
-write-once makes it possible to tell when the machine has actually
-produced an output in a given cell. Had we allowed the machine to
-write to each output cell many times, it could keep coming back and
-changing what it has already written.
+A popular one is \emph{type 2} Turing machine, which accepts an
+infinite sequence on its input tape and is allowed to work forever. It
+may or may not fill the output tape entirely with non-blank symbols.
+Note that the requirement for the output tape to be write-once makes
+it possible to tell when the machine has actually produced an output
+in a given cell. Had we allowed the machine to write to each output
+cell many times, it could keep coming back and changing what it has
+already written.
 
-A type 2 machine computes a partial function $f : \two^\NN \parto
-\two^\NN$ where $\two = \set{0,1}$, as follows. The input sequence
-$\alpha \in \two^\NN$ is given on the input tape and the machine
-started. The output $f(\alpha)$ is defined if the machine eventually
-fills every cell of the output tape with $0$ or $1$, otherwise it is
-undefined.
+For type 2 machines there are analogoues of the standard
+enumeration~$\xpr$, utm and the smn theorems. These are more easily
+expressed if we allow the machines to write natural numbers in the
+cells, rather than symbols from a finite alphabet. We equip the
+machines with instructions for manipulating the numbers written in the
+cells, say, instructions for manipulating the bits and for testing
+equality with zero. These changes are inessential because an infinite
+sequence of $n_0, n_1, n_2, \ldots$ of natural numbers may be encoded
+as a binary sequence $1^{n_0}01^{n_1}01^{n_2}0\cdots$, where $1^k$
+means that the symbol $1$ is repeated $k$-times.
+
+A machine computes a partial function $f : \Baire \parto \Baire$,
+where $\Baire$ is the \emph{Baire space} of infinite sequences of
+numbers, as follows. We run the machines with $\alpha \in \Baire$
+written on the input tape. If the machine eventually writes a number
+to every output cell, then $f(\alpha)$ is the resulting sequence. If
+there is at least one output cell to which the machine does not write
+a number, then $f(\alpha)$ is undefined.
+
+We may similarly define what it means for a machine to compute a
+multivariate parital function $f : (\Baire)^k \parto \Baire$. The
+input $(\alpha_1, \ldots, \alpha_k)$ is written onto the input tape in
+an interleaving manner, so that $\alpha_i(j)$ is found in the cell at
+position $k \cdot j + i$.
+
+A partial computable function $f : \Baire \parto \Baire$ may be
+encoded by an element $\beta \in \Baire$ as follows. Suppose that the
+machine which computes $f$ writes $j$ to the $i$-th output cell after
+$k$ steps of computation. This means that $f(\alpha)_i = j$. Because
+in~$k$ steps the machine inspects at most the first $k$ input cells,
+the machine would have done the same for any other input that agrees
+with $\alpha$ in the first $k$ terms. This gives us the idea that
+$\beta$ should carry bits of information of the form
+%
+\begin{quote}
+  ````if the input tape starts with $\alpha_0, \ldots, \alpha_{k-1}$
+  then the machine writes $j$ in the $i$-th input cell in at most $k$
+  steps.''
+\end{quote}
+%
+More precisely, we compute $\beta_m$ as follows. First decode~$m$ as
+$\pair{i, \pair{[n_0, \ldots, n_k]}}$ where $\pair{{-}, {-}}$ and
+$[{-}]$ are coding functions for pairs and sequences,
+respectively.\footnote{if $m$ cannot be so decoded, we set $\beta_0 =
+  0$.} Then simulate the machine for $k$ steps, starting with input
+tape $n_0, \ldots, n_k, 0, 0, \ldots$. If the machine writes $j$ into
+the $i$-th output cell during the simulation, set $\beta_m = j + 1$,
+otherwise set $\beta_m = 0$. Convince yourself that $\beta$ really
+encodes~$f$.
+
+In fact, every $\beta \in \Baire$ detemines a partial function $f :
+\Baire \parto \Baire$, defined by
+%
+\begin{equation*}
+  f(\alpha)_i = \beta_m - 1
+\end{equation*}
+%
+where
+%
+\begin{equation*}
+  m = \min_m (\xsome{k}{m = {}})
+\end{equation*}
+
+
+
+There is a pairing operation $\pair{{-},{-}}$ on $\Baire$ which simply
+interleaves two sequences $\alpha, \beta \in \Baire$:
+%
+\begin{equation*}
+  \pair{\alpha, \beta} =
+  \begin{cases}
+    \alpha(m) & \text{if $k = 2 m$,}\\
+    \beta(m) & \text{if $k = 2 m + 1$.}
+  \end{cases}
+\end{equation*}
+%
+
 
 
 \section{The graph model}
