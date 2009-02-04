@@ -282,7 +282,7 @@ Haskell. Keeping in mind that numbers are just codes for programs and
 data, the universal function $u$ from the utm theorem is
 %
 \begin{lstlisting}[language=Haskell]
-  u (f, y) = f y
+u (f, y) = f y
 \end{lstlisting}
 %
 and the $s_n^m$ function for the case $n = m = 1$ is the currying
@@ -291,7 +291,7 @@ operation\footnote{In Haskell the notation \texttt{{\char92}x -> e}
   ``the function which maps $x$ to $e$''.}
 %
 \begin{lstlisting}[language=Haskell]
-  s (f, y) = \z -> f (y, z)
+s (f, y) = \z -> f (y, z)
 \end{lstlisting}
 %
 This may seem like a triviality to the programmer but is surely not
@@ -321,7 +321,7 @@ We finish this section with a theorem which we shall often use to show
   Let us prove the theorem in Haskell. We must show that there is no
   %
   \begin{lstlisting}[language=Haskell]
-    h :: (Integer -> Integer) -> Integer
+h :: (Integer -> Integer) -> Integer
   \end{lstlisting}
   %
   such that, for all \lstinline!f :: Integer -> Integer!,
@@ -337,7 +337,7 @@ We finish this section with a theorem which we shall often use to show
   Suppose there were such an \lstinline!h!. Define
   %
   \begin{lstlisting}[language=Haskell]
-    g n = if h g == 1 then g n else 0
+g n = if h g == 1 then g n else 0
   \end{lstlisting}
   %
   By assumption \lstinline!h g! is either \lstinline!0! or
@@ -469,12 +469,13 @@ set $\beta_m = 0$.
 Conversely, every $\beta \in \Baire$ detemines a partial function $f :
 \Baire \parto \Baire$, defined by
 %
-\begin{equation*}
+\begin{equation}
+  \label{eq:type2-encoding}
   f(\alpha)_i = \beta_m - 1
   \qquad\text{where}\qquad
   m = \min\nolimits_m (\xsome{i,k}{\NN}{m = \seg{(\cons{i}{\alpha})}{k}} \land
     \beta_m \neq 0).
-\end{equation*}
+\end{equation}
 %
 The function which $\beta$ encodes is denoted by $\xfpr_\beta$. A
 partial map of of the form $\xfpr_\beta$ is said to be \emph{(type 2)
@@ -646,31 +647,98 @@ Recall that a $G_\delta$-set is a countable intersection of open sets.
   \dom{f}$.
 \end{proof}
 
+Finally, we formulate the utm and smn theorems for type 2 machines.
+
+\begin{theorem}[type 2 utm]
+  There exists a computable partial function $u : \Baire \times
+  \Baire \parto \Baire$ such that $u(\alpha, \beta) \simeq
+  \fpr{\alpha}{\beta}$ for all $\alpha, \beta \in \Baire$.
+\end{theorem}
+
+\begin{proof}
+  Let us write a machine for computing $u$ in Haskell, but without
+  resorting to an explicit encoding of finite sequences by numbers.
+  Define the type
+  %
+  \begin{lstlisting}
+type Baire = Integer -> Integer
+  \end{lstlisting}
+  %
+  The universal \lstinline!u :: ([Integer] -> Integer, Baire) -> Baire! %
+  is just the transliteration of~\eqref{eq:type2-encoding}:
+  %
+  \begin{lstlisting}[language=Haskell]
+u (a, b) i = x - 1
+    where x = head $
+              filter (/= 0) $
+              [a (i : map b [0..(k-1)]) | k <- [0..]]
+  \end{lstlisting}
+  % 
+  You may entertain yourself by learning Haskell and figuring out how
+  it works.
+\end{proof}
+
+We only bother to state the type 2 version of smn theorem for
+bivariate functions.
+
+\begin{theorem}[type 2 smn]
+  There exists a computable $s : \Baire \times \Baire \to \Baire$ such
+  that, for all $\alpha, \beta, \gamma \in \Baire$,
+  %
+  \begin{equation*}
+    \fprm{2}{s(\alpha, \beta)}{\gamma} = \fpr{\alpha}(\beta, \gamma).
+  \end{equation*}
+\end{theorem}
+
+\begin{proof}
+  The proof is left as an exercise in programming.
+\end{proof}
 
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{The graph model}
 \label{sec:graph-model}
 
+A model of computation may introduce features which are not easily
+detected, until we compare it with other models. For example, the
+innocuous-looking idea that the input be stored on a tape gives the
+type 2 machine the ability to take into account the \emph{location}
+where a piece of data is stored. In this section we consider a
+different model of intinite computation, the \emph{graph model}
+introduced by Dana Scott~\cite{graph-model}. The basic idea is to
+replace infinite sequences of numbers by sets of numbers.
 
+
+
+
+Ask what graph model introduces? Answer: parallel computation.
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Partial combinatory algebras}
 \label{sec:pcas}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{$\lambda$-calculus}
 \label{sec:lambda-calculus}
 
 
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Real-world programming languages}
 \label{sec:programming-languages}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Comparison of models of computation}
 \label{sec:models-comparison}
 
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Further reading}
 \label{sec:models-further-reading}
 
