@@ -701,12 +701,23 @@ bivariate functions.
 
 A model of computation may introduce features which are not easily
 detected, until we compare it with other models. For example, the
-innocuous-looking idea that the input be stored on a tape gives the
-type 2 machine the ability to take into account the \emph{location}
-where a piece of data is stored. In this section we consider a
-different model of intinite computation, the \emph{graph model}
-introduced by Dana Scott~\cite{graph-model}. The basic idea is to
-replace infinite sequences of numbers by sets of numbers.
+innocuous-looking idea that the input be stored on a tape gives a type
+2 machine the ability to take into account the \emph{order} in which
+data is stored. In this section we consider a different model of
+infinite computation, the \emph{graph model} introduced by Dana
+Scott~\cite{graph-model}, in which we use sets of numbers rather than
+sequences.
+
+We would like to explain what it means to compute a map $f : \pow{\NN}
+\to \pow{\NN}$ where $\pow{\NN}$ is the powerset of natural numbers.
+One natural idea would be to use computation with respect to an
+oracle: $f$ is computable if there is a Turing machine which computes
+$f(A)$ when given $A$ as an oracle, i.e., it may test membership
+in~$A$. However, this is still just type 2 computability in disguise,
+because asking an oracle whether a number belongs to~$A$ is equivalent
+to having an infinite input tape with a $1$ in the $n$-th cell when $n
+\in A$, and a $0$ otherwise.
+
 
 
 
@@ -749,6 +760,9 @@ available textbook is Hartley Rogers~\cite{Rogers}. If you would like
 to see Turing machines done rigorously and in gory detail, look at
 Martin Davis's booklet~\cite{Davis}.
 
+
+Graph model was preceded by enumeration operators, but nobody saw that
+it gave a $\lambda$-model.
 
 
 %%% Local Variables: 
