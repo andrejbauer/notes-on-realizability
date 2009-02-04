@@ -368,16 +368,20 @@ in a given cell. Had we allowed the machine to write to each output
 cell many times, it could keep coming back and changing what it has
 already written.
 
+An important distinction between type 1 and type 2 machines is that
+the latter may accept non-computable inputs, from which non-computable
+outputs may be produced.
+
 For type 2 machines there are analogoues of the standard
 enumeration~$\xpr$, utm and the smn theorems. These are more easily
 expressed if we allow the machines to write natural numbers in the
-cells, rather than symbols from a finite alphabet. We equip the
-machines with instructions for manipulating the numbers written in the
-cells, say, instructions for manipulating the bits and for testing
+cells, rather than symbols from a finite alphabet. We also need equip
+the machines with instructions for manipulating the numbers written in
+the cells, say, instructions for manipulating the bits and for testing
 equality with zero. These changes are inessential because an infinite
-sequence of $n_0, n_1, n_2, \ldots$ of natural numbers may be encoded
-as a binary sequence $1^{n_0}01^{n_1}01^{n_2}0\cdots$, where $1^k$
-means that the symbol $1$ is repeated $k$-times.
+sequence $n_0, n_1, n_2, \ldots$ of natural numbers may be encoded as
+a binary sequence $1^{n_0}01^{n_1}01^{n_2}0\cdots$, where $1^k$ means
+that the symbol $1$ is repeated $k$-times.
 
 A machine computes a partial function $f : \Baire \parto \Baire$,
 where $\Baire$ is the \emph{Baire space} of infinite sequences of
@@ -390,47 +394,68 @@ a number, then $f(\alpha)$ is undefined.
 We may similarly define what it means for a machine to compute a
 multivariate parital function $f : (\Baire)^k \parto \Baire$. The
 input $(\alpha_1, \ldots, \alpha_k)$ is written onto the input tape in
-an interleaving manner, so that $\alpha_i(j)$ is found in the cell at
+an interleaving manner, so that $\alpha_{i,j}$ is found in the cell at
 position $k \cdot j + i$.
 
 A partial computable function $f : \Baire \parto \Baire$ may be
-encoded by an element $\beta \in \Baire$ as follows. Suppose that the
-machine which computes $f$ writes $j$ to the $i$-th output cell after
-$k$ steps of computation. This means that $f(\alpha)_i = j$. Because
-in~$k$ steps the machine inspects at most the first $k$ input cells,
-the machine would have done the same for any other input that agrees
-with $\alpha$ in the first $k$ terms. This gives us the idea that
-$\beta$ should carry bits of information of the form
+encoded by an element $\beta \in \Baire$ as follows. Suppose that,
+given input $\alpha \in \Baire$, the machine which computes $f$ writes
+$j$ to the $i$-th output cell after $k$ steps of computation. This
+means that $f(\alpha)_i = j$. Because in~$k$ steps the machine
+inspects at most the first $k$ input cells, it would have done the
+same for any other input that agrees with $\alpha$ in the first $k$
+terms. This gives us the idea that $\beta$ should carry bits of
+information of the form
 %
 \begin{quote}
-  ````if the input tape starts with $\alpha_0, \ldots, \alpha_{k-1}$
-  then the machine writes $j$ in the $i$-th input cell in at most $k$
-  steps.''
+  ``if the input tape starts with $\alpha_0, \ldots,
+  \alpha_{k-1}$ then the machine writes $j$ in the $i$-th input
+  cell.''
 \end{quote}
 %
 More precisely, we compute $\beta_m$ as follows. First decode~$m$ as
 $\pair{i, \pair{[n_0, \ldots, n_k]}}$ where $\pair{{-}, {-}}$ and
 $[{-}]$ are coding functions for pairs and sequences,
-respectively.\footnote{if $m$ cannot be so decoded, we set $\beta_0 =
+respectively.\footnote{if $m$ cannot be so decoded, we set $\beta_m =
   0$.} Then simulate the machine for $k$ steps, starting with input
 tape $n_0, \ldots, n_k, 0, 0, \ldots$. If the machine writes $j$ into
 the $i$-th output cell during the simulation, set $\beta_m = j + 1$,
-otherwise set $\beta_m = 0$. Convince yourself that $\beta$ really
-encodes~$f$.
+otherwise set $\beta_m = 0$.
 
-In fact, every $\beta \in \Baire$ detemines a partial function $f :
+Conversely, every $\beta \in \Baire$ detemines a partial function $f :
 \Baire \parto \Baire$, defined by
 %
 \begin{equation*}
   f(\alpha)_i = \beta_m - 1
+  \qquad\text{where}\qquad
+  m = \min\nolimits_m (\xsome{i,k}{\NN}{m = \pair{{i, \seg{\alpha}{k}}} \land
+    \beta_m \neq 0}).
 \end{equation*}
 %
-where
-%
-\begin{equation*}
-  m = \min_m (\xsome{k}{m = {}})
-\end{equation*}
+We denote the function $f$ encoded by $\beta$ by $\xfpr{\beta}$. The
+map $\xfpr : \Baire \to (\Baire \parto \Baire)$ is the type 2 version
+of the standard numbering~$\xpr$. We want to know which partial maps
+are of the form $\xfpr_\beta$.
 
+\begin{proposition}
+  For a partial function $f : \Baire \parto \Baire$ there exists
+  $\beta$ such that $f = \xfpr_\beta$ if, and only if, $f$ is
+  continuous, with respect to the product topology of $\Baire$, and
+  its domain of definition is a $G_\delta$-set.
+\end{proposition}
+
+\begin{proof}
+  Recall that a partial function is continuous when it is continuous
+  on its domain of definition, with the subspace topology. A
+  $G_\delta$-set is a countable intersection of open sets.
+
+  
+\end{proof}
+
+
+ If
+$\beta$ is a computable sequence, then $\xfpr{\beta}$ is computable by
+a type 2 machine. In fact,
 
 
 There is a pairing operation $\pair{{-},{-}}$ on $\Baire$ which simply
