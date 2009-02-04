@@ -1,5 +1,8 @@
 %%% Theorems
 \newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{exercise}[theorem]{Exercise}
 
@@ -38,10 +41,12 @@
 \newcommand{\such}{\mid}
 
 \newcommand{\two}{\mathsf{2}}
-\newcommand{\Baire}{\NN^\NN}
+\newcommand{\Baire}{\mathbb{B}}
 
 %%% Functions
 \newcommand{\parto}{\mathbin{\rightharpoonup}}
+
+\newcommand{\dom}[1]{\mathsf{dom}(#1)}
 
 %%% Pairing
 \newcommand{\pair}[1]{\langle #1 \rangle}
@@ -57,7 +62,8 @@
 \newcommand{\xfpr}{\text{\boldmath{$\eta$}}}
 \newcommand{\fpr}[2]{\xfpr_{#1}(#2)}
 
-
+\newcommand{\cons}[2]{#1 \mathbin{{:}{:}} #2}
+\newcommand{\seq}[1]{[#1]}
 \newcommand{\seg}[2]{\overline{#1}(#2)}
 
 %%% Local Variables: 

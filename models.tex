@@ -383,29 +383,74 @@ sequence $n_0, n_1, n_2, \ldots$ of natural numbers may be encoded as
 a binary sequence $1^{n_0}01^{n_1}01^{n_2}0\cdots$, where $1^k$ means
 that the symbol $1$ is repeated $k$-times.
 
-A machine computes a partial function $f : \Baire \parto \Baire$,
-where $\Baire$ is the \emph{Baire space} of infinite sequences of
-numbers, as follows. We run the machines with $\alpha \in \Baire$
+A type 2 machine computes a partial function $f : \NN^\NN \parto
+\NN^\NN$, where $\NN^\NN$ is the \emph{Baire space} of infinite
+sequences of numbers. We run the machines with $\alpha \in \NN^\NN$
 written on the input tape. If the machine eventually writes a number
 to every output cell, then $f(\alpha)$ is the resulting sequence. If
 there is at least one output cell to which the machine does not write
 a number, then $f(\alpha)$ is undefined.
 
 We may similarly define what it means for a machine to compute a
-multivariate parital function $f : (\Baire)^k \parto \Baire$. The
+multivariate parital function $f : (\NN^\NN)^k \parto \NN^\NN$. The
 input $(\alpha_1, \ldots, \alpha_k)$ is written onto the input tape in
 an interleaving manner, so that $\alpha_{i,j}$ is found in the cell at
 position $k \cdot j + i$.
 
-A partial computable function $f : \Baire \parto \Baire$ may be
-encoded by an element $\beta \in \Baire$ as follows. Suppose that,
-given input $\alpha \in \Baire$, the machine which computes $f$ writes
-$j$ to the $i$-th output cell after $k$ steps of computation. This
-means that $f(\alpha)_i = j$. Because in~$k$ steps the machine
-inspects at most the first $k$ input cells, it would have done the
-same for any other input that agrees with $\alpha$ in the first $k$
-terms. This gives us the idea that $\beta$ should carry bits of
-information of the form
+Before proceeding with type 2 computability, we recall a few basic
+facts about the Baire space~$\Baire = \NN^\NN$. Let $\NN^{*}$ be the
+set of all finite sequences of natural numbers. If $a, b \in \NN^{*}$
+we write $a \sqsubseteq b$ when $a$ is a prefix of~$b$. The length of
+a finite sequence $a$ is denoted by~$|a|$. Similarly, we write $a
+\sqsubseteq \alpha$ when $a$ is a prefix of an infinite sequence
+$\alpha \in \Baire$. A finite prefix $\alpha_0, \ldots, \alpha_{k-1}$
+of $\alpha$ may be encoded by a single number $\seg{a}{n} = [\alpha_0,
+\ldots, \alpha_{k-1}]$.
+
+The expression $\cons{a}{\beta}$ denotes the concatenation of the
+finite sequence $a \in \NN^{*}$ with the infinite sequence $\beta \in
+\Baire$. Sometimes we abuse notation and write $\cons{n}{\beta}$
+instead of $\cons{\seq{n}}{\beta}$ for $n \in \NN$ and $\beta \in
+\Baire$.
+
+We equip $\Baire$ with the product topology. A countable topological
+base for $\Baire$ consists of the basic open sets
+%
+\begin{equation*}
+  \cons{\seq{a_0, \ldots, a_k}}{\Baire}
+  = \set{\cons{\seq{a_0, \ldots, a_{k-1}}}{\beta} \such \beta \in \Baire}
+  = \set{\alpha \in \Baire \such \seq{a_0, \ldots, a_{k-1}}
+    \sqsubseteq \alpha}
+  \;.
+\end{equation*}
+%
+Because the basic open sets are both closed and open (clopen),
+$\Baire$ is in fact a countably based $0$-dimensional\footnote{Recall
+  that a space is \emph{$0$-dimensional} when its clopen subsets form
+  a base for its topology.} Hausdorff space. It is also a complete
+separable metric space for the \emph{comparison metric} $d : \Baire
+\times \Baire \to \RR$, defined by
+%
+\begin{equation*}
+  d(\alpha, \beta) = \inf \;\set{2^{-n} \such
+    \seg{\alpha}{n} = \seg{\beta}{n}}.
+\end{equation*}
+%
+If the first term in which $\alpha$ and $\beta$ differ is the $n$-th
+one, then $d(\alpha, \beta) = 2^{-n}$. The comparison metric is an
+ultrametric, which means that it satisfies the inequality $d(\alpha,
+\gamma) \leq \max(d(\alpha, \beta), d(\beta, \gamma)$. The clopen sets
+$\cons{a}{\Baire}$ are balls of radius $2^{-|a|}$.
+
+Let us now see how encoding of partial computable functions works. We
+would like to encode a computable $f : \Baire \parto \Baire$ with an
+element $\beta \in \Baire$. Suppose that, given input $\alpha \in
+\Baire$, the machine which computes $f$ writes $j$ to the $i$-th
+output cell after $k$ steps of computation. This means that
+$f(\alpha)_i = j$. Because in~$k$ steps the machine inspects at most
+the first $k$ input cells, it would have done the same for any other
+input that agrees with $\alpha$ in the first $k$ terms. This gives us
+the idea that $\beta$ should carry bits of information of the form
 %
 \begin{quote}
   ``if the input tape starts with $\alpha_0, \ldots,
@@ -414,13 +459,12 @@ information of the form
 \end{quote}
 %
 More precisely, we compute $\beta_m$ as follows. First decode~$m$ as
-$\pair{i, \pair{[n_0, \ldots, n_k]}}$ where $\pair{{-}, {-}}$ and
-$[{-}]$ are coding functions for pairs and sequences,
-respectively.\footnote{if $m$ cannot be so decoded, we set $\beta_m =
-  0$.} Then simulate the machine for $k$ steps, starting with input
-tape $n_0, \ldots, n_k, 0, 0, \ldots$. If the machine writes $j$ into
-the $i$-th output cell during the simulation, set $\beta_m = j + 1$,
-otherwise set $\beta_m = 0$.
+$\seq{i, n_0, \ldots, n_{k-1}}$. (The number $m = 0$ encodes the empty
+sequence and cannot be so decoded, so we set $\beta_0 = 0$.) Then
+simulate the machine for $k$ steps with input tape $n_0, \ldots,
+n_{k-1}, 0, 0, \ldots$. If the machine writes $j$ into the $i$-th
+output cell during the simulation, set $\beta_m = j + 1$, otherwise
+set $\beta_m = 0$.
 
 Conversely, every $\beta \in \Baire$ detemines a partial function $f :
 \Baire \parto \Baire$, defined by
@@ -428,47 +472,180 @@ Conversely, every $\beta \in \Baire$ detemines a partial function $f :
 \begin{equation*}
   f(\alpha)_i = \beta_m - 1
   \qquad\text{where}\qquad
-  m = \min\nolimits_m (\xsome{i,k}{\NN}{m = \pair{{i, \seg{\alpha}{k}}} \land
-    \beta_m \neq 0}).
+  m = \min\nolimits_m (\xsome{i,k}{\NN}{m = \seg{(\cons{i}{\alpha})}{k}} \land
+    \beta_m \neq 0).
 \end{equation*}
 %
-We denote the function $f$ encoded by $\beta$ by $\xfpr{\beta}$. The
-map $\xfpr : \Baire \to (\Baire \parto \Baire)$ is the type 2 version
-of the standard numbering~$\xpr$. We want to know which partial maps
-are of the form $\xfpr_\beta$.
+The function which $\beta$ encodes is denoted by $\xfpr_\beta$. A
+partial map of of the form $\xfpr_\beta$ is said to be \emph{(type 2)
+  realizable}. We would like to know which maps are realizable.
+
+A partial function $f: X \parto Y$ is said to be \emph{continuous}
+when it is continuous as a total map $f: \dom{f} \to Y$, where the
+domain of definition $\dom{f} \subseteq X$ is equipped with the
+subspace topology. Note that there is no restriction on the
+domain~$\dom{f}$.
+
+\begin{theorem}[Extension Theorem for $\Baire$]
+  \label{th:extension_BB}%
+  Every partial continuous map $f: \Baire \parto \Baire$ can be extended
+  to a realized one.
+\end{theorem}
+
+\begin{proof}
+  Suppose $f: \Baire \parto \Baire$ is a partial continuous map.  Consider
+  the set $A \subseteq \NN^{*} \times \NN^2$ defined by
+  %
+  \begin{equation*}
+     A = \set{(a, i, j) \in \NN^{*} \times \NN^{2} \such
+        \cons{a}{\Baire} \cap \dom{f} \neq \emptyset \land
+        \all{\alpha}{\cons{a}{\Baire} \cap \dom{f}}{
+          (f\alpha)_i = j
+          }
+        }
+  \end{equation*}
+  %
+  If $(a, i, j) \in A$, $(a', i, j') \in A$ and $a \sqsubseteq a'$
+  then $j = j'$ because there exists $\alpha \in \cons{a'}{\Baire}
+  \cap \dom{f} \subseteq \cons{a}{\Baire} \cap \dom{f}$ such that $j =
+  (f \alpha)_i = j'$. We define a sequence $\phi \in \Baire$ as
+  follows. For every $(a, i, j) \in A$ let $\phi_{\seq{\cons{i}{a}}} =
+  j + 1$, and for all other arguments $n$ let $\phi_n = 0$. Suppose
+  that $\phi_{\seq{\cons{i}{a}}} = j + 1$ for some $i, j \in \NN$ and
+  $a \in \NN^{*}$. Then for every prefix $a' \sqsubseteq a$,
+  $\phi_{\seq{\cons{i}{a'}}} = 0$ or $\phi_{\seq{\cons{i}{a'}}} = j +
+  1$. Thus, if $(a, i, j) \in A$ and $a \sqsubseteq \alpha$ then
+  $(\fpr{\phi}{\alpha})_i = j$.
+  %
+  We show that $(\fpr{\phi}{\alpha})_i = (f(\alpha))_i$ for all
+  $\alpha \in \dom{f}$ and all $i \in \NN$. Because~$f$ is continuous,
+  for all $\alpha \in \dom{f}$ and $i \in \NN$ there exists $(a, i, j)
+  \in A$ such that $a \sqsubseteq \alpha$ and $(f \alpha)_i = j$. Now
+  we get
+  %
+  $
+    (\fpr{\phi}{\alpha})_i
+    = j
+    = (f \alpha)_i
+  $.
+\end{proof}
+
+\index{set!G-delta set@{$G_\delta$}}%
+%
+Recall that a $G_\delta$-set is a countable intersection of open sets.
 
 \begin{proposition}
-  For a partial function $f : \Baire \parto \Baire$ there exists
-  $\beta$ such that $f = \xfpr_\beta$ if, and only if, $f$ is
-  continuous, with respect to the product topology of $\Baire$, and
-  its domain of definition is a $G_\delta$-set.
+  \label{th:G_delta_characteristic}%
+  If $U \subseteq \Baire$ is a $G_\delta$-set then the partial
+  function $u: \Baire \parto \Baire$ whose domain is $U$ and is
+  defined by $u(\alpha)_i = 1$, is realized.
 \end{proposition}
 
 \begin{proof}
-  Recall that a partial function is continuous when it is continuous
-  on its domain of definition, with the subspace topology. A
-  $G_\delta$-set is a countable intersection of open sets.
-
-  
+  The set $U$ is a countable intersection of countable unions of basic
+  open sets
+  %
+  \begin{equation*}
+    U = \bigcap_{i \in \NN}
+        \bigcup_{j \in \NN} \cons{a_{i,j}}{\Baire} \;.
+  \end{equation*}
+  %
+  Define a sequence $\upsilon \in \Baire$ by setting
+  $\upsilon_{\seq{\cons{i}{a_{i,j}}}} = 2$ for all $i, j \in \NN$, and
+  $\upsilon_n = 0$ for all other arguments~$n$. Clearly, if
+  $\fpr{\upsilon}{\alpha}$ is defined then its value is the constant
+  sequence $1, 1, 1, \ldots$, so we only need to verify that
+  $\dom{\xfpr_\upsilon} = U$. If $\alpha \in \dom{\xfpr_\upsilon}$
+  then $\upsilon \star (\cons{i}{\alpha})$ is defined for every $i \in
+  \NN$, therefore there exists $c i \in \NN$ such that $\upsilon
+  (\seq{(\cons{i}{[\alpha 0, \ldots, \alpha (c i)]})}) = 2$, which
+  implies that $\alpha \in {a_{i, c i}}$. Hence
+  %
+  \begin{equation*}
+    \alpha \in \bigcap_{i \in \NN} \cons{a_{i, c i}}{\Baire} \subseteq U.
+  \end{equation*}
+  %
+  Conversely, if $\alpha \in U$ then for every $i \in \NN$ there
+  exists some $c i \in \NN$ such that $\alpha \in a_{i, c i}$. For
+  every $i \in \NN$, $\upsilon (\seq{(\cons{i}{[\alpha 0, \ldots,
+      \alpha (c i)]})}) = 2$, therefore $(\fpr{\upsilon}{\alpha}) i =
+  \upsilon \star (\cons{i}{\alpha}) = 1$.  Hence $\alpha \in
+  \dom{\xfpr_\upsilon}$.
 \end{proof}
 
 
- If
-$\beta$ is a computable sequence, then $\xfpr{\beta}$ is computable by
-a type 2 machine. In fact,
+\begin{corollary}
+  \label{th:restrict_G_delta}%
+  Suppose $\alpha \in \Baire$ and $U \subseteq \Baire$ is a $G_\delta$-set.
+  Then there exists $\beta \in \Baire$ such that $\xfpr{\alpha}{\gamma} =
+  \fpr{\beta}{\gamma}$ for all $\gamma \in \dom{\xfpr_\alpha} \cap U$ and
+  $\dom{\xfpr_\beta} = U \cap \dom{\xfpr_\alpha}$.
+\end{corollary}
+
+\begin{proof}
+  By Proposition~\ref{th:G_delta_characteristic} there exists
+  $\upsilon \in \Baire$ such that for all $\beta \in \Baire$
+  %
+  \begin{equation*}
+    \fpr{\upsilon} \beta =
+    \begin{cases}
+      \xulam{n}{1} & \beta \in U \;,\\
+      \text{undefined} & \text{otherwise} \;.
+    \end{cases}
+  \end{equation*}
+  %
+  It suffices to show that the function $f: \Baire \parto \Baire$ defined by
+  %
+  \begin{equation*}
+    (f \beta) n = ((\eta_{\upsilon} \beta) n) \cdot
+                  ((\eta_{\alpha} \beta) n)
+  \end{equation*}
+  %
+  is realized. This is so because coordinate-wise multiplication of
+  sequences is realized, and so are pairing and composition.
+\end{proof}
 
 
-There is a pairing operation $\pair{{-},{-}}$ on $\Baire$ which simply
-interleaves two sequences $\alpha, \beta \in \Baire$:
-%
-\begin{equation*}
-  \pair{\alpha, \beta} =
-  \begin{cases}
-    \alpha(m) & \text{if $k = 2 m$,}\\
-    \beta(m) & \text{if $k = 2 m + 1$.}
-  \end{cases}
-\end{equation*}
-%
+\begin{theorem}
+  \index{realized function!characterization in B@{characterization in~$\kltwo$}}%
+  %
+  A partial function $f: \Baire \parto \Baire$ is realized if, and only
+  if, $f$ is continuous and its domain is a $G_\delta$-set.
+\end{theorem}
+
+\begin{proof}
+  First we show that $\xfpr_\alpha$ is a continuous map whose domain
+  is a $G_\delta$-set. It is continuous because the value of
+  $(\fpr{\alpha}{\beta}) n$ depends only on $n$ and finite prefixes of
+  $\alpha$ and $\beta$. The domain of $\xfpr_\alpha$ is the
+  $G_\delta$-set
+  %
+  \begin{multline*}
+    \dom{\fpr{\alpha}}
+    = \set{\beta \in \Baire \such
+      \all{n}{\NN}{(\alpha \mid \beta) n\ \text{defined}}} \\
+    = \bigcap_{n \in \NN}
+      \set{\beta \in \Baire \such (\alpha \mid \beta) n \ 
+        \text{defined}}
+    =  \bigcap_{n \in \NN}
+        \bigcup_{m \in \NN}
+          \set{\beta \in \Baire \such
+          \alpha \star (\cons{n}{\beta}) = m} \;.
+  \end{multline*}
+  %
+  Each of the sets $\set{\beta \in \Baire \such \alpha \star
+    (\cons{n}{\beta}) = m}$ is open because $\star$ and $\cons{}{}$
+  are continuous operations.
+  
+  Now let $f: \Baire \parto \Baire$ be a partial continuous function whose
+  domain is a $G_\delta$-set. By Theorem~\ref{th:extension_BB} there
+  exists $\phi \in \Baire$ such that $f \alpha = \fpr{\phi} \alpha$ for
+  all $\alpha \in \dom{f}$. By Corollary~\ref{th:restrict_G_delta}
+  there exists $\psi \in \Baire$ such that $\dom{\fpr{\psi}} = \dom{f}$
+  and $\fpr{\psi} \alpha = \fpr{\phi} \alpha$ for every $\alpha \in
+  \dom{f}$.
+\end{proof}
+
 
 
 
