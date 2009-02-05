@@ -718,24 +718,189 @@ because asking an oracle whether a number belongs to~$A$ is equivalent
 to having an infinite input tape with a $1$ in the $n$-th cell when $n
 \in A$, and a $0$ otherwise.
 
+An oracle provides both \emph{positive} and \emph{negative}
+information about membership in~$A$, whereas the graph model keeps
+only positive information. Rather than describing it explicitly as a
+kind of Turing machines, we shall take a different route this time and
+first describe the topological aspects of the model. Computability
+will then follow easily.
+
+The set $\pow{\NN}$ may be equipped with a topology in two natural
+ways. One is the product topology arising from the observation that
+$\pow{\NN}$ is isomorphic to the countable product $\two^\NN$. This
+topology encodes positive and negative information. The other is the
+\emph{Scott} topology, which arises from the lattice structure of
+$\pow{\NN}$, ordered by $\subseteq$. A subbasic open set for the Scott
+topology on $\pow{\NN}$ is one of the form
+%
+\begin{equation*}
+  \upper{n} = \set{A \subseteq \NN \such n \in A}.
+\end{equation*}
+%
+By forming finite intersections we get the basic open sets
+%
+\begin{equation*}
+  \upper{\set{n_0, \ldots, n_{k-1}}} =
+  \set{A \subseteq \NN \such \set{n_0, \ldots, n_{k-1}} \subseteq A}.
+\end{equation*}
+%
+A subset $\mathcal{U} \subseteq \pow{\NN}$ is then \emph{Scott open}
+when it has the property that $A$ is a member of~$\mathcal{U}$ if, and
+only if, some finite subset of $A$ is a member of $\mathcal{U}$. If we
+write $A \wayb B$ when~$A$ is a finite subset of~$B$, we may express
+the fact that $\mathcal{U} \subseteq \pow{\NN}$ is Scott open as
+%
+\begin{equation*}
+  not finished here.
+\end{equation*}
+%
+The Scott topology makes $\pow{\NN}$ into a countably based
+$T_0$-space, i.e., for all $A, B \in \pow{\NN}$,
+%
+\begin{equation*}
+  \text{$A$ and $B$ have the same neighborhoods} \implies A = B.
+\end{equation*}
+%
+This is \emph{not} a Hausdorff space, not even a $T_1$-space. If you
+were taught in school by geometrically minded topologists to ridicule
+non-Hausdorff spaces\footnote{I surely was as an undergraduate student
+  in mathematics.}, you better quickly lose the habit and learn about
+the role of topology as an aspect of information processing in which
+an open set is a (positively) observable property. The natural
+separation axiom in this setting is~$T_0$, which is a form of
+Leibniz's principle of identity.\footnote{The principle states that
+  two things are equal if they have exactly the same properties.} We
+denote $\pow{\NN}$ by $\Scott$ when we think of it as a topological
+space equipped with the Scott topology.
+
+\begin{proposition}
+  The following are equivalent for a map $f : \Scott \to \Scott$:
+  %
+  \begin{enumerate}
+  \item $f$ is continuous,
+  \item $f(B) = \tbigcup \set{f(A) \such A \wayb B}$ for all $B \in \Scott$,
+  \item $f$ preserves directed unions.
+  \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+  A map $f : \Scott \to \Scott$ is continuous precisely when the
+  inverse image of a subbasic open set $\invim{f}(\upper{n})$ is open.
+  By noting that $B \in \invim{f}(\upper{n})$ is equivalent to $n \in
+  f(B)$ and using the characterization of Scott open sets, we may
+  phrase continuity of $f$ as
+  %
+  \begin{equation*}
+    \xall{n}{\NN}{
+      \all{B}{\Scott}{
+        n \in f(B) \iff \xusome{A \wayb B}{n \in f(A)}
+      }
+    }.
+  \end{equation*}
+  %
+  This is equivalent to saying that, for all $B \in \Scott$,
+  %
+  \begin{equation*}
+    f(B) = \tbigcup \set{f(A) \such A \wayb B}.
+  \end{equation*}
+  %
+  We have proved the equivalence of the first two statements. Since
+  $\set{A \such A \wayb B}$ is a directed family, the third statement
+  obviously implies the first one. The remaining implication is
+  established as follows. Suppose $f : \Scott \to \Scott$ satisfies
+  the second statement and $\mathcal{F} \subseteq \Scott$ is a
+  directed family. Observe that the families $\mathcal{G} = \set{A \in
+    \Scott \such \xsome{B}{\mathcal{F}}{A \wayb B}}$ and $\mathcal{H}
+  = \set{A \in \Scott \such A \wayb \tbigcup \mathcal{F}}$ are
+  actually the same, both are directed, and $\tbigcup \mathcal{F} =
+  \tbigcup \mathcal{H}$. Then
+  %
+  \begin{align*}
+    f (\tbigcup \mathcal{F}) &=
+    \tbigcup \set{f(A) \such A \wayb \tbigcup \mathcal{F}} \\
+    &= \tbigcup \set{f(A) \such A \in \mathcal{H}} \\
+    &= \tbigcup \set{f(A) \such A \in \mathcal{G}} \\
+    &= \tbigcup \set{\tbigcup \set{f(A) \such A \wayb B} \such B \in \mathcal{F}} \\
+    &= \tbigcup \set{f(B) \such B \in \mathcal{F}}.
+  \end{align*}
+  %
+  We used the second statement in the first and last line.
+\end{proof}
+
+A continuous map on $\Scott$ is also called an \emph{enumeration
+  operator}. The second part of the previous proposition tells us that
+every enumeration operator is determined by its values on finite sets.
+This gives us the idea that it should be possible to encode it by a
+set of numbers. Indeed, to every continuous $f : \Scott \to \Scott$ we
+assign its \emph{graph}
+%
+\begin{equation*}
+  \Gamma(f) = \set{\pair{[m_0, \ldots, m_{k-1}], n} \in \NN \such
+    n \in f(\set{m_0, \ldots, m_{k-1}})
+  }.
+\end{equation*}
+%
+To every $A \in \Scott$ we assign a function $\Lambda(A) : \Scott \to
+\Scott$, defined by
+%
+\begin{equation*}
+  \Lambda(A)(B) = \set{n \in \NN \such
+    \xsome{m_0, \ldots, m_{k-1}}{B}{\pair{[m_0, \ldots, m_{k-1}], n} \in A}
+  }.
+\end{equation*}
+%
+It is easy to verify that $\Lambda(A)$ is continuous and that
+%
+\begin{equation*}
+  \xymatrix{
+    **[l]{\mathcal{C}(\Scott, \Scott)}
+    \ar@<+0.25em>[r]^{\Gamma}
+    &
+    {\Scott}
+    \ar@<+0.25em>[l]^{\Lambda}
+  }
+\end{equation*}
+%
+is a continuous section-retraction pair which embeds the space of
+continuous maps $\mathcal{C}(\Scott, \Scott)$ into $\Scott$. Here
+$\mathcal{C}(\Scott, \Scott)$ is equipped with the compact-open
+topology.
+
+Let us now discuss the role of $\Scott$ as a model of computation. A
+\emph{computably enumerable (c.e.) set} $A \subseteq \NN$ is a one
+that can be enumerated by a Turing machine, i.e., it is the image of a
+partial computable function $\NN \parto \NN$.\footnote{We must allow
+  partial functions if we want the empty set to be computably
+  enumerable.} We denote teh family of c.e.~sets by $\cScott$. We say
+that an enumeration operator $f : \Scott \to \Scott$ is
+\emph{computable} if its graph $\Gamma(f)$ is a c.e.~set.
+
+There is a pairing function $\pair{{-}, {-}} : \Scott \times \Scott
+\to \Scott$ which interleaves sets $A$ and $B$ as odd and even
+numbers, respectively,
+%
+\begin{equation*}
+  \pair{A, B} = \set{2 m \such m \in A} \cup \set{2 n + 1 \such n \in B}.
+\end{equation*}
+%
+This is actually a homeomorphism between $\Scott \times \Scott$ and
+$\Scott$. We are not going to bother formulating the utm and smn
+theorems for the graph model because we will see later that they hold
+in a much more general context.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{$\lambda$-calculus}
+\label{sec:lambda-calculus}
 
 
-
-
-Ask what graph model introduces? Answer: parallel computation.
-
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{G\"odel's $T$}
+\label{sec:goedel-T}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Partial combinatory algebras}
 \label{sec:pcas}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{$\lambda$-calculus}
-\label{sec:lambda-calculus}
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -762,7 +927,11 @@ Martin Davis's booklet~\cite{Davis}.
 
 
 Graph model was preceded by enumeration operators, but nobody saw that
-it gave a $\lambda$-model.
+it gave a $\lambda$-model. Mention programming language corresponding
+to the graph model.
+
+Reflexive spaces and non-existence of Hausdorff reflexive spaces
+(reference Mislove).
 
 
 %%% Local Variables: 

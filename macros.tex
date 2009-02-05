@@ -41,14 +41,18 @@
 \newcommand{\such}{\mid}
 \newcommand{\pow}[1]{\mathcal{P}(#1)}
 
+\newcommand{\tbigcup}{\bigcup\nolimits}
+
 \newcommand{\two}{\mathsf{2}}
 \newcommand{\Baire}{\mathbb{B}}
-\newcommand{\Scott}{\mathbb{G}}
+\newcommand{\cBaire}{\Baire_{\#}}
+\newcommand{\Scott}{\mathbb{P}}
+\newcommand{\cScott}{\Scott_{\#}}
 
 %%% Functions
 \newcommand{\parto}{\mathbin{\rightharpoonup}}
-
 \newcommand{\dom}[1]{\mathsf{dom}(#1)}
+\newcommand{\invim}[1]{{#1}^{-1}}
 
 %%% Pairing
 \newcommand{\pair}[1]{\langle #1 \rangle}
@@ -57,6 +61,7 @@
 \newcommand{\xsnd}{\mathtt{snd}}
 \newcommand{\snd}[1]{\xsnd,#1}
 
+%%% Standard enumerations
 \newcommand{\xpr}{\text{\boldmath{$\varphi$}}}
 \newcommand{\pr}[2]{\xpr_{#1}(#2)}
 \newcommand{\prm}[3]{\xpr^{(#1)}_{#2}(#3)}
@@ -68,6 +73,11 @@
 \newcommand{\cons}[2]{#1 \mathbin{{:}{:}} #2}
 \newcommand{\seq}[1]{[#1]}
 \newcommand{\seg}[2]{\overline{#1}(#2)}
+
+%%% Domain theory
+\newcommand{\upper}[1]{{\uparrow}#1}
+\newcommand{\wayb}{\ll}
+
 
 %%% Local Variables: 
 %%% mode: latex
