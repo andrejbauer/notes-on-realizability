@@ -871,7 +871,7 @@ Let us now discuss the role of $\Scott$ as a model of computation. A
 that can be enumerated by a Turing machine, i.e., it is the image of a
 partial computable function $\NN \parto \NN$.\footnote{We must allow
   partial functions if we want the empty set to be computably
-  enumerable.} We denote teh family of c.e.~sets by $\cScott$. We say
+  enumerable.} We denote the family of c.e.~sets by $\cScott$. We say
 that an enumeration operator $f : \Scott \to \Scott$ is
 \emph{computable} if its graph $\Gamma(f)$ is a c.e.~set.
 
@@ -889,13 +889,65 @@ theorems for the graph model because we will see later that they hold
 in a much more general context.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{$\lambda$-calculus}
+\section{$\lambda$-calculus and its models}
 \label{sec:lambda-calculus}
 
+The $\lambda$-calculus is a theory of functions. The two basic
+operations of the calculus are \emph{application} of a function to an
+argument and function formation by \emph{abstraction}. In the
+\emph{untyped} version, which we consider here, no restrictions are
+imposed on these operations. More precisely, the calculus consists of:
+%
+\begin{itemize}
+\item An infinite supply of variables $x, y, z, \ldots$,
+\item For any expressions $e_1$ and $e_2$ we may form their
+  application $e_1 e_2$. Application associates to the left so that
+  $e_1 e_2 e_3 = (e_1 e_2) e_3$.
+\item If $e$ is an expression, then $\xulam{x}{e}$ is its abstraction,
+  where~$x$ is bound in~$e$. Think of $\xulam{x}{e}$ as the function
+  which maps $x$ to $e$. We abbreviate a nested abstraction
+  $\xulam{x_1}{\cdots \xulam{x_n}{e}}$ as $\xulam{x_1 x_2 \ldots x_n}{e}$.
+\end{itemize}
+%
+We consider expressions which only differ in the naming of bound
+variables as equal. Thus $\xulam{x}{y x} = \xulam{z}{y z} \neq
+\xulam{y}{y y}$.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{G\"odel's $T$}
-\label{sec:goedel-T}
+Substitution is an operation which replaces free variables with
+expresions. We write $\subst{e}{x_1 \mapsto e_1, \ldots, x_n \mapsto e_n}$ for
+a simultaneous subtitution of expressions $e_1, \ldots, e_n$ for
+varaibles $x_1, \ldots, x_n$ in $e$, respectively. The usual rules for
+bound variables must be observed when we perform subtitutions.
+
+The basic axiom of $\lambda$-calculus is \emph{$\beta$-reduction}:
+%
+\begin{equation*}
+  (\xulam{x}{e_1}) e_2 = \subst{e_1}{x \mapsto e_2}.
+\end{equation*}
+%
+This can be read as a computational rule: to compute the value of
+function $\xulam{x}{e_1}$ at an argument $e_2$, replace $x$ with $e_2$
+in the function body~$e_1$. A second axiom, which is sometimes assumed
+is \emph{$\eta$-reduction}, which says that
+%
+\begin{equation*}
+  \xulam{x}{e x} = e,
+\end{equation*}
+%
+provided $x$ does not occur freely in~$e$. Unless explicitly stated
+otherwise, we will not assume $\eta$-reduction.
+
+It may seem a bit surprising, but $\lambda$-calculus is as powerful as
+Turing machines, and was proposed by Alonzo Church~\cite{church} as a
+notion of computability before Turing invented his machines. In
+$\lambda$-calculus we may write seemingly non-sensical expressions,
+such as $e\, e$. It is a bit puzzling how $e$ could be both a function
+and its own argument, but this is what gives $\lambda$-calculus its
+power.
+
+We outline programming in $\lambda$-calculus but do not provide the
+proofs.
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
