@@ -894,15 +894,19 @@ in a much more general context.
 
 The $\lambda$-calculus is a theory of functions. The two basic
 operations of the calculus are \emph{application} of a function to an
-argument and function formation by \emph{abstraction}. In the
-\emph{untyped} version, which we consider here, no restrictions are
-imposed on these operations. More precisely, the calculus consists of:
+argument and function formation by \emph{abstraction}.
+
+\subsection{Untyped $\lambda$-calculus}
+\label{sec:untyped-lambda-calculus}
+
+In the \emph{untyped} version no restrictions are imposed on these
+operations. More precisely, the calculus consists of:
 %
 \begin{itemize}
 \item An infinite supply of variables $x, y, z, \ldots$,
 \item For any expressions $e_1$ and $e_2$ we may form their
-  application $e_1 e_2$. Application associates to the left so that
-  $e_1 e_2 e_3 = (e_1 e_2) e_3$.
+  application $e_1\, e_2$. Application associates to the left so that
+  $e_1\, e_2\, e_3 = (e_1\, e_2)\, e_3$.
 \item If $e$ is an expression, then $\xulam{x}{e}$ is its abstraction,
   where~$x$ is bound in~$e$. Think of $\xulam{x}{e}$ as the function
   which maps $x$ to $e$. We abbreviate a nested abstraction
@@ -910,19 +914,22 @@ imposed on these operations. More precisely, the calculus consists of:
 \end{itemize}
 %
 We consider expressions which only differ in the naming of bound
-variables as equal. Thus $\xulam{x}{y x} = \xulam{z}{y z} \neq
-\xulam{y}{y y}$.
+variables as equal. Thus $\xulam{x}{y\, x} = \xulam{z}{y\, z} \neq
+\xulam{y}{y\, y}$.
 
 Substitution is an operation which replaces free variables with
-expresions. We write $\subst{e}{x_1 \mapsto e_1, \ldots, x_n \mapsto e_n}$ for
-a simultaneous subtitution of expressions $e_1, \ldots, e_n$ for
-varaibles $x_1, \ldots, x_n$ in $e$, respectively. The usual rules for
-bound variables must be observed when we perform subtitutions.
+expresions. We write $\subst{e}{x_1 \mapsto e_1, \ldots, x_n \mapsto
+  e_n}$ for a simultaneous subtitution of expressions $e_1, \ldots,
+e_n$ for varaibles $x_1, \ldots, x_n$ in $e$, respectively. The usual
+rules for bound variables must be observed when we perform
+subtitutions.\footnote{It is notoriously easy to commit errors when
+  defining the details of substitution. The best way to understand all
+  the intricacies is to write a program that performs substitutions.}
 
 The basic axiom of $\lambda$-calculus is \emph{$\beta$-reduction}:
 %
 \begin{equation*}
-  (\xulam{x}{e_1}) e_2 = \subst{e_1}{x \mapsto e_2}.
+  (\xulam{x}{e_1})\, e_2 = \subst{e_1}{x \mapsto e_2}.
 \end{equation*}
 %
 This can be read as a computational rule: to compute the value of
@@ -931,11 +938,41 @@ in the function body~$e_1$. A second axiom, which is sometimes assumed
 is \emph{$\eta$-reduction}, which says that
 %
 \begin{equation*}
-  \xulam{x}{e x} = e,
+  \xulam{x}{e\, x} = e,
 \end{equation*}
 %
-provided $x$ does not occur freely in~$e$. Unless explicitly stated
-otherwise, we will not assume $\eta$-reduction.
+provided $x$ does not occur freely in~$e$. We will \emph{not} assume
+$\eta$-reduction.
+
+In a given expression there may be several subexpressions, called
+\emph{redexes}, where $\beta$-reduction could be performed. For
+example, we could reduce
+%
+\begin{equation*}
+  ((\xulam{x}{x})\, a)\,((\xulam{y}{y})\,b) \mapsto
+  a\, ((\xulam{y}{y})\,b)
+  \quad\text{or}\quad
+  ((\xulam{x}{x})\, a)\,((\xulam{y}{y})\,b) \mapsto
+  ((\xulam{x}{x})\, a)\, b.
+\end{equation*}
+%
+The Church-Rosser theorem~\cite{Church-Rosser} says that
+$\lambda$-calculus is \emph{confluent}, which means that the order of
+reductions is not important in the sense that two different ways of
+reducing and expression may always be reduced further so that they
+become equal. In the example above, we get $a\,b$ in both caess after
+one more reduction.
+
+There are expressions which we can keep reducing forever, for example
+the ``paradoxical'' $\mathsf{\Omega} =
+(\xulam{x}{x\,x})(\xulam{x}{x\,x})$ has an infinite reduction sequence
+%
+\begin{equation*}
+  \Omega \mapsto \Omega \mapsto \Omega \mapsto \cdots
+\end{equation*}
+%
+An expression in which no $\beta$-reductions are possible is called a
+\emph{normal form}.
 
 It may seem a bit surprising, but $\lambda$-calculus is as powerful as
 Turing machines, and was proposed by Alonzo Church~\cite{church} as a
@@ -946,7 +983,115 @@ and its own argument, but this is what gives $\lambda$-calculus its
 power.
 
 We outline programming in $\lambda$-calculus but do not provide the
-proofs.
+proofs. First, a pairing with projections may be defined as follows:
+%
+\begin{equation*}
+  \mathsf{pair} = \xulam{x y z}{z\, x\, y},
+  \qquad
+  \mathsf{fst} = \xulam{p}{p \, (\xulam{x y}{x})},
+  \quad\text{and}\quad
+  \mathsf{snd} = \xulam{p}{p \, (\xulam{x y}{y})}.
+\end{equation*}
+%
+With these we have
+%
+\begin{equation*}
+  \mathsf{fst} (\mathsf{pair}\, a\, b) = a
+  \quad\text{and}\quad
+  \mathsf{snd} (\mathsf{pair}\, a\, b) = b.
+\end{equation*}
+%
+The Boolean values and the conditional statement are defined by
+%
+\begin{equation*}
+  \mathsf{if} = \xulam{x}{x},
+  \qquad
+  \mathsf{true} = \xulam{x y}{x},
+  \quad\text{and}\quad
+  \mathsf{false} = \xulam{x y}{y}.
+\end{equation*}
+%
+They satisfy
+%
+\begin{equation*}
+  \mathsf{if}\,\mathsf{false}\,a\,b = b
+  \quad\text{and}\quad
+  \mathsf{if}\,\mathsf{true}\,a\,b = a.
+\end{equation*}
+%
+The natural numbers are encoded by \emph{Church numerals}. The $n$-th
+Church numeral is a function which maps a function to its $n$-th
+iteration:
+%
+\begin{align*}
+  \overline{0} &= \xulam{f\,x}{x},\\
+  \overline{1} &= \xulam{f\,x}{f\,x},\\
+  \overline{2} &= \xulam{f\,x}{f\,(f\,x)},\\
+  \overline{n} &= \xulam{f\,x}{\underbrace{f\,(\cdots (f}_n\,x) \cdots)}.
+\end{align*}
+%
+Successor, addition and multiplication are, respectively,
+%
+\begin{align*}
+  \mathsf{succ} &= \xulam{n\,f\,x}{n f (f x)},\\
+  \mathsf{add} &= \xulam{m\,n\,f\,x}{m f (n f x)},\\
+  \mathsf{mult} &= \xulam{m\,n\,f\,x}{m (n f) x}.
+\end{align*}
+%
+We leave it as exercise to figure out how the following work and what
+they do:\footnote{A legend says that Alonzo Church was at the
+  dentists' when he figured out how to compute predecessors. Is
+  programming the untyped $\lambda$-calculus like pulling one's teeth
+  out?}
+%
+\begin{align*}
+  \mathsf{power} &= \xulam{m\,n}{n\,m},\\
+  \mathsf{iszero} &= \xulam{n}{n\, (\xulam{x}{\mathsf{false}})\, \mathsf{true}},\\
+  \mathsf{pred} &=
+    \xulam{n}{
+      \mathsf{snd}\, (n\, (\xulam{p}{
+        \mathsf{pair}\, (\mathsf{succ}\, (\mathsf{fst}\, p))\,
+        (\mathsf{fst}\, p)})
+      (\mathsf{pair}\, \overline{0}\, \overline{0}))}.
+\end{align*}
+%
+Recursion is accomplished by means of the fixed-point operator
+%
+\begin{equation*}
+  \mathsf{fix} = \xulam{f}{(\xulam{x}{f\,(x\,x)}) (\xulam{x}{f\,(x\,x)})}.
+\end{equation*}
+%
+For any $a$ we have
+%
+\begin{align*}
+  \mathsf{fix}\,a &=
+  (\xulam{x}{a\,(x\,x)}) (\xulam{x}{a\,(x\,x)}) \\
+  &= a\,((\xulam{x}{a\,(x\,x)})\,(\xulam{x}{a\,(x\,x)})) \\
+  &= a\,(\mathsf{fix}\,a).
+\end{align*}
+%
+The fix-point operator is used to define recursive functions, for
+example equality of numbers is computed as follows:
+%
+\begin{equation*}
+  \mathsf{equal} = \mathsf{fix}\,(\xulam{e\,m\,n}{
+    \mathsf{if}\,
+    (\mathsf{iszero}\,m)\,
+    (\mathsf{iszero}\,n)\,
+    (e\,(\mathsf{pred}\,m)\,(\mathsf{pred}\,n))}).
+\end{equation*}
+%
+By continuing in this manner we can build a general-purpose
+programming language. The untyped $\lambda$-calculus computes exactly
+the same partial functions $\NN \parto \NN$ as Turing machines (the
+terms which have no normal form are the analogue of undefined values).
+
+
+\subsection{Models of untyped $\lambda$-calculus}
+\label{sec:models-untyped-lambda-calculus}
+
+\subsection{Typed $\lambda$-calculus and PCF}
+\label{sec:pcf}
 
 
 
