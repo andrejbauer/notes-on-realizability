@@ -956,7 +956,7 @@ example, we could reduce
   ((\xulam{x}{x})\, a)\, b.
 \end{equation*}
 %
-The Church-Rosser theorem~\cite{Church-Rosser} says that
+The \href{http://en.wikipedia.org/wiki/Church%E2%80%93Rosser_theorem}{Church-Rosser theorem}~\cite{church36:_some_proper_of_conver} says that
 $\lambda$-calculus is \emph{confluent}, which means that the order of
 reductions is not important in the sense that two different ways of
 reducing and expression may always be reduced further so that they
@@ -972,7 +972,9 @@ the ``paradoxical'' $\mathsf{\Omega} =
 \end{equation*}
 %
 An expression in which no $\beta$-reductions are possible is called a
-\emph{normal form}.
+\emph{normal form}. Think of normal forms as ``finished
+computations''. An expression which does not have a normal form is
+like an undefined value.
 
 It may seem a bit surprising, but $\lambda$-calculus is as powerful as
 Turing machines, and was proposed by Alonzo Church~\cite{church} as a
@@ -1089,6 +1091,34 @@ terms which have no normal form are the analogue of undefined values).
 
 \subsection{Models of untyped $\lambda$-calculus}
 \label{sec:models-untyped-lambda-calculus}
+
+The Church-Rosser theorems implies that the untyped $\lambda$-calculus
+is consistent, i.e., not all expressions are equal. To see this,
+consider $\xulam{x}{x}$ and $\xulam{x y}{x}$. If these were equal via
+a sequence of $\beta$-reductions (going either way), then they would
+both reduce to the same normal form. But they are in normal form, so
+they are different.
+
+Still the question remains what the untyped $\lambda$-calculus is
+about, speaking mathematically as opposed to formalistically. A naive
+attempt at an interpretation quickly runs into difficulties. Suppose
+we interpret the closed expressions of the $\lambda$-calculus as
+elements of a set~$D$. We expect abstractions to represent functions,
+which means that $D \to D$ can be embedded into~$D$. But the only set
+with this property is the singleton!
+
+The solution was discovered by Dana Scott who constructed a
+non-trivial topological space $D_\infty$ such that the space of
+continuous functions $\mathcal{C}(D_\infty, D_\infty)$, equipped with
+the compact-open topology, is homeomorphic to~$D_\infty$. This gave a
+model of the untyped $\lambda$-calculus for $\beta\eta$-reduction.
+Since the construction involves more domain theory than we wish to
+assume here, we shall look at the simpler case of models that satisfy
+just $\beta$-reduction.
+
+
+
+
 
 \subsection{Typed $\lambda$-calculus and PCF}
 \label{sec:pcf}
