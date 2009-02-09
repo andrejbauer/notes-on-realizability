@@ -1107,17 +1107,65 @@ elements of a set~$D$. We expect abstractions to represent functions,
 which means that $D \to D$ can be embedded into~$D$. But the only set
 with this property is the singleton!
 
-The solution was discovered by Dana Scott who constructed a
-non-trivial topological space $D_\infty$ such that the space of
-continuous functions $\mathcal{C}(D_\infty, D_\infty)$, equipped with
-the compact-open topology, is homeomorphic to~$D_\infty$. This gave a
-model of the untyped $\lambda$-calculus for $\beta\eta$-reduction.
-Since the construction involves more domain theory than we wish to
-assume here, we shall look at the simpler case of models that satisfy
-just $\beta$-reduction.
+The solution was discovered by Dana Scott~\cite{Scott:Dinfty} who
+constructed a non-trivial topological space $D_\infty$ such that the
+space of continuous functions $\mathcal{C}(D_\infty, D_\infty)$,
+equipped with the compact-open topology, is homeomorphic
+to~$D_\infty$. This gave a \emph{topological} model of the untyped
+$\lambda$-calculus for $\beta\eta$-reduction. Since the construction
+involves more domain theory than we wish to assume here, we shall look
+at the simpler case of models that satisfy just $\beta$-reduction.
 
+Suppose we interpret the untyped $\lambda$-calculus in a topological
+space~$D$. The interpretation should be standard in the sense that
+closed expressions represent points of~$D$, and expressions $e$ with a
+free variable~$x$ represent continuous maps $D \to D$. Abstraction
+converts a continuous map $D \to D$ to a point in $D$. And since every
+point $e \in D$ may be converted to the function $x \mapsto e\,x$, we
+expect to have a pair of maps
+%
+\begin{equation*}
+  \xymatrix{
+    **[l]{\mathcal{C}(D, D)}
+    \ar@<+0.25em>[r]^{\Gamma}
+    &
+    {D}
+    \ar@<+0.25em>[l]^{\Lambda}
+  }
+\end{equation*}
+%
+where~$\Gamma$ is a retraction and~$\Lambda$ its section. We have
+already seen this diagram: the graph model~$\Scott$ from
+Section~\ref{sec:graph-model} is an example. In general, a space $D$
+which contains its own function space as a retract is called a
+\emph{reflexive domain}.
 
+Another example of a reflexive domain is the universal Scott
+domain~$\UU$. It is the space of non-empty compact subsets of the
+Cantor space $\two^\NN$, ordered by reverse inclusion $\supseteq$. As
+a poset, $\UU$ has the least element $\two^\NN$, does not have a
+greatest element, and has singletons as maximal elements. Furthermore,
+it has suprema of directed families intersections,\footnote{This works
+  because a directed intersection of non-empty compact sets is
+  non-empty.} as well as suprema of bounded families. Its \emph{Scott
+  topology} is countably-based and $T_0$, with basic open sets of the
+form
+%
+\begin{equation*}
+  \upper{U} = \set{K \in \UU \such U \supseteq K}
+\end{equation*}
+%
+where $U$ is an open subset of~$\two^\NN$. We do not prove that
+$\mathcal{C}(\UU, \UU)$ is a retract of~$\UU$ here.
+See~\cite{ScottGunter,Stoltenberg} for a details.
 
+The Baire space $\Baire$ from Section~\ref{sec:type-2} is almost a
+model of the untyped $\lambda$-calculus, if we use the realized
+functions instead of continuous ones. However, it is \emph{not} a
+model because realized functions are partial whereas application in
+$\lambda$-calculus is a total operation. In Section~\ref{sec:pcas} we
+shall define the relevant structure which generalizes the
+$\lambda$-calculus and allows application to be partial.
 
 
 \subsection{Typed $\lambda$-calculus and PCF}
