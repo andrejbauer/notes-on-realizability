@@ -1095,9 +1095,9 @@ terms which have no normal form are the analogue of undefined values).
 The Church-Rosser theorems implies that the untyped $\lambda$-calculus
 is consistent, i.e., not all expressions are equal. To see this,
 consider $\xulam{x}{x}$ and $\xulam{x y}{x}$. If these were equal via
-a sequence of $\beta$-reductions (going either way), then they would
-both reduce to the same normal form. But they are in normal form, so
-they are different.
+a sequence of $\beta$-reductions (going in either direction), then
+they would both reduce to the same normal form. But they are in normal
+form, so they are different.
 
 Still the question remains what the untyped $\lambda$-calculus is
 about, speaking mathematically as opposed to formalistically. A naive
@@ -1167,8 +1167,7 @@ $\lambda$-calculus is a total operation. In Section~\ref{sec:pcas} we
 shall define the relevant structure which generalizes the
 $\lambda$-calculus and allows application to be partial.
 
-
-\subsection{Typed $\lambda$-calculus and PCF}
+\subsection{Typed $\lambda$-calculus}
 \label{sec:pcf}
 
 
