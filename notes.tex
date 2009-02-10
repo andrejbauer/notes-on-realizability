@@ -9,12 +9,16 @@
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{listings}
+\usepackage{makeidx}
 \usepackage[all]{xypic}
 
 %%% Settings for listings
 \lstset{basicstyle=\ttfamily}
 
 \input{macros}
+
+%%% Index
+\makeindex
 
 %% A4 stran = 210mm x 297mm
 %% sirino besedila nastavimo na 170mm, visino na 247mm
@@ -158,6 +162,19 @@ Ljubljana, January 2009
 {
 \renewcommand{\markboth}[2]{}
 \bibliography{notes}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% INDEX
+\clearemptydoublepage
+
+\addcontentsline{toc}{chapter}{\numberline{}Index}
+
+\markboth{}{Index}
+
+{
+\renewcommand{\markboth}[2]{}
+\printindex
 }
 
 

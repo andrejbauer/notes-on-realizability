@@ -355,7 +355,7 @@ In practice we often see programs whose input and output are
 (potentially) infinite. For example, when you listen to an internet
 radio station, the player accepts a never-ending stream of data which
 it outputs to the speakers. Also, just because a program does not
-terminate that does not automatically make it useless. We therefore
+terminate that does not automatically mean it is useless. We therefore
 also need a model of computation that describes non-terminating
 programs with infinite inputs and outputs.
 
@@ -375,9 +375,9 @@ outputs may be produced.
 For type 2 machines there are analogoues of the standard
 enumeration~$\xpr$, utm and the smn theorems. These are more easily
 expressed if we allow the machines to write natural numbers in the
-cells, rather than symbols from a finite alphabet. We also need equip
-the machines with instructions for manipulating the numbers written in
-the cells, say, instructions for manipulating the bits and for testing
+cells, rather than symbols from a finite alphabet. We also equip the
+machines with instructions for manipulating the numbers written in the
+cells, say, instructions for manipulating the bits and for testing
 equality with zero. These changes are inessential because an infinite
 sequence $n_0, n_1, n_2, \ldots$ of natural numbers may be encoded as
 a binary sequence $1^{n_0}01^{n_1}01^{n_2}0\cdots$, where $1^k$ means
@@ -385,16 +385,16 @@ that the symbol $1$ is repeated $k$-times.
 
 A type 2 machine computes a partial function $f : \NN^\NN \parto
 \NN^\NN$, where $\NN^\NN$ is the \emph{Baire space} of infinite
-sequences of numbers. We run the machines with $\alpha \in \NN^\NN$
-written on the input tape. If the machine eventually writes a number
-to every output cell, then $f(\alpha)$ is the resulting sequence. If
-there is at least one output cell to which the machine does not write
-a number, then $f(\alpha)$ is undefined.
+sequences of numbers. We run the machine with $\alpha \in \NN^\NN$
+written on the input tape. If every output cell is eventually written
+to, then $f(\alpha)$ is the sequence. If there is at least one output
+cell to which the machine does not write a number, then $f(\alpha)$ is
+undefined.
 
 We may similarly define what it means for a machine to compute a
 multivariate parital function $f : (\NN^\NN)^k \parto \NN^\NN$. The
-input $(\alpha_1, \ldots, \alpha_k)$ is written onto the input tape in
-an interleaving manner, so that $\alpha_{i,j}$ is found in the cell at
+input $(\alpha(0), \ldots, \alpha(k-1))$ is written onto the input tape in
+an interleaving manner, so that $\alpha_i(j)$ is found in the cell at
 position $k \cdot j + i$.
 
 Before proceeding with type 2 computability, we recall a few basic
@@ -403,9 +403,9 @@ set of all finite sequences of natural numbers. If $a, b \in \NN^{*}$
 we write $a \sqsubseteq b$ when $a$ is a prefix of~$b$. The length of
 a finite sequence $a$ is denoted by~$|a|$. Similarly, we write $a
 \sqsubseteq \alpha$ when $a$ is a prefix of an infinite sequence
-$\alpha \in \Baire$. A finite prefix $\alpha_0, \ldots, \alpha_{k-1}$
-of $\alpha$ may be encoded by a single number $\seg{a}{n} = [\alpha_0,
-\ldots, \alpha_{k-1}]$.
+$\alpha \in \Baire$. A finite prefix $\alpha(0), \ldots, \alpha(k-1)$
+of $\alpha$ may be encoded by a single number $\seg{a}{n} =
+[\alpha(0), \ldots, \alpha(k-1)]$.
 
 The expression $\cons{a}{\beta}$ denotes the concatenation of the
 finite sequence $a \in \NN^{*}$ with the infinite sequence $\beta \in
@@ -417,7 +417,7 @@ We equip $\Baire$ with the product topology. A countable topological
 base for $\Baire$ consists of the basic open sets
 %
 \begin{equation*}
-  \cons{\seq{a_0, \ldots, a_k}}{\Baire}
+  \cons{\seq{a(0), \ldots, a(k)}}{\Baire}
   = \set{\cons{\seq{a_0, \ldots, a_{k-1}}}{\beta} \such \beta \in \Baire}
   = \set{\alpha \in \Baire \such \seq{a_0, \ldots, a_{k-1}}
     \sqsubseteq \alpha}
@@ -447,41 +447,48 @@ would like to encode a computable $f : \Baire \parto \Baire$ with an
 element $\beta \in \Baire$. Suppose that, given input $\alpha \in
 \Baire$, the machine which computes $f$ writes $j$ to the $i$-th
 output cell after $k$ steps of computation. This means that
-$f(\alpha)_i = j$. Because in~$k$ steps the machine inspects at most
+$f(\alpha)(i) = j$. Because in~$k$ steps the machine inspects at most
 the first $k$ input cells, it would have done the same for any other
 input that agrees with $\alpha$ in the first $k$ terms. This gives us
 the idea that $\beta$ should carry bits of information of the form
 %
 \begin{quote}
-  ``if the input tape starts with $\alpha_0, \ldots,
-  \alpha_{k-1}$ then the machine writes $j$ in the $i$-th input
+  ``if the input tape starts with $\alpha(0), \ldots,
+  \alpha(k-1)$ then the machine writes $j$ in the $i$-th input
   cell.''
 \end{quote}
 %
-More precisely, we compute $\beta_m$ as follows. First decode~$m$ as
+More precisely, we compute $\beta(m)$ as follows. First decode~$m$ as
 $\seq{i, n_0, \ldots, n_{k-1}}$. (The number $m = 0$ encodes the empty
-sequence and cannot be so decoded, so we set $\beta_0 = 0$.) Then
+sequence and cannot be so decoded, so we set $\beta(0) = 0$.) Then
 simulate the machine for $k$ steps with input tape $n_0, \ldots,
 n_{k-1}, 0, 0, \ldots$. If the machine writes $j$ into the $i$-th
-output cell during the simulation, set $\beta_m = j + 1$, otherwise
-set $\beta_m = 0$.
+output cell during the simulation, set $\beta(m) = j + 1$, otherwise
+set $\beta(m) = 0$.
 
 Conversely, every $\beta \in \Baire$ detemines a partial function $f :
-\Baire \parto \Baire$, defined by
+\Baire \parto \Baire$. For $\alpha, \beta \in \Baire$ define
 %
+\begin{equation*}
+  \alpha \star \beta = \alpha(\seg{\beta}{k}) - 1
+  \quad\text{where}\quad
+  k = \min\nolimits_k (\alpha(\seg{\beta}{k}) \neq 0),
+\end{equation*}
+%
+where $\alpha \star \beta$ is undefined if no such $k$ exists. The map
+$f$ represented by $\beta$ is defined by
 \begin{equation}
   \label{eq:type2-encoding}
-  f(\alpha)_i = \beta_m - 1
-  \qquad\text{where}\qquad
-  m = \min\nolimits_m (\xsome{i,k}{\NN}{m = \seg{(\cons{i}{\alpha})}{k}} \land
-    \beta_m \neq 0).
+  f(\alpha)(i) = \alpha \star (\cons{i}{\beta}),
 \end{equation}
 %
-The function which $\beta$ encodes is denoted by $\xfpr_\beta$. A
-partial map of of the form $\xfpr_\beta$ is said to be \emph{(type 2)
-  realizable}. We would like to know which maps are realizable.
+provided that $\alpha \star (\cons{i}{\beta})$ is defined for all $i
+\in \NN$. The function which $\beta$ encodes is denoted by
+$\xfpr_\beta$. A partial map which equals $\xfpr_\beta$ for some
+$\beta \in \Baire$ is said to be \emph{(type 2) realized} by~$\beta$.
+We would like to know which maps are realizable.
 
-A partial function $f: X \parto Y$ is said to be \emph{continuous}
+A partial map $f: X \parto Y$ is said to be \emph{continuous}
 when it is continuous as a total map $f: \dom{f} \to Y$, where the
 domain of definition $\dom{f} \subseteq X$ is equipped with the
 subspace topology. Note that there is no restriction on the
@@ -501,7 +508,7 @@ domain~$\dom{f}$.
      A = \set{(a, i, j) \in \NN^{*} \times \NN^{2} \such
         \cons{a}{\Baire} \cap \dom{f} \neq \emptyset \land
         \all{\alpha}{\cons{a}{\Baire} \cap \dom{f}}{
-          (f\alpha)_i = j
+          (f\alpha)(i) = j
           }
         }
   \end{equation*}
@@ -509,25 +516,25 @@ domain~$\dom{f}$.
   If $(a, i, j) \in A$, $(a', i, j') \in A$ and $a \sqsubseteq a'$
   then $j = j'$ because there exists $\alpha \in \cons{a'}{\Baire}
   \cap \dom{f} \subseteq \cons{a}{\Baire} \cap \dom{f}$ such that $j =
-  (f \alpha)_i = j'$. We define a sequence $\phi \in \Baire$ as
-  follows. For every $(a, i, j) \in A$ let $\phi_{\seq{\cons{i}{a}}} =
-  j + 1$, and for all other arguments $n$ let $\phi_n = 0$. Suppose
-  that $\phi_{\seq{\cons{i}{a}}} = j + 1$ for some $i, j \in \NN$ and
+  f(\alpha)(i) = j'$. We define a sequence $\gamma \in \Baire$ as
+  follows. For every $(a, i, j) \in A$ let $\gamma(\seq{\cons{i}{a}}) =
+  j + 1$, and for all other arguments $n$ let $\gamma_n = 0$. Suppose
+  that $\gamma(\seq{\cons{i}{a}}) = j + 1$ for some $i, j \in \NN$ and
   $a \in \NN^{*}$. Then for every prefix $a' \sqsubseteq a$,
-  $\phi_{\seq{\cons{i}{a'}}} = 0$ or $\phi_{\seq{\cons{i}{a'}}} = j +
+  $\gamma(\seq{\cons{i}{a'}}) = 0$ or $\gamma(\seq{\cons{i}{a'}}) = j +
   1$. Thus, if $(a, i, j) \in A$ and $a \sqsubseteq \alpha$ then
-  $(\fpr{\phi}{\alpha})_i = j$.
+  $\fpr{\gamma}{\alpha}(i) = j$.
   %
-  We show that $(\fpr{\phi}{\alpha})_i = (f(\alpha))_i$ for all
+  We show that $\fpr{\gamma}{\alpha}(i) = f(\alpha)(i)$ for all
   $\alpha \in \dom{f}$ and all $i \in \NN$. Because~$f$ is continuous,
   for all $\alpha \in \dom{f}$ and $i \in \NN$ there exists $(a, i, j)
-  \in A$ such that $a \sqsubseteq \alpha$ and $(f \alpha)_i = j$. Now
+  \in A$ such that $a \sqsubseteq \alpha$ and $f(\alpha)(i) = j$. Now
   we get
   %
   $
-    (\fpr{\phi}{\alpha})_i
+    \fpr{\gamma}{\alpha}(i)
     = j
-    = (f \alpha)_i
+    = f(\alpha)(i)
   $.
 \end{proof}
 
@@ -539,7 +546,7 @@ Recall that a $G_\delta$-set is a countable intersection of open sets.
   \label{th:G_delta_characteristic}%
   If $U \subseteq \Baire$ is a $G_\delta$-set then the partial
   function $u: \Baire \parto \Baire$ whose domain is $U$ and is
-  defined by $u(\alpha)_i = 1$, is realized.
+  defined by $u(\alpha)(i) = 1$, is realized.
 \end{proposition}
 
 \begin{proof}
@@ -552,33 +559,32 @@ Recall that a $G_\delta$-set is a countable intersection of open sets.
   \end{equation*}
   %
   Define a sequence $\upsilon \in \Baire$ by setting
-  $\upsilon_{\seq{\cons{i}{a_{i,j}}}} = 2$ for all $i, j \in \NN$, and
-  $\upsilon_n = 0$ for all other arguments~$n$. Clearly, if
+  $\upsilon(\seq{\cons{i}{a_{i,j}}}) = 2$ for all $i, j \in \NN$, and
+  $\upsilon(n) = 0$ for all other arguments~$n$. Clearly, if
   $\fpr{\upsilon}{\alpha}$ is defined then its value is the constant
   sequence $1, 1, 1, \ldots$, so we only need to verify that
   $\dom{\xfpr_\upsilon} = U$. If $\alpha \in \dom{\xfpr_\upsilon}$
   then $\upsilon \star (\cons{i}{\alpha})$ is defined for every $i \in
-  \NN$, therefore there exists $c i \in \NN$ such that $\upsilon
-  (\seq{(\cons{i}{[\alpha 0, \ldots, \alpha (c i)]})}) = 2$, which
-  implies that $\alpha \in {a_{i, c i}}$. Hence
+  \NN$, therefore there exists $c_i \in \NN$ such that $\upsilon
+  (\seg{(\cons{i}{\alpha})}{c_i + 1}) = 2$, which implies that $\alpha
+  \in {a_{i, c_i}}$. Hence
   %
   \begin{equation*}
-    \alpha \in \bigcap_{i \in \NN} \cons{a_{i, c i}}{\Baire} \subseteq U.
+    \alpha \in \bigcap_{i \in \NN} \cons{a_{i, c_i}}{\Baire} \subseteq U.
   \end{equation*}
   %
   Conversely, if $\alpha \in U$ then for every $i \in \NN$ there
-  exists some $c i \in \NN$ such that $\alpha \in a_{i, c i}$. For
-  every $i \in \NN$, $\upsilon (\seq{(\cons{i}{[\alpha 0, \ldots,
-      \alpha (c i)]})}) = 2$, therefore $(\fpr{\upsilon}{\alpha}) i =
-  \upsilon \star (\cons{i}{\alpha}) = 1$.  Hence $\alpha \in
-  \dom{\xfpr_\upsilon}$.
+  exists some $c_i \in \NN$ such that $\alpha \in a_{i, c_i}$. For
+  every $i \in \NN$, $\upsilon (\seg{(\cons{i}{\alpha})}{c_i + 1} =
+  2$, therefore $\fpr{\upsilon}{\alpha}(i) = \upsilon \star
+  (\cons{i}{\alpha}) = 1$. Hence $\alpha \in \dom{\xfpr_\upsilon}$.
 \end{proof}
 
 
 \begin{corollary}
   \label{th:restrict_G_delta}%
   Suppose $\alpha \in \Baire$ and $U \subseteq \Baire$ is a $G_\delta$-set.
-  Then there exists $\beta \in \Baire$ such that $\xfpr{\alpha}{\gamma} =
+  Then there exists $\beta \in \Baire$ such that $\fpr{\alpha}{\gamma} =
   \fpr{\beta}{\gamma}$ for all $\gamma \in \dom{\xfpr_\alpha} \cap U$ and
   $\dom{\xfpr_\beta} = U \cap \dom{\xfpr_\alpha}$.
 \end{corollary}
@@ -598,8 +604,7 @@ Recall that a $G_\delta$-set is a countable intersection of open sets.
   It suffices to show that the function $f: \Baire \parto \Baire$ defined by
   %
   \begin{equation*}
-    (f \beta) n = ((\eta_{\upsilon} \beta) n) \cdot
-                  ((\eta_{\alpha} \beta) n)
+    f(\beta)(n) = \eta_{\upsilon}(\beta)(n) \cdot \eta_{\alpha}(\beta)(n)
   \end{equation*}
   %
   is realized. This is so because coordinate-wise multiplication of
@@ -608,8 +613,6 @@ Recall that a $G_\delta$-set is a countable intersection of open sets.
 
 
 \begin{theorem}
-  \index{realized function!characterization in B@{characterization in~$\kltwo$}}%
-  %
   A partial function $f: \Baire \parto \Baire$ is realized if, and only
   if, $f$ is continuous and its domain is a $G_\delta$-set.
 \end{theorem}
@@ -617,22 +620,23 @@ Recall that a $G_\delta$-set is a countable intersection of open sets.
 \begin{proof}
   First we show that $\xfpr_\alpha$ is a continuous map whose domain
   is a $G_\delta$-set. It is continuous because the value of
-  $(\fpr{\alpha}{\beta}) n$ depends only on $n$ and finite prefixes of
+  $\fpr{\alpha}{\beta}(n)$ depends only on $n$ and finite prefixes of
   $\alpha$ and $\beta$. The domain of $\xfpr_\alpha$ is the
   $G_\delta$-set
   %
-  \begin{multline*}
-    \dom{\fpr{\alpha}}
-    = \set{\beta \in \Baire \such
-      \all{n}{\NN}{(\alpha \mid \beta) n\ \text{defined}}} \\
-    = \bigcap_{n \in \NN}
-      \set{\beta \in \Baire \such (\alpha \mid \beta) n \ 
-        \text{defined}}
-    =  \bigcap_{n \in \NN}
-        \bigcup_{m \in \NN}
+  \begin{align*}
+    \dom{\xfpr_\alpha}
+    &= \set{\beta \in \Baire \such
+      \xall{n}{\NN}{
+        \alpha \star (\cons{n}{\beta}) \ \text{defined and $> 0$}}} \\
+    &= \tbigcap_{n \in \NN}
+      \set{\beta \in \Baire \such
+        \alpha \star (\cons{n}{\beta}) \ \text{defined and $> 0$}} \\
+    &=  \tbigcap_{n \in \NN}
+        \tbigcup_{m \in \NN}
           \set{\beta \in \Baire \such
-          \alpha \star (\cons{n}{\beta}) = m} \;.
-  \end{multline*}
+          \alpha \star (\cons{n}{\beta}) = m + 1} \;.
+  \end{align*}
   %
   Each of the sets $\set{\beta \in \Baire \such \alpha \star
     (\cons{n}{\beta}) = m}$ is open because $\star$ and $\cons{}{}$
@@ -640,10 +644,10 @@ Recall that a $G_\delta$-set is a countable intersection of open sets.
   
   Now let $f: \Baire \parto \Baire$ be a partial continuous function whose
   domain is a $G_\delta$-set. By Theorem~\ref{th:extension_BB} there
-  exists $\phi \in \Baire$ such that $f \alpha = \fpr{\phi} \alpha$ for
+  exists $\gamma \in \Baire$ such that $f(\alpha) = \fpr{\gamma}{\alpha}$ for
   all $\alpha \in \dom{f}$. By Corollary~\ref{th:restrict_G_delta}
-  there exists $\psi \in \Baire$ such that $\dom{\fpr{\psi}} = \dom{f}$
-  and $\fpr{\psi} \alpha = \fpr{\phi} \alpha$ for every $\alpha \in
+  there exists $\psi \in \Baire$ such that $\dom{\xfpr_\psi} = \dom{f}$
+  and $\fpr{\psi}{\alpha} = \fpr{\gamma}{\alpha}$ for every $\alpha \in
   \dom{f}$.
 \end{proof}
 
@@ -678,15 +682,19 @@ u (a, b) i = x - 1
   it works.
 \end{proof}
 
-We only bother to state the type 2 version of smn theorem for
-bivariate functions.
+The simple version of type 2 smn theorem uses the representation
+$\xfpr^{(2)}$ which encodes partial maps $\Baire \times \Baire \to
+\Baire$. It is defined by $\fprm{2}{\alpha}{\beta, \gamma} =
+\fpr{\alpha}{\pair{\beta, \gamma}}$ where $\pair{\beta, \gamma}$ is
+the interleaved sequence $\beta(0), \gamma(0), \beta(1), \gamma(1),
+\ldots$.
 
 \begin{theorem}[type 2 smn]
   There exists a computable $s : \Baire \times \Baire \to \Baire$ such
   that, for all $\alpha, \beta, \gamma \in \Baire$,
   %
   \begin{equation*}
-    \fprm{2}{s(\alpha, \beta)}{\gamma} = \fpr{\alpha}(\beta, \gamma).
+    \fpr{s(\alpha, \beta)}{\gamma} = \fprm{2}{\alpha}{\beta, \gamma}.
   \end{equation*}
 \end{theorem}
 
@@ -747,11 +755,11 @@ By forming finite intersections we get the basic open sets
 A subset $\mathcal{U} \subseteq \pow{\NN}$ is then \emph{Scott open}
 when it has the property that $A$ is a member of~$\mathcal{U}$ if, and
 only if, some finite subset of $A$ is a member of $\mathcal{U}$. If we
-write $A \wayb B$ when~$A$ is a finite subset of~$B$, we may express
-the fact that $\mathcal{U} \subseteq \pow{\NN}$ is Scott open as
+write $A \wayb B$ when~$A$ is a finite subset of~$B$, this is
+expressed as
 %
 \begin{equation*}
-  not finished here.
+  B \in \mathcal{U} \iff \xusome{A \wayb B}{B \in \mathcal{U}}.
 \end{equation*}
 %
 The Scott topology makes $\pow{\NN}$ into a countably based
@@ -892,15 +900,63 @@ in a much more general context.
 \section{$\lambda$-calculus and its models}
 \label{sec:lambda-calculus}
 
-The $\lambda$-calculus is a theory of functions. The two basic
-operations of the calculus are \emph{application} of a function to an
-argument and function formation by \emph{abstraction}.
+
+The $\lambda$-calculus is the abstract theory of functions, just like
+group theory is the abstract theory of symmetries. There are two basic
+operations that can be performed with functions. The first one is the
+\emph{application} of a function to an argument: if~$f$ is a function
+and $a$ is an argument, then $f\, a$ is the application of~$f$ to~$a$.
+The second operation is \emph{abstraction}: if $x$ is a variable
+and~$t$ is an expression in which~$x$ may appear freely, then there is
+a function~$f$ defined by
+%
+\begin{equation*}
+  f(x) = t \;.
+\end{equation*}
+%
+Here we gave the name~$f$ to the newly formed function. But we could
+have expressed the same function without giving it a name;
+this is usually written as
+%
+\begin{equation*}
+  x \mapsto t \;,
+\end{equation*}
+%
+and it means ``$x$ is mapped to~$t$''. In $\lambda$-calculus we use a
+different notation, which is more convenient when abstractions are
+nested:
+%
+\begin{equation*}
+  \xulam{x}{t} \;.
+\end{equation*}
+%
+This operation is called \emph{$\lambda$-abstraction}. For example,
+$\xulam{x}{\ulam{y}}{x + y}$ is the function which maps an
+argument~$a$ to the function $\ulam{y}{a + y}$.
+
+In an expression $\xulam{x}{t}$ the variable~$x$ is \emph{bound}
+in~$t$.
+
+There are two kinds of $\lambda$-calculus, the \emph{typed} and the
+\emph{untyped} one. In the untyped version there are no restrictions
+on how application is formed, so that an expression such as
+%
+\begin{equation*}
+  \ulam{x}{x x}
+\end{equation*}
+%
+is valid, whatever it means. In typed $\lambda$-calculus every
+expression has a \emph{type}, and there are rules for forming valid
+expressions and types. For example, we can only form an
+application~$f, a$ when~$a$ has a type~$A$ and~$f$ has a type $A \to
+B$, which indicates a function taking arguments of type~$A$ and giving
+results of type~$B$.
 
 \subsection{Untyped $\lambda$-calculus}
 \label{sec:untyped-lambda-calculus}
 
-In the \emph{untyped} version no restrictions are imposed on these
-operations. More precisely, the calculus consists of:
+In the \emph{untyped} version no restrictions are imposed on
+application and abstraction. More precisely, the calculus consists of:
 %
 \begin{itemize}
 \item An infinite supply of variables $x, y, z, \ldots$,
@@ -913,18 +969,27 @@ operations. More precisely, the calculus consists of:
   $\xulam{x_1}{\cdots \xulam{x_n}{e}}$ as $\xulam{x_1 x_2 \ldots x_n}{e}$.
 \end{itemize}
 %
+This can be expressed succinctly by the grammar rules:
+%
+\begin{align*}
+  \text{Variable}\ v &\bnfis x \bnfor y \bnfor z \bnfor \cdots \\
+  \text{Expression}\ e &\bnfis v \bnfor e_1\,e_2 \bnfor \xulam{x}{e}
+\end{align*}
+%
+In the \emph{pure} calculus, which we are considering, there are no
+constants, numbers, or other operations.
+
 We consider expressions which only differ in the naming of bound
 variables as equal. Thus $\xulam{x}{y\, x} = \xulam{z}{y\, z} \neq
-\xulam{y}{y\, y}$.
-
-Substitution is an operation which replaces free variables with
-expresions. We write $\subst{e}{x_1 \mapsto e_1, \ldots, x_n \mapsto
-  e_n}$ for a simultaneous subtitution of expressions $e_1, \ldots,
-e_n$ for varaibles $x_1, \ldots, x_n$ in $e$, respectively. The usual
-rules for bound variables must be observed when we perform
-subtitutions.\footnote{It is notoriously easy to commit errors when
-  defining the details of substitution. The best way to understand all
-  the intricacies is to write a program that performs substitutions.}
+\xulam{y}{y\, y}$. Substitution is an operation which replaces free
+variables with expresions. We write $\subst{e}{x_1 \mapsto e_1,
+  \ldots, x_n \mapsto e_n}$ for a simultaneous subtitution of
+expressions $e_1, \ldots, e_n$ for varaibles $x_1, \ldots, x_n$ in
+$e$, respectively. The usual rules for bound variables must be
+observed when we perform subtitutions.\footnote{It is notoriously easy
+  to commit errors when defining the details of substitution. The best
+  way to understand all the intricacies is to write a program that
+  performs substitutions.}
 
 The basic axiom of $\lambda$-calculus is \emph{$\beta$-reduction}:
 %
@@ -1167,14 +1232,581 @@ $\lambda$-calculus is a total operation. In Section~\ref{sec:pcas} we
 shall define the relevant structure which generalizes the
 $\lambda$-calculus and allows application to be partial.
 
-\subsection{Typed $\lambda$-calculus}
+\subsection{Simply typed $\lambda$-calculus}
 \label{sec:pcf}
 
+In simply\footnote{The calculus is called \emph{simple} because it
+  does not involve dependent types, which are universally considered
+  complicated, at least outside Scandinavia.} typed $\lambda$-calculus
+we assign to each expression a \emph{type}. The fact that
+expression~$e$ has a type~$A$ is written as
+%
+\begin{equation*}
+  t : A \;.
+\end{equation*}
+%
+To computer scientists the idea of expressions having types is
+familiar from programming languages, whereas mathematicians can think
+of types as sets and read $t : A$ as $t \in A$.
+
+We now give a precise definition of what constitutes a simply-typed
+$\lambda$-calculus. First, we are given a set of \emph{simple types},
+which are generated from \emph{basic types} by formation of products
+and function types:
+%
+\begin{align*}
+  \text{Basic type}\ \mathtt{B} &\bnfis
+  \mathtt{B}_0 \bnfor \mathtt{B}_1 \bnfor \mathtt{B}_2 \cdots \\
+  \text{Simple type}\ A &\bnfis \unit \bnfor \mathtt{B} \bnfor A_1 \times A_2 \bnfor
+  A_1 \to A_2.
+\end{align*}
+%
+Function types associate to the right so that $A \to B \to C$ means $A
+\to (B \to C)$. We assume there is a countable set of \emph{variables}
+$x, y, u, \ldots$ We may also be given some \emph{basic constants}.
+The set of \emph{terms} is generated from variables and basic
+constants by the following grammar:
+%
+\begin{align*}
+  \text{Variable}\ v &\bnfis x \bnfor y \bnfor z \bnfor \cdots \\
+  \text{Constant}\ c &\bnfis \mathtt{c}_1 \bnfor \mathtt{c}_2 \bnfor \cdots \\
+  \text{Term}\ t &\bnfis
+  v \bnfor
+  c \bnfor
+  \ttunit \bnfor
+  \pair{t_1, t_2} \bnfor
+  \ttfst{t} \bnfor
+  \ttsnd{t} \bnfor
+  t_1 \, t_2 \bnfor
+  \xtlam{x}{A}{t}
+\end{align*}
+%
+In words, this means:
+%
+\begin{enumerate}
+\item a variable is a term,
+\item each basic constant is a term,
+\item the constant $\ttunit$ is a term, called the \emph{unit},
+\item if $u$ and $t$ are terms then $\pair{u, t}$ is a term, called a
+  \emph{pair},
+\item if $t$ is a term then $\ttfst{t}$ and $\ttsnd{t}$ are terms,
+\item if $u$ and $t$ are terms then $u\, t$ is a term, called an
+  \emph{application},
+\item if $x$ is a variable, $A$ is a type, and $t$ is a term, then
+  $\xtlam{x}{A}{t}$ is a term, called a \emph{$\lambda$-abstraction}.
+\end{enumerate}
+%
+The variable~$x$ is \emph{bound} in $\xtlam{x}{A}{t}$. Application
+associates to the left, thus $s\, t\, u = (s\, t)\, u$. The \emph{free
+  variables}~$\FV{t}$ of a term~$t$ are computed as follows, where $x$
+is a variable and $c$ is a basic constant:
+%
+\begin{align*}
+  \FV{x} &= \set{x} \\
+  \FV{c} &= \emptyset \\
+  \FV{\pair{u, t}} &= \FV{u} \cup \FV{t} \\
+  \FV{\ttfst{t}} &= \FV{t} \\
+  \FV{\ttsnd{t}} &= \FV{t} \\
+  \FV{u \, t} &= \FV{u} \cup \FV{t} \\
+  \FV{\xulam{x}{t}} &= \FV{t} \setminus \set{x} \;.
+\end{align*}
+%
+If $x_1$, \dots, $x_n$ are \emph{distinct} variables and $A_1$,
+\dots, $A_n$ are types then the sequence
+%
+\begin{equation*}
+  x_1 : A_1, \ldots, x_n : A_n
+\end{equation*}
+%
+is a \emph{typing context}, or just \emph{context}. The empty sequence
+is sometimes denoted by a dot~$\cdot$, and it is a valid context.
+Context are denoted by capital Greek letters $\Gamma$, $\Delta$, \dots
+
+A \emph{typing judgment} is a judgment of the form
+%
+\begin{equation*}
+  \Gamma \ctx t : A
+\end{equation*}
+%
+where~$\Gamma$ is a context,~$t$ is a term, and~$A$ is a type. In
+addition the free variables of~$t$ must occur in~$\Gamma$, but
+$\Gamma$ may contain other variables as well. We read the above
+judgment as ``in context~$\Gamma$ the term~$t$ has type~$A$''.
+Next we describe the rules for deriving typing judgments.
+
+Each basic constant~$c_i$ has a uniquely determined type~$C_i$,
+%
+\begin{equation*}
+  \axiom{\Gamma \ctx \mathtt{c}_i : C_i}
+\end{equation*}
+%
+The type of a variable is determined by the context:
+%
+\begin{equation*}
+  \axiomd{
+    x_1: A_1, \ldots, x_i: A_i, \ldots, x_n: A_n
+    \ctx
+    x_i : A_i
+  }{(1 \leq i \leq n)}
+\end{equation*}
+%
+The constant $\ttunit$ has type $\unit$:
+%
+\begin{equation*}
+  \axiom{\Gamma \ctx \ttunit : \unit}
+\end{equation*}
+%
+The typing rules for pairs and projections are:
+%
+\begin{xalignat*}{3}
+  &
+  \infer{\Gamma \ctx u : A
+    \sep
+    \Gamma \ctx t : B
+  }{
+    \Gamma \ctx \pair{u, t} : A \times B
+  }
+  &
+  &\infer{\Gamma \ctx t : A \times B}{\Gamma \ctx \ttfst{t} : A}
+  &
+  &\infer{\Gamma \ctx t : A \times B}{\Gamma \ctx \ttsnd{t} : B}
+\end{xalignat*}
+%
+The typing rules for application and $\lambda$-abstraction are:
+%
+\begin{xalignat*}{2}
+  &
+  \infer{\Gamma \ctx t : A \to B
+    \sep
+    \Gamma \ctx u : A
+  }{
+    \Gamma \ctx t\, u : B
+  }
+  &
+  &
+  \infer{
+    \Gamma, x: A \ctx t : B
+  }{
+    \Gamma \ctx (\xtlam{x}{A}{t}) : A \to B
+  }
+\end{xalignat*}
+%
+Lastly, we have \emph{equations} between terms; for terms of type~$A$
+in context~$\Gamma$, 
+%
+\begin{xalignat*}{2}
+  & \Gamma \ctx u : A \;,
+  &
+  & \Gamma \ctx t : B \;,
+\end{xalignat*}
+%
+the judgment that they are equal is written as
+%
+\begin{equation*}
+  \Gamma \ctx u = t : A \;.
+\end{equation*}
+%
+Note that~$u$ and~$t$ necessarily have the same type; it does
+\emph{not} make sense to compare terms of different types. We have the
+following rules for equations:
+%
+\begin{enumerate}
+\item Equality is an equivalence relation:
+  %
+  \begin{equation*}
+    \axiom{\Gamma \ctx t = t : A}
+    \qquad
+    \infer{\Gamma \ctx t = u : A}{\Gamma \ctx u = t : A}
+    \qquad
+    \infer{\Gamma \ctx t = u : A \sep
+      \Gamma \ctx u = v : A
+    }{
+      \Gamma \ctx t = v : A
+    }
+  \end{equation*}
+\item The weakening rule:
+  %
+  \begin{equation*}
+    \infer{
+      \Gamma \ctx u = t : A
+    }{
+      \Gamma, x : B \ctx u = t : A
+    }
+  \end{equation*}
+  %
+\item Unit type:
+  %
+  \begin{equation*}
+    \axiom{\Gamma \ctx t = \ttunit : \unit}
+  \end{equation*}
+\item Equations for product types:
+  %
+  \begin{gather*}
+    \infer{\Gamma \ctx u = v : A \sep
+      \Gamma \ctx s = t : B}{
+      \Gamma \ctx \pair{u, s} = \pair{v, t} : A \times B}
+    \\
+    \infer{\Gamma \ctx s = t : A \times B}{
+      \Gamma \ctx \ttfst{s} = \ttfst{t} : A}
+    \qquad\qquad
+    \infer{\Gamma \ctx s = t : A \times B}{
+      \Gamma \ctx \ttsnd{s} = \ttsnd{t} : A}
+    \\
+    \axiom{\Gamma \ctx t = \pair{\ttfst{t}, \ttsnd{t}} : A \times B}
+    \\
+    \axiom{\Gamma \ctx \ttfst{\pair{u, t}} = u : A}
+    \qquad\qquad
+    \axiom{\Gamma \ctx \ttsnd{\pair{u, t}} = t : A}
+  \end{gather*}
+\item Equations for function types:
+  %
+  \begin{gather*}
+    \infer{\Gamma \ctx s = t : A \to B
+      \sep
+      \Gamma \ctx u = v : A
+    }{
+      \Gamma \ctx s\,u = t\,v : B
+    }
+    \\
+    \infer{
+      \Gamma, x: A \ctx t = u : B
+    }{
+      \Gamma \ctx (\xtlam{x}{A}{t}) = (\xtlam{x}{A}{u}) : A \to B
+    }
+    \\
+    \axiom{\Gamma \ctx (\xtlam{x}{A}{t}) u = \subst{t}{x \mapsto u} : A}
+    \tag{$\beta$-rule}
+    \\
+    \axiomd{\Gamma \ctx \tlam{x}{A}{t\, x} = t : A \to B
+    }{\text{\ if $x \not\in \FV{t}$}}
+    \tag{$\eta$-rule}
+  \end{gather*}
+\end{enumerate}
+%
+This completes the description of a simply-typed $\lambda$-calculus.
+
+Apart from the above rules for equality we might want to impose
+additional equations. In this case we do not speak of a
+$\lambda$-calculus but rather of a \emph{$\lambda$-theory}. Thus, a
+$\lambda$-theory $\mathbb{T}$ is given by a set of basic types, a set
+of basic constants, and a set of \emph{equations} of the form
+%
+\begin{equation*}
+  \Gamma \ctx u = t : A \;.
+\end{equation*}
+%
+We summarize the preceding definitions.
+
+\begin{definition}
+  A \emph{simply-typed $\lambda$-calculus} is given by a set of
+  \emph{basic types} and a set of \emph{basic constants} together with
+  their types.
+  %
+  \emph{A simply-typed $\lambda$-theory} is a simply-typed
+  $\lambda$-calculus together with a set of equations.
+\end{definition}
+
+\subsection{Models of simply typed $\lambda$-calculus}
+\label{sec:models-typed-lambda-calculus}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Partial combinatory algebras}
 \label{sec:pcas}
+
+We now consider a generalization of the $\lambda$-calculus which
+allows application to be a partial operation.
+
+A \emph{partial} function $f: A \parto B$ is a function that is
+defined on a subset $\dom{f} \subseteq A$, called the \emph{domain}
+of~$f$. Sometimes there is confusion between the domain~$\dom{f}$ and
+the set~$A$, which is also called the domain. In such cases we call
+$\dom{f}$ the \emph{support} of~$f$. If $f: A \parto B$ is a partial
+function and $x \in A$, we write $f x \defined$ to indicate that $f x$
+is defined. For an expression~$e$, we also write $e \defined$ to
+indicate that~$e$ and all of its subexpressions are defined. The
+symbol~$\defined$ is sometimes inserted into larger expressions, for
+example, $f x \defined = y$ means that $f x$ is defined and is equal
+to~$y$. If $e_1$ and $e_2$ are two expressions whose values are
+possibly undefined, we write $e_1 \kleq e_2$ to indicate that either
+$e_1$ and $e_2$ are both undefined, or they are both defined and
+equal.
+
+\begin{definition}
+  \label{def:pca}%
+                                %
+  \indexsee{algebra!combinatory}{combinatory algebra}%
+  \indexdef{combinatory algebra}%
+  \indexdef{combinatory algebra!partial}%
+  \indexdef{combinatory algebra!total}%
+  \indexsee{partial!combinatory algebra}{combinatory algebra, partial}%
+  \indexsee{total combinatory algebra}{combinatory algebra, total}%
+  \indexsee{PCA}{combinatory algebra, partial}%
+  \indexsee{CA}{combinatory algebra, total}%
+                                %
+  A \emph{partial combinatory algebra (PCA)} $(A, \cdot, \combK,
+  \combS)$ is a set~$A$ with a
+                                %
+  \index{application!partial in PCA}%
+  \indexsee{partial!application}{application, partial in PCA}%
+  \label{sym:combK}%
+  \label{sym:combS}%
+                                %
+  \emph{partial} binary operation
+  $\place \cdot \place : A \times A \parto A$ and two
+  distinguished elements $\combK, \combS \in A$.
+  %
+  \label{sym:cdot}%
+  %
+  We usually write $x y$ instead of $x \cdot y$, and assume that
+  application associates to the left. A PCA is required to satisfy,
+  for all $x, y, z \in A$,
+  %
+  \begin{xalignat*}{3}
+    \combK x y &\simeq x \;, &
+    \combS x y z &\simeq (x z)(y z) \;, &
+    \combS x y \defined& \;.
+  \end{xalignat*}
+  %
+  When application is total $A$ is a \emph{(total) combinatory
+    algebra (CA)}.
+                                %
+  \indexdef{subPCA}%
+  \label{sym:subPCA}%
+                                %
+  A \emph{subPCA} $A'$ of a PCA $(A, \cdot,
+  \combK, \combS)$ is a subset $A' \subseteq A$ that contains
+  $\combK$ and $\combS$, and is closed under application.
+\end{definition}
+
+It may seem that PCAs are not much of a model of computation, since we
+only require two distinguished elements, the
+%
+\indexdef{combinator}%
+\index{combinator!K@{$\combK$}}%
+\index{combinator!S@{$\combS$}}%
+\index{K@{$\combK$}}%
+\index{S@{$\combS$}}%
+%
+\emph{combinators}~$\combS$ and~$\combK$. However, we can build up the
+identity function, pairs, conditionals, natural numbers, and recursion
+just by combining the two basic combinators. In order to do this, we
+follow Longley~\cite{Longley:94} and introduce the notation
+$\pcalam{x}{e}$ where $x$ is a variable and $e$ is an expression
+involving variables, elements of~$A$, and application. The meaning
+of $\pcalam{x}{e}$ is defined inductively:
+%
+\label{sym:pcalam}%
+\index{combinator!I@{$\combI$}}%
+\index{I@{$\combI$}}%
+\label{sym:combI}%
+%
+$\pcalam{x}{x} = \combI =
+\combS \combK \combK$; $\pcalam{x}{y} = \combK y$ if $y$ is a constant
+or a variable other than~$x$; $\pcalam{x}{e_1 e_2} = \combS
+(\pcalam{x}{e_1}) (\pcalam{x}{e_2})$. We abbreviate
+$\pcalam{x}{\pcalam{y}{e}}$ as $\pcalam{x y}{e}$, and similarly for
+more than two variables. The notation $\pcalam{x}{e}$ is meta-notation
+for an expression involving $\combK$, $\combS$, variables, and
+elements of~$A$. It suggests a relation to the untyped
+$\lambda$-calculus, but we must be careful as $\beta$-reduction is
+only valid in restricted cases.\footnote{
+%
+  See~\cite[Chapter~1]{Longley:94} for further details about the
+  notation~$\pcalam{x}{e}$.
+%
+}
+%
+The notation $\pcalam{x}{e}$ saves a lot of space and makes
+expressions much more comprehensible, as even the translation of a
+simple term like $\pcalam{x y z}{(z x y)}$ is quite unwieldy,\footnote{
+%
+  The following \emph{Mathematica} program was used to translate terms:
+  %
+  \begin{quotation}\small
+  \noindent
+  \texttt{lam[x{\char95}Symbol, x{\char95}Symbol] := s[k][k]}\\
+  \texttt{lam[x{\char95}Symbol, y{\char95}Symbol] := k[y]}\\
+  \texttt{lam[x{\char95}Symbol, f{\char95}[g{\char95}]] := s[lam[x,f]][lam[x,g]]}\\
+  \texttt{lam[vars{\char95}List, f{\char95}] :=
+    Fold[lam[{\char35}2,{\char35}1]{\char38}, f, Reverse[vars]]}
+  \end{quotation}
+  %
+}
+%
+\begin{equation*}
+  \pcalam{x y z}{(z x y)} =
+  \begin{aligned}[t]
+  & {\combS} (
+    {\combS} ({\combK}{\combS}) (
+      {\combS}({\combS}({\combK}{\combS})({\combS}({\combK}{\combK})({\combK}{\combS}))) (
+        {\combS} (
+          {\combS} ({\combK}{\combS}) (
+            {\combS}({\combS}({\combK}{\combS})({\combS}({\combK}{\combK})({\combK}{\combS}))) \\ & (
+              {\combS}({\combS}({\combK}{\combS})({\combS}({\combS}({\combK}{\combS})({\combS}({\combK}{\combK})({\combK}{\combS})))({\combS}({\combK}{\combK})({\combK}{\combK}))))(
+              {\combS}({\combK}{\combK})({\combK}{\combK}))
+            )
+          )
+        ) \\ &
+   (
+          {\combS}({\combS}({\combK}{\combS})({\combS}({\combK}{\combK})({\combK}{\combK})))({\combS}({\combK}{\combK})({\combS}{\combK}{\combK}))
+          )
+      )
+    )
+  ) (
+    {\combS}({\combS}({\combK}{\combS})({\combS}({\combK}{\combK})({\combK}{\combK}))) \\ & ({\combS}({\combS}({\combK}{\combS})({\combK}{\combK}))({\combK}{\combK}))
+  ).
+  \end{aligned}
+\end{equation*}
+%
+
+We review from~\cite[Chapter~1]{Longley:94} how to encode some basic programming
+constructs in a PCA.
+%
+\index{combinator!pair@{$\combPair$, $\pair{\place, \place}$}}%
+\index{combinator!fst@{$\combFst$}}%
+\index{combinator!snd@{$\combSnd$}}%
+\label{sym:combPair}%
+\label{sym:combFst}%
+\label{sym:combSnd}%
+%
+A \emph{pairing} for $A$ is a triple of
+elements $\combPair, \combFst, \combSnd \in A$ such that, for all
+$x, y \in A$,
+%
+\begin{equation*}
+  \combPair x y \defined        \;,\qquad
+  \combFst (\combPair x y) = x  \;,\qquad
+  \combSnd (\combPair x y) = y  \;.\qquad
+\end{equation*}
+%
+Every PCA has a pairing $\combPair = \pcalam{x y z}{z x y}$, $\combFst
+= \pcalam{z}{z (\pcalam{x y}{x})}$, $\combSnd = \pcalam{z}{z
+  (\pcalam{x y}{y})}$. We write $\pair{x, y}$ instead of $\combPair x
+y$. 
+
+Similarly, every PCA has
+%
+\index{combinator!Booleans}%
+\index{combinator!if@{$\combIf$}}%
+\index{combinator!false@{$\combFalse$}}%
+\index{combinator!true@{$\combTrue$}}%
+\label{sym:combIf}%
+\label{sym:combTrue}%
+\label{sym:combFalse}%
+%
+\emph{Booleans} $\combIf, \combTrue,
+\combFalse \in A$ that satisfy, for all $x, y, z \in A$,
+%
+\begin{equation*}
+  \combIf\; x\; y \defined \;,\qquad
+  \combIf\; \combTrue\;  y\; z = y \;,\qquad
+  \combIf\; \combFalse\; y\; z = z \;.
+\end{equation*}
+%
+For example, we can take $\combTrue = \pcalam{y z}{y}$, $\combFalse =
+\pcalam{y z}{z}$, and $\combIf = \pcalam{x y z}{x y z}$.
+
+The
+%
+\index{combinator!Curry numeral}%
+\index{Curry numeral}%
+\label{sym:curry_numeral}%
+%
+\emph{Curry numerals} are defined for each $n \in \NN$ by
+$\overline{0} = \combI = \combS \combK \combK$ and $\overline{n+1} =
+\pair{\combFalse, \overline{n}}$. There exist elements
+%
+\index{combinator!successor@{successor ($\pcacomb{succ}$)}}%
+\index{combinator!predecessor@{predecessor ($\pcacomb{pred}$)}}%
+\index{combinator!iszero@{$\pcacomb{iszero}$}}%
+%
+$\pcacomb{succ}, \pcacomb{pred}, \pcacomb{iszero} \in A$ such that,
+for all $n \in \NN$,
+%
+\label{sym:succ}%
+\label{sym:pred}%
+\label{sym:iszero}%
+%
+\begin{align*}
+  \pcacomb{succ}\; \overline{n} &= \overline{n+1} \\
+  \pcacomb{pred}\; \overline{n} &= 
+  \begin{cases}
+    \overline{0} & \text{if $n = 0$} \\
+    \overline{n-1} & \text{if $n > 0$}
+  \end{cases}\\
+  \pcacomb{iszero}\; \overline{n} &=
+  \begin{cases}
+    \combTrue & \text{if $n = 0$} \\
+    \combFalse & \text{if $n > 0$}
+  \end{cases}
+\end{align*}
+%
+To see this, take $\pcacomb{succ} = \pcalam{x}{\pair{\combFalse, x}}$, 
+$\pcacomb{iszero} = \combFst$, and $\pcacomb{pred} =
+\pcalam{x}{\combIf\, (\pcacomb{iszero}\, x) \overline{0} (\combSnd\, x)}$.
+
+In a PCA we can define functions by recursion by using the
+%
+\index{combinator!Y@{$\combY$}}%
+\index{combinator!Z@{$\combZ$}}%
+\index{Y@{$\combY$}}%
+\index{Z@{$\combZ$}}%
+\label{sym:combY}%
+\label{sym:combZ}%
+\label{sym:combW}%
+%
+\emph{fixed 
+  point combinators~$\combY$ and $\combZ$}, defined by
+%
+\begin{alignat*}{2}
+  W &= \pcalam{x y}{y(x x y)}\;, &
+  \qquad
+  \combY &= W W \;, \\
+  X &= \pcalam{x y z}{y (x x y) z} \;, &
+  \qquad
+  \combZ &= X X \;.
+\end{alignat*}
+%
+These combinators satisfy, for all $f \in A$,
+%
+\begin{equation*}
+  \combY f \kleq f (\combY f) \;,
+  \qquad
+  \combZ f \defined \;,
+  \qquad
+  (\combZ f) z \kleq f (\combZ f) z \;.
+\end{equation*}
+
+Finally, let us see how to define functions by primitive recursion.
+%
+\index{primitive recursion, in a PCA}%
+%
+The element
+%
+\begin{equation*}
+  \pcacomb{rec} = \pcalam{x f m}{((\combZ R) x f m \combI)} \;,
+\end{equation*}
+%
+where $R = \pcalam{r x f m}{\combIf (\pcacomb{iszero}\, m) (\combK x)
+  (\pcalam{y}{f (\pcacomb{pred}\, m)(r x f (\pcacomb{pred}\, m)
+    \combI)})}$, satisfies
+%
+\begin{equation*}
+  \pcacomb{rec}\; x\; f\; \overline{0} = x \;,\qquad
+  \pcacomb{rec}\; x\; f\; \overline{n+1} \kleq
+    f\; \overline{n}\; (\pcacomb{rec}\; x\; f\; \overline{n}).
+\end{equation*}
+%
+It turns out that every partial recursive function can be encoded in a
+PCA, and so PCAs are Turing complete~\cite[VI.2.8]{Beeson:85}. Let us
+now consider some examples of PCAs.
+
+
+\section{Examples of partial combinatory algebras}
+\label{sec:pca-examples}
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

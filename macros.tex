@@ -1,3 +1,14 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Macros for indexing
+
+\newcommand{\footstyle}[1]{{#1}n}
+\newcommand{\defstyle}[1]{\textsl{#1}}
+
+\newcommand{\indexdef}[1]{\index{#1|defstyle}}%
+\newcommand{\indexfoot}[1]{\index{#1|footstyle}}%
+\newcommand{\indexsee}[2]{\index{#1|see{#2}}}%
+
 %%% Theorems
 \newtheorem{theorem}{Theorem}[chapter]
 \newtheorem{proposition}[theorem]{Proposition}
@@ -36,6 +47,10 @@
 \newcommand{\tlam}[3]{\lambda #1 \,{:}\, #2\,.\,\left(#3\right)}
 \newcommand{\xtlam}[3]{\lambda #1 \,{:}\, #2\,.\,#3}
 
+%% Grammar
+\newcommand{\bnfis}{\mathbin{{:}{:}{=}}}
+\newcommand{\bnfor}{\mid}
+
 %%% Substitution
 \newcommand{\subst}[2]{#1[#2]}
 
@@ -45,6 +60,7 @@
 \newcommand{\pow}[1]{\mathcal{P}(#1)}
 
 \newcommand{\tbigcup}{\bigcup\nolimits}
+\newcommand{\tbigcap}{\bigcap\nolimits}
 
 \newcommand{\two}{\mathsf{2}}
 \newcommand{\Baire}{\mathbb{B}}
@@ -56,6 +72,10 @@
 \newcommand{\parto}{\mathbin{\rightharpoonup}}
 \newcommand{\dom}[1]{\mathsf{dom}(#1)}
 \newcommand{\invim}[1]{{#1}^{-1}}
+
+\newcommand{\defined}{\,{\downarrow}}
+\newcommand{\divergent}{\,{\uparrow}}
+\newcommand{\place}{{-}}
 
 %%% Pairing
 \newcommand{\pair}[1]{\langle #1 \rangle}
@@ -77,10 +97,68 @@
 \newcommand{\seq}[1]{[#1]}
 \newcommand{\seg}[2]{\overline{#1}(#2)}
 
+%%% Lambda calculus
+\newcommand{\unit}{\mathtt{unit}}
+\newcommand{\ttunit}{{*}}
+\newcommand{\ttfst}[1]{\mathtt{fst}\,#1}
+\newcommand{\ttsnd}[1]{\mathtt{snd}\,#1}
+\newcommand{\FV}[1]{\mathsf{FV}(#1)}
+
+%% Logic
+\newcommand{\ctx}{\mid}
+
+% Axiom
+\newcommand{\axiom}[1]{\dfrac{}{#1}}
+
+% Axiom with a side condition
+\newcommand{\axiomd}[2]{\dfrac{}{#1} \; #2}
+
+% Inference rule
+\newcommand{\infer}[2]{\begin{gathered}\dfrac{#1}{#2}\end{gathered}}
+\newcommand{\inferr}[3]{\begin{gathered}\dfrac{#1\quad #2}{#3}\end{gathered}}
+\newcommand{\inferrr}[4]{\begin{gathered}\dfrac{#1\quad #2 \quad #3}{#4}\end{gathered}}
+
+\newcommand{\sep}{\qquad}
+\newcommand{\fromassumption}[2]{
+  \begin{gathered}[b]
+    {\displaystyle #1} \\
+    \vdots \\
+    {#2}
+  \end{gathered}}
+
+% Inference rule with a side condition
+\newcommand{\inferd}[3]{\begin{gathered}\dfrac{#1}{#2} \; #3\end{gathered}}
+
 %%% Domain theory
 \newcommand{\upper}[1]{{\uparrow}#1}
 \newcommand{\wayb}{\ll}
 \newcommand{\UU}{\mathbb{U}}
+
+%%%% PCAs
+\newcommand{\pcalam}[2]{\lambda^{*} #1 .\,#2}
+\newcommand{\kleq}{\simeq}
+
+\newcommand{\pcacomb}[1]{\mathtt{#1}}
+
+%\newcommand{\pcato}{\stackrel{\scriptscriptstyle\mathsf{PCA}}{\longrightarrow}}
+\newcommand{\pcato}{\xrightarrow{\scriptscriptstyle\mathsf{\ PCA\ }}{}}
+
+\newcommand{\combK}{\pcacomb{K}}
+\newcommand{\combS}{\pcacomb{S}}
+\newcommand{\combI}{\pcacomb{I}}
+
+\newcommand{\combY}{\pcacomb{Y}}
+\newcommand{\combZ}{\pcacomb{Z}}
+\newcommand{\combW}{\pcacomb{W}}
+
+\newcommand{\combPair}{\pcacomb{pair}\,}
+\newcommand{\combFst}{\pcacomb{fst}\,}
+\newcommand{\combSnd}{\pcacomb{snd}\,}
+
+\newcommand{\combIf}{\pcacomb{if}}
+\newcommand{\combTrue}{\pcacomb{true}}
+\newcommand{\combFalse}{\pcacomb{false}}
+
 
 
 %%% Local Variables: 
