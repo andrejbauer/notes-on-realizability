@@ -32,8 +32,8 @@ computation might be in general, and how such models are compared.
 We recall informally how a Turing machine operates. There is little
 point in giving a formal definition because we do not intend to
 actually write programs for Turing machines. If you are not familiar
-with Turing machines, see the section on further reading at the end of
-the chapter.
+with Turing machines we recommend one of standard textbooks on the
+subject~\cite{Computability-textbooks}.
 
 \begin{figure}[htbp]
   \centering
@@ -63,18 +63,18 @@ The tapes are infinite\footnote{If you are worried about having actual
 symbols from a given finite alphabet. A common choice for the alphabet
 is $0$, $1$, and a special symbol `blank'. The machine manipulates the
 contents of the tapes according to a \emph{program}, which is a finite
-list of simple instructions that manipulate the heads and the tapes.
-The machine executes one instruction at a time in a sequential manner.
-It may \emph{terminate} after having executed finitely many
-computation steps. If it does not terminate then it runs forever, in
-which case we say that it \emph{diverges}.
+list of simple instructions that control the heads and the tapes. The
+machine executes one instruction at a time in a sequential manner. It
+may \emph{terminate} after having executed finitely many computation
+steps. If it does not terminate then it runs forever, in which case we
+say that it \emph{diverges}.
 
 Our version of Turing machine is different from the usual one, where a
 machine is equipped with only a single tape that serves for input,
 output, and intermediate work. The two formulations are equivalent in
 the sense that a single-tape machine can simulate the workings of a
-Turing maechine with several tapes, and vice versa. Our formulation
-will ease the description of infinite computations in
+Turing maechine with several tapes, and vice versa. Our variant will
+ease the description of infinite computations in
 Section~\ref{sec:type-2}.
 
 The state of a Turing machine may be encoded onto a single tape as
@@ -97,13 +97,13 @@ The answer was given by Turing.
 \begin{proof}
   A traditional proof may be found in any book on computability
   theory, and there is nothing wrong with reading the original
-  proof~\cite{Turing} either. A different kind of a proof is the
-  observation that you use universal machines every day.\footnote{You
-    have to ignore the fact the several hundred gigabytes of storage
-    are not quite the same thing as an infinite tape. Also, modern
-    compuers are really universal \emph{Von Neumann}
-    machines~\cite{vonNeumann} because they have a central processing
-    unit and random access memory instead of a tape.}
+  proof~\cite{Turing} either. For me a much more convincing proof is
+  the fact that a universal machine is sitting right here on my
+  desk.\footnote{You have to ignore the fact the several hundred
+    gigabytes of storage are not quite the same thing as an infinite
+    tape. Also, modern compuers are really universal \emph{Von
+      Neumann} machines~\cite{vonNeumann} because they have a central
+    processing unit and random access memory instead of a tape.}
 \end{proof}
 
 Once we have a universal machine, we can make it behave like any other
@@ -122,15 +122,13 @@ machines are rather hard to get by.
 \subsection{Type 1 machines}
 \label{sec:type-1}
 
-How do we use Turing machines to compute a partial\footnote{We use
-  notation $f : A \parto B$ to denote a function $f$ which is defined
-  on a subset of~$A$ and maps into $B$.} function $f : \NN \parto
-\NN$? A natural idea is to write the argument $n$ onto the input tape,
-run the machine until it terminates, and read the result $f(n)$ off
-the output tape. If the machine diverges then $f(n)$ is undefined. Of
-course, the input $n$ must be suitably encoded onto the input tape,
-for example it can be written in binary form. Similarly, we expect the
-output tape to contain the result encoded in the same manner.
+How do we use Turing machines to compute a partial function $f :
+\NN \parto \NN$? A natural idea is to write the argument $n$ onto the
+input tape, run the machine until it terminates, and read the result
+$f(n)$ off the output tape. If the machine diverges then $f(n)$ is
+undefined. Of course, the input $n$ must be suitably encoded onto the
+input tape, for example it can be written in binary form. The output
+tape contains the result encoded in the same manner.
 
 It is convenient to view every Turing machine as one computing a
 function $\NN \parto \NN$. This can be arranged as long as we read the
@@ -144,10 +142,9 @@ can interpret the output tape as a number written in binary (the empty
 sequence encodes zero).
 
 We could similarly define how a Turing machine computes a multivariate
-partial function $f : \NN^k \parto \NN$. We just have to take care
-that the input is encoded correctly by placing special markers between
-the arguments so that we can tell where one ends and the next one
-begins.
+partial function $f : \NN^k \parto \NN$. We just have to correctly
+encode the arguments on the tape by placing special markers between
+them so that we can tell where one ends and the next one begins.
 
 It is common knowledge that computers encode everything with $0$'s and
 $1$'s, but logicians prefer to encode everything with natural numbers.
@@ -208,22 +205,22 @@ computation encoded by $z$''. The function $U$ allows us to extract
 the result of a computation. If $z$ does not encode a terminating
 computation then $U(z)$ is undefined.
 
-Kleene's normal form theorem says that every parital computable
-function $f : \NN \parto \NN$ may be written in the form
+Kleene's normal form theorem~\cite{Kleene-normal-form} says that every
+parital computable function $f : \NN \parto \NN$ may be written in the
+form
 %
 \begin{equation}
   \label{eq:kleene-normal-form}
   y \mapsto U(\min \set{z \in \NN \such T(x,y,z)}).
 \end{equation}
 %
-The number $x$ is not uniquely determined, as we may take it to be the
-encoding of any machine that computes~$f$. We are completely ignoring
-questions of computational efficiency. Just consider how we would
-computing $f(y)$ according to~\eqref{eq:kleene-normal-form}: for each
-$z = 0, 1, 2, \ldots$, test whether~$z$ encodes a computation of
-machine $x$ with input $y$. When you find the first such~$z$, extract
-the result $U(z)$ from it. I dare you to compute the constant function
-$y \mapsto 0$ this way!
+The number $x$ is the encoding of any machine that computes~$f$. We
+emphasize that we are completely ignoring questions of computational
+efficiency. Just consider how we would compute $f(y)$ according
+to~\eqref{eq:kleene-normal-form}: for each $z = 0, 1, 2, \ldots$, test
+whether~$z$ encodes a computation of machine $x$ with input $y$. When
+you find the first such~$z$, extract the result $U(z)$ from it. I dare
+you to compute the constant function $y \mapsto 0$ this way!
 
 Kleene's normal form may be used to define a standard enumeration of
 partial recursive functions. Let
@@ -246,10 +243,8 @@ enumeration of $k$-place computable partial functions
   U^{(k)}(\min \set{z \in \NN \such T^{(k)}(x,y_1, \ldots, y_k,z)}).
 \end{equation*}
 %
-These enumerations are not arbitrary. They have the following
-important properties, where $a \simeq b$ is \emph{Kleene's equality}
-whose meaning is that if one of $a$, $b$ is defined then so is the
-other and they are equal.
+These enumerations are not arbitrary, because they have the following
+important properties.
 
 \begin{theorem}[utm]
   There exists a partial computable function $u : \NN \times
@@ -261,13 +256,11 @@ other and they are equal.
 \end{theorem}
 
 \begin{theorem}[smn]
-  For each $n$ and $m$ there exists a computable function $s_n^m :
-  \NN^{m+1} \to \NN$ such that, for all $x, y_1, \ldots, y_m, z_1,
-  \ldots, z_n \in \NN$,
+  There exists a computable function $s :
+  \NN^2 \to \NN$ such that, for all $x, y, z \in \NN$,
   %
   \begin{equation*}
-    \prm{n}{s_n^m(x,y_1, \ldots, y_m)}{z_1, \ldots z_n} \simeq
-    \prm{n+m}{x}{y_1, \ldots, y_m, z_1, \ldots, z_m}.
+    \pr{s(x, y)}{z} \simeq \prm{2}{x}{y,z}.
   \end{equation*}
 \end{theorem}
 
@@ -377,7 +370,7 @@ enumeration~$\xpr$, utm and the smn theorems. These are more easily
 expressed if we allow the machines to write natural numbers in the
 cells, rather than symbols from a finite alphabet. We also equip the
 machines with instructions for manipulating the numbers written in the
-cells, say, instructions for manipulating the bits and for testing
+cells, say, instructions for extracting the bits and for testing
 equality with zero. These changes are inessential because an infinite
 sequence $n_0, n_1, n_2, \ldots$ of natural numbers may be encoded as
 a binary sequence $1^{n_0}01^{n_1}01^{n_2}0\cdots$, where $1^k$ means
@@ -387,13 +380,13 @@ A type 2 machine computes a partial function $f : \NN^\NN \parto
 \NN^\NN$, where $\NN^\NN$ is the \emph{Baire space} of infinite
 sequences of numbers. We run the machine with $\alpha \in \NN^\NN$
 written on the input tape. If every output cell is eventually written
-to, then $f(\alpha)$ is the sequence. If there is at least one output
-cell to which the machine does not write a number, then $f(\alpha)$ is
-undefined.
+to, then the output tape reprsents the result $f(\alpha)$. If there is
+at least one output cell to which the machine does not write a number,
+then $f(\alpha)$ is undefined.
 
 We may similarly define what it means for a machine to compute a
 multivariate parital function $f : (\NN^\NN)^k \parto \NN^\NN$. The
-input $(\alpha(0), \ldots, \alpha(k-1))$ is written onto the input tape in
+input $(\alpha_0, \ldots, \alpha_{k-1})$ is written onto the input tape in
 an interleaving manner, so that $\alpha_i(j)$ is found in the cell at
 position $k \cdot j + i$.
 
@@ -439,8 +432,8 @@ separable metric space for the \emph{comparison metric} $d : \Baire
 If the first term in which $\alpha$ and $\beta$ differ is the $n$-th
 one, then $d(\alpha, \beta) = 2^{-n}$. The comparison metric is an
 ultrametric, which means that it satisfies the inequality $d(\alpha,
-\gamma) \leq \max(d(\alpha, \beta), d(\beta, \gamma)$. The clopen sets
-$\cons{a}{\Baire}$ are balls of radius $2^{-|a|}$.
+\gamma) \leq \max(d(\alpha, \beta), d(\beta, \gamma))$. The clopen
+sets $\cons{a}{\Baire}$ are balls of radius $2^{-|a|}$.
 
 Let us now see how encoding of partial computable functions works. We
 would like to encode a computable $f : \Baire \parto \Baire$ with an
@@ -475,18 +468,20 @@ Conversely, every $\beta \in \Baire$ detemines a partial function $f :
   k = \min\nolimits_k (\alpha(\seg{\beta}{k}) \neq 0),
 \end{equation*}
 %
-where $\alpha \star \beta$ is undefined if no such $k$ exists. The map
-$f$ represented by $\beta$ is defined by
+with $\alpha \star \beta$ undefined if no such $k$ exists. The map $f$
+represented by $\beta$ is defined as follows. Given $\alpha \in
+\Baire$, if $\alpha \star
+(\cons{i}{\beta})$ is defined for all $i \in \NN$ then we set
+%
 \begin{equation}
   \label{eq:type2-encoding}
   f(\alpha)(i) = \alpha \star (\cons{i}{\beta}),
 \end{equation}
 %
-provided that $\alpha \star (\cons{i}{\beta})$ is defined for all $i
-\in \NN$. The function which $\beta$ encodes is denoted by
-$\xfpr_\beta$. A partial map which equals $\xfpr_\beta$ for some
-$\beta \in \Baire$ is said to be \emph{(type 2) realized} by~$\beta$.
-We would like to know which maps are realizable.
+otherwise $f(\alpha)$ is undefined. The function encoded by $\beta$ is
+denoted by $\xfpr_\beta$. A partial map which equals $\xfpr_\beta$ for
+some $\beta \in \Baire$ is said to be \emph{(type 2) realized}
+by~$\beta$. We would like to know which maps are realizable.
 
 A partial map $f: X \parto Y$ is said to be \emph{continuous}
 when it is continuous as a total map $f: \dom{f} \to Y$, where the
@@ -507,8 +502,8 @@ domain~$\dom{f}$.
   \begin{equation*}
      A = \set{(a, i, j) \in \NN^{*} \times \NN^{2} \such
         \cons{a}{\Baire} \cap \dom{f} \neq \emptyset \land
-        \all{\alpha}{\cons{a}{\Baire} \cap \dom{f}}{
-          (f\alpha)(i) = j
+        \all{\alpha}{(\cons{a}{\Baire} \cap \dom{f})}{
+          f(\alpha)(i) = j
           }
         }
   \end{equation*}
@@ -558,26 +553,27 @@ Recall that a $G_\delta$-set is a countable intersection of open sets.
         \bigcup_{j \in \NN} \cons{a_{i,j}}{\Baire} \;.
   \end{equation*}
   %
-  Define a sequence $\upsilon \in \Baire$ by setting
-  $\upsilon(\seq{\cons{i}{a_{i,j}}}) = 2$ for all $i, j \in \NN$, and
-  $\upsilon(n) = 0$ for all other arguments~$n$. Clearly, if
-  $\fpr{\upsilon}{\alpha}$ is defined then its value is the constant
+  Define a sequence $\gamma \in \Baire$ by setting
+  $\gamma(\seq{\cons{i}{a_{i,j}}}) = 2$ for all $i, j \in \NN$, and
+  $\gamma(n) = 0$ for all other arguments~$n$. Clearly, if
+  $\fpr{\gamma}{\alpha}$ is defined then its value is the constant
   sequence $1, 1, 1, \ldots$, so we only need to verify that
-  $\dom{\xfpr_\upsilon} = U$. If $\alpha \in \dom{\xfpr_\upsilon}$
-  then $\upsilon \star (\cons{i}{\alpha})$ is defined for every $i \in
-  \NN$, therefore there exists $c_i \in \NN$ such that $\upsilon
-  (\seg{(\cons{i}{\alpha})}{c_i + 1}) = 2$, which implies that $\alpha
-  \in {a_{i, c_i}}$. Hence
+  $\dom{\xfpr_\gamma} = U$. If $\alpha \in \dom{\xfpr_\gamma}$
+  then $\gamma \star (\cons{i}{\alpha})$ is defined for every $i \in
+  \NN$, therefore there exists $c_i \in \NN$ such that $\gamma
+  (\seg{(\cons{i}{\alpha})}{c_i + 1}) = 2$, which implies that $
+  a_{i, c_i} \sqsubseteq \alpha$. Hence
   %
   \begin{equation*}
     \alpha \in \bigcap_{i \in \NN} \cons{a_{i, c_i}}{\Baire} \subseteq U.
   \end{equation*}
   %
   Conversely, if $\alpha \in U$ then for every $i \in \NN$ there
-  exists some $c_i \in \NN$ such that $\alpha \in a_{i, c_i}$. For
-  every $i \in \NN$, $\upsilon (\seg{(\cons{i}{\alpha})}{c_i + 1} =
-  2$, therefore $\fpr{\upsilon}{\alpha}(i) = \upsilon \star
-  (\cons{i}{\alpha}) = 1$. Hence $\alpha \in \dom{\xfpr_\upsilon}$.
+  exists some $c_i \in \NN$ such that $a_{i, c_i} \sqsubseteq \alpha$.
+  For every $i \in \NN$, $\gamma (\seg{(\cons{i}{\alpha})}{1 +
+    |a_{i,c_i}|}) = 2$, therefore $\fpr{\gamma}{\alpha}(i) = \gamma
+  \star (\cons{i}{\alpha}) = 1$. Hence $\alpha \in
+  \dom{\xfpr_\gamma}$.
 \end{proof}
 
 
@@ -591,10 +587,10 @@ Recall that a $G_\delta$-set is a countable intersection of open sets.
 
 \begin{proof}
   By Proposition~\ref{th:G_delta_characteristic} there exists
-  $\upsilon \in \Baire$ such that for all $\beta \in \Baire$
+  $\gamma \in \Baire$ such that for all $\beta \in \Baire$
   %
   \begin{equation*}
-    \fpr{\upsilon} \beta =
+    \fpr{\gamma} \beta =
     \begin{cases}
       \xulam{n}{1} & \beta \in U \;,\\
       \text{undefined} & \text{otherwise} \;.
@@ -604,7 +600,7 @@ Recall that a $G_\delta$-set is a countable intersection of open sets.
   It suffices to show that the function $f: \Baire \parto \Baire$ defined by
   %
   \begin{equation*}
-    f(\beta)(n) = \eta_{\upsilon}(\beta)(n) \cdot \eta_{\alpha}(\beta)(n)
+    f(\beta)(n) = \eta_{\gamma}(\beta)(n) \cdot \eta_{\alpha}(\beta)(n)
   \end{equation*}
   %
   is realized. This is so because coordinate-wise multiplication of
@@ -620,9 +616,8 @@ Recall that a $G_\delta$-set is a countable intersection of open sets.
 \begin{proof}
   First we show that $\xfpr_\alpha$ is a continuous map whose domain
   is a $G_\delta$-set. It is continuous because the value of
-  $\fpr{\alpha}{\beta}(n)$ depends only on $n$ and finite prefixes of
-  $\alpha$ and $\beta$. The domain of $\xfpr_\alpha$ is the
-  $G_\delta$-set
+  $\fpr{\alpha}{\beta}(n)$ depends only on $n$ and a finite prefix of
+  $\beta$. The domain of $\xfpr_\alpha$ is the $G_\delta$-set
   %
   \begin{align*}
     \dom{\xfpr_\alpha}
@@ -731,7 +726,7 @@ information about membership in~$A$, whereas the graph model keeps
 only positive information. Rather than describing it explicitly as a
 kind of Turing machines, we shall take a different route this time and
 first describe the topological aspects of the model. Computability
-will then follow easily.
+will then follow naturally.
 
 The set $\pow{\NN}$ may be equipped with a topology in two natural
 ways. One is the product topology arising from the observation that
@@ -753,8 +748,8 @@ By forming finite intersections we get the basic open sets
 \end{equation*}
 %
 A subset $\mathcal{U} \subseteq \pow{\NN}$ is then \emph{Scott open}
-when it has the property that $A$ is a member of~$\mathcal{U}$ if, and
-only if, some finite subset of $A$ is a member of $\mathcal{U}$. If we
+when it has the property that $B$ is a member of~$\mathcal{U}$ if, and
+only if, some finite subset of $B$ is a member of $\mathcal{U}$. If we
 write $A \wayb B$ when~$A$ is a finite subset of~$B$, this is
 expressed as
 %
@@ -772,9 +767,9 @@ $T_0$-space, i.e., for all $A, B \in \pow{\NN}$,
 This is \emph{not} a Hausdorff space, not even a $T_1$-space. If you
 were taught in school by geometrically minded topologists to ridicule
 non-Hausdorff spaces\footnote{I surely was as an undergraduate student
-  in mathematics.}, you better quickly lose the habit and learn about
-the role of topology as an aspect of information processing in which
-an open set is a (positively) observable property. The natural
+  in mathematics.}, you might be pleased to discover a non-geometric
+intuition for topology. In information processing the open sets
+correspond to (positively) observable properties. The natural
 separation axiom in this setting is~$T_0$, which is a form of
 Leibniz's principle of identity.\footnote{The principle states that
   two things are equal if they have exactly the same properties.} We
@@ -857,7 +852,7 @@ To every $A \in \Scott$ we assign a function $\Lambda(A) : \Scott \to
   }.
 \end{equation*}
 %
-It is easy to verify that $\Lambda(A)$ is continuous and that
+The map $\Lambda(A)$ is continuous and
 %
 \begin{equation*}
   \xymatrix{
@@ -942,7 +937,7 @@ There are two kinds of $\lambda$-calculus, the \emph{typed} and the
 on how application is formed, so that an expression such as
 %
 \begin{equation*}
-  \ulam{x}{x x}
+  \xulam{x}{x\, x}
 \end{equation*}
 %
 is valid, whatever it means. In typed $\lambda$-calculus every
@@ -984,7 +979,7 @@ variables as equal. Thus $\xulam{x}{y\, x} = \xulam{z}{y\, z} \neq
 \xulam{y}{y\, y}$. Substitution is an operation which replaces free
 variables with expresions. We write $\subst{e}{x_1 \mapsto e_1,
   \ldots, x_n \mapsto e_n}$ for a simultaneous subtitution of
-expressions $e_1, \ldots, e_n$ for varaibles $x_1, \ldots, x_n$ in
+expressions $e_1, \ldots, e_n$ for variables $x_1, \ldots, x_n$ in
 $e$, respectively. The usual rules for bound variables must be
 observed when we perform subtitutions.\footnote{It is notoriously easy
   to commit errors when defining the details of substitution. The best
@@ -1517,21 +1512,6 @@ We summarize the preceding definitions.
 We now consider a generalization of the $\lambda$-calculus which
 allows application to be a partial operation.
 
-A \emph{partial} function $f: A \parto B$ is a function that is
-defined on a subset $\dom{f} \subseteq A$, called the \emph{domain}
-of~$f$. Sometimes there is confusion between the domain~$\dom{f}$ and
-the set~$A$, which is also called the domain. In such cases we call
-$\dom{f}$ the \emph{support} of~$f$. If $f: A \parto B$ is a partial
-function and $x \in A$, we write $f x \defined$ to indicate that $f x$
-is defined. For an expression~$e$, we also write $e \defined$ to
-indicate that~$e$ and all of its subexpressions are defined. The
-symbol~$\defined$ is sometimes inserted into larger expressions, for
-example, $f x \defined = y$ means that $f x$ is defined and is equal
-to~$y$. If $e_1$ and $e_2$ are two expressions whose values are
-possibly undefined, we write $e_1 \kleq e_2$ to indicate that either
-$e_1$ and $e_2$ are both undefined, or they are both defined and
-equal.
-
 \begin{definition}
   \label{def:pca}%
                                 %
@@ -1558,7 +1538,7 @@ equal.
   %
   \label{sym:cdot}%
   %
-  We usually write $x y$ instead of $x \cdot y$, and assume that
+  We usually write $x y$ instead of $x \cdot y$, and recall that
   application associates to the left. A PCA is required to satisfy,
   for all $x, y, z \in A$,
   %
@@ -1591,10 +1571,9 @@ only require two distinguished elements, the
 \emph{combinators}~$\combS$ and~$\combK$. However, we can build up the
 identity function, pairs, conditionals, natural numbers, and recursion
 just by combining the two basic combinators. In order to do this, we
-follow Longley~\cite{Longley:94} and introduce the notation
-$\pcalam{x}{e}$ where $x$ is a variable and $e$ is an expression
-involving variables, elements of~$A$, and application. The meaning
-of $\pcalam{x}{e}$ is defined inductively:
+introduce the notation $\pcalam{x}{e}$ where $x$ is a variable and $e$
+is an expression involving variables, elements of~$A$, and
+application. The meaning of $\pcalam{x}{e}$ is defined inductively:
 %
 \label{sym:pcalam}%
 \index{combinator!I@{$\combI$}}%
@@ -1619,20 +1598,7 @@ only valid in restricted cases.\footnote{
 %
 The notation $\pcalam{x}{e}$ saves a lot of space and makes
 expressions much more comprehensible, as even the translation of a
-simple term like $\pcalam{x y z}{(z x y)}$ is quite unwieldy,\footnote{
-%
-  The following \emph{Mathematica} program was used to translate terms:
-  %
-  \begin{quotation}\small
-  \noindent
-  \texttt{lam[x{\char95}Symbol, x{\char95}Symbol] := s[k][k]}\\
-  \texttt{lam[x{\char95}Symbol, y{\char95}Symbol] := k[y]}\\
-  \texttt{lam[x{\char95}Symbol, f{\char95}[g{\char95}]] := s[lam[x,f]][lam[x,g]]}\\
-  \texttt{lam[vars{\char95}List, f{\char95}] :=
-    Fold[lam[{\char35}2,{\char35}1]{\char38}, f, Reverse[vars]]}
-  \end{quotation}
-  %
-}
+simple term like $\pcalam{x y z}{(z x y)}$ is quite unwieldy,
 %
 \begin{equation*}
   \pcalam{x y z}{(z x y)} =
@@ -1663,7 +1629,7 @@ simple term like $\pcalam{x y z}{(z x y)}$ is quite unwieldy,\footnote{
 We review from~\cite[Chapter~1]{Longley:94} how to encode some basic programming
 constructs in a PCA.
 %
-\index{combinator!pair@{$\combPair$, $\pair{\place, \place}$}}%
+\index{combinator!pair@{$\combPair$}}%
 \index{combinator!fst@{$\combFst$}}%
 \index{combinator!snd@{$\combSnd$}}%
 \label{sym:combPair}%
@@ -1682,8 +1648,7 @@ $x, y \in A$,
 %
 Every PCA has a pairing $\combPair = \pcalam{x y z}{z x y}$, $\combFst
 = \pcalam{z}{z (\pcalam{x y}{x})}$, $\combSnd = \pcalam{z}{z
-  (\pcalam{x y}{y})}$. We write $\pair{x, y}$ instead of $\combPair x
-y$. 
+  (\pcalam{x y}{y})}$.
 
 Similarly, every PCA has
 %
@@ -1715,7 +1680,7 @@ The
 %
 \emph{Curry numerals} are defined for each $n \in \NN$ by
 $\overline{0} = \combI = \combS \combK \combK$ and $\overline{n+1} =
-\pair{\combFalse, \overline{n}}$. There exist elements
+\combPair \, \combFalse \, \overline{n}$. There exist elements
 %
 \index{combinator!successor@{successor ($\pcacomb{succ}$)}}%
 \index{combinator!predecessor@{predecessor ($\pcacomb{pred}$)}}%
@@ -1742,7 +1707,7 @@ for all $n \in \NN$,
   \end{cases}
 \end{align*}
 %
-To see this, take $\pcacomb{succ} = \pcalam{x}{\pair{\combFalse, x}}$, 
+To see this, take $\pcacomb{succ} = \pcalam{x}{\combPair \, \combFalse \,x}$, 
 $\pcacomb{iszero} = \combFst$, and $\pcacomb{pred} =
 \pcalam{x}{\combIf\, (\pcacomb{iszero}\, x) \overline{0} (\combSnd\, x)}$.
 

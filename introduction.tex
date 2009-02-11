@@ -1,5 +1,33 @@
-%\chapter{Introduction}
-%\label{chap:introduction}
+\chapter{Background material}
+\label{chap:background-material}
+
+In this chapter we overview a selection of concepts which we need
+later on. We also fix notation and a number of definitions. At the
+momement the sections are not listed in any particular order.
+
+\paragraph{Functions.}
+
+The set of all functions from $A$ to $B$ is denoted by $B^A$ or $A \to B$.
+
+\paragraph{Partial functions.}
+
+A \emph{partial} function\footnote{In the literature on Type Two
+  Effectivity the common notation is $f \subseteq {:} A \to B$.} $f:
+A \parto B$ is a function that is defined on a subset $\dom{f}
+\subseteq A$, called the \emph{domain} of~$f$. Sometimes there is
+confusion between the domain~$\dom{f}$ and the set~$A$, which is also
+called the domain. In such cases we call $\dom{f}$ the \emph{support}
+of~$f$. If $f: A \parto B$ is a partial function and $x \in A$, we
+write $f x \defined$ to indicate that $f x$ is defined. For an
+expression~$e$, we also write $e \defined$ to indicate that~$e$ and
+all of its subexpressions are defined. The symbol~$\defined$ is
+sometimes inserted into larger expressions, for example, $f x \defined
+= y$ means that $f x$ is defined and is equal to~$y$. If $e_1$ and
+$e_2$ are two expressions whose values are possibly undefined, we
+write $e_1 \kleq e_2$ to indicate that either $e_1$ and $e_2$ are both
+undefined, or they are both defined and equal.
+
+
 
 
 %%% Local Variables: 
