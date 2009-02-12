@@ -5,18 +5,17 @@
 \label{sec:realizability-basic-idea}
 
 Given a mathematical structure (constants, functions, relations, and
-axioms), what should a computer implementation look like?
-
-For simple cases, the answer is obvious. A group would have a type
-whose values represent group elements, a value representing the
-neutral element, and functions which compute the group operation and
-inverses. But for more interesting structures, especially those
-arising in constructive mathematical analysis, the answer is less
-clear. How do we implement the real numbers? Or choose the operations
-for a compact metric space or a space of smooth functions? Significant
-research goes into finding satisfactory
-representations~\cite{Wei00,TZ98,Bla97,edalat04:_domain_theor_differ_calcul_funct}
-answers.
+axioms), what should a computer implementation look like? For simple
+cases, the answer is obvious. A group would have a type whose values
+represent group elements, a value representing the neutral element,
+and functions which compute the group operation and inverses. But for
+more interesting structures, especially those arising in mathematical
+analysis, the answer is less clear. How do we implement the real
+numbers (and we do not mean floating-point arithmetic, we mean the
+\emph{real} real numbers)? Which operations on a compact metric space
+can be implemented? How do we implement a space of smooth functions?
+Significant research goes into finding satisfactory answers to such
+questions~\cite{Wei00,TZ98,Bla97,edalat04:_domain_theor_differ_calcul_funct}.
 
 To explain the basic idea behind realizability we consider a small
 real-world programming example. Suppose we are asked to design a data
