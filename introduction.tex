@@ -5,6 +5,32 @@ In this chapter we overview a selection of concepts which we need
 later on. We also fix notation and a number of definitions. At the
 momement the sections are not listed in any particular order.
 
+\paragraph{Free and bound variables.}
+
+Occurrences of variables in an expression may be \emph{free} or
+\emph{bound}. Variables are bound when they are used to indicate the
+range over which an operator acts. For example, in expressions
+%
+\begin{equation*}
+  \xall{x}{\RR}{x^2 + y \geq 0},
+  \qquad\qquad
+  \sum_{k = 0}^n \frac{1}{k^2},
+  \qquad\qquad
+  \int_a^b f(t) \, dt,
+\end{equation*}
+%
+the variables $x$, $k$, and $t$ are bound by the operators $\forall$,
+$\sum$, and $\int$, respectively. The remaining variables are free. It
+is really the \emph{occurrence} of a variable that is bound or free,
+not the variable itself. In
+%
+\begin{equation*}
+  P(x) \lor \xusome{x}{\lnot Q(x)}
+\end{equation*}
+%
+the left-most occurence of $x$ is free whereas the other two are bound
+by $\exists$.
+
 \paragraph{Functions.}
 
 The set of all functions from $A$ to $B$ is denoted by $B^A$ or $A \to B$.
@@ -12,14 +38,14 @@ The set of all functions from $A$ to $B$ is denoted by $B^A$ or $A \to B$.
 \paragraph{Partial functions.}
 
 A \emph{partial} function\footnote{In the literature on Type Two
-  Effectivity the common notation is $f \subseteq {:} A \to B$.} $f:
-A \parto B$ is a function that is defined on a subset $\dom{f}
-\subseteq A$, called the \emph{domain} of~$f$. Sometimes there is
-confusion between the domain~$\dom{f}$ and the set~$A$, which is also
-called the domain. In such cases we call $\dom{f}$ the \emph{support}
-of~$f$. If $f: A \parto B$ is a partial function and $x \in A$, we
-write $f x \defined$ to indicate that $f x$ is defined. For an
-expression~$e$, we also write $e \defined$ to indicate that~$e$ and
+  Effectivity the common notation is $f \mathbin{{:}{\subseteq}} A \to
+  B$.} $f: A \parto B$ is a function that is defined on a subset
+$\dom{f} \subseteq A$, called the \emph{domain} of~$f$. Sometimes
+there is confusion between the domain~$\dom{f}$ and the set~$A$, which
+is also called the domain. In such cases we call $\dom{f}$ the
+\emph{support} of~$f$. If $f: A \parto B$ is a partial function and $x
+\in A$, we write $f x \defined$ to indicate that $f x$ is defined. For
+an expression~$e$, we also write $e \defined$ to indicate that~$e$ and
 all of its subexpressions are defined. The symbol~$\defined$ is
 sometimes inserted into larger expressions, for example, $f x \defined
 = y$ means that $f x$ is defined and is equal to~$y$. If $e_1$ and

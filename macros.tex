@@ -84,6 +84,9 @@
 \newcommand{\xsnd}{\mathtt{snd}}
 \newcommand{\snd}[1]{\xsnd,#1}
 
+%%% Coding
+\newcommand{\code}[1]{\ulcorner #1 \urcorner}
+
 %%% Standard enumerations
 \newcommand{\xpr}{\text{\boldmath{$\varphi$}}}
 \newcommand{\pr}[2]{\xpr_{#1}(#2)}
@@ -93,7 +96,8 @@
 \newcommand{\fpr}[2]{\xfpr_{#1}(#2)}
 \newcommand{\fprm}[3]{\xfpr^{(#1)}_{#2}(#3)}
 
-\newcommand{\cons}[2]{#1 \mathbin{{:}{:}} #2}
+\newcommand{\cons}[2]{#1 {:} #2}
+\newcommand{\append}[2]{#1 \mathbin{{+}\!\!{+}} #2}
 \newcommand{\seq}[1]{[#1]}
 \newcommand{\seg}[2]{\overline{#1}(#2)}
 
