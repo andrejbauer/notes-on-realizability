@@ -88,6 +88,8 @@
 \newcommand{\code}[1]{\ulcorner #1 \urcorner}
 
 %%% Standard enumerations
+\newcommand{\enumstage}[2]{#1{\mid}_{#2}}
+
 \newcommand{\xpr}{\text{\boldmath{$\varphi$}}}
 \newcommand{\pr}[2]{\xpr_{#1}(#2)}
 \newcommand{\prm}[3]{\xpr^{(#1)}_{#2}(#3)}
@@ -107,6 +109,9 @@
 \newcommand{\ttfst}[1]{\mathtt{fst}\,#1}
 \newcommand{\ttsnd}[1]{\mathtt{snd}\,#1}
 \newcommand{\FV}[1]{\mathsf{FV}(#1)}
+
+%% Denotational semantics
+\newcommand{\sem}[1]{[\![#1]\!]}
 
 %% Logic
 \newcommand{\ctx}{\mid}

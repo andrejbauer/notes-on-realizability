@@ -786,8 +786,8 @@ $\pow{\NN}$ is in bijective correspondence with the set of all
 functions $\set{\bot, \top}^\NN$. If we equip the two-element set
 $\Sigma = \set{\bot, \top}$ with the \emph{Sierpinski topology} in
 which the open sets are $\emptyset$, $\set{\top}$, and $\Sigma$, then
-$\Scott$ becomes homeomorphic to $\Sigma^\NN$ equipped with the
-product topology.
+$\Scott$ turns out to be homeomorphic to $\Sigma^\NN$ equipped with
+the product topology.
 
 
 \begin{proposition}
@@ -890,14 +890,6 @@ continuous maps $\mathcal{C}(\Scott, \Scott)$ into $\Scott$. Here
 $\mathcal{C}(\Scott, \Scott)$ is equipped with the compact-open
 topology.
 
-Let us now discuss the role of $\Scott$ as a model of computation. A
-\emph{computably enumerable set (c.e.\ set)} $A \subseteq \NN$ is a
-one that can be enumerated by a Turing machine, i.e., it is the image
-of a partial computable function $\NN \parto \NN$.\footnote{We must
-  allow partial functions if we want the empty set to be computably
-  enumerable.} We say that an enumeration operator $f : \Scott \to
-\Scott$ is \emph{computable} if its graph $\Gamma(f)$ is a c.e.~set.
-
 There is also a pairing function $\pair{{-}, {-}} : \Scott \times
 \Scott \to \Scott$ which interleaves sets $A$ and $B$ as odd and even
 numbers, respectively,
@@ -909,6 +901,52 @@ numbers, respectively,
 This is actually a homeomorphism between $\Scott \times \Scott$ and
 $\Scott$.
 
+Let us now discuss the role of $\Scott$ as a model of computation. An
+\emph{enumeration} of a set $A \subseteq \NN$ is a function $e : \NN
+\to \NN$ such that
+%
+\begin{equation*}
+  A = \set{n \in \NN \such \xsome{k}{\NN}{e(k) = n + 1}}.
+\end{equation*}
+%
+In words, $e$ enumerates the elements of~$A$, incremented by $1$. The
+increment is needed so that~$e$ may enumerate the empty set by
+outputting only zeroes. The enumeration~$e$ may enumerate an element
+of~$A$ many times. The \emph{$k$-th stage} of an enumeration~$e$ is
+the set
+%
+\begin{equation*}
+  \enumstage{e}{k} = \set{n \in \NN \such \xusome{j < k}{e(j) = n + 1}}.
+\end{equation*}
+%
+The stages form an increasing chain of finite sets whose union is the
+set enumerated by~$e$. Clearly, every $A \subseteq \NN$ has an
+enumeration. A \emph{computably enumerable set (c.e.\ set)} $A
+\subseteq \NN$ is a one that has a computable enumeration.
+
+We say that an enumeration operator $f : \Scott \to \Scott$ is
+\emph{computable} if its graph $\Gamma(f)$ is a c.e.~set. In what
+sense can we ``compute'' with a computable enumeration operator?
+Suppose the graph of $f : \Scott \to \Scott$ is enumerated by~$e_f$
+and $A \subseteq \NN$ is enumerated by $e_A$. Then we may compute an
+enumeration $e_B$ of $B = f(A)$ as
+%
+\begin{equation*}
+  e_B(\code{(n, i, j)}) =
+  \begin{cases}
+    n + 1 & \text{if $\code{(\code{\enumstage{e_A}{i}}, n)} \in
+      \enumstage{e_f}{j}$,}\\
+    0 & \text{otherwise}.
+  \end{cases}
+\end{equation*}
+%
+Indeed, suppose $e_B(\code{(n,i,j)}) = n + 1$. Then $n \in
+f(\enumstage{e_A}{j})$, hence $n \in f(A)$ Conversely, if $n \in
+f(A)$, there exists $C \wayb A$ such that $n \in f(C)$, and for large
+enough $i$ and $j$ we have $C \subseteq \enumstage{e_A}{i}$ and
+$\code{(\code{\enumstage{e_A}{i}}, n)} \in \enumstage{e_f}{j}$, so
+that $e_B(\code{(n, i, j)}) = n + 1$.
+
 We do not bother formulating the utm and smn theorems for the graph
 model because we will see in the next section that they hold in a much
 more general context.
@@ -917,6 +955,12 @@ more general context.
 \section{$\lambda$-calculus and its models}
 \label{sec:lambda-calculus}
 
+
+We have so far considered a model of computation based on Turing
+machines, and two models of a topological nature, the Baire
+space~$\Baire$ and the graph model~$\Scott$. We now look at a purely
+syntactic model in which computation is expresses as manipulation of
+symbolic expressions.
 
 The $\lambda$-calculus is the abstract theory of functions, just like
 group theory is the abstract theory of symmetries. There are two basic
@@ -1207,8 +1251,8 @@ space~$D$. The interpretation should be standard in the sense that
 closed expressions represent points of~$D$, and expressions $e$ with a
 free variable~$x$ represent continuous maps $D \to D$. Abstraction
 converts a continuous map $D \to D$ to a point in $D$. And since every
-point $e \in D$ may be converted to the function $x \mapsto e\,x$, we
-expect to have a pair of maps
+point $e \in D$ may be converted to the function, we expect to have a
+pair of maps
 %
 \begin{equation*}
   \xymatrix{
@@ -1220,56 +1264,83 @@ expect to have a pair of maps
   }
 \end{equation*}
 %
-where~$\Gamma$ is a retraction and~$\Lambda$ its section. We have
-already seen this diagram: the graph model~$\Scott$ from
-Section~\ref{sec:graph-model} is an example. In general, a space $D$
-which contains its own function space as a retract is called a
-\emph{reflexive domain}.
+Furthermore, $\Gamma$ should be a retraction and~$\Lambda$ a section
+because in the untyped $\lambda$-calculus
+$\xulam{y}{(\xulam{x}{e\,x})\, y} = \xulam{y}{e\,y}$, provided $x$ and
+$y$ do not occur freely in~$e$. We have already seen the above
+diagram: the graph model~$\Scott$ from Section~\ref{sec:graph-model}
+is an example. In general, a non-trivial\footnote{By non-trivial we
+  mean that it contains more than just a single point.} topological
+space $D$ which contains its own function space $\mathcal{C}(D,D)$ as
+a retract is called a \emph{reflexive domain}.
 
-Another example of a reflexive domain is the universal Scott
-domain~$\UU$. It is the space of non-empty compact subsets of the
-Cantor space $\two^\NN$, ordered by reverse inclusion $\supseteq$. As
-a poset, $\UU$ has the least element $\two^\NN$, does not have a
-greatest element, and has singletons as maximal elements. Furthermore,
-it has suprema of directed families, which are computed as
-intersections,\footnote{This works because a directed intersection of
-  non-empty compact sets is non-empty.} as well as suprema of bounded
-families, which are also computed as intersections. Its \emph{Scott
-  topology} is countably-based and $T_0$, with basic open sets of the
-form
+If $D$ is a reflexive domain as above, we interpret a
+$\lambda$-calculus expression $e$ whose free variables are among $x_1,
+\ldots, x_n$ as a continuous map
 %
 \begin{equation*}
-  \upper{U} = \set{K \in \UU \such U \supseteq K}
+  \sem{x_1, \ldots, x_n \ctx e} : D^n \to D.
 \end{equation*}
 %
-where $U$ is an open subset of~$\two^\NN$. We do not prove that
-$\mathcal{C}(\UU, \UU)$ is a retract of~$\UU$ here.
-See~\cite{ScottGunter,Stoltenberg} for a details.
+We must explicitly list the variables which may occur freely in $e$ to
+keep track of which variable corresponds to which coordinate in $D^n$.
+We abbreviate the list $x_1, \ldots, x_n$ as $\Gamma$. For $a = (a_1,
+\ldots, a_n) \in D^n$ we define the meaning of $\sem{\Gamma \ctx x}$
+inductively on the structure of~$e$:
+%
+\begin{align*}
+  \sem{\Gamma \ctx x_k}(a) &= a_k, \\
+  \sem{\Gamma \ctx e_1\, e_2}(a) &= 
+  \Lambda(\sem{\Gamma \ctx e_1}(a))(\sem{\Gamma \ctx e_2}(a)), \\
+  \sem{\xulam{x}{e}}(a) &= \Gamma(f),
+\end{align*}
+%
+where in the last clause $f : D \to D$ is the map $f (b) =
+\sem{\Gamma, x \ctx e}(a_1, \ldots, a_n, b)$.
 
-The Baire space $\Baire$ from Section~\ref{sec:type-2} is almost a
-model of the untyped $\lambda$-calculus, if we use the realized
-functions instead of continuous ones. However, it is \emph{not} a
-model because realized functions are partial whereas application in
-$\lambda$-calculus is a total operation. In Section~\ref{sec:pcas} we
-shall define the relevant structure which generalizes the
-$\lambda$-calculus and allows application to be partial.
+To see how the $\lambda$-calculus helps prove things about reflexive
+domains, let us show that $D \times D$ is a retract of~$D$. A purely
+topological proof is doable, but it is much easier to just interpret
+pairing $\mathsf{pair} = \xulam{x y z}{z\,x\,y}$ in~$D$. Let $s : D
+\times D \to D$ be defined as
+%
+\begin{equation*}
+  s (a, b) = \sem{x,y \ctx \xulam{z}{z\,x\,y}}(a,b),
+\end{equation*}
+%
+and let $r : D \to D \times D$ be the map
+%
+\begin{equation*}
+  r(c) = (\sem{p \ctx p\,(\xulam{x y}{x})}(c),
+          \sem{p \ctx p\,(\xulam{x y}{y})}(c)).
+\end{equation*}
+%
+Then $r (s (a, b)) = (a, b)$ because $\lambda$-calculus proves
+%
+\begin{equation*}
+  (\xulam{x y}{x})\, x \, y = x
+  \qquad\text{and}\qquad
+  (\xulam{x y}{y})\, x \, y = y.
+\end{equation*}
+%
+As another example we observe that the utm and smn theorems are
+expressed easily in the untyped $\lambda$-calculus. The universal
+function $u$ from the utm theorem is $u = \xulam{x y}{x\, y}$ and the
+function $s$ from the smn theorem is $s = \xulam{p
+  z}{(\mathsf{fst}\,p)\,(\mathsf{pair}\,(\mathsf{snd}\, p)\,z)}$.
+Therefore, every reflexive domain enjoys the utm and smn theorems.
+
 
 \subsection{Simply typed $\lambda$-calculus}
-\label{sec:pcf}
+\label{sec:simply-typed-lambda-calculus}
 
 In simply\footnote{The calculus is called \emph{simple} because it
-  does not involve dependent types, which are universally considered
-  complicated, at least outside Scandinavia.} typed $\lambda$-calculus
-we assign to each expression a \emph{type}. The fact that
-expression~$e$ has a type~$A$ is written as
-%
-\begin{equation*}
-  t : A \;.
-\end{equation*}
-%
-To computer scientists the idea of expressions having types is
-familiar from programming languages. Mathematicians can think of types
-as sets and read $t : A$ as $t \in A$.
+  does not involve dependent types, which nobody outside Scandinavia
+  consideres to be simple.} typed $\lambda$-calculus we assign to each
+expression a \emph{type}. The fact that expression~$e$ has a type~$A$
+is written as $t : A$. aTo computer scientists the idea of expressions
+having types is familiar from programming languages. Mathematicians
+can think of types as sets and read $t : A$ as $t \in A$.
 
 Types are symbolic constructions and they do not necessarily denote
 any mathematical objects, although we may \emph{interpret} them as
@@ -1303,13 +1374,17 @@ Usually the simply typed $\lambda$-calculus also has the unit type and
 the product types.
 
 
-\subsection{Models of simply typed $\lambda$-calculus}
-\label{sec:models-typed-lambda-calculus}
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Partial combinatory algebras}
 \label{sec:pcas}
+
+The Baire space $\Baire$ from Section~\ref{sec:type-2} is almost a
+model of the untyped $\lambda$-calculus, if we use the realized
+functions instead of continuous ones. However, it is \emph{not} a
+model because realized functions are partial whereas application in
+$\lambda$-calculus is a total operation. In Section~\ref{sec:pcas} we
+shall define the relevant structure which generalizes the
+$\lambda$-calculus and allows application to be partial.
 
 We now consider a generalization of the $\lambda$-calculus which
 allows application to be a partial operation.
