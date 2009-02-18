@@ -564,21 +564,21 @@ Recall that a $G_\delta$-set is a countable intersection of open sets.
   $\fpr{\gamma}{\alpha}$ is defined then its value is the constant
   sequence $1, 1, 1, \ldots$, so we only need to verify that
   $\dom{\xfpr_\gamma} = U$. If $\alpha \in \dom{\xfpr_\gamma}$ then
-  $\gamma \star (\cons{i}{\alpha})$ is defined for every $i \in \NN$,
-  therefore there exists $c_i \in \NN$ such that $\gamma
-  (\code{\seg{(\cons{i}{\alpha})}{c_i + 1}}) = 2$, which implies that
-  $ a_{i, c_i} \sqsubseteq \alpha$. Hence
+  $\gamma \star (\cons{i}{\alpha})$ is defined for every $i \in \NN$.
+  For every $i \in \NN$ there exists $j_i \in \NN$ such that $\gamma
+  (\code{\seg{(\cons{i}{\alpha})}{1+j_i}}) = 2$, which implies that $
+  a_{i, j_i} \sqsubseteq \alpha$. Hence
   %
   \begin{equation*}
-    \alpha \in \bigcap_{i \in \NN} \cons{a_{i, c_i}}{\Baire} \subseteq U.
+    \alpha \in \bigcap_{i \in \NN} \cons{a_{i, j_i}}{\Baire} \subseteq U.
   \end{equation*}
   %
-  Conversely, if $\alpha \in U$ then for every $i \in \NN$ there
-  exists some $c_i \in \NN$ such that $a_{i, c_i} \sqsubseteq \alpha$.
-  For every $i \in \NN$, $\gamma (\code{\seg{(\cons{i}{\alpha})}{1 +
-      |a_{i,c_i}|}}) = 2$, therefore $\fpr{\gamma}{\alpha}(i) = \gamma
-  \star (\cons{i}{\alpha}) = 1$. Hence $\alpha \in
-  \dom{\xfpr_\gamma}$.
+  Conversely, suppose $\alpha \in U$ and consider any $i \in \NN$.
+  There exists $j \in \NN$ such that $a_{i,j} \sqsubseteq \alpha$,
+  therefore $\gamma (\code{\cons{i}{\seg{\alpha}{|a_{i,j}|}}}) =
+  \gamma(\code{\cons{i}{a_{i,j}}}) = 2$ so that $\gamma \star
+(\cons{i}{\alpha})$ is defined. We conclude that $\alpha \in
+\dom{\xfpr_\gamma}$.
 \end{proof}
 
 
@@ -709,7 +709,7 @@ the interleaved sequence $\beta(0), \gamma(0), \beta(1), \gamma(1),
 
 A model of computation may introduce features which are not easily
 detected, until we compare it with other models. For example, the
-innocuous-looking idea that the input be stored on a tape gives a type
+innocuous looking idea that the input be stored on a tape gives a type
 2 machine the ability to take into account the \emph{order} in which
 data is stored. In this section we consider a different model of
 infinite computation, the \emph{graph model} introduced by Dana
@@ -781,6 +781,15 @@ Leibniz's principle of identity.\footnote{The principle states that
 denote $\pow{\NN}$ by $\Scott$ when we think of it as a topological
 space equipped with the Scott topology.
 
+Another way to get the Scott topology of $\Scott$ is to observe that
+$\pow{\NN}$ is in bijective correspondence with the set of all
+functions $\set{\bot, \top}^\NN$. If we equip the two-element set
+$\Sigma = \set{\bot, \top}$ with the \emph{Sierpinski topology} in
+which the open sets are $\emptyset$, $\set{\top}$, and $\Sigma$, then
+$\Scott$ becomes homeomorphic to $\Sigma^\NN$ equipped with the
+product topology.
+
+
 \begin{proposition}
   The following are equivalent for a map $f : \Scott \to \Scott$:
   %
@@ -839,21 +848,28 @@ A continuous map on $\Scott$ is also called an \emph{enumeration
   operator}. The second part of the previous proposition tells us that
 every enumeration operator is determined by its values on finite sets.
 This gives us the idea that it should be possible to encode it by a
-set of numbers. Indeed, to every continuous $f : \Scott \to \Scott$ we
-assign its \emph{graph}
+set of numbers. First we encode a finite set of numbers $A \wayb \NN$
+as
 %
 \begin{equation*}
-  \Gamma(f) = \set{\pair{[m_0, \ldots, m_{k-1}], n} \in \NN \such
-    n \in f(\set{m_0, \ldots, m_{k-1}})
+  \code{A} = \sum_{n \in A} 2^n.
+\end{equation*}
+%
+Then we assign to every continuous $f : \Scott \to \Scott$ its
+\emph{graph}
+%
+\begin{equation*}
+  \Gamma(f) = \set{\code{(\code{A}, n)} \in \NN \such
+    A \wayb \NN \land n \in f(A)
   }.
 \end{equation*}
 %
-To every $A \in \Scott$ we assign a function $\Lambda(A) : \Scott \to
-\Scott$, defined by
+In the other direction, to every $G \in \Scott$ we assign a function
+$\Lambda(G) : \Scott \to \Scott$, defined by
 %
 \begin{equation*}
-  \Lambda(A)(B) = \set{n \in \NN \such
-    \xsome{m_0, \ldots, m_{k-1}}{B}{\pair{[m_0, \ldots, m_{k-1}], n} \in A}
+  \Lambda(G)(B) = \set{n \in \NN \such
+    \xusome{A \wayb B}{\code{(\code{A}, n)} \in G}
   }.
 \end{equation*}
 %
@@ -875,16 +891,15 @@ $\mathcal{C}(\Scott, \Scott)$ is equipped with the compact-open
 topology.
 
 Let us now discuss the role of $\Scott$ as a model of computation. A
-\emph{computably enumerable (c.e.) set} $A \subseteq \NN$ is a one
-that can be enumerated by a Turing machine, i.e., it is the image of a
-partial computable function $\NN \parto \NN$.\footnote{We must allow
-  partial functions if we want the empty set to be computably
-  enumerable.} We denote the family of c.e.~sets by $\cScott$. We say
-that an enumeration operator $f : \Scott \to \Scott$ is
-\emph{computable} if its graph $\Gamma(f)$ is a c.e.~set.
+\emph{computably enumerable set (c.e.\ set)} $A \subseteq \NN$ is a
+one that can be enumerated by a Turing machine, i.e., it is the image
+of a partial computable function $\NN \parto \NN$.\footnote{We must
+  allow partial functions if we want the empty set to be computably
+  enumerable.} We say that an enumeration operator $f : \Scott \to
+\Scott$ is \emph{computable} if its graph $\Gamma(f)$ is a c.e.~set.
 
-There is a pairing function $\pair{{-}, {-}} : \Scott \times \Scott
-\to \Scott$ which interleaves sets $A$ and $B$ as odd and even
+There is also a pairing function $\pair{{-}, {-}} : \Scott \times
+\Scott \to \Scott$ which interleaves sets $A$ and $B$ as odd and even
 numbers, respectively,
 %
 \begin{equation*}
@@ -892,9 +907,11 @@ numbers, respectively,
 \end{equation*}
 %
 This is actually a homeomorphism between $\Scott \times \Scott$ and
-$\Scott$. We are not going to bother formulating the utm and smn
-theorems for the graph model because we will see later that they hold
-in a much more general context.
+$\Scott$.
+
+We do not bother formulating the utm and smn theorems for the graph
+model because we will see in the next section that they hold in a much
+more general context.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{$\lambda$-calculus and its models}
@@ -1214,9 +1231,10 @@ domain~$\UU$. It is the space of non-empty compact subsets of the
 Cantor space $\two^\NN$, ordered by reverse inclusion $\supseteq$. As
 a poset, $\UU$ has the least element $\two^\NN$, does not have a
 greatest element, and has singletons as maximal elements. Furthermore,
-it has suprema of directed families intersections,\footnote{This works
-  because a directed intersection of non-empty compact sets is
-  non-empty.} as well as suprema of bounded families. Its \emph{Scott
+it has suprema of directed families, which are computed as
+intersections,\footnote{This works because a directed intersection of
+  non-empty compact sets is non-empty.} as well as suprema of bounded
+families, which are also computed as intersections. Its \emph{Scott
   topology} is countably-based and $T_0$, with basic open sets of the
 form
 %
@@ -1250,265 +1268,40 @@ expression~$e$ has a type~$A$ is written as
 \end{equation*}
 %
 To computer scientists the idea of expressions having types is
-familiar from programming languages, whereas mathematicians can think
-of types as sets and read $t : A$ as $t \in A$.
+familiar from programming languages. Mathematicians can think of types
+as sets and read $t : A$ as $t \in A$.
 
-We now give a precise definition of what constitutes a simply-typed
-$\lambda$-calculus. First, we are given a set of \emph{simple types},
-which are generated from \emph{basic types} by formation of products
-and function types:
-%
-\begin{align*}
-  \text{Basic type}\ \mathtt{B} &\bnfis
-  \mathtt{B}_0 \bnfor \mathtt{B}_1 \bnfor \mathtt{B}_2 \cdots \\
-  \text{Simple type}\ A &\bnfis \unit \bnfor \mathtt{B} \bnfor A_1 \times A_2 \bnfor
-  A_1 \to A_2.
-\end{align*}
-%
-Function types associate to the right so that $A \to B \to C$ means $A
-\to (B \to C)$. We assume there is a countable set of \emph{variables}
-$x, y, u, \ldots$ We may also be given some \emph{basic constants}.
-The set of \emph{terms} is generated from variables and basic
-constants by the following grammar:
-%
-\begin{align*}
-  \text{Variable}\ v &\bnfis x \bnfor y \bnfor z \bnfor \cdots \\
-  \text{Constant}\ c &\bnfis \mathtt{c}_1 \bnfor \mathtt{c}_2 \bnfor \cdots \\
-  \text{Term}\ t &\bnfis
-  v \bnfor
-  c \bnfor
-  \ttunit \bnfor
-  \pair{t_1, t_2} \bnfor
-  \ttfst{t} \bnfor
-  \ttsnd{t} \bnfor
-  t_1 \, t_2 \bnfor
-  \xtlam{x}{A}{t}
-\end{align*}
-%
-In words, this means:
+Types are symbolic constructions and they do not necessarily denote
+any mathematical objects, although we may \emph{interpret} them as
+such. In a given theory we may be given a supply of \emph{basic}
+types, and if $A$ and $B$ are types then we may form the type $A \to
+B$.
+
+The typed $\lambda$-calculus restricts application and
+$\lambda$-abstraction as follows:
 %
 \begin{enumerate}
-\item a variable is a term,
-\item each basic constant is a term,
-\item the constant $\ttunit$ is a term, called the \emph{unit},
-\item if $u$ and $t$ are terms then $\pair{u, t}$ is a term, called a
-  \emph{pair},
-\item if $t$ is a term then $\ttfst{t}$ and $\ttsnd{t}$ are terms,
-\item if $u$ and $t$ are terms then $u\, t$ is a term, called an
-  \emph{application},
-\item if $x$ is a variable, $A$ is a type, and $t$ is a term, then
-  $\xtlam{x}{A}{t}$ is a term, called a \emph{$\lambda$-abstraction}.
+\item We are given an infinite supply of variables. Whenever a
+  variable is used, we must indicate its type.
+\item If $e_1$ has type $A \to B$ and $e_2$ has type~$A$ then we may
+  form the application $e_1 \, e_2$, which has type $B$.
+\item If $x$ is a variable of type $A$ and $e$ is an expression of
+  type $B$ in which $x$ may occur freely, then we may form the
+  $\lambda$-abstraction $\xtlam{x}{A}{e}$ whose type is $A \to B$.
 \end{enumerate}
 %
-The variable~$x$ is \emph{bound} in $\xtlam{x}{A}{t}$. Application
-associates to the left, thus $s\, t\, u = (s\, t)\, u$. The \emph{free
-  variables}~$\FV{t}$ of a term~$t$ are computed as follows, where $x$
-is a variable and $c$ is a basic constant:
-%
-\begin{align*}
-  \FV{x} &= \set{x} \\
-  \FV{c} &= \emptyset \\
-  \FV{\pair{u, t}} &= \FV{u} \cup \FV{t} \\
-  \FV{\ttfst{t}} &= \FV{t} \\
-  \FV{\ttsnd{t}} &= \FV{t} \\
-  \FV{u \, t} &= \FV{u} \cup \FV{t} \\
-  \FV{\xulam{x}{t}} &= \FV{t} \setminus \set{x} \;.
-\end{align*}
-%
-If $x_1$, \dots, $x_n$ are \emph{distinct} variables and $A_1$,
-\dots, $A_n$ are types then the sequence
-%
-\begin{equation*}
-  x_1 : A_1, \ldots, x_n : A_n
-\end{equation*}
-%
-is a \emph{typing context}, or just \emph{context}. The empty sequence
-is sometimes denoted by a dot~$\cdot$, and it is a valid context.
-Context are denoted by capital Greek letters $\Gamma$, $\Delta$, \dots
+These rules prevent us from forming a self-application $e\, e$ because
+$e$ would have to have the type $A$ and $A \to A$ at the same time.
 
-A \emph{typing judgment} is a judgment of the form
-%
-\begin{equation*}
-  \Gamma \ctx t : A
-\end{equation*}
-%
-where~$\Gamma$ is a context,~$t$ is a term, and~$A$ is a type. In
-addition the free variables of~$t$ must occur in~$\Gamma$, but
-$\Gamma$ may contain other variables as well. We read the above
-judgment as ``in context~$\Gamma$ the term~$t$ has type~$A$''.
-Next we describe the rules for deriving typing judgments.
+The rule of $\beta$-reduction is adopted in the typed
+$\lambda$-calculus as well. The $\eta$-rule is typically adopted in
+mathematical settings, whereas in the theory of programming languages
+it is not. We will always be careful to state whether we are assuming
+the $\eta$-reduction.
 
-Each basic constant~$c_i$ has a uniquely determined type~$C_i$,
-%
-\begin{equation*}
-  \axiom{\Gamma \ctx \mathtt{c}_i : C_i}
-\end{equation*}
-%
-The type of a variable is determined by the context:
-%
-\begin{equation*}
-  \axiomd{
-    x_1: A_1, \ldots, x_i: A_i, \ldots, x_n: A_n
-    \ctx
-    x_i : A_i
-  }{(1 \leq i \leq n)}
-\end{equation*}
-%
-The constant $\ttunit$ has type $\unit$:
-%
-\begin{equation*}
-  \axiom{\Gamma \ctx \ttunit : \unit}
-\end{equation*}
-%
-The typing rules for pairs and projections are:
-%
-\begin{xalignat*}{3}
-  &
-  \infer{\Gamma \ctx u : A
-    \sep
-    \Gamma \ctx t : B
-  }{
-    \Gamma \ctx \pair{u, t} : A \times B
-  }
-  &
-  &\infer{\Gamma \ctx t : A \times B}{\Gamma \ctx \ttfst{t} : A}
-  &
-  &\infer{\Gamma \ctx t : A \times B}{\Gamma \ctx \ttsnd{t} : B}
-\end{xalignat*}
-%
-The typing rules for application and $\lambda$-abstraction are:
-%
-\begin{xalignat*}{2}
-  &
-  \infer{\Gamma \ctx t : A \to B
-    \sep
-    \Gamma \ctx u : A
-  }{
-    \Gamma \ctx t\, u : B
-  }
-  &
-  &
-  \infer{
-    \Gamma, x: A \ctx t : B
-  }{
-    \Gamma \ctx (\xtlam{x}{A}{t}) : A \to B
-  }
-\end{xalignat*}
-%
-Lastly, we have \emph{equations} between terms; for terms of type~$A$
-in context~$\Gamma$, 
-%
-\begin{xalignat*}{2}
-  & \Gamma \ctx u : A \;,
-  &
-  & \Gamma \ctx t : B \;,
-\end{xalignat*}
-%
-the judgment that they are equal is written as
-%
-\begin{equation*}
-  \Gamma \ctx u = t : A \;.
-\end{equation*}
-%
-Note that~$u$ and~$t$ necessarily have the same type; it does
-\emph{not} make sense to compare terms of different types. We have the
-following rules for equations:
-%
-\begin{enumerate}
-\item Equality is an equivalence relation:
-  %
-  \begin{equation*}
-    \axiom{\Gamma \ctx t = t : A}
-    \qquad
-    \infer{\Gamma \ctx t = u : A}{\Gamma \ctx u = t : A}
-    \qquad
-    \infer{\Gamma \ctx t = u : A \sep
-      \Gamma \ctx u = v : A
-    }{
-      \Gamma \ctx t = v : A
-    }
-  \end{equation*}
-\item The weakening rule:
-  %
-  \begin{equation*}
-    \infer{
-      \Gamma \ctx u = t : A
-    }{
-      \Gamma, x : B \ctx u = t : A
-    }
-  \end{equation*}
-  %
-\item Unit type:
-  %
-  \begin{equation*}
-    \axiom{\Gamma \ctx t = \ttunit : \unit}
-  \end{equation*}
-\item Equations for product types:
-  %
-  \begin{gather*}
-    \infer{\Gamma \ctx u = v : A \sep
-      \Gamma \ctx s = t : B}{
-      \Gamma \ctx \pair{u, s} = \pair{v, t} : A \times B}
-    \\
-    \infer{\Gamma \ctx s = t : A \times B}{
-      \Gamma \ctx \ttfst{s} = \ttfst{t} : A}
-    \qquad\qquad
-    \infer{\Gamma \ctx s = t : A \times B}{
-      \Gamma \ctx \ttsnd{s} = \ttsnd{t} : A}
-    \\
-    \axiom{\Gamma \ctx t = \pair{\ttfst{t}, \ttsnd{t}} : A \times B}
-    \\
-    \axiom{\Gamma \ctx \ttfst{\pair{u, t}} = u : A}
-    \qquad\qquad
-    \axiom{\Gamma \ctx \ttsnd{\pair{u, t}} = t : A}
-  \end{gather*}
-\item Equations for function types:
-  %
-  \begin{gather*}
-    \infer{\Gamma \ctx s = t : A \to B
-      \sep
-      \Gamma \ctx u = v : A
-    }{
-      \Gamma \ctx s\,u = t\,v : B
-    }
-    \\
-    \infer{
-      \Gamma, x: A \ctx t = u : B
-    }{
-      \Gamma \ctx (\xtlam{x}{A}{t}) = (\xtlam{x}{A}{u}) : A \to B
-    }
-    \\
-    \axiom{\Gamma \ctx (\xtlam{x}{A}{t}) u = \subst{t}{x \mapsto u} : A}
-    \tag{$\beta$-rule}
-    \\
-    \axiomd{\Gamma \ctx \tlam{x}{A}{t\, x} = t : A \to B
-    }{\text{\ if $x \not\in \FV{t}$}}
-    \tag{$\eta$-rule}
-  \end{gather*}
-\end{enumerate}
-%
-This completes the description of a simply-typed $\lambda$-calculus.
+Usually the simply typed $\lambda$-calculus also has the unit type and
+the product types.
 
-Apart from the above rules for equality we might want to impose
-additional equations. In this case we do not speak of a
-$\lambda$-calculus but rather of a \emph{$\lambda$-theory}. Thus, a
-$\lambda$-theory $\mathbb{T}$ is given by a set of basic types, a set
-of basic constants, and a set of \emph{equations} of the form
-%
-\begin{equation*}
-  \Gamma \ctx u = t : A \;.
-\end{equation*}
-%
-We summarize the preceding definitions.
-
-\begin{definition}
-  A \emph{simply-typed $\lambda$-calculus} is given by a set of
-  \emph{basic types} and a set of \emph{basic constants} together with
-  their types.
-  %
-  \emph{A simply-typed $\lambda$-theory} is a simply-typed
-  $\lambda$-calculus together with a set of equations.
-\end{definition}
 
 \subsection{Models of simply typed $\lambda$-calculus}
 \label{sec:models-typed-lambda-calculus}
