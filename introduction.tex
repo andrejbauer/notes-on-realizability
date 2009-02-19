@@ -51,14 +51,20 @@ $\dom{f} \subseteq A$, called the \emph{domain} of~$f$. Sometimes
 there is confusion between the domain~$\dom{f}$ and the set~$A$, which
 is also called the domain. In such cases we call $\dom{f}$ the
 \emph{support} of~$f$. If $f: A \parto B$ is a partial function and $x
-\in A$, we write $f x \defined$ to indicate that $f x$ is defined. For
-an expression~$e$, we also write $e \defined$ to indicate that~$e$ and
-all of its subexpressions are defined. The symbol~$\defined$ is
-sometimes inserted into larger expressions, for example, $f x \defined
-= y$ means that $f x$ is defined and is equal to~$y$. If $e_1$ and
-$e_2$ are two expressions whose values are possibly undefined, we
-write $e_1 \kleq e_2$ to indicate that either $e_1$ and $e_2$ are both
-undefined, or they are both defined and equal.
+\in A$, we write $\defined{f\, x}$ to indicate that $f x$ is defined.
+For an expression~$e$, we also write $\defined{e}$ to indicate
+that~$e$ and all of its subexpressions are defined. The
+symbol~$\downarrow$ is sometimes inserted into larger expressions, for
+example, $\defined{f\, x} = y$ means that $f x$ is defined and is
+equal to~$y$. If $e_1$ and $e_2$ are two expressions whose values are
+possibly undefined, we write $e_1 \kleq e_2$ to indicate that either
+$e_1$ and $e_2$ are both undefined, or they are both defined and
+equal. The notation $e_1 \klgeq e_2$ means that if $e_1$ is defined
+then $e_2$ is defined and they are equal. Thus we have
+%
+\begin{equation*}
+  e_1 \kleq e_2 \iff e_1 \klgeq e_2 \land e_2 \klgeq e_1.
+\end{equation*}
 
 
 

@@ -1371,7 +1371,11 @@ it is not. We will always be careful to state whether we are assuming
 the $\eta$-reduction.
 
 Usually the simply typed $\lambda$-calculus also has the unit type and
-the product types.
+the product types. We do not work out the details here because we will
+present a very similar, but more general system in
+Section~\ref{sec:tpcas}. We only mention that the simply typed
+$\lambda$-calculus is much less powerful than the untyped version
+because there is no way to get recursion going.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1401,81 +1405,97 @@ allows application to be a partial operation.
   \indexsee{PCA}{combinatory algebra, partial}%
   \indexsee{CA}{combinatory algebra, total}%
                                 %
-  A \emph{partial combinatory algebra (PCA)} $(A, \cdot, \combK,
-  \combS)$ is a set~$A$ with a
+  A \emph{partial combinatory algebra (PCA)} $(A, {\cdot})$ is a
+  set~$A$ with a
                                 %
   \index{application!partial in PCA}%
   \indexsee{partial!application}{application, partial in PCA}%
-  \label{sym:combK}%
-  \label{sym:combS}%
                                 %
-  \emph{partial} binary operation
-  $\place \cdot \place : A \times A \parto A$ and two
-  distinguished elements $\combK, \combS \in A$.
-  %
-  \label{sym:cdot}%
-  %
-  We usually write $x y$ instead of $x \cdot y$, and recall that
-  application associates to the left. A PCA is required to satisfy,
-  for all $x, y, z \in A$,
+  \emph{partial} binary operation $\place \cdot \place : A \times
+  A \parto A$. We usually write $x y$ instead of $x \cdot y$, and
+  recall that application associates to the left. Furthermore, there
+  must exist $\combK, \combS \in A$ such that, for all $x, y, z \in
+  A$,
   %
   \begin{xalignat*}{3}
     \combK x y &\simeq x \;, &
     \combS x y z &\simeq (x z)(y z) \;, &
-    \combS x y \defined& \;.
+    \defined{\combS x y} & \;.
   \end{xalignat*}
   %
   When application is total $A$ is a \emph{(total) combinatory
     algebra (CA)}.
-                                %
-  \indexdef{subPCA}%
-  \label{sym:subPCA}%
-                                %
-  A \emph{subPCA} $A'$ of a PCA $(A, \cdot,
-  \combK, \combS)$ is a subset $A' \subseteq A$ that contains
-  $\combK$ and $\combS$, and is closed under application.
 \end{definition}
 
-It may seem that PCAs are not much of a model of computation, since we
-only require two distinguished elements, the
+The definition looks strange at first. Where did $\combK$ and $\combS$
+come from? Theorem~\ref{th:combinatory-completeness} below explains
+that the reason for this definition is a property called
+\emph{combinatory completeness}.
+
+For a PCA $A$ we define \emph{expressions over~$A$} inductively as
+follows:
 %
-\indexdef{combinator}%
-\index{combinator!K@{$\combK$}}%
-\index{combinator!S@{$\combS$}}%
-\index{K@{$\combK$}}%
-\index{S@{$\combS$}}%
+\begin{itemize}
+\item every $a \in A$ is an expression over~$A$,
+\item a variable is an expression over~$A$,
+\item if $e_1$ and $e_2$ are expressions then $e_1 \cdot e_2$ is an
+  expression over~$A$.
+\end{itemize}
 %
-\emph{combinators}~$\combS$ and~$\combK$. However, we can build up the
-identity function, pairs, conditionals, natural numbers, and recursion
-just by combining the two basic combinators. In order to do this, we
-introduce the notation $\pcalam{x}{e}$ where $x$ is a variable and $e$
-is an expression involving variables, elements of~$A$, and
-application. The meaning of $\pcalam{x}{e}$ is defined inductively:
+An expression is \emph{closed} if it contains no variables. We say
+that a closed expression $e$ is \emph{defined} and write $\defined{e}$
+when all applications in~$e$ are defined so that $e$ denotes an
+element of~$A$. More generally, if $e$ is an expression with variables
+$x_1, \ldots, x_n$, we write $\defined{e}$ when, for all $a_1, \ldots,
+a_n \in A$, the closed expression
 %
-\label{sym:pcalam}%
-\index{combinator!I@{$\combI$}}%
-\index{I@{$\combI$}}%
-\label{sym:combI}%
+\begin{equation*}
+  \subst{e}{x_1 \mapsto a_1, \ldots, x_n \mapsto a_n}
+\end{equation*}
 %
-$\pcalam{x}{x} = \combI =
-\combS \combK \combK$; $\pcalam{x}{y} = \combK y$ if $y$ is a constant
-or a variable other than~$x$; $\pcalam{x}{e_1 e_2} = \combS
-(\pcalam{x}{e_1}) (\pcalam{x}{e_2})$. We abbreviate
-$\pcalam{x}{\pcalam{y}{e}}$ as $\pcalam{x y}{e}$, and similarly for
-more than two variables. The notation $\pcalam{x}{e}$ is meta-notation
-for an expression involving $\combK$, $\combS$, variables, and
-elements of~$A$. It suggests a relation to the untyped
-$\lambda$-calculus, but we must be careful as $\beta$-reduction is
-only valid in restricted cases.\footnote{
+is defined. If $e$ and $e'$ are expressions whose variables are among
+$x_1, \ldots, x_n$, we write $e \kleq e'$ when, for all $a_1, \ldots,
+a_n \in A$,
 %
-  See~\cite[Chapter~1]{Longley:94} for further details about the
-  notation~$\pcalam{x}{e}$.
-%
-}
-%
-The notation $\pcalam{x}{e}$ saves a lot of space and makes
-expressions much more comprehensible, as even the translation of a
-simple term like $\pcalam{x y z}{(z x y)}$ is quite unwieldy,
+\begin{equation*}
+  \subst{e}{x_1 \mapsto a_1, \ldots, x_n \mapsto a_n} \kleq
+  \subst{e'}{x_1 \mapsto a_1, \ldots, x_n \mapsto a_n}.
+\end{equation*}
+
+\begin{theorem}
+  \label{th:combinatory-completeness}
+  Let $(A, {\cdot})$ be a PCA. For every variable $x$ and expression
+  $e$ over $A$ there is an expression $e'$ over $A$ whose variables
+  are those of~$e$ excluding~$x$ such that $\defined{e'}$ and $e'
+  \cdot a \kleq \subst{e}{x \mapsto a}$ for all $a \in A$.
+\end{theorem}
+
+\begin{proof}
+  We give a construction of such an expression $\pcalam{x}{e}$:
+  %
+  \begin{enumerate}
+  \item $\pcalam{x}{x} = \combS \combK \combK$,
+  \item $\pcalam{x}{y} = \combK y$ if $y$ is a variable distinct from~$x$,
+  \item $\pcalam{x}{a} = \combK a$ if $a$ is an element of~$A$,
+  \item $\pcalam{x}{e_1 e_2} = \combS (\pcalam{x}{e_1}) (\pcalam{x}{e_2})$
+  \end{enumerate}
+  %
+  We omit the verification that $e' = \pcalam{x}{e}$ has the required
+  properties. See~\cite{longley:phd} for details.
+\end{proof}
+
+The meta-notation $\pcalam{x}{e}$ plays a role similar to that of
+$\lambda$-abstraction in the untyped $\lambda$-caclulus. We need to be
+careful with the ``$\beta$-rule'' because it is only valid in a
+restricted sense, see~\cite{longley:phd}.
+
+Just like in the case of untyped $\lambda$-calculus, we can build up
+the identity function, pairs, conditionals, natural numbers, and
+recursion by combining the two basic combinators $\combK$ and
+$\combS$. In doing so the notation $\pcalam{x}{e}$ is handy because it
+saves a lot of space and makes expressions much more comprehensible,
+as even the translation of a simple term like $\pcalam{x y z}{(z x
+  y)}$ is quite unwieldy,
 %
 \begin{equation*}
   \pcalam{x y z}{(z x y)} =
@@ -1503,8 +1523,8 @@ simple term like $\pcalam{x y z}{(z x y)}$ is quite unwieldy,
 \end{equation*}
 %
 
-We review from~\cite[Chapter~1]{Longley:94} how to encode some basic programming
-constructs in a PCA.
+The encoding of basic programming constructs is similar to the
+encoding by untyped $\lambda$-calculus.
 %
 \index{combinator!pair@{$\combPair$}}%
 \index{combinator!fst@{$\combFst$}}%
@@ -1513,51 +1533,17 @@ constructs in a PCA.
 \label{sym:combFst}%
 \label{sym:combSnd}%
 %
-A \emph{pairing} for $A$ is a triple of
-elements $\combPair, \combFst, \combSnd \in A$ such that, for all
-$x, y \in A$,
-%
-\begin{equation*}
-  \combPair x y \defined        \;,\qquad
-  \combFst (\combPair x y) = x  \;,\qquad
-  \combSnd (\combPair x y) = y  \;.\qquad
-\end{equation*}
-%
-Every PCA has a pairing $\combPair = \pcalam{x y z}{z x y}$, $\combFst
-= \pcalam{z}{z (\pcalam{x y}{x})}$, $\combSnd = \pcalam{z}{z
-  (\pcalam{x y}{y})}$.
-
-Similarly, every PCA has
-%
-\index{combinator!Booleans}%
-\index{combinator!if@{$\combIf$}}%
-\index{combinator!false@{$\combFalse$}}%
-\index{combinator!true@{$\combTrue$}}%
-\label{sym:combIf}%
-\label{sym:combTrue}%
-\label{sym:combFalse}%
-%
-\emph{Booleans} $\combIf, \combTrue,
-\combFalse \in A$ that satisfy, for all $x, y, z \in A$,
-%
-\begin{equation*}
-  \combIf\; x\; y \defined \;,\qquad
-  \combIf\; \combTrue\;  y\; z = y \;,\qquad
-  \combIf\; \combFalse\; y\; z = z \;.
-\end{equation*}
-%
-For example, we can take $\combTrue = \pcalam{y z}{y}$, $\combFalse =
-\pcalam{y z}{z}$, and $\combIf = \pcalam{x y z}{x y z}$.
-
-The
+Pairing, projections, Boolean values and conditional statement are the
+same, except that $\lambda$-abstraction must be replaced by
+$\lambda^{*}$-notation. For natural numbers we may use the
 %
 \index{combinator!Curry numeral}%
 \index{Curry numeral}%
 \label{sym:curry_numeral}%
 %
-\emph{Curry numerals} are defined for each $n \in \NN$ by
-$\overline{0} = \combI = \combS \combK \combK$ and $\overline{n+1} =
-\combPair \, \combFalse \, \overline{n}$. There exist elements
+\emph{Curry numerals} which are defined by $\overline{0} = \combI =
+\combS \combK \combK$ and $\overline{n+1} = \combPair \, \combFalse \,
+\overline{n}$. There exist elements
 %
 \index{combinator!successor@{successor ($\pcacomb{succ}$)}}%
 \index{combinator!predecessor@{predecessor ($\pcacomb{pred}$)}}%
@@ -1598,8 +1584,7 @@ In a PCA we can define functions by recursion by using the
 \label{sym:combZ}%
 \label{sym:combW}%
 %
-\emph{fixed 
-  point combinators~$\combY$ and $\combZ$}, defined by
+\emph{fixed point combinators~$\combY$ and $\combZ$}, defined by
 %
 \begin{alignat*}{2}
   W &= \pcalam{x y}{y(x x y)}\;, &
@@ -1615,7 +1600,7 @@ These combinators satisfy, for all $f \in A$,
 \begin{equation*}
   \combY f \kleq f (\combY f) \;,
   \qquad
-  \combZ f \defined \;,
+  \defined{\combZ f} \;,
   \qquad
   (\combZ f) z \kleq f (\combZ f) z \;.
 \end{equation*}
@@ -1641,45 +1626,177 @@ where $R = \pcalam{r x f m}{\combIf (\pcacomb{iszero}\, m) (\combK x)
 \end{equation*}
 %
 It turns out that every partial recursive function can be encoded in a
-PCA, and so PCAs are Turing complete~\cite[VI.2.8]{Beeson:85}. Let us
-now consider some examples of PCAs.
+PCA, and so PCAs are Turing complete. Let us now consider some
+examples of PCAs.
 
-
-\section{Examples of partial combinatory algebras}
+\subsection{Examples of partial combinatory algebras}
 \label{sec:pca-examples}
 
+The models of computation that we have considered so far are all
+examples of partial combinatory algebras.
 
+\paragraph{First Kleene Algebra.}
+
+Turing machines, or more precisely their codes, form a PCA whose
+application is defined as $m \cdot n = \pr{m}{n}$. Because $m \cdot n$
+can be easily confused with multiplication, a popular alternative
+notation for this algebra is $\set{m}(n)$, but we shall not use it.
+
+\paragraph{Second Kleene Algebra.}
+
+Type 2 Turing machines, or more precisely the Baire space~$\Baire$, is
+a PCA whose application is defined as $\alpha \cdot \beta =
+\fpr{\alpha}{\beta}$.
+
+There are actually two version, the \emph{continuous} second Kleene
+algebra which consists of the entire Baire space, and the
+\emph{computable} one, which consists only of the computable sequences
+in~$\Baire$.
+
+\paragraph{Untyped $\lambda$-calculus.}
+
+The closed expressions of the untyped $\lambda$-calculus form a
+(total) combinatory aglebra whose application is the one from
+$\lambda$-calculus. The combinators are $\combK = \xulam{x y}{x}$ and
+$\combS = \xulam{x y z}{(x \, z)(y \, z)}$.
+
+\paragraph{The graph model and reflexive domains.}
+
+The graph model $\Scott$, and in fact any reflexive domain~$D$ is a
+combinatory algebra with application defined by $a \cdot b =
+\Lambda(a)(b)$, where $\Lambda : D \to \mathcal{C}(D, D)$ is the
+retraction onto the function space. The combinators $\combK$ and
+$\combS$ are (the interpretations of) those from the untyped
+$\lambda$-calculus. The graph model contains a computable subalgebra
+of c.e.~sets.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Real-world programming languages}
+
+\section{Typed partial combinatory algebras}
+\label{sec:tpcas}
+
+As we have just seen, partial combinatory algebras are general enough
+to subsume many models of computation. Nevertheless, they lack an
+important feature which many programming languages have, namely
+\emph{types} that force us to observe certain rules for well-formed
+programs. In contrast, a PCA has no restriction whatsoever how
+application is formed. What we are looking for is \emph{typed PCA},
+which was defined by John Longley.
+
+A \emph{type world} $\mathcal{T}$ is a non-empty family, whose
+elements are called \emph{types}, equipped with two binary operations
+$\times$ and $\to$. A \emph{typed partial combinatory algebra (TPCA)}
+$A$ over a type world $\mathcal{T}$ consists of
+%
+\begin{enumerate}
+\item a set $A_t$ for each $t \in \mathcal{T}$, and
+\item a partial function $\cdot_{s,t} : A_{s \to t} \times A_s \to
+  A_t$, called \emph{application}, for each $s, t \in \mathcal{T}$,
+\end{enumerate}
+%
+such that for any types $s, t, u \in \mathcal{T}$ there exist elements
+%
+\begin{align*}
+  \combK_{s,t} &\in A_{s \to t \to s} \\
+  \combS_{s,t,u} &\in A_{(s \to t \to u) \to (s \to t) \to s \to u} \\
+  \combPair_{s,t} &\in A_{s \to t \to s \times t} \\
+  \combFst_{s,t} &\in A_{s \times t \to s} \\
+  \combSnd_{s,t} &\in A_{s \times t \to t} \\
+\end{align*}
+%
+We usually omit the subscripts and write $x \, y$ for $x \cdot_{s,t} y$.
+For all elements $x, y, z$ of appropriate types we require:
+%
+\begin{align*}
+  \combK \, x \, y &= x \\
+  \defined{\combS \, x \, y} & \\
+  \combS \, x \, y \, z &\klgeq  (x \, z) (y \, z) \\
+  \combFst \, (\combPair \, x \, y) &= x \\
+  \combSnd \, (\combPair \, x \, y) &= y
+\end{align*}
+
+
+A \emph{TPCA with numerals (N-TPCA)} is a TPCA $A$ in which there is a
+type $\ttnat$ and elements
+%
+\begin{align*}
+  \numeral{0}, \numeral{1}, \numeral{2}, \ldots &\in A_{\ttnat} \\
+  \combSucc &\in A_{\ttnat \to \ttnat} \\
+  \combPRec_s &\in A_{s \to (\ttnat \to s \to s) \to \ttnat \to s}
+\end{align*}
+%
+such that for all $x$, $f$ of appropriate types and all $n \in \NN$
+%
+\begin{align*}
+  \combSucc \, \numeral{n} &= \numeral{n + 1} \\
+  \combPRec \, x \, f \, \numeral{0} &= x \\
+  \combPRec \, x \, f \, \numeral{n+1} &= f \, \numeral{n} \,
+     (\combPRec \, x \, f \, \numeral{n})
+\end{align*}
+
+A \emph{TPCA with numerals and general recursion (NR-TPCA)} is a
+N-TPCA $A$ containing elements
+%
+\begin{equation*}
+  \combY_{s,t} \in A_{(s \to t) \to (s \to t)) \to (s \to t)}
+\end{equation*}
+%
+such that for all $f \in A_{(s \to t) \to (s \to t)}$ and $x \in A_s$
+we have
+%
+\begin{align*}
+  \defined{\combY \, f} & \\
+  \combY \, f \, x &\klgeq f \, (\combY\, f) \, x
+\end{align*}
+
+\subsection{Examples of TPCAs}
+\label{sec:examples-tpcas}
+
+More details will be filled in this section.
+
+\paragraph{Partial combinatory algebras.}
+
+Every PCA $A$ is a NR-TPCA with over the trivial type world
+$\mathcal{T} = \set{\star}$ in which $\star \times \star = \star \to
+\star = \star$ and $A_\star = A$.
+
+\paragraph{Simply typed $\lambda$-calculus.}
+
+Simply typed $\lambda$-calculus is a TPCA over the types generated
+from a collection of basic types with operations $\times$ and $\to$.
+
+\paragraph{G\"odel's $T$.}
+
+G\"odel's $T$ is a N-TPCA. It is succinctly described as a minimal
+model of simply-typed $\lambda$-calculus with natural numbers and
+primtive recursion. It is a total algebra because application is
+always total. The types are formed inductively from $\ttnat$ using
+$\times$ and $\to$.
+
+\paragraph{PCF.}
+
+PCF is a minimalist functional programming language with natural
+numbers, Booleans, and general recursion. It is an example of NR-TPCA.
+PCF is a fragment of Haskell.
+
+\paragraph{PCF with a monad.}
+
+Given a monad $m$, as in Haskell, we define a NR-TPCA $A$ by
+taking $A_{s \to t} = A_s \to m\,A_t$. More details to follow.
+
+
+\paragraph{Real-world programming languages}
 \label{sec:programming-languages}
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Comparison of models of computation}
-\label{sec:models-comparison}
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Further reading}
-\label{sec:models-further-reading}
-
-As a general introduction to Turing machines and classical
-computability theory I recommend Piergiorgio Oddifreddi's
-book~\cite{Oddifreddi}. Also suitable and perhaps more readily
-available textbook is Hartley Rogers~\cite{Rogers}. If you would like
-to see Turing machines done rigorously and in gory detail, look at
-Martin Davis's booklet~\cite{Davis}.
-
-
-Graph model was preceded by enumeration operators, but nobody saw that
-it gave a $\lambda$-model. Mention programming language corresponding
-to the graph model.
-
-Reflexive spaces and non-existence of Hausdorff reflexive spaces
-(reference Mislove).
+Real-world programming languages, such as C/C++, fortran, Java, and
+Python, are not mathematical objects because they do not have precise
+mathematical definitions. An exception to this rule is SML which has a
+formal mathematical definition, see~\cite{definition-SML}. Ocaml and
+Haskell also come close having formal specification. Nevertheless,
+when it comes to actual implementation of computable structures, we
+shall use real-world programming languages as if they were NR-TPCAs
+since they mostly are, anyway.
 
 
 %%% Local Variables: 

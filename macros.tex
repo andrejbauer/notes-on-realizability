@@ -73,8 +73,8 @@
 \newcommand{\dom}[1]{\mathsf{dom}(#1)}
 \newcommand{\invim}[1]{{#1}^{-1}}
 
-\newcommand{\defined}{\,{\downarrow}}
-\newcommand{\divergent}{\,{\uparrow}}
+\newcommand{\defined}[1]{#1\,{\downarrow}}
+\newcommand{\divergent}[1]{#1\,{\uparrow}}
 \newcommand{\place}{{-}}
 
 %%% Pairing
@@ -109,6 +109,7 @@
 \newcommand{\ttfst}[1]{\mathtt{fst}\,#1}
 \newcommand{\ttsnd}[1]{\mathtt{snd}\,#1}
 \newcommand{\FV}[1]{\mathsf{FV}(#1)}
+\newcommand{\ttnat}{\mathtt{nat}}
 
 %% Denotational semantics
 \newcommand{\sem}[1]{[\![#1]\!]}
@@ -146,6 +147,8 @@
 %%%% PCAs
 \newcommand{\pcalam}[2]{\lambda^{*} #1 .\,#2}
 \newcommand{\kleq}{\simeq}
+\newcommand{\klgeq}{\succeq}
+\newcommand{\numeral}[1]{\overline{#1}}
 
 \newcommand{\pcacomb}[1]{\mathtt{#1}}
 
@@ -160,9 +163,13 @@
 \newcommand{\combZ}{\pcacomb{Z}}
 \newcommand{\combW}{\pcacomb{W}}
 
-\newcommand{\combPair}{\pcacomb{pair}\,}
-\newcommand{\combFst}{\pcacomb{fst}\,}
-\newcommand{\combSnd}{\pcacomb{snd}\,}
+\newcommand{\combPair}{\pcacomb{pair}}
+\newcommand{\combFst}{\pcacomb{fst}}
+\newcommand{\combSnd}{\pcacomb{snd}}
+
+\newcommand{\combSucc}{\pcacomb{succ}}
+
+\newcommand{\combPRec}{\pcacomb{snd}}
 
 \newcommand{\combIf}{\pcacomb{if}}
 \newcommand{\combTrue}{\pcacomb{true}}
