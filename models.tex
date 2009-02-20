@@ -102,7 +102,8 @@ The answer was given by Turing.
   machine is sitting right here on my desk.\footnote{You have to
     ignore the fact the several hundred gigabytes of storage are not
     quite the same thing as an infinite tape. Also, modern compuers
-    are really \emph{Von Neumann} machines~\cite{vonNeumann} because
+    are really \emph{Von Neumann}
+    machines~\cite{goldstein47:_repor_mathem_and_logic_aspec} because
     they have a central processing unit and random access memory
     instead of a tape.}
 \end{proof}
@@ -194,7 +195,7 @@ Because we defined $\code{(m,n)}$ so that it is never zero, the
 elements of a sequence may be uniquely reconstructed from its code. By
 continuing in this manner we may encode with a single number a finite
 sequence of computatation steps, including the contents of the tapes
-and positions of the heads at each step. Stephen Kleene~\cite{kleeneT}
+and positions of the heads at each step. Stephen Kleene~\cite{kleene43:_recur_predic_and_quant}
 worked out the details of all this and defined the predicate
 $T(x,y,z)$ whose meaning is
 %
@@ -212,9 +213,9 @@ computation encoded by $z$''. The function $U$ allows us to extract
 the result of a computation. If $z$ does not encode a terminating
 computation then $U(z)$ is undefined.
 
-Kleene's normal form theorem~\cite{Kleene-normal-form} says that every
-parital computable function $f : \NN \parto \NN$ may be written in the
-form
+Kleene's normal form theorem~\cite{kleene43:_recur_predic_and_quant}
+says that every parital computable function $f : \NN \parto \NN$ may
+be written in the form
 %
 \begin{equation}
   \label{eq:kleene-normal-form}
@@ -835,7 +836,7 @@ innocuous looking idea that the input be stored on a tape gives a type
 2 machine the ability to take into account the \emph{order} in which
 data appear. In this section we consider a different model of infinite
 computation, the \emph{graph model}, introduced by Dana
-Scott~\cite{graph-model}, in which we use sets of numbers rather than
+Scott~\cite{ScottD:dattl}, in which we use sets of numbers rather than
 sequences.
 
 How is computation of a map $f : \pow{\NN} \to \pow{\NN}$, where
@@ -1229,7 +1230,7 @@ computations''. An expression which does not have a normal form is
 like an undefined value.
 
 It may seem a bit surprising, but $\lambda$-calculus is as powerful as
-Turing machines, and was proposed by Alonzo Church~\cite{church} as a
+Turing machines, and was proposed by Alonzo Church~\cite{Church} as a
 notion of computability before Turing invented his machines. In
 $\lambda$-calculus we may write seemingly non-sensical expressions,
 such as $e\, e$. It is a bit puzzling how $e$ could be both a function
@@ -1359,7 +1360,7 @@ elements of a set~$D$. We expect abstractions to represent functions,
 which means that $D \to D$ can be embedded into~$D$. But the only set
 with this property is the singleton!
 
-The solution was discovered by Dana Scott~\cite{Scott:Dinfty} who
+The solution was discovered by Dana Scott~\cite{scott72:_contin_lattic} who
 constructed a non-trivial topological space $D_\infty$ such that the
 space of continuous functions $\mathcal{C}(D_\infty, D_\infty)$,
 equipped with the compact-open topology, is homeomorphic
@@ -1603,13 +1604,13 @@ a_n \in A$,
   \end{enumerate}
   %
   We omit the verification that $e' = \pcalam{x}{e}$ has the required
-  properties. See~\cite{longley:phd} for details.
+  properties. See~\cite{LongleyJ:reatls} for details.
 \end{proof}
 
 The meta-notation $\pcalam{x}{e}$ plays a role similar to that of
 $\lambda$-abstraction in the untyped $\lambda$-caclulus. We need to be
 careful with the ``$\beta$-rule'' because it is only valid in a
-restricted sense, see~\cite{longley:phd}.
+restricted sense, see~\cite{LongleyJ:reatls}.
 
 Just like in the case of untyped $\lambda$-calculus, we can build up
 the identity function, pairs, conditionals, natural numbers, and
@@ -1920,7 +1921,7 @@ taking $A_{s \to t} = A_s \to m\,A_t$. More details to follow.
 Real-world programming languages, such as C/C++, fortran, Java, and
 Python, are not mathematical objects because they do not have precise
 mathematical definitions. An exception to this rule is SML which has a
-formal mathematical definition, see~\cite{definition-SML}. Ocaml and
+formal mathematical definition, see~\cite{MilnerR:defsml}. Ocaml and
 Haskell also come close having formal specification. Nevertheless,
 when it comes to actual implementation of computable structures, we
 shall use real-world programming languages as if they were NR-TPCAs
