@@ -3,8 +3,9 @@
 
 
 A \emph{model of computation} describes what computation is and how it
-is done. The best known is Alan Turing's model~\cite{Turing} in which
-a machine manipulates the contents of a tape according to a finite set
+is done. The best known is Alan Turing's
+model~\cite{turing37:_comput_number_with_applic_to_entsc} in which a
+machine manipulates the contents of a tape according to a finite set
 of instructions. It has become the yardstick with which we measure
 other models of computation. Turing's notion of computability is very
 robust. Firstly, it is robust because changes to the definition of
@@ -21,8 +22,8 @@ learn about computable mathematics. Our inquiry into the nature of
 computation, especially computation with infinite structures, will
 reveal a plethora of possibilities which are \emph{not} equivalent.
 Thus we begin the chapter with a review of several models of
-computation. We then discuss the question of what a model of
-computation might be in general, and how such models are compared.
+computation, which then leads us to a general definition of
+computational models.
 
 
 \section{Turing machines}
@@ -32,7 +33,7 @@ We recall informally how a Turing machine operates. There is little
 point in giving a formal definition because we do not intend to
 actually write programs for Turing machines. If you are not familiar
 with Turing machines we recommend one of standard textbooks on the
-subject~\cite{Computability-textbooks}.
+subject~\cite{odifreddi89:_class_recur_theor,h.r.92:_theor_recur_funct_effec_comput,davis58:_comput_unsol}.
 
 \begin{figure}[htbp]
   \centering
@@ -72,7 +73,7 @@ Our version of Turing machine is different from the usual one, where a
 machine is equipped with only a single tape that serves for input,
 output, and intermediate work. The two formulations are equivalent in
 the sense that a single-tape machine can simulate the workings of a
-Turing maechine with several tapes, and vice versa. Our variant will
+Turing machine with several tapes, and vice versa. Our variant will
 ease the description of infinite computations in
 Section~\ref{sec:type-2}.
 
@@ -96,13 +97,14 @@ The answer was given by Turing.
 \begin{proof}
   A traditional proof may be found in any book on computability
   theory, and there is nothing wrong with reading the original
-  proof~\cite{Turing} either. For me a much more convincing proof is
-  the fact that a universal machine is sitting right here on my
-  desk.\footnote{You have to ignore the fact the several hundred
-    gigabytes of storage are not quite the same thing as an infinite
-    tape. Also, modern compuers are really \emph{Von Neumann}
-    machines~\cite{vonNeumann} because they have a central processing
-    unit and random access memory instead of a tape.}
+  proof~\cite{turing37:_comput_number_with_applic_to_entsc} either.
+  For me a much more convincing proof is the fact that a universal
+  machine is sitting right here on my desk.\footnote{You have to
+    ignore the fact the several hundred gigabytes of storage are not
+    quite the same thing as an infinite tape. Also, modern compuers
+    are really \emph{Von Neumann} machines~\cite{vonNeumann} because
+    they have a central processing unit and random access memory
+    instead of a tape.}
 \end{proof}
 
 Once we have a universal machine, we can make it behave like any other
@@ -115,7 +117,7 @@ are equivalent to Turing machines. We shall therefore not insist on
 describing computation solely in terms of Turing machines, but rather
 rely on familiarity with modern computers and programming languages.
 After all, programs can actually be run on computers, whereas Turing
-machines are rather hard to get by.
+machines are hard to get by.
 
 
 \subsection{Type 1 machines}
@@ -181,7 +183,7 @@ step of computation the machine has used up only a finite portion of
 its working tapes. The contents of each tape may be encoded by a
 single number, and a finite sequence of numbers $[n_0, \ldots, n_k]$
 may again be encoded by a single number $\code{[n_0, \ldots, n_k]}$,
-which we can define as iterated pairing:
+which we define as iterated pairing:
 %
 \begin{align*}
   \code{[\,]} &= 0 \\
@@ -225,7 +227,7 @@ efficiency. Just consider how we would compute $f(y)$ according
 to~\eqref{eq:kleene-normal-form}: for each $z = 0, 1, 2, \ldots$, test
 whether~$z$ encodes a computation of machine $x$ with input $y$. When
 you find the first such~$z$, extract the result $U(z)$ from it. I dare
-you to compute the constant function $y \mapsto 0$ this way!
+you to compute the identity function $y \mapsto y$ this way!
 
 Kleene's normal form may be used to define a standard enumeration of
 partial recursive functions. Let
@@ -286,17 +288,70 @@ u (f, y) = f y
 and the function $s$ is the currying operation\footnote{In Haskell the
   notation \texttt{{\char92}x -> e} stands for $\lambda$-abstraction
   $\xulam{x}{e}$, which in turn means ``the function which maps $x$ to
-  $e$''.}
+  $e$'', see Section~\ref{sec:lambda-calculus}.}
 %
 \begin{lstlisting}[language=Haskell]
 s (f, y) = \z -> f (y, z)
 \end{lstlisting}
 %
 This may seem like a triviality to the programmer but is surely not
-considered one by those who implemented the Haskell compiler.
-Application and currying are ``the essence'' of functional
-programming, just like the utm and smn theorems are the essence of
-partial computable functions.
+considered one by those who implemented the Haskell compiler. The
+operation that we used to define \lstinline!s! are application,
+pairing, currying and $\lambda$-abstraction. They are ``the essence''
+of functional programming, just like the utm and smn theorems are the
+essence of partial computable functions.
+
+The following theorem is important in the theory of computable
+functions because it allows us to define partial computable functions
+by recursion.
+
+\begin{theorem}[Recursion theorem]
+  For every \emph{total} computable $f : \NN \to \NN$ there exists $x
+  \in \NN$ such that $\xpr_{f(n)} = \xpr_{n}$.
+\end{theorem}
+
+\begin{proof}
+  The classical proof goes as follows. First we define a computable
+  partial map $\psi : \NN^2 \parto \NN$ such that
+  %
+  \begin{equation*}
+    \psi(u, x) =
+    \begin{cases}
+      \pr{\pr{u}{u}}{x} & \text{if $\defined{\pr{u}{u}}$,}\\
+      \text{undefined}  & \text{otherwise.}\\
+    \end{cases}
+  \end{equation*}
+  %
+  By the smn theorem there is a computable function $g : \NN \to \NN$
+  such that $\pr{g(u)}{x} = \psi(u, x)$. Now consider any computable
+  $f : \NN \to \NN$. Because $f \circ g$ is computable, there exists
+  $v \in \NN$ such that $\xpr_{v} = f \circ g$. Since $f \circ g$ is a
+  total function, $\pr{v}{v}$ is defined. The number $n = g(v)$ has
+  the desired property:
+  $\xpr_{g(v)} = \xpr_{\pr{v}{v}} = \xpr_{f(g(v))} = \xpr_{g(n)}$.
+\end{proof}
+
+This was a typical argument in the theory of computable functions. Let
+us prove the recrusion theorem in Haskell to see what is going on. The
+function $f : \NN \to \NN$ operates on codes of computable partial
+maps. In Haskell we work directly with values, so in the Haskell
+version of the theorem $f$ has the type
+%
+\begin{lstlisting}[language=Haskell]
+f :: (Integer -> Integer) -> (Integer -> Integer)
+\end{lstlisting}
+%
+Rather than looking for a number $n$ we are looking for a function
+\lstinline!n! such that \lstinline!f n = n!. Because Haskell already
+has recursion built in this is very easy, just define
+%
+\begin{lstlisting}
+n = f n
+\end{lstlisting}
+%
+Recursion theorem accomplishes for type~1 machines what is already
+built into general-purpose programming language, namely definition by
+recursion.
 
 We finish this section with a theorem which we shall often use to show
 \emph{non}-computability results.
@@ -374,12 +429,12 @@ For type 2 machines there are analogoues of the standard
 enumeration~$\xpr$, utm and the smn theorems. These are more easily
 expressed if we allow the machines to write natural numbers in the
 cells, rather than symbols from a finite alphabet. We also equip the
-machines with instructions for manipulating the numbers written in the
-cells, say, instructions for extracting the bits and for testing
-equality with zero. These changes are inessential because an infinite
-sequence $n_0, n_1, n_2, \ldots$ of natural numbers may be encoded as
-a binary sequence $1^{n_0}01^{n_1}01^{n_2}0\cdots$, where $1^k$ means
-that the symbol $1$ is repeated $k$-times.
+machines with instructions for manipulating numbers, say, instructions
+for extracting the bits and for testing equality with zero. These
+changes are inessential because an infinite sequence $n_0, n_1, n_2,
+\ldots$ of natural numbers may be encoded as a binary sequence
+$1^{n_0}01^{n_1}01^{n_2}0\cdots$, where $1^k$ means that the symbol
+$1$ is repeated $k$-times.
 
 A type 2 machine computes a partial function $f : \NN^\NN \parto
 \NN^\NN$, where $\NN^\NN$ is the \emph{Baire space} of infinite
@@ -390,7 +445,7 @@ at least one output cell to which the machine does not write a number,
 then $f(\alpha)$ is undefined.
 
 We may similarly define what it means for a machine to compute a
-multivariate parital function $f : (\NN^\NN)^k \parto \NN^\NN$. The
+multivariate partial function $f : (\NN^\NN)^k \parto \NN^\NN$. The
 input $(\alpha_0, \ldots, \alpha_{k-1})$ is written onto the input tape in
 an interleaving manner, so that $\alpha_i(j)$ is found in the cell at
 position $k \cdot j + i$.
@@ -415,7 +470,7 @@ base for $\Baire$ consists of the basic open sets, for $a \in
 \NN^{*}$,
 %
 \begin{equation*}
-  \append{a}{\Baire}
+  \basicBB{a}
   = \set{\append{a}{\beta} \such \beta \in \Baire}
   = \set{\alpha \in \Baire \such a \sqsubseteq \alpha}
   \;.
@@ -437,7 +492,7 @@ If the first term in which $\alpha$ and $\beta$ differ is the $n$-th
 one, then $d(\alpha, \beta) = 2^{-n}$. The comparison metric is an
 ultrametric, which means that it satisfies the inequality $d(\alpha,
 \gamma) \leq \max(d(\alpha, \beta), d(\beta, \gamma))$. The clopen
-sets $\cons{a}{\Baire}$ are balls of radius $2^{-|a|}$.
+sets $\basicBB{a}$ are balls of radius $2^{-|a|}$.
 
 Let us now see how encoding of partial computable functions works. We
 would like to encode a computable $f : \Baire \parto \Baire$ with an
@@ -487,11 +542,38 @@ denoted by $\xfpr_\beta$. A partial map which equals $\xfpr_\beta$ for
 some $\beta \in \Baire$ is said to be \emph{(type 2) realized}
 by~$\beta$. We would like to know which maps are realizable.
 
-A partial map $f: X \parto Y$ is said to be \emph{continuous}
-when it is continuous as a total map $f: \dom{f} \to Y$, where the
-domain of definition $\dom{f} \subseteq X$ is equipped with the
-subspace topology. Note that there is no restriction on the
-domain~$\dom{f}$.
+\begin{definition}
+  \label{def:normalized-BB}%
+  A realizer $\alpha \in \Baire$ is \emph{normalized} when $k < m$ and
+  $\alpha(\code{\seg{\beta}{k}}) \neq 0$ implies
+  $\alpha(\code{\seg{\beta}{m}}) = \alpha(\code{\seg{\beta}{k}})$.
+\end{definition}
+
+\begin{lemma}
+  \label{lemma:normalized-BB}%
+  Every realized function is realized by a normalized realizer.
+\end{lemma}
+
+\begin{proof}
+  Suppose $f : \Baire \parto \Baire$ is realized by~$\alpha$. Define
+  $\gamma$ by induction on the length of $a \in \NN^{\star}$ by
+  %
+  \begin{equation*}
+    \gamma(\code{a}) =
+    \begin{cases}
+      \alpha(\code{a}) & \text{if $a = [\,]$,}\\
+      \alpha(\code{a}) & \text{if $a = \cons{i}{a'}$ and
+        $\gamma(\code{a'}) = 0$,}\\
+      \gamma(\code{a'}) & \text{if $a = \cons{i}{a'}$ and
+        $\gamma(\code{a'}) \neq 0$,}
+    \end{cases}
+  \end{equation*}
+  %
+  It is easy to check that $\alpha \star \beta \kleq \gamma \star
+  \beta$ for all $\beta \in \Baire$, therefore $\xfpr_\alpha =
+  \xfpr_\gamma$. The realizer $\gamma$ is normalized by construction.
+\end{proof}
+
 
 \begin{theorem}[Extension Theorem for $\Baire$]
   \label{th:extension_BB}%
@@ -505,24 +587,24 @@ domain~$\dom{f}$.
   %
   \begin{equation*}
      A = \set{(a, i, j) \in \NN^{*} \times \NN^{2} \such
-        \cons{a}{\Baire} \cap \dom{f} \neq \emptyset \land
-        \xall{\alpha}{(\cons{a}{\Baire} \cap \dom{f})}{
+        \basicBB{a} \cap \dom{f} \neq \emptyset \land
+        \xall{\alpha}{(\basicBB{a} \cap \dom{f})}{
           f(\alpha)(i) = j
           }
         }
   \end{equation*}
   %
   If $(a, i, j) \in A$, $(a', i, j') \in A$ and $a \sqsubseteq a'$
-  then $j = j'$ because there is $\alpha \in \cons{a'}{\Baire} \cap
-  \dom{f} \subseteq \cons{a}{\Baire} \cap \dom{f}$ such that $j =
+  then $j = j'$ because there is $\alpha \in \basicBB{a'} \cap
+  \dom{f} \subseteq \basicBB{a} \cap \dom{f}$ such that $j =
   f(\alpha)(i) = j'$. We define a sequence $\gamma \in \Baire$ as
   follows. For every $(a, i, j) \in A$ let
-  $\gamma(\code{\seq{\cons{i}{a}}}) = j + 1$, and for all other
+  $\gamma(\code{\cons{i}{a}}) = j + 1$, and for all other
   arguments $n$ let $\gamma(n) = 0$. Suppose that
-  $\gamma(\code{\seq{\cons{i}{a}}}) = j + 1$ for some $i, j \in \NN$
+  $\gamma(\code{\cons{i}{a}}) = j + 1$ for some $i, j \in \NN$
   and $a \in \NN^{*}$. Then for every prefix $a' \sqsubseteq a$,
-  $\gamma(\code{\seq{\cons{i}{a'}}}) = 0$ or
-  $\gamma(\code{\seq{\cons{i}{a'}}}) = j + 1$. Thus, if $(a, i, j) \in
+  $\gamma(\code{\cons{i}{a'}}) = 0$ or
+  $\gamma(\code{\cons{i}{a'}}) = j + 1$. Thus, if $(a, i, j) \in
   A$ and $a \sqsubseteq \alpha$ then $\fpr{\gamma}{\alpha}(i) = j$.
   %
   We show that $\fpr{\gamma}{\alpha}(i) = f(\alpha)(i)$ for all
@@ -555,11 +637,11 @@ Recall that a $G_\delta$-set is a countable intersection of open sets.
   %
   \begin{equation*}
     U = \bigcap_{i \in \NN}
-        \bigcup_{j \in \NN} \cons{a_{i,j}}{\Baire} \;.
+        \bigcup_{j \in \NN} \basicBB{a_{i,j}} \;.
   \end{equation*}
   %
   Define a sequence $\gamma \in \Baire$ by setting
-  $\gamma(\code{\seq{\cons{i}{a_{i,j}}}}) = 2$ for all $i, j \in \NN$,
+  $\gamma(\code{\cons{i}{a_{i,j}}}) = 2$ for all $i, j \in \NN$,
   and $\gamma(n) = 0$ for all other arguments~$n$. Clearly, if
   $\fpr{\gamma}{\alpha}$ is defined then its value is the constant
   sequence $1, 1, 1, \ldots$, so we only need to verify that
@@ -570,29 +652,40 @@ Recall that a $G_\delta$-set is a countable intersection of open sets.
   a_{i, j_i} \sqsubseteq \alpha$. Hence
   %
   \begin{equation*}
-    \alpha \in \bigcap_{i \in \NN} \cons{a_{i, j_i}}{\Baire} \subseteq U.
+    \alpha \in \bigcap_{i \in \NN} \basicBB{a_{i, j_i}} \subseteq U.
   \end{equation*}
   %
   Conversely, suppose $\alpha \in U$ and consider any $i \in \NN$.
   There exists $j \in \NN$ such that $a_{i,j} \sqsubseteq \alpha$,
   therefore $\gamma (\code{\cons{i}{\seg{\alpha}{|a_{i,j}|}}}) =
   \gamma(\code{\cons{i}{a_{i,j}}}) = 2$ so that $\gamma \star
-(\cons{i}{\alpha})$ is defined. We conclude that $\alpha \in
-\dom{\xfpr_\gamma}$.
+  (\cons{i}{\alpha})$ is defined. We conclude that $\alpha \in
+  \dom{\xfpr_\gamma}$.
 \end{proof}
 
-
-\begin{corollary}
+\begin{lemma}
   \label{th:restrict_G_delta}%
   Suppose $\alpha \in \Baire$ and $U \subseteq \Baire$ is a $G_\delta$-set.
-  Then there exists $\beta \in \Baire$ such that $\fpr{\alpha}{\gamma} =
-  \fpr{\beta}{\gamma}$ for all $\gamma \in \dom{\xfpr_\alpha} \cap U$ and
-  $\dom{\xfpr_\beta} = U \cap \dom{\xfpr_\alpha}$.
-\end{corollary}
+  Then there exists $\delta \in \Baire$ such that $\fpr{\alpha}{\beta} =
+  \fpr{\delta}{\beta}$ for all $\beta \in \dom{\xfpr_\alpha} \cap U$ and
+  $\dom{\xfpr_\delta} = U \cap \dom{\xfpr_\alpha}$.
+\end{lemma}
 
 \begin{proof}
-  By Proposition~\ref{th:G_delta_characteristic} there exists
-  $\gamma \in \Baire$ such that for all $\beta \in \Baire$
+  We would like to show that the function $f: \Baire \parto \Baire$
+  defined by
+  %
+  \begin{equation*}
+    f(\beta)(n) =
+    \begin{cases}
+      \fpr{\alpha}{\beta}(n) &
+      \text{if $\beta \in \dom{\xfpr_\alpha} \cap U$,} \\
+      \text{undefined} & \text{otherwise}
+    \end{cases}
+  \end{equation*}
+  %
+  is realized. By Proposition~\ref{th:G_delta_characteristic} there
+  exists $\gamma \in \Baire$ such that for all $\beta \in \Baire$
   %
   \begin{equation*}
     \fpr{\gamma} \beta =
@@ -601,15 +694,44 @@ Recall that a $G_\delta$-set is a countable intersection of open sets.
       \text{undefined} & \text{otherwise} \;.
     \end{cases}
   \end{equation*}
-  %
-  It suffices to show that the function $f: \Baire \parto \Baire$ defined by
+  % 
+  By Lemma~\ref{lemma:normalized-BB} we may assume that $\alpha$ and
+  $\gamma$ are normalized. We claim that a realizer for $f$ is
   %
   \begin{equation*}
-    f(\beta)(n) = \eta_{\gamma}(\beta)(n) \cdot \eta_{\alpha}(\beta)(n)
+    \delta(k) = \alpha(k) \cdot \gamma(k)/2.
   \end{equation*}
   %
-  is realized. This is so because coordinate-wise multiplication of
-  sequences is realized, and so are pairing and composition.
+  Recall that $\gamma(k)$ is either $0$ or $2$ so $\delta(k)$ is
+  either $0$ or $\alpha(k)$. Hence $\xfpr_\delta$ is a restriction of
+  $\xfpr_\alpha$, by which we mean that $\dom{\xfpr_\delta} \subseteq
+  \dom{\xfpr_\alpha}$ and $\fpr{\delta}{\beta} = \fpr{\alpha}{\beta}$
+  for all $\beta \in \dom{\xfpr_\delta}$. Also, $\dom{\xfpr_\delta}
+  \subseteq \dom{\xfpr_\gamma}$ because $\delta(k) \neq 0$ implies
+  $\gamma(k) \neq 0$. It remains to be shown that $\beta \in
+  \dom{\xfpr_\alpha} \cap U$ implies $\beta \in \dom{\xfpr_\delta}$,
+  i.e., that for such $\beta$, $\delta \star (\cons{i}{\beta})$ is
+  defined for every $i \in \NN$. Because $\alpha \star
+  (\cons{i}{\beta})$ and $\gamma \star (\cons{i}{\beta})$ are
+  defined, there exist $k_1$ and $k_2$ such that
+  %
+  \begin{equation*}
+    \alpha(\code{\cons{i}{\seg{\beta}}{k_1}}) \neq 0
+    \qquad\text{and}\qquad
+    \gamma(\code{\cons{i}{\seg{\beta}}{k_2}}) \neq 0.
+  \end{equation*}
+  %
+  Because $\alpha$ and $\gamma$ are normalized, for $k = \max(k_1,
+  k_2)$,
+  %
+  \begin{equation*}
+    \alpha(\code{\cons{i}{\seg{\beta}}{k}}) \neq 0
+    \qquad\text{and}\qquad
+    \gamma(\code{\cons{i}{\seg{\beta}}{k}}) \neq 0,
+  \end{equation*}
+  %
+  hence $\delta(\code{\cons{i}{\seg{\beta}}{k}}) \neq 0$, which we
+  wanted to show.
 \end{proof}
 
 
@@ -642,13 +764,13 @@ Recall that a $G_\delta$-set is a countable intersection of open sets.
     (\cons{n}{\beta}) = m}$ is open because $\star$ and $\cons{}{}$
   are continuous operations.
   
-  Now let $f: \Baire \parto \Baire$ be a partial continuous function whose
-  domain is a $G_\delta$-set. By Theorem~\ref{th:extension_BB} there
-  exists $\gamma \in \Baire$ such that $f(\alpha) = \fpr{\gamma}{\alpha}$ for
-  all $\alpha \in \dom{f}$. By Corollary~\ref{th:restrict_G_delta}
-  there exists $\psi \in \Baire$ such that $\dom{\xfpr_\psi} = \dom{f}$
-  and $\fpr{\psi}{\alpha} = \fpr{\gamma}{\alpha}$ for every $\alpha \in
-  \dom{f}$.
+  Now let $f: \Baire \parto \Baire$ be a partial continuous function
+  whose domain is a $G_\delta$-set. By Theorem~\ref{th:extension_BB}
+  there exists $\gamma \in \Baire$ such that $f(\alpha) =
+  \fpr{\gamma}{\alpha}$ for all $\alpha \in \dom{f}$. By
+  Lemma~\ref{th:restrict_G_delta} there exists $\psi \in \Baire$ such
+  that $\dom{\xfpr_\psi} = \dom{f}$ and $\fpr{\psi}{\alpha} =
+  \fpr{\gamma}{\alpha}$ for every $\alpha \in \dom{f}$.
 \end{proof}
 
 Finally, we formulate the utm and smn theorems for type 2 machines.
@@ -711,19 +833,19 @@ A model of computation may introduce features which are not easily
 detected, until we compare it with other models. For example, the
 innocuous looking idea that the input be stored on a tape gives a type
 2 machine the ability to take into account the \emph{order} in which
-data is stored. In this section we consider a different model of
-infinite computation, the \emph{graph model} introduced by Dana
+data appear. In this section we consider a different model of infinite
+computation, the \emph{graph model}, introduced by Dana
 Scott~\cite{graph-model}, in which we use sets of numbers rather than
 sequences.
 
-We would like to explain what it means to compute a map $f : \pow{\NN}
-\to \pow{\NN}$ where $\pow{\NN}$ is the powerset of natural numbers.
-One natural idea would be to use computation with respect to an
-oracle: $f$ is computable if there is a Turing machine which computes
-$f(A)$ when given $A$ as an oracle, i.e., it may test membership
-in~$A$. However, this is still just type 2 computability in disguise,
-because asking an oracle whether a number belongs to~$A$ is equivalent
-to having an infinite input tape with a $1$ in the $n$-th cell when $n
+How is computation of a map $f : \pow{\NN} \to \pow{\NN}$, where
+$\pow{\NN}$ is the powerset of natural numbers, to be performed? One
+natural idea would be to use computation with respect to an oracle:
+$f$ is computable if there is a Turing machine which computes $f(A)$
+when given $A$ as an oracle, i.e., it may test membership in~$A$.
+However, this is still just type 2 computability in disguise, because
+asking an oracle whether a number belongs to~$A$ is equivalent to
+having an infinite input tape with a $1$ in the $n$-th cell when $n
 \in A$, and a $0$ otherwise.
 
 An oracle provides both \emph{positive} and \emph{negative}
@@ -770,7 +892,7 @@ $T_0$-space, i.e., for all $A, B \in \pow{\NN}$,
 \end{equation*}
 %
 This is \emph{not} a Hausdorff space, not even a $T_1$-space. If you
-were taught in school by geometrically minded topologists to ridicule
+were taught in school by geometrically minded topologists to ignore
 non-Hausdorff spaces\footnote{I surely was as an undergraduate student
   in mathematics.}, you might be pleased to discover a non-geometric
 intuition for topology. In information processing the open sets
@@ -864,12 +986,12 @@ Then we assign to every continuous $f : \Scott \to \Scott$ its
   }.
 \end{equation*}
 %
-In the other direction, to every $G \in \Scott$ we assign a function
-$\Lambda(G) : \Scott \to \Scott$, defined by
+In the other direction, to every $A \in \Scott$ we assign a function
+$\Lambda(A) : \Scott \to \Scott$, defined by
 %
 \begin{equation*}
-  \Lambda(G)(B) = \set{n \in \NN \such
-    \xusome{A \wayb B}{\code{(\code{A}, n)} \in G}
+  \Lambda(A)(B) = \set{n \in \NN \such
+    \xusome{C \wayb B}{\code{(\code{C}, n)} \in A}
   }.
 \end{equation*}
 %
@@ -1462,7 +1584,7 @@ a_n \in A$,
   \subst{e'}{x_1 \mapsto a_1, \ldots, x_n \mapsto a_n}.
 \end{equation*}
 
-\begin{theorem}
+\begin{theorem}[Combinatory completeness]
   \label{th:combinatory-completeness}
   Let $(A, {\cdot})$ be a PCA. For every variable $x$ and expression
   $e$ over $A$ there is an expression $e'$ over $A$ whose variables
@@ -1570,10 +1692,15 @@ for all $n \in \NN$,
   \end{cases}
 \end{align*}
 %
-To see this, take $\pcacomb{succ} = \pcalam{x}{\combPair \, \combFalse \,x}$, 
-$\pcacomb{iszero} = \combFst$, and $\pcacomb{pred} =
-\pcalam{x}{\combIf\, (\pcacomb{iszero}\, x) \overline{0} (\combSnd\, x)}$.
-
+To see this, take
+%
+\begin{align*}
+  \pcacomb{succ} &= \pcalam{x}{\combPair \, \combFalse \,x},\\ 
+  \pcacomb{iszero} &= \combFst,\\
+  \pcacomb{pred} &=
+  \pcalam{x}{\combIf\, (\pcacomb{iszero}\, x)\, \overline{0}\, (\combSnd\, x)}.
+\end{align*}
+%
 In a PCA we can define functions by recursion by using the
 %
 \index{combinator!Y@{$\combY$}}%
@@ -1639,8 +1766,8 @@ examples of partial combinatory algebras.
 
 Turing machines, or more precisely their codes, form a PCA whose
 application is defined as $m \cdot n = \pr{m}{n}$. Because $m \cdot n$
-can be easily confused with multiplication, a popular alternative
-notation for this algebra is $\set{m}(n)$, but we shall not use it.
+can be easily confused with multiplication, a traditional notation for
+this algebra is $\set{m}(n)$, but we shall not use it.
 
 \paragraph{Second Kleene Algebra.}
 
@@ -1681,13 +1808,13 @@ to subsume many models of computation. Nevertheless, they lack an
 important feature which many programming languages have, namely
 \emph{types} that force us to observe certain rules for well-formed
 programs. In contrast, a PCA has no restriction whatsoever how
-application is formed. What we are looking for is \emph{typed PCA},
-which was defined by John Longley.
+application is formed. What we need is the concept of \emph{typed
+  PCA}, which was defined by John Longley.
 
-A \emph{type world} $\mathcal{T}$ is a non-empty family, whose
-elements are called \emph{types}, equipped with two binary operations
-$\times$ and $\to$. A \emph{typed partial combinatory algebra (TPCA)}
-$A$ over a type world $\mathcal{T}$ consists of
+A \emph{type system} $\mathcal{T}$ is a non-empty set, whose elements
+are called \emph{types}, equipped with two binary operations $\times$
+and $\to$. A \emph{typed partial combinatory algebra (TPCA)} $A$ over
+a type system $\mathcal{T}$ consists of
 %
 \begin{enumerate}
 \item a set $A_t$ for each $t \in \mathcal{T}$, and
@@ -1705,8 +1832,9 @@ such that for any types $s, t, u \in \mathcal{T}$ there exist elements
   \combSnd_{s,t} &\in A_{s \times t \to t} \\
 \end{align*}
 %
-We usually omit the subscripts and write $x \, y$ for $x \cdot_{s,t} y$.
-For all elements $x, y, z$ of appropriate types we require:
+We usually omit the types in subscripts and write $x \, y$ for $x
+\cdot_{s,t} y$. For all elements $x, y, z$ of appropriate types we
+require:
 %
 \begin{align*}
   \combK \, x \, y &= x \\
@@ -1739,7 +1867,7 @@ A \emph{TPCA with numerals and general recursion (NR-TPCA)} is a
 N-TPCA $A$ containing elements
 %
 \begin{equation*}
-  \combY_{s,t} \in A_{(s \to t) \to (s \to t)) \to (s \to t)}
+  \combY_{s,t} \in A_{((s \to t) \to (s \to t)) \to (s \to t)}
 \end{equation*}
 %
 such that for all $f \in A_{(s \to t) \to (s \to t)}$ and $x \in A_s$
@@ -1757,7 +1885,7 @@ More details will be filled in this section.
 
 \paragraph{Partial combinatory algebras.}
 
-Every PCA $A$ is a NR-TPCA with over the trivial type world
+Every PCA $A$ is a NR-TPCA with over the trivial type system
 $\mathcal{T} = \set{\star}$ in which $\star \times \star = \star \to
 \star = \star$ and $A_\star = A$.
 

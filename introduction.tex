@@ -33,13 +33,14 @@ by $\exists$.
 
 \paragraph{Functions.}
 
-The set of all functions from $A$ to $B$ is denoted by $B^A$ or $A \to B$.
-
-\paragraph{Directed sets.}
-
-A subset $D \subseteq P$ of a poset $(P, {\leq})$ is \emph{directed}
-if it is non-empty and for every $x, y \in D$ there exists $z \in D$
-such that $x \leq z$ and $y \leq z$.
+The set of all functions from $A$ to $B$ is denoted by $B^A$ or $A \to
+B$. The arrow associates to the right, $A \to B \to C$ is $A \to (B
+\to C)$. We write $f : A \to B$ instead of $f \in A \to B$. If $f : A
+\to B$ and $x \in A$, the application $f(x)$ is also written as $f\,
+x$. We often work with \emph{curried} functions which take several
+arguments in succession, i.e., if $f : A \to B \to C$ then $f$ takes
+$x \in A$, and $y \in B$ to produce an element $f(x)(y)$ in $C$, also
+written $f\, x\, y$.
 
 
 \paragraph{Partial functions.}
@@ -65,6 +66,58 @@ then $e_2$ is defined and they are equal. Thus we have
 \begin{equation*}
   e_1 \kleq e_2 \iff e_1 \klgeq e_2 \land e_2 \klgeq e_1.
 \end{equation*}
+
+A partial map $f: X \parto Y$ between topological spaces~$X$ and~$Y$
+is said to be \emph{continuous} when it is continuous as a total map
+$f: \dom{f} \to Y$, where the domain of definition $\dom{f} \subseteq
+X$ is equipped with the subspace topology. Note that there is no
+restriction on the domain~$\dom{f}$.
+
+
+
+
+\paragraph{Order theory.}
+
+A \emph{preorder} $(P, {\leq})$ is a set with a reflexive and
+transitive relation.
+
+A \emph{partially ordered set (poset)} $(P, {\leq})$ is a set with a
+reflexive, transitive, and anti-symmetric relation.
+
+A function $f : P \to Q$ between posets is \emph{monotone} if $x \leq
+y$ in $P$ implies $f(x) \leq f(y)$ in $Q$.
+
+A subset $S \subseteq P$ is an \emph{upper set} if $x \in S$ and $x
+\leq y$ implies $y \in S$. Similarly, it is a \emph{lower set} if $y
+\in S$ and $x \leq y$ implies $x \in S$.
+
+A subset $S \subseteq P$ of a poset $(P, {\leq})$ is \emph{directed}
+if it is non-empty and for every $x, y \in S$ there exists $z \in S$
+such that $x \leq z$ and $y \leq z$.
+
+An \emph{upper bound} of a subset $S \subseteq P$ in a poset is an
+element $x \in P$ such that $y \leq x$ for all $y \in S$.
+
+The \emph{supremum} $\sup S$ of a subset $S \subseteq P$ in a poset is
+its least upper bound, if it exists. More precisely, it is an upper
+bound $x$ for $S$ such that if $y$ is also an upper bound for~$S$ then
+$x \leq y$.
+
+A \emph{directed-complete partial order (dcpo)} is a poset in which
+every directed set has a supremum. Let $(D, {\leq})$ be a dcpo. For
+$x, y \in D$ we say that~$x$ is \emph{way below} $y$, written $x \wayb
+y$, when for every directed $S \subseteq D$ such that $y \leq \sup S$
+there exists $z \in S$ for which $x \leq z$. An element $x \in D$ is
+\emph{compact} (or \emph{finite}) when $x \wayb x$. A subset $U
+\subseteq D$ is \emph{Scott open} if it is an upper set and is
+inaccessible by suprema of directed sets, which means that, for every
+directed $S \subseteq D$, if $\sup S \in U$ then already $x \in U$ fo
+rsome $x \in S$. The Scott open sets form the \emph{Scott topology}
+of~$D$.
+
+If $D$ and $E$ are dcpos then a function $f : D \to E$ is continuous
+with respect to the Scott topologies precisely when it preserved
+suprema of directed sets. It follows that such a function is monotone.
 
 
 
