@@ -1082,7 +1082,7 @@ more general context.
 We have so far considered a model of computation based on Turing
 machines, and two models of a topological nature, the Baire
 space~$\Baire$ and the graph model~$\Scott$. We now look at a purely
-syntactic model in which computation is expresses as manipulation of
+syntactic model in which computation is expressed as manipulation of
 symbolic expressions.
 
 The $\lambda$-calculus is the abstract theory of functions, just like
@@ -1116,10 +1116,8 @@ nested:
 %
 This operation is called \emph{$\lambda$-abstraction}. For example,
 $\xulam{x}{\ulam{y}}{x^2 + y^3}$ is the function which maps an
-argument~$a$ to the function $\ulam{y}{a^2 + y^3}$.
-
-In an expression $\xulam{x}{t}$ the variable~$x$ is \emph{bound}
-in~$t$.
+argument~$a$ to the function $\ulam{y}{a^2 + y^3}$. In the expression
+$\xulam{x}{t}$ the variable~$x$ is \emph{bound} in~$t$.
 
 There are two kinds of $\lambda$-calculus, the \emph{typed} and the
 \emph{untyped} one. In the untyped version there are no restrictions
@@ -1134,7 +1132,8 @@ expression has a \emph{type}, and there are rules for forming valid
 expressions and types. For example, we can only form an
 application~$f\, a$ when~$a$ has a type~$A$ and~$f$ has a type $A \to
 B$, which indicates a function taking arguments of type~$A$ and giving
-results of type~$B$.
+results of type~$B$. We postpone discussion of the type
+$\lambda$-calculus to Section~\ref{sec:simply-typed-lambda-calculus}.
 
 \subsection{Untyped $\lambda$-calculus}
 \label{sec:untyped-lambda-calculus}
@@ -1163,17 +1162,16 @@ This can be expressed succinctly by the grammar rules:
 In the \emph{pure} calculus, which we are considering, there are no
 constants, numbers, or other operations.
 
-We consider expressions which only differ in the naming of bound
-variables as equal. Thus $\xulam{x}{y\, x} = \xulam{z}{y\, z} \neq
-\xulam{y}{y\, y}$. Substitution is an operation which replaces free
-variables with expresions. We write $\subst{e}{x_1 \mapsto e_1,
-  \ldots, x_n \mapsto e_n}$ for a simultaneous subtitution of
-expressions $e_1, \ldots, e_n$ for variables $x_1, \ldots, x_n$ in
-$e$, respectively. The usual rules for bound variables must be
-observed when we perform subtitutions.\footnote{It is notoriously easy
-  to commit errors when defining the details of substitution. The best
-  way to understand all the intricacies is to write a program that
-  performs substitutions.}
+Expressions which only differ in the naming of bound variables are
+equal, thus $\xulam{x}{y\, x} = \xulam{z}{y\, z} \neq \xulam{y}{y\,
+  y}$. Substitution replaces free variables with expresions. We write
+$\subst{e}{x_1 \mapsto e_1, \ldots, x_n \mapsto e_n}$ for a
+simultaneous subtitution of expressions $e_1, \ldots, e_n$ for
+variables $x_1, \ldots, x_n$ in $e$, respectively. The usual rules for
+bound variables must be observed when we perform
+subtitutions.\footnote{It is notoriously easy to commit errors when
+  defining the details of substitution. The best way to understand all
+  the intricacies is to write a program that performs substitutions.}
 
 The basic axiom of $\lambda$-calculus is \emph{$\beta$-reduction}:
 %
@@ -1194,8 +1192,9 @@ provided $x$ does not occur freely in~$e$. We will \emph{not} assume
 $\eta$-reduction.
 
 In a given expression there may be several subexpressions, called
-\emph{redexes}, where $\beta$-reduction could be performed. For
-example, we could reduce
+\emph{redexes}, where $\beta$-reduction could be performed. We write
+$e \mapsto e'$ when $e'$ is obtained from $e$ by a single application
+of $\beta$-reduction to a redex in~$e$. For example, we could reduce
 %
 \begin{equation*}
   ((\xulam{x}{x})\, a)\,((\xulam{y}{y})\,b) \mapsto
@@ -1254,6 +1253,15 @@ With these we have
   \mathsf{fst} (\mathsf{pair}\, a\, b) = a
   \quad\text{and}\quad
   \mathsf{snd} (\mathsf{pair}\, a\, b) = b.
+\end{equation*}
+%
+For example,
+%
+\begin{equation*}
+  \mathsf{fst} (\mathsf{pair}\, a\, b) =
+  \mathsf{fst} (\xulam{z}{z\, a\, b}) =
+  (\xulam{z}{z\, a\, b}) \, (\xulam{x y}{x}) =
+  (\xulam{x y}{x}) \, a \, b = a.
 \end{equation*}
 %
 The Boolean values and the conditional statement are defined by
@@ -1454,67 +1462,20 @@ function $s$ from the smn theorem is $s = \xulam{p
 Therefore, every reflexive domain enjoys the utm and smn theorems.
 
 
-\subsection{Simply typed $\lambda$-calculus}
-\label{sec:simply-typed-lambda-calculus}
-
-In simply\footnote{The calculus is called \emph{simple} because it
-  does not involve dependent types, which nobody outside Scandinavia
-  consideres to be simple.} typed $\lambda$-calculus we assign to each
-expression a \emph{type}. The fact that expression~$e$ has a type~$A$
-is written as $t : A$. aTo computer scientists the idea of expressions
-having types is familiar from programming languages. Mathematicians
-can think of types as sets and read $t : A$ as $t \in A$.
-
-Types are symbolic constructions and they do not necessarily denote
-any mathematical objects, although we may \emph{interpret} them as
-such. In a given theory we may be given a supply of \emph{basic}
-types, and if $A$ and $B$ are types then we may form the type $A \to
-B$.
-
-The typed $\lambda$-calculus restricts application and
-$\lambda$-abstraction as follows:
-%
-\begin{enumerate}
-\item We are given an infinite supply of variables. Whenever a
-  variable is used, we must indicate its type.
-\item If $e_1$ has type $A \to B$ and $e_2$ has type~$A$ then we may
-  form the application $e_1 \, e_2$, which has type $B$.
-\item If $x$ is a variable of type $A$ and $e$ is an expression of
-  type $B$ in which $x$ may occur freely, then we may form the
-  $\lambda$-abstraction $\xtlam{x}{A}{e}$ whose type is $A \to B$.
-\end{enumerate}
-%
-These rules prevent us from forming a self-application $e\, e$ because
-$e$ would have to have the type $A$ and $A \to A$ at the same time.
-
-The rule of $\beta$-reduction is adopted in the typed
-$\lambda$-calculus as well. The $\eta$-rule is typically adopted in
-mathematical settings, whereas in the theory of programming languages
-it is not. We will always be careful to state whether we are assuming
-the $\eta$-reduction.
-
-Usually the simply typed $\lambda$-calculus also has the unit type and
-the product types. We do not work out the details here because we will
-present a very similar, but more general system in
-Section~\ref{sec:tpcas}. We only mention that the simply typed
-$\lambda$-calculus is much less powerful than the untyped version
-because there is no way to get recursion going.
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Partial combinatory algebras}
 \label{sec:pcas}
 
-The Baire space $\Baire$ from Section~\ref{sec:type-2} is almost a
-model of the untyped $\lambda$-calculus, if we use the realized
-functions instead of continuous ones. However, it is \emph{not} a
-model because realized functions are partial whereas application in
-$\lambda$-calculus is a total operation. In Section~\ref{sec:pcas} we
-shall define the relevant structure which generalizes the
-$\lambda$-calculus and allows application to be partial.
-
-We now consider a generalization of the $\lambda$-calculus which
-allows application to be a partial operation.
+The Baire space from Section~\ref{sec:type-2} is almost a model of the
+untyped $\lambda$-calculus, because every $\alpha \in \Baire$ may be
+viewed both as a (realizer of) a function and an argument. One is then
+tempted to define application by $\alpha \, \beta =
+\fpr{\alpha}{\beta}$, but this fails to give a model of the untyped
+$\lambda$-calculus because the result $\fpr{\alpha}{\beta}$ need not
+be defined, whereas application in $\lambda$-calculus is a total
+operation. We now consider a generalization of the $\lambda$-calculus
+which allows application to be a partial operation, and whose example
+is the Baire space.
 
 \begin{definition}
   \label{def:pca}%
@@ -1534,27 +1495,38 @@ allows application to be a partial operation.
   \index{application!partial in PCA}%
   \indexsee{partial!application}{application, partial in PCA}%
                                 %
-  \emph{partial} binary operation $\place \cdot \place : A \times
-  A \parto A$. We usually write $x y$ instead of $x \cdot y$, and
-  recall that application associates to the left. Furthermore, there
-  must exist $\combK, \combS \in A$ such that, for all $x, y, z \in
-  A$,
+  \emph{partial} binary operation ${\cdot} : A \times A \parto A$. We
+  usually write $x\, y$ instead of $x \cdot y$, and recall that
+  application associates to the left. Furthermore, there must exist
+  $\combK, \combS \in A$ such that, for all $x, y, z \in A$,
   %
-  \begin{xalignat*}{3}
-    \combK x y &\simeq x \;, &
-    \combS x y z &\simeq (x z)(y z) \;, &
-    \defined{\combS x y} & \;.
-  \end{xalignat*}
+  \begin{equation}
+    \label{eq:pca}%
+    \combK\, x\, y = x,
+    \qquad
+    \combS\, x\, y\, z \simeq (x\, z)\,(y\, z),
+    \quad\text{and}\quad
+    \defined{\combS\, x\, y}.
+  \end{equation}
   %
-  When application is total $A$ is a \emph{(total) combinatory
-    algebra (CA)}.
+  A \emph{total combinatory algebra (CA)} is a PCA whose application
+  is a total operation.
+
+  A \emph{sub-PCA} of~$(A, {\cdot})$ is a subset $A' \subseteq A$
+  which is closed under application, and there exist $\combK, \combS
+  \in A'$ such that~\eqref{eq:pca} is satisfied for all $x, y, z \in
+  A$.\footnote{Read that carefully: the combinators $\combK$ and
+    $\combS$ must come from the subaglebra~$A'$ but they must have the
+    defining property with respect to~$A$, and so consequently also
+    with respect to $A'$.}
 \end{definition}
 
+\noindent
 The definition looks strange at first. Where did $\combK$ and $\combS$
 come from? Theorem~\ref{th:combinatory-completeness} below explains
 that the reason for this definition is a property called
 \emph{combinatory completeness}.
-
+%
 For a PCA $A$ we define \emph{expressions over~$A$} inductively as
 follows:
 %
@@ -1594,34 +1566,36 @@ a_n \in A$,
 \end{theorem}
 
 \begin{proof}
-  We give a construction of such an expression $\pcalam{x}{e}$:
+  We give a construction of such an expression $\xpcalam{x}{e}$:
   %
   \begin{enumerate}
-  \item $\pcalam{x}{x} = \combS \combK \combK$,
-  \item $\pcalam{x}{y} = \combK y$ if $y$ is a variable distinct from~$x$,
-  \item $\pcalam{x}{a} = \combK a$ if $a$ is an element of~$A$,
-  \item $\pcalam{x}{e_1 e_2} = \combS (\pcalam{x}{e_1}) (\pcalam{x}{e_2})$
+  \item $\xpcalam{x}{x} = \combS\, \combK\, \combK$,
+  \item $\xpcalam{x}{y} = \combK\, y$ if $y$ is a variable distinct from~$x$,
+  \item $\xpcalam{x}{a} = \combK\, a$ if $a$ is an element of~$A$,
+  \item $\pcalam{x}{e_1\, e_2} = \combS\, (\xpcalam{x}{e_1})\, (\xpcalam{x}{e_2})$
   \end{enumerate}
   %
-  We omit the verification that $e' = \pcalam{x}{e}$ has the required
+  We omit the verification that $e' = \xpcalam{x}{e}$ has the required
   properties. See~\cite{LongleyJ:reatls} for details.
 \end{proof}
 
-The meta-notation $\pcalam{x}{e}$ plays a role similar to that of
-$\lambda$-abstraction in the untyped $\lambda$-caclulus. We need to be
-careful with the ``$\beta$-rule'' because it is only valid in a
-restricted sense, see~\cite{LongleyJ:reatls}.
+The meta-notation $\xpcalam{x}{e}$ plays a role similar to that of
+$\lambda$-abstraction in the untyped $\lambda$-caclulus. We abbreviate
+$\xpcalam{x}{\xpcalam{y}{e}}$ as $\xpcalam{x y}{e}$, and similarly for
+more variables. We need to be careful with the ``$\beta$-rule''
+because it is only valid in a restricted sense,
+see~\cite{LongleyJ:reatls}.
 
 Just like in the case of untyped $\lambda$-calculus, we can build up
 the identity function, pairs, conditionals, natural numbers, and
 recursion by combining the two basic combinators $\combK$ and
-$\combS$. In doing so the notation $\pcalam{x}{e}$ is handy because it
+$\combS$. In doing so the notation $\xpcalam{x}{e}$ is handy because it
 saves a lot of space and makes expressions much more comprehensible,
-as even the translation of a simple term like $\pcalam{x y z}{(z x
-  y)}$ is quite unwieldy,
+as even the translation of a simple term like $\pcalam{x y z}{z\, x\,
+  y}$ is quite unwieldy,
 %
 \begin{equation*}
-  \pcalam{x y z}{(z x y)} =
+  \pcalam{x y z}{z\, x\, y} =
   \begin{aligned}[t]
   & {\combS} (
     {\combS} ({\combK}{\combS}) (
@@ -1658,15 +1632,21 @@ encoding by untyped $\lambda$-calculus.
 %
 Pairing, projections, Boolean values and conditional statement are the
 same, except that $\lambda$-abstraction must be replaced by
-$\lambda^{*}$-notation. For natural numbers we may use the
+$\langle\,\rangle$-notation. For natural numbers we may use the
 %
 \index{combinator!Curry numeral}%
 \index{Curry numeral}%
 \label{sym:curry_numeral}%
 %
-\emph{Curry numerals} which are defined by $\overline{0} = \combI =
-\combS \combK \combK$ and $\overline{n+1} = \combPair \, \combFalse \,
-\overline{n}$. There exist elements
+\emph{Curry numerals} which are defined by 
+%
+\begin{equation*}
+  \overline{0} = \combI = \combS\, \combK\, \combK
+  \qquad\text{and}\qquad
+  \overline{n+1} = \combPair \, \combFalse \, \overline{n}.
+\end{equation*}
+%
+There exist elements
 %
 \index{combinator!successor@{successor ($\pcacomb{succ}$)}}%
 \index{combinator!predecessor@{predecessor ($\pcacomb{pred}$)}}%
@@ -1715,22 +1695,22 @@ In a PCA we can define functions by recursion by using the
 \emph{fixed point combinators~$\combY$ and $\combZ$}, defined by
 %
 \begin{alignat*}{2}
-  W &= \pcalam{x y}{y(x x y)}\;, &
+  W &= \pcalam{x y}{y(x\, x\, y)}\;, &
   \qquad
-  \combY &= W W \;, \\
-  X &= \pcalam{x y z}{y (x x y) z} \;, &
+  \combY &= W\, W \;, \\
+  X &= \pcalam{x y z}{y (x\, x\, y) z} \;, &
   \qquad
-  \combZ &= X X \;.
+  \combZ &= X\, X \;.
 \end{alignat*}
 %
 These combinators satisfy, for all $f \in A$,
 %
 \begin{equation*}
-  \combY f \kleq f (\combY f) \;,
+  \combY\, f \kleq f\, (\combY\, f) \;,
   \qquad
   \defined{\combZ f} \;,
   \qquad
-  (\combZ f) z \kleq f (\combZ f) z \;.
+  (\combZ\, f)\, z \kleq f\, (\combZ f)\, z \;.
 \end{equation*}
 
 Finally, let us see how to define functions by primitive recursion.
@@ -1740,17 +1720,17 @@ Finally, let us see how to define functions by primitive recursion.
 The element
 %
 \begin{equation*}
-  \pcacomb{rec} = \pcalam{x f m}{((\combZ R) x f m \combI)} \;,
+  \pcacomb{rec} = \pcalam{x f m}{((\combZ\, R)\, x\, f\, m\, \combI)} \;,
 \end{equation*}
 %
-where $R = \pcalam{r x f m}{\combIf (\pcacomb{iszero}\, m) (\combK x)
-  (\pcalam{y}{f (\pcacomb{pred}\, m)(r x f (\pcacomb{pred}\, m)
+where $R = \pcalam{r x f m}{\combIf\, (\pcacomb{iszero}\, m)\, (\combK\, x)
+  (\pcalam{y}{f\, (\pcacomb{pred}\, m)(r\, x\, f\, (\pcacomb{pred}\, m)\,
     \combI)})}$, satisfies
 %
 \begin{equation*}
   \pcacomb{rec}\; x\; f\; \overline{0} = x \;,\qquad
   \pcacomb{rec}\; x\; f\; \overline{n+1} \kleq
-    f\; \overline{n}\; (\pcacomb{rec}\; x\; f\; \overline{n}).
+    f\, \overline{n}\, (\pcacomb{rec}\, x\, f\, \overline{n}).
 \end{equation*}
 %
 It turns out that every partial recursive function can be encoded in a
@@ -1765,21 +1745,37 @@ examples of partial combinatory algebras.
 
 \paragraph{First Kleene Algebra.}
 
-Turing machines, or more precisely their codes, form a PCA whose
-application is defined as $m \cdot n = \pr{m}{n}$. Because $m \cdot n$
-can be easily confused with multiplication, a traditional notation for
-this algebra is $\set{m}(n)$, but we shall not use it.
+Turing machines, or more precisely their codes, form a PCA $(\NN,
+{\cdot})$ whose application is defined as $m \cdot n = \pr{m}{n}$.
+Because $m \cdot n$ can be easily confused with multiplication, a
+traditional notation for application is $\set{m}(n)$. 
+
+The combinator $\combK$ is easily obtained. The function $p(x,y) = x$
+is easily seen to be computable. By the smn theorem there exists a
+computable map $q : \NN \to \NN$ such that $\pr{q(x)}{y} = x$. Take
+$\combK$ to be any number such that $q = \xpr_\combK$.
+
+The combinator $\combS$ requires a bit more thought. The partial
+function $g(x,y,z) = \pr{\pr{x}{z}}{\pr{y}{z}}$ is computable,
+essentially by several applications of the utm theorem. By the smn
+theorem there is a computable $r : \NN \to \NN$ such that
+$\pr{r(x,y)}{z} = g(x,y,z)$. Another application of the smn theorem
+yields a computable function $q : \NN \to \NN$ such that $\pr{q(x)}{y}
+= r(x,y)$. Take $\combS$ to be any number such that $q = \xpr_\combS$.
 
 \paragraph{Second Kleene Algebra.}
 
-Type 2 Turing machines, or more precisely the Baire space~$\Baire$, is
-a PCA whose application is defined as $\alpha \cdot \beta =
-\fpr{\alpha}{\beta}$.
+Type 2 machines, or more precisely the Baire space~$\Baire$, is a PCA
+$(\Baire, {\mid})$ whose application is defined as $\alpha \mid \beta
+= \fpr{\alpha}{\beta}$. The combinators $\combK$ and $\combS$ exists
+by an argument similar to that for the first Kleene algebra. The
+$\combK$ and $\combS$ so obtained turn out to be computable sequences.
 
 There are actually two version, the \emph{continuous} second Kleene
 algebra which consists of the entire Baire space, and the
 \emph{computable} one, which consists only of the computable sequences
-in~$\Baire$.
+in~$\Baire$. The computable Baire space is a sub-PCA of the continuous
+one because the combinators~$\combK$ and~$\combS$ are computable.
 
 \paragraph{Untyped $\lambda$-calculus.}
 
@@ -1795,8 +1791,9 @@ combinatory algebra with application defined by $a \cdot b =
 \Lambda(a)(b)$, where $\Lambda : D \to \mathcal{C}(D, D)$ is the
 retraction onto the function space. The combinators $\combK$ and
 $\combS$ are (the interpretations of) those from the untyped
-$\lambda$-calculus. The graph model contains a computable subalgebra
-of c.e.~sets.
+$\lambda$-calculus.
+
+The graph model contains a computable sub-PCA of c.e.~sets.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1805,12 +1802,20 @@ of c.e.~sets.
 \label{sec:tpcas}
 
 As we have just seen, partial combinatory algebras are general enough
-to subsume many models of computation. Nevertheless, they lack an
-important feature which many programming languages have, namely
-\emph{types} that force us to observe certain rules for well-formed
-programs. In contrast, a PCA has no restriction whatsoever how
-application is formed. What we need is the concept of \emph{typed
-  PCA}, which was defined by John Longley.
+to subsume many models of computation. Nevertheless, these models as
+well as PCAs in general lack an important feature that most real-world
+programming languages have, namely \emph{types} that enforce certain
+restrictions on how programs may be formed. In contrast, a PCA has no
+restriction whatsoever how application is formed. What we need is the
+concept of \emph{typed PCA}, which was defined by John
+Longley~\cite{Longley:tpca}.
+
+The definition of a typed PCA is quite long. Moreover, there are three
+variations, depending on how powerful we want them to be. This is so
+because the types restrict the computational power, which is then
+recovered by requiring combinators other than $\combK$ and $\combS$.
+The end result looks more like a programming language and less like a
+mysterious ``algebra''.
 
 A \emph{type system} $\mathcal{T}$ is a non-empty set, whose elements
 are called \emph{types}, equipped with two binary operations $\times$
@@ -1833,9 +1838,9 @@ such that for any types $s, t, u \in \mathcal{T}$ there exist elements
   \combSnd_{s,t} &\in A_{s \times t \to t} \\
 \end{align*}
 %
-We usually omit the types in subscripts and write $x \, y$ for $x
-\cdot_{s,t} y$. For all elements $x, y, z$ of appropriate types we
-require:
+For all elements $x, y, z$ of appropriate types we require:\footnote{We
+  usually omit the types in subscripts and write $x \, y$ for $x
+  \cdot_{s,t} y$.}
 %
 \begin{align*}
   \combK \, x \, y &= x \\
@@ -1863,6 +1868,9 @@ such that for all $x$, $f$ of appropriate types and all $n \in \NN$
   \combPRec \, x \, f \, \numeral{n+1} &= f \, \numeral{n} \,
      (\combPRec \, x \, f \, \numeral{n})
 \end{align*}
+%
+Note that $A_\ttnat$ may contain elements other than the
+numerals~$\numeral{n}$.
 
 A \emph{TPCA with numerals and general recursion (NR-TPCA)} is a
 N-TPCA $A$ containing elements
@@ -1878,24 +1886,67 @@ we have
   \defined{\combY \, f} & \\
   \combY \, f \, x &\klgeq f \, (\combY\, f) \, x
 \end{align*}
+%
 
-\subsection{Examples of TPCAs}
+\section{Examples of Typed Partial Combinatory Algebras}
 \label{sec:examples-tpcas}
 
-More details will be filled in this section.
+\subsection{Partial combinatory algebras}
 
-\paragraph{Partial combinatory algebras.}
+If we trivialize the type system so that there is just a single type,
+$\mathcal{T} = \set{\star}$, $\star \times \star = \star \to \star =
+\star$ and $A_\star = A$, then the definition of TPCA collapses to
+that of a PCA. In fact a PCA is always an NR-TPCA.
 
-Every PCA $A$ is a NR-TPCA with over the trivial type system
-$\mathcal{T} = \set{\star}$ in which $\star \times \star = \star \to
-\star = \star$ and $A_\star = A$.
 
-\paragraph{Simply typed $\lambda$-calculus.}
+\subsection{Simply typed $\lambda$-calculus}
 
-Simply typed $\lambda$-calculus is a TPCA over the types generated
-from a collection of basic types with operations $\times$ and $\to$.
+\label{sec:simply-typed-lambda-calculus}
 
-\paragraph{G\"odel's $T$.}
+In simply\footnote{The calculus is called \emph{simple} because it
+  does not involve dependent types, which nobody outside Scandinavia
+  consideres to be simple.} typed $\lambda$-calculus we assign to each
+expression a \emph{type}. The fact that expression~$e$ has a type~$A$
+is written as $t : A$. To computer scientists the idea of expressions
+having types is familiar from programming languages. Mathematicians
+can think of types as sets and read $t : A$ as $t \in A$.
+
+Types are symbolic constructions and they do not necessarily denote
+any mathematical objects, although we may \emph{interpret} them as
+such. In a given theory we may be given a supply of \emph{basic}
+types, and if $A$ and $B$ are types then we may form the type $A \to
+B$.
+
+The typed $\lambda$-calculus restricts application and
+$\lambda$-abstraction as follows:
+%
+\begin{enumerate}
+\item We are given an infinite supply of variables. Whenever a
+  variable is used, we must indicate its type.
+\item If $e_1$ has type $A \to B$ and $e_2$ has type~$A$ then we may
+  form the application $e_1 \, e_2$, which has type $B$.
+\item If $x$ is a variable of type $A$ and $e$ is an expression of
+  type $B$ in which $x$ may occur freely, then we may form the
+  $\lambda$-abstraction $\xtlam{x}{A}{e}$ whose type is $A \to B$.
+\end{enumerate}
+%
+These rules prevent us from forming a self-application $e\, e$ because
+$e$ would have to have the type $A$ and $A \to A$ at the same time.
+
+The rule of $\beta$-reduction is adopted in the typed
+$\lambda$-calculus as well. The $\eta$-rule is typically adopted in
+mathematical settings, whereas in the theory of programming languages
+it is not. We will always be careful to state whether we are assuming
+the $\eta$-reduction.
+
+Usually the simply typed $\lambda$-calculus also has the unit type and
+the product types. We do not work out the details here because we will
+present a very similar, but more general system in
+Section~\ref{sec:tpcas}. We only mention that the simply typed
+$\lambda$-calculus is much less powerful than the untyped version
+because there is no way to get recursion going.
+
+\subsection{G\"odel's $T$}
 
 G\"odel's $T$ is a N-TPCA. It is succinctly described as a minimal
 model of simply-typed $\lambda$-calculus with natural numbers and
@@ -1903,19 +1954,14 @@ primtive recursion. It is a total algebra because application is
 always total. The types are formed inductively from $\ttnat$ using
 $\times$ and $\to$.
 
-\paragraph{PCF.}
+\subsection{PCF}
 
 PCF is a minimalist functional programming language with natural
 numbers, Booleans, and general recursion. It is an example of NR-TPCA.
 PCF is a fragment of Haskell.
 
-\paragraph{PCF with a monad.}
 
-Given a monad $m$, as in Haskell, we define a NR-TPCA $A$ by
-taking $A_{s \to t} = A_s \to m\,A_t$. More details to follow.
-
-
-\paragraph{Real-world programming languages}
+\subsection{Real-world programming languages}
 \label{sec:programming-languages}
 
 Real-world programming languages, such as C/C++, fortran, Java, and
