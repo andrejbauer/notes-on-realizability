@@ -1700,20 +1700,20 @@ In a PCA we can define functions by recursion by using the
 \begin{alignat*}{2}
   W &= \pcalam{x y}{y(x\, x\, y)}\;, &
   \qquad
-  \combY &= W\, W \;, \\
+  \combZ &= W\, W \;, \\
   X &= \pcalam{x y z}{y (x\, x\, y) z} \;, &
   \qquad
-  \combZ &= X\, X \;.
+  \combY &= X\, X \;.
 \end{alignat*}
 %
-These combinators satisfy, for all $f \in A$,
+These combinators satisfy, for all $f, x \in A$,
 %
 \begin{equation*}
-  \combY\, f \kleq f\, (\combY\, f) \;,
+  \combZ\, f \kleq f\, (\combZ\, f) \;,
   \qquad
-  \defined{\combZ f} \;,
+  \defined{\combY f} \;,
   \qquad
-  (\combZ\, f)\, z \kleq f\, (\combZ f)\, z \;.
+  (\combY\, f)\, x \kleq f\, (\combY f)\, x \;.
 \end{equation*}
 
 Finally, let us see how to define functions by primitive recursion.
@@ -1841,11 +1841,11 @@ a type system $\mathcal{T}$ consists of
 such that for any types $s, t, u \in \mathcal{T}$ there exist elements
 %
 \begin{align*}
-  \combK_{s,t} &\in A_{s \to t \to s} \\
-  \combS_{s,t,u} &\in A_{(s \to t \to u) \to (s \to t) \to s \to u} \\
-  \combPair_{s,t} &\in A_{s \to t \to s \times t} \\
-  \combFst_{s,t} &\in A_{s \times t \to s} \\
-  \combSnd_{s,t} &\in A_{s \times t \to t} \\
+  \combK_{s,t} &\in A_{s \to t \to s}, \\
+  \combS_{s,t,u} &\in A_{(s \to t \to u) \to (s \to t) \to s \to u}, \\
+  \combPair_{s,t} &\in A_{s \to t \to s \times t}, \\
+  \combFst_{s,t} &\in A_{s \times t \to s}, \\
+  \combSnd_{s,t} &\in A_{s \times t \to t}.
 \end{align*}
 %
 For all elements $x, y, z$ of appropriate types we require:\footnote{We
@@ -1853,34 +1853,39 @@ For all elements $x, y, z$ of appropriate types we require:\footnote{We
   \cdot_{s,t} y$.}
 %
 \begin{align*}
-  \combK \, x \, y &= x \\
-  \defined{\combS \, x \, y} & \\
-  \combS \, x \, y \, z &\klgeq  (x \, z) (y \, z) \\
-  \combFst \, (\combPair \, x \, y) &= x \\
-  \combSnd \, (\combPair \, x \, y) &= y
+  \combK \, x \, y &= x, \\
+  \defined{\combS \, x \, y}, & \\
+  \combS \, x \, y \, z &\klgeq  (x \, z) (y \, z), \\
+  \combFst \, (\combPair \, x \, y) &= x, \\
+  \combSnd \, (\combPair \, x \, y) &= y.
 \end{align*}
-
+%
+We say that the elements $\combK_{s,t}$, $\combS_{s,t,u}$,
+$\combPair_{s,t}$, $\combFst_{s,t}$, $\combSnd_{s,t}$ are
+\emph{suitable} for~$A$ when they satisfy the above properties.
 
 A \emph{TPCA with numerals (N-TPCA)} is a TPCA $A$ in which there is a
 type $\ttnat$ and elements
 %
 \begin{align*}
-  \numeral{0}, \numeral{1}, \numeral{2}, \ldots &\in A_{\ttnat} \\
-  \combSucc &\in A_{\ttnat \to \ttnat} \\
-  \combPRec_s &\in A_{s \to (\ttnat \to s \to s) \to \ttnat \to s}
+  \numeral{0}, \numeral{1}, \numeral{2}, \ldots &\in A_{\ttnat}, \\
+  \combSucc &\in A_{\ttnat \to \ttnat}, \\
+  \combPRec_s &\in A_{s \to (\ttnat \to s \to s) \to \ttnat \to s}.
 \end{align*}
 %
 such that for all $x$, $f$ of appropriate types and all $n \in \NN$
 %
 \begin{align*}
-  \combSucc \, \numeral{n} &= \numeral{n + 1} \\
-  \combPRec \, x \, f \, \numeral{0} &= x \\
-  \combPRec \, x \, f \, \numeral{n+1} &= f \, \numeral{n} \,
-     (\combPRec \, x \, f \, \numeral{n})
+  \combSucc \, \numeral{n} &= \numeral{n + 1}, \\
+  \combPRec \, x \, f \, \numeral{0} &= x, \\
+  \combPRec \, x \, f \, \numeral{n+1} &= f \, \numeral{n},
+     (\combPRec \, x \, f \, \numeral{n}).
 \end{align*}
 %
 Note that $A_\ttnat$ may contain elements other than the
-numerals~$\numeral{n}$.
+numerals~$\numeral{n}$. Again, we say that the elements
+$\overline{n}$, $\combSucc$, $\combPRec$, and the numerals are
+\emph{suitable} for~$A$.
 
 A \emph{TPCA with numerals and general recursion (NR-TPCA)} is a
 N-TPCA $A$ containing elements
@@ -1889,73 +1894,100 @@ N-TPCA $A$ containing elements
   \combY_{s,t} \in A_{((s \to t) \to (s \to t)) \to (s \to t)}
 \end{equation*}
 %
-such that for all $f \in A_{(s \to t) \to (s \to t)}$ and $x \in A_s$
-we have
+such that, for all $f \in A_{(s \to t) \to (s \to t)}$ and $x \in A_s$,
 %
-\begin{align*}
-  \defined{\combY \, f} & \\
-  \combY \, f \, x &\klgeq f \, (\combY\, f) \, x
-\end{align*}
+\begin{equation*}
+  \defined{\combY \, f}
+  \qquad\text{and}\qquad
+  \combY \, f \, x \klgeq f \, (\combY\, f) \, x.
+\end{equation*}
 %
+Such a $\combY_{s,t}$ is \emph{suitable} for~$A$. This concludes the
+definition of typed PCAs.
 
+A \emph{sub-TPCA} $A'$ of a TPCA~$A$ is a collection of subsets $A'_t
+\subseteq A_t$, for each $t \in \mathcal{T}$, such that applications
+in~$A$ restrict to~$A'$, and there exist elements
+$\combK_{s,t}$, $\combS_{s,t,u}$, $\combPair_{s,t}$, $\combFst_{s,t}$,
+and $\combSnd_{s,t}$ in the corresponding subsets $A'_{\place}$ of
+appropriate types which are suitable for~$A$. Consequently, these
+elements are also suitable for~$A'$.
+
+The notions of \emph{sub-N-TPCA} and \emph{sub-NR-TPCA} are defined
+similarly.
+
+A TPCA $A$ is combinatory complete. To express this precisely, we
+inductively define \emph{expressions over $A$}:
+%
+\begin{enumerate}
+\item every $a \in A_t$ is a an expression of type $t$, called a
+  \emph{primitive constant},
+\item an annotated variable $\annot{x}{t}$ is an expression of type~$t$,
+\item if $e_1$ is an expression of type $s \to t$ and $e_2$ is an
+  expression of type $s$ then $e_1 \cdot e_2$ is an expression of
+  type~$t$.
+\end{enumerate}
+%
+Note that we explicitly annotate variables with their types. We also
+assume that the type of a primitive constant is uniquely
+determined.\footnote{This can be achieved with type annotations for
+  primitive constants,} Consequently, every expression has a uniquely
+determined type. A closed expression $e$ of type~$t$ is defined,
+written $\defined{e}$, when all applications appearing in it are
+defined. Such an expression denotes an element of~$A_t$.
+
+\begin{theorem}[Combinatory completeness]
+  Let $A$ be a TPCA. For every expression $e$ over~$A$ of type~$u$ and
+  every variable $\annot{x}{t}$ there is an expression $e'$ of type $t
+  \to u$ whose variables are those of~$e$ excluding~$\annot{x}{t}$
+  such that $\defined{e'}$ and $e \cdot a \kleq \subst{e}{x \mapsto
+    a}$ for all $a \in A_t$.
+\end{theorem}
+
+\begin{proof}
+  Similarly to the untyped case we define the notation
+  $\xtpcalam{x}{t}{e}$ inductively as follows:
+  %
+  \begin{enumerate}
+  \item $\xtpcalam{x}{t}{x} = \combS_{t,t \to t,t} \, \combK_{t,t \to
+      t} \, \combK_{t,t}$,
+  \item $\xtpcalam{x}{t}{y} = \combK_{s,t}\, y$ if $\annot{y}{s}$ is a
+    variable distinct from $\annot{x}{t}$,
+  \item $\xtpcalam{x}{t}{a} = \combK_{s,t} \, a$ if $a$ is an element
+    of $A_s$,
+  \item $\tpcalam{x}{t}{e_1\, e_2} = \combS_{t,u,v}\,
+    (\xtpcalam{x}{t}{e_1}) \, (\xtpcalam{x}{t}{e_2})$ if $e_1$ and
+    $e_2$ have types $u \to v$ and $u$, respectively.
+  \end{enumerate}
+  %
+  It turns out that $e' = \xtpcalam{x}{t}{e}$ satisfies the conditions
+  of the theorem.
+\end{proof}
 
 \section{Examples of Typed Partial Combinatory Algebras}
 \label{sec:examples-tpcas}
 
 \subsection{Partial combinatory algebras}
 
-If we trivialize the type system so that there is just a single type,
-$\mathcal{T} = \set{\star}$, $\star \times \star = \star \to \star =
-\star$ and $A_\star = A$, then the definition of TPCA collapses to
-that of a PCA. In fact a PCA is always an NR-TPCA.
+Every PCA is a NR-TPCA if we enrich it with the trivial types system
+that contains a single type, $\mathcal{T} = \set{\star}$ with (the
+only possible) operations $\star \times \star = \star \to \star =
+\star$, and $A_\star = A$. The required combinators are the ones we
+defined in Section~\ref{sec:pcas}.
 
 
 \subsection{Simply typed $\lambda$-calculus}
-
 \label{sec:simply-typed-lambda-calculus}
 
-In simply\footnote{The calculus is called \emph{simple} because it
-  does not involve dependent types, which nobody outside Scandinavia
-  consideres to be simple.} typed $\lambda$-calculus we assign to each
-expression a \emph{type}. The fact that expression~$e$ has a type~$A$
-is written as $t : A$. To computer scientists the idea of expressions
-having types is familiar from programming languages. Mathematicians
-can think of types as sets and read $t : A$ as $t \in A$.
+The simply\footnote{The types are \emph{simple} because they do not
+  include the \emph{dependent} types.} typed $\lambda$-calculus is to
+the untyped $\lambda$-calculus as TPCA is to a PCA. 
 
-Types are symbolic constructions and they do not necessarily denote
-any mathematical objects, although we may \emph{interpret} them as
-such. In a given theory we may be given a supply of \emph{basic}
-types, and if $A$ and $B$ are types then we may form the type $A \to
-B$.
+The types of a simply typed $\lambda$-calculus are inductively
+generated from a non-empty family of \emph{basic} types using the type
+constructors $\times$ and $\to$.
 
-The typed $\lambda$-calculus restricts application and
-$\lambda$-abstraction as follows:
-%
-\begin{enumerate}
-\item We are given an infinite supply of variables. Whenever a
-  variable is used, we must indicate its type.
-\item If $e_1$ has type $A \to B$ and $e_2$ has type~$A$ then we may
-  form the application $e_1 \, e_2$, which has type $B$.
-\item If $x$ is a variable of type $A$ and $e$ is an expression of
-  type $B$ in which $x$ may occur freely, then we may form the
-  $\lambda$-abstraction $\xtlam{x}{A}{e}$ whose type is $A \to B$.
-\end{enumerate}
-%
-These rules prevent us from forming a self-application $e\, e$ because
-$e$ would have to have the type $A$ and $A \to A$ at the same time.
 
-The rule of $\beta$-reduction is adopted in the typed
-$\lambda$-calculus as well. The $\eta$-rule is typically adopted in
-mathematical settings, whereas in the theory of programming languages
-it is not. We will always be careful to state whether we are assuming
-the $\eta$-reduction.
-
-Usually the simply typed $\lambda$-calculus also has the unit type and
-the product types. We do not work out the details here because we will
-present a very similar, but more general system in
-Section~\ref{sec:tpcas}. We only mention that the simply typed
-$\lambda$-calculus is much less powerful than the untyped version
-because there is no way to get recursion going.
 
 \subsection{G\"odel's $T$}
 
