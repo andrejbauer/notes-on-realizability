@@ -75,6 +75,46 @@ restriction on the domain~$\dom{f}$.
 
 
 
+\paragraph{Primitive recursive and recursive functions}
+
+The \emph{primitive recursive function} are those function $\NN^k \to
+\NN$ that are built from the following functions and operations:
+%
+\begin{enumerate}
+\item constant functions $f(n_1, \ldots, n_k) = c$, where $c \in \NN$,
+\item projections $p_i(n_1, \ldots, n_k) = n_i$, where $1 \leq i \leq k$,
+\item the successor function $s(n) = n + 1$,
+\item composition of functions,
+\item primitive recursion: given primitive recursive $f : \NN^k \to
+  \NN$ and $g : \NN^{k+2} \to \NN$, the function $h : \NN^{k+1} \to
+  \NN$ defined by
+  %
+  \begin{align*}
+    h(0, n_1, \ldots, n_k) &= f(n_1, \ldots, n_k), \\
+    h(n+1, n_1, \ldots, n_k) &= g(h(n, n_1, \ldots, n_k), n, n_1,
+    \ldots, n_k)    
+  \end{align*}
+  %
+  is primitive recursive.
+\end{enumerate}
+%
+Every primitive recursive function is computable, but not every
+computable function is primitive recursive.\footnote{The Ackermann
+  function is computable but not primitive recursive.}
+
+
+The \emph{(general) partial recursive functions} are built from the
+above building blocks and also \emph{minimization}: if $f :
+\NN^{k+1} \parto \NN$ is recursive, then also the function $g : \NN^k
+\parto \NN$, defined by
+%
+\begin{equation*}
+  g(n_1, \ldots, n_k) = \min_n (f(n, n_1, \ldots, n_k) \neq 0),
+\end{equation*}
+%
+is recursive. When no $n$ satisfies the condition $f(n, n_1, \ldots,
+n_k) \neq 0$ the value $g(n_1, \ldots, n_k)$ is undefined.
+
 
 \paragraph{Order theory.}
 
