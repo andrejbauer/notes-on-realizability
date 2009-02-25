@@ -1165,7 +1165,7 @@ constants, numbers, or other operations.
 Expressions which only differ in the naming of bound variables are
 equal, thus $\xulam{x}{y\, x} = \xulam{z}{y\, z} \neq \xulam{y}{y\,
   y}$. Substitution replaces free variables with expresions. We write
-$\subst{e}{x_1 \mapsto e_1, \ldots, x_n \mapsto e_n}$ for a
+$\subst{e}{x_1 \subto e_1, \ldots, x_n \subto e_n}$ for a
 simultaneous subtitution of expressions $e_1, \ldots, e_n$ for
 variables $x_1, \ldots, x_n$ in $e$, respectively. The usual rules for
 bound variables must be observed when we perform
@@ -1176,7 +1176,7 @@ subtitutions.\footnote{It is notoriously easy to commit errors when
 The basic axiom of $\lambda$-calculus is \emph{$\beta$-reduction}:
 %
 \begin{equation*}
-  (\xulam{x}{e_1})\, e_2 = \subst{e_1}{x \mapsto e_2}.
+  (\xulam{x}{e_1})\, e_2 = \subst{e_1}{x \subto e_2}.
 \end{equation*}
 %
 It says that the application of a function $\xulam{x}{e_1}$ to an
@@ -1548,7 +1548,7 @@ $x_1, \ldots, x_n$, we write $\defined{e}$ when, for all $a_1, \ldots,
 a_n \in A$, the closed expression
 %
 \begin{equation*}
-  \subst{e}{x_1 \mapsto a_1, \ldots, x_n \mapsto a_n}
+  \subst{e}{x_1 \subto a_1, \ldots, x_n \subto a_n}
 \end{equation*}
 %
 is defined. If $e$ and $e'$ are expressions whose variables are among
@@ -1556,8 +1556,8 @@ $x_1, \ldots, x_n$, we write $e \kleq e'$ when, for all $a_1, \ldots,
 a_n \in A$,
 %
 \begin{equation*}
-  \subst{e}{x_1 \mapsto a_1, \ldots, x_n \mapsto a_n} \kleq
-  \subst{e'}{x_1 \mapsto a_1, \ldots, x_n \mapsto a_n}.
+  \subst{e}{x_1 \subto a_1, \ldots, x_n \subto a_n} \kleq
+  \subst{e'}{x_1 \subto a_1, \ldots, x_n \subto a_n}.
 \end{equation*}
 
 \begin{theorem}[Combinatory completeness]
@@ -1565,7 +1565,7 @@ a_n \in A$,
   Let $(A, {\cdot})$ be a PCA. For every variable $x$ and expression
   $e$ over $A$ there is an expression $e'$ over $A$ whose variables
   are those of~$e$ excluding~$x$ such that $\defined{e'}$ and $e'
-  \cdot a \kleq \subst{e}{x \mapsto a}$ for all $a \in A$.
+  \cdot a \kleq \subst{e}{x \subto a}$ for all $a \in A$.
 \end{theorem}
 
 \begin{proof}
@@ -1941,7 +1941,7 @@ defined. Such an expression denotes an element of~$A_t$.
   Let $A$ be a TPCA. For every expression $e$ over~$A$ of type~$u$ and
   every variable $\annot{x}{t}$ there is an expression $e'$ of type $t
   \to u$ whose variables are those of~$e$ excluding~$\annot{x}{t}$
-  such that $\defined{e'}$ and $e \cdot a \kleq \subst{e}{x \mapsto
+  such that $\defined{e'}$ and $e \cdot a \kleq \subst{e}{x \subto
     a}$ for all $a \in A_t$.
 \end{theorem}
 
@@ -2012,7 +2012,7 @@ As in the untyped version, here too we have the rule of
 $\beta$-reduction
 %
 \begin{equation*}
-  (\xtlam{x}{t}{e_1}) e_2 = \subst{e_1}{x \mapsto e_2}.
+  (\xtlam{x}{t}{e_1}) e_2 = \subst{e_1}{x \subto e_2}.
 \end{equation*}
 %
 There is also a corresponding $\eta$-reduction rule, for $e : s \to t$,
@@ -2099,12 +2099,17 @@ primitive constants of PCF with their types are:
 A \emph{program} of type $t$ is a closed expression of type $t$. A
 \emph{value} is a program that is considered to be ``finished''. The
 values are the primitive constants, in particular the numerals
-$\numeral{n}$, $\combTrue$, and $\combFalse$,
-$\lambda$-abstractions, and pairs $(e_1, e_2)$ where $e_1$ and $e_2$
-are programs.
-Execution of a program is described with the immediate reduction
-relation $e \oneto e'$, which you can think of ``$e$ evaluates to $e'$
-in one step'', defined by the rules in Figure~\ref{fig:pcf}.
+$\numeral{n}$, $\combTrue$, and $\combFalse$, $\lambda$-abstractions,
+and pairs $(e_1, e_2)$ where $e_1$ and $e_2$ are
+programs.\footnote{The pairs are \emph{lazy} in the sense that they do
+  not compute their components until they are projected out.}
+Execution of a program is described with the reduction relation $e
+\oneto e'$, which you can think of as ``$e$ evaluates to $e'$ in one
+step'', defined by the rules in Figure~\ref{fig:pcf}. Each rule says
+that the reduction under the line is valid, provided the reductions
+above the line are. For example, the first rules says that in an
+application $e_1\,e_2$ we should evaluate $e_1$ if we can. The second
+rule is essentialy a directed version of $\beta$-reduction.
 
 \begin{figure}[htpb]
   \centering
@@ -2114,7 +2119,7 @@ in one step'', defined by the rules in Figure~\ref{fig:pcf}.
   {e_1 \, e_2 \oneto e_1'\, e_2}
   \qquad
   \axiom
-  {(\xtlam{x}{t}{e})\,e_2 \oneto \subst{e}{x \mapsto e_2}}
+  {(\xtlam{x}{t}{e})\,e_2 \oneto \subst{e}{x \subto e_2}}
   \\ \\
   \infer
   {e \oneto e'}
@@ -2171,6 +2176,12 @@ in one step'', defined by the rules in Figure~\ref{fig:pcf}.
   \caption{Small-step semantics of PCF}
   \label{fig:pcf}
 \end{figure}
+
+The reduction rules are \emph{deterministic}: for each $e$ there is at
+most one~$e'$ such that $e \oneto e'$. The \emph{evaluation} of a
+program~$e$ is the sequence of reductions $e \oneto e' \oneto e''
+\oneto \cdots$ resulting from successive applications of reduction
+rules.
 
 
 These satisfy the following equations:
