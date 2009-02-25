@@ -101,7 +101,7 @@ The answer was given by Turing.
   For me a much more convincing proof is the fact that a universal
   machine is sitting right here on my desk.\footnote{You have to
     ignore the fact the several hundred gigabytes of storage are not
-    quite the same thing as an infinite tape. Also, modern compuers
+    quite the same thing as an infinite tape. Also, modern computers
     are really \emph{Von Neumann}
     machines~\cite{goldstein47:_repor_mathem_and_logic_aspec} because
     they have a central processing unit and random access memory
@@ -194,7 +194,7 @@ which we define as iterated pairing:
 Because we defined $\code{(m,n)}$ so that it is never zero, the
 elements of a sequence may be uniquely reconstructed from its code. By
 continuing in this manner we may encode with a single number a finite
-sequence of computatation steps, including the contents of the tapes
+sequence of computation steps, including the contents of the tapes
 and positions of the heads at each step. Stephen Kleene~\cite{kleene43:_recur_predic_and_quant}
 worked out the details of all this and defined the predicate
 $T(x,y,z)$ whose meaning is
@@ -214,7 +214,7 @@ the result of a computation. If $z$ does not encode a terminating
 computation then $U(z)$ is undefined.
 
 Kleene's normal form theorem~\cite{kleene43:_recur_predic_and_quant}
-says that every parital computable function $f : \NN \parto \NN$ may
+says that every partial computable function $f : \NN \parto \NN$ may
 be written in the form
 %
 \begin{equation}
@@ -333,7 +333,7 @@ by recursion.
 \end{proof}
 
 This was a typical argument in the theory of computable functions. Let
-us prove the recrusion theorem in Haskell to see what is going on. The
+us prove the recursion theorem in Haskell to see what is going on. The
 function $f : \NN \to \NN$ operates on codes of computable partial
 maps. In Haskell we work directly with values, so in the Haskell
 version of the theorem $f$ has the type
@@ -406,7 +406,7 @@ g n = if h g == 1 then g n else 0
 
 Type 1 machines from previous section only operate on finite inputs.
 In practice we often see programs whose input and output are
-(potentially) infinite. For example, when you listen to an internet
+(potentially) infinite. For example, when you listen to an Internet
 radio station, the player accepts a never-ending stream of data which
 it outputs to the speakers. Also, just because a program does not
 terminate that does not automatically mean it is useless. We therefore
@@ -426,7 +426,7 @@ An important distinction between type 1 and type 2 machines is that
 the latter may accept non-computable inputs, from which non-computable
 outputs may be produced.
 
-For type 2 machines there are analogoues of the standard
+For type 2 machines there are analogues of the standard
 enumeration~$\xpr$, utm and the smn theorems. These are more easily
 expressed if we allow the machines to write natural numbers in the
 cells, rather than symbols from a finite alphabet. We also equip the
@@ -441,7 +441,7 @@ A type 2 machine computes a partial function $f : \NN^\NN \parto
 \NN^\NN$, where $\NN^\NN$ is the \emph{Baire space} of infinite
 sequences of numbers. We run the machine with $\alpha \in \NN^\NN$
 written on the input tape. If every output cell is eventually written
-to, then the output tape reprsents the result $f(\alpha)$. If there is
+to, then the output tape represents the result $f(\alpha)$. If there is
 at least one output cell to which the machine does not write a number,
 then $f(\alpha)$ is undefined.
 
@@ -519,7 +519,7 @@ n_{k-1}, 0, 0, \ldots$. If the machine writes $j$ into the $i$-th
 output cell during the simulation, set $\beta(m) = j + 1$, otherwise
 set $\beta(m) = 0$.
 
-Conversely, every $\beta \in \Baire$ detemines a partial function $f :
+Conversely, every $\beta \in \Baire$ determines a partial function $f :
 \Baire \parto \Baire$. For $\alpha, \beta \in \Baire$ define
 %
 \begin{equation*}
@@ -1164,12 +1164,12 @@ constants, numbers, or other operations.
 
 Expressions which only differ in the naming of bound variables are
 equal, thus $\xulam{x}{y\, x} = \xulam{z}{y\, z} \neq \xulam{y}{y\,
-  y}$. Substitution replaces free variables with expresions. We write
+  y}$. Substitution replaces free variables with expressions. We write
 $\subst{e}{x_1 \subto e_1, \ldots, x_n \subto e_n}$ for a
-simultaneous subtitution of expressions $e_1, \ldots, e_n$ for
+simultaneous substitution of expressions $e_1, \ldots, e_n$ for
 variables $x_1, \ldots, x_n$ in $e$, respectively. The usual rules for
 bound variables must be observed when we perform
-subtitutions.\footnote{It is notoriously easy to commit errors when
+substitutions.\footnote{It is notoriously easy to commit errors when
   defining the details of substitution. The best way to understand all
   the intricacies is to write a program that performs substitutions.}
 
@@ -1191,7 +1191,7 @@ body~$e_1$. A second axiom, which is sometimes assumed is
 provided $x$ does not occur freely in~$e$. We will \emph{not} assume
 $\eta$-reduction unless explicitly stated otherwise.
 
-In a given expression there may be several subexpressions, called
+In a given expression there may be several sub-expressions, called
 \emph{redexes}, where $\beta$-reduction could be performed. We write
 $e \mapsto e'$ when $e'$ is obtained from $e$ by a single application
 of $\beta$-reduction to a redex in~$e$. For example, we could reduce
@@ -1208,7 +1208,7 @@ The \href{http://en.wikipedia.org/wiki/Church%E2%80%93Rosser_theorem}{Church-Ros
 $\lambda$-calculus is \emph{confluent}, which means that the order of
 reductions is not important in the sense that two different ways of
 reducing and expression may always be reduced further so that they
-become equal. In the example above, we get $a\,b$ in both caess after
+become equal. In the example above, we get $a\,b$ in both cases after
 one more reduction.
 
 There are expressions which we can keep reducing forever, for example
@@ -1583,7 +1583,7 @@ a_n \in A$,
 \end{proof}
 
 The meta-notation $\xpcalam{x}{e}$ plays a role similar to that of
-$\lambda$-abstraction in the untyped $\lambda$-caclulus. We abbreviate
+$\lambda$-abstraction in the untyped $\lambda$-calculus. We abbreviate
 $\xpcalam{x}{\xpcalam{y}{e}}$ as $\xpcalam{x y}{e}$, and similarly for
 more variables. We need to be careful with the ``$\beta$-rule''
 because it is only valid in a restricted sense,
@@ -1783,7 +1783,7 @@ one because the combinators~$\combK$ and~$\combS$ are computable.
 \paragraph{Untyped $\lambda$-calculus.}
 
 The closed expressions of the untyped $\lambda$-calculus form a
-(total) combinatory aglebra whose application is the one from
+(total) combinatory algebra whose application is the one from
 $\lambda$-calculus. More precisely, we quotient the set of closed
 expressions by the equivalence relation generated by
 $\beta$-reduction. Then the combinators are $\combK = \xulam{x y}{x}$
@@ -1791,7 +1791,7 @@ and $\combS = \xulam{x y z}{(x \, z)(y \, z)}$.
 
 In Section~\ref{sec:typed-lambda-calculus} we shall elaborate
 (the typed version of) the $\lambda$-calculus as a programming
-language and give explicit stategies for computing with it.
+language and give explicit strategies for computing with it.
 
 
 \paragraph{The graph model and reflexive domains.}
@@ -1816,7 +1816,7 @@ to subsume many models of computation. Nevertheless, these models, as
 well as PCAs in general, lack an important feature that most
 real-world programming languages have, namely \emph{types} that impose
 restrictions on how programs may be formed. In contrast to PCAs, in a
-typical programming language we cannot meaningully apply \emph{any}
+typical programming language we cannot meaningfully apply \emph{any}
 expression to any other expression. In this section we look at a
 version of PCAs with types, which were defined by John
 Longley~\cite{longley99:_unify_typed_and_untyp_realiz}.
@@ -2073,7 +2073,7 @@ functions are expressible in this system.
 
 \subsection{PCF}
 
-The programming language PCF was introducted by Gordon
+The programming language PCF was introduced by Gordon
 Plotkin~\cite{plotkin77:_lcf_consid_as_progr_languag}. It has since
 served as the ``laboratory mouse'' of the theory of programming
 languages. The design of real-world functional languages, such as SML,
@@ -2088,7 +2088,7 @@ primitive constants of PCF with their types are:
 \begin{align*}
   \overline{n} &: \ttnat \quad \text{(for each $n \in \NN$),} \\
   \combSucc &: \ttnat \to \ttnat, \\
-  \combPrec &: \ttnat \to \ttnat, \\
+  \combPred &: \ttnat \to \ttnat, \\
   \combTrue &: \ttbool, \\
   \combFalse &: \ttbool, \\
   \combIsZero &: \ttnat \to \ttbool, \\
@@ -2109,7 +2109,7 @@ step'', defined by the rules in Figure~\ref{fig:pcf}. Each rule says
 that the reduction under the line is valid, provided the reductions
 above the line are. For example, the first rules says that in an
 application $e_1\,e_2$ we should evaluate $e_1$ if we can. The second
-rule is essentialy a directed version of $\beta$-reduction.
+rule is essentially a directed version of $\beta$-reduction.
 
 \begin{figure}[htpb]
   \centering
@@ -2144,13 +2144,13 @@ rule is essentialy a directed version of $\beta$-reduction.
   \\ \\
   \infer
   {e \oneto e'}
-  {\combPrec\,e \oneto \combPrec\,e'}
+  {\combPred\,e \oneto \combPred\,e'}
   \qquad
   \axiom
-  {\combPrec\,\overline{n+1} \oneto \overline{n}}
+  {\combPred\,\overline{n+1} \oneto \overline{n}}
   \qquad
   \axiom
-  {\combPrec\,0 \oneto 0}
+  {\combPred\,0 \oneto 0}
   \\ \\
   \infer
   {e \oneto e'}
@@ -2177,137 +2177,111 @@ rule is essentialy a directed version of $\beta$-reduction.
   \label{fig:pcf}
 \end{figure}
 
-The reduction rules are \emph{deterministic}: for each $e$ there is at
-most one~$e'$ such that $e \oneto e'$. The \emph{evaluation} of a
-program~$e$ is the sequence of reductions $e \oneto e' \oneto e''
-\oneto \cdots$ resulting from successive applications of reduction
-rules.
-
-
-These satisfy the following equations:
-%
-\begin{xalignat*}{2}
-  \combSucc\,\overline{n} &= \overline{n+1}, &
-  \combIsZero\,\numeral{0} &= \combTrue,\\
-  \combPrec\,\overline{n+1} &= \overline{n},&
-  \combIsZero\,\numeral{n+1} &= \combFalse,\\  
-  \combPrec\,0 &= 0, &
-  \combIf_t \, \combTrue \, e_1 \, e_2 &= e_1,\\
-  \combFix_t \, e &= e \, (\combFix_t \, e), &
-  \combIf_t \, \combFalse \, e_1 \, e_2 &= e_2.
-\end{xalignat*}
-%
-
-
-
-For every type $t$ we postulate a constant
-$\combFix_t$ of type $(t \to t) \to t$ and the reduction rule
+The transitive reflexive closure of $\oneto$ is denoted by $\manyto$.
+We define \emph{evaluation} $\mathsf{eval}$ as the partial map which
+maps programs to values,
 %
 \begin{equation*}
-  \combFix_t \, e = e \, (\combFix_t \, e),
+  \mathsf{eval}(e) =
+  \begin{cases}
+    v & \text{if $e \manyto v$ and $v$ is a value,}\\
+    \text{undefined} & \text{otherwise.}
+  \end{cases}
 \end{equation*}
 %
-where $e$ is an expression of type $t \to t$. This is more than what
-is strictly required to get a NR-TPCA, whose definition only wants the
-fixed-point combinators of the form $\combY_{s,t} = \combFix_{s \to
-  t}$.
+Evaluation is well defined because the reduction rules are
+\emph{deterministic}, i.e., for each~$e$ at most one~$e'$ such that $e
+\oneto e'$. In fact, for a program~$e$ we only have two options:
+either there is an infinite sequence of reduction steps $e \oneto e'
+\oneto e'' \oneto \cdots$, or there is a finite sequence $e \oneto e'
+\oneto \cdots \oneto v$ ending with a value. We say that $e$
+\emph{diverges} in the former case, and \emph{terminates} in the
+latter. The third option, namely that the reduction sequence ends with
+a non-value, cannot happen.
 
-To get something that looks like a programming language we also add a
-second ground type $\ttbool$, constants $\combFalse$ and $\combTrue$
-of type $\ttbool$, a constant $\combIsZero$ of type $\ttnat \to
-\ttbool$, and a constant $\combIf_t$ of type $\ttbool \to t \to t \to
-t$, for each type~$t$. The constant $\combIsZero$ tests whether a
-number equals zero,
+So far we have not specified any notion of equality between programs
+or values in~PCF. We need to do so in order to get a NR-TPCA. For
+programs $e_1$ and $e_2$ of type $t$, say that they are
+\emph{observationally equivalent} and write $e_1 \approx_t e_2$, when
+for every program $e : t \to \ttnat$ and all $n \in \NN$
 %
 \begin{equation*}
-  \combIsZero\,\numeral{0} = \combTrue
-  \qquad\text{and}\qquad
-  \combIsZero\,\numeral{n+1} = \combFalse,
-\end{equation*}
-%
-while $\combIf$ is the conditional statement,
-%
-\begin{equation*}
-  \combIf_t \, \combTrue \, e_1 \, e_2 = e_1
-  \qquad\text{and}\qquad
-  \combIf_t \, \combFalse \, e_1 \, e_2 = e_2.
-\end{equation*}
-%
-For better readability we write $\combIf_t \, e_1\, e_2 \, e_3$ as
-$\cond{e_1}{e_2}{e_3}$.
-
-Note that the primitive recursion operator $\combRec_t$ is
-expressible with general recursion, booleans and the predecessor
-function, namely $\combRec_t\,x\,f\,n = g\,n$ where $g : \ttnat \to
-t$ is
-%
-\begin{equation*}  
-  \combFix_{\ttnat \to t} \,
-  (\xtlam{g}{\ttnat \to t}{
-    \xtlam{n}{\ttnat}{
-      \cond{n = 0}{x}{f\,n\,(g \, (n-1))}}}).
-\end{equation*}
-%
-So we could omit primitive recursion if we took predecessor as a
-primitive operation, and that is how PCF is customarily defined.
-
-We may form a (total) NR-TPCA by taking $A_t$ to be the closed terms
-of type~$t$, quotiented by the equivalence relation $\sim_t$ generated
-by $\eta$- and $\beta$-reduction, rules for pairing, projections,
-primitive recursion, zero testing, the conditional statement, and
-general recursion. However, this gives us a somewhat unsatisfactory
-model because it fails to equate certain expressions. For example,
-$\combFix_\ttnat (\xtlam{n}{\ttnat}{\combSucc\,n})$ and
-$\combFix_\ttnat (\xtlam{n}{\ttnat}{\combSucc\,(\combSucc\,n)})$ both
-fail to denote a numeral and should be considered equal since,
-intuitively, they are both an infinite nesting of applications
-of~$\combSucc$.
-
-To remedy the situation, we define a coarser equivalence relation
-$\approx_t$, called \emph{observational equivalence}:
-%
-\begin{equation*}
-  e_1 \approx_t e_2 \iff
-  \xall{f}{A_{t \to \ttnat}}{\all{n}{\NN}{f\,e_1 \sim_\ttnat \numeral{n} \iff
-      f\,e_2 \sim_\ttnat \numeral{n}}}.
+  \mathsf{eval}(e\,e_1) = \numeral{n} \iff
+  \mathsf{eval}(e\,e_2) = \numeral{n}.
 \end{equation*}
 %
 The idea is that $e_1$ and $e_2$ are equivalent if they cannot be
 distinguished by ``probing'' $e_1$ and $e_2$ with a function that
-returns a ground value. PCF is the NR-TPCA where $A_t$ is the set of
-closed terms of type~$t$ quotiented by observational equivalence
-$\approx_t$.
-
-\paragraph{PCF as a programming language.}
-
-From the viewpoint of computation our definition of PCF is not
-satisfactory because it does not tell us how to \emph{execute}
-programs. To remedy the situation, we we define a relation $e \oneto
-e'$ on closed expressions which you can think of ``$e$ evaluates to
-$e'$ in one step of execution''. The relation is given by the
-following inference rules.
+returns a ground value. We usually omit the index~$t$ in $\approx_t$.
+Some useful observational equivalences are:
 %
+\begin{xalignat*}{2}
+  \combSucc\,\overline{n} &\approx \overline{n+1}, &
+  \combIsZero\,\numeral{0} &\approx \combTrue,\\
+  \combPred\,\overline{n+1} &\approx \overline{n},&
+  \combIsZero\,\numeral{n+1} &\approx \combFalse,\\  
+  \combPred\,0 &\approx 0, &
+  \combIf_t \, \combTrue \, e_1 \, e_2 &\approx e_1,\\
+  \combFix_t \, e &\approx e \, (\combFix_t \, e), &
+  \combIf_t \, \combFalse \, e_1 \, e_2 &\approx e_2.
+\end{xalignat*}
+%
+Also, if $e_1$ and $e_2$ are both diverging programs of the same type,
+they are observationally equivalent.
+
+Now define the NR-TPCA $\PCF$ by taking $\PCF_t$ to be the programs of
+type~$t$ quotiented by observational equivalence. This is easily seen
+to be a NR-TPCA. The only non-trivial bit is that there are the
+primitive recursion combinators $\combRec_t$. They can be defined in
+terms of general recursion, Booleans, and predecessors as
+%
+\begin{equation*}  
+  \combRec_t =
+  \combFix \,
+  (\xulam{r\,x\,f\,n}
+            \cond{n = 0}{x}{f\,n\,(r \, x\, f \, (\combPred\, n))})
+\end{equation*}
+%
+where $\combFix$ is at type $t \to (\ttnat \to t \to t) \to \ttnat \to
+t$, and $r$, $x$, $f$, $n$ have types $t \to (\ttnat \to t \to t) \to
+\ttnat \to t$, $t$, $\ttnat \to t \to t$, $\ttnat$, respectively.
 
 
+\subsubsection{$\PCFinf$}
 
-\subsection{Extensions of PCF}
+In Sections~\ref{sec:type-2} and~\ref{sec:graph-model} we saw that
+type~2 machines and the the graph model allow us to compute with
+arbitrary set-theoretic functions and sets. This is very convenient
+for studying computability over topological spaces and other
+uncountable structures. To achieve the same effect in PCF we extend it
+with all set-theoretic functions.
 
-\paragraph{PCF${}^\infty$.}
-
-\paragraph{PCF${}^{++}$.}
-
-
-
+For every function $f : \NN \to \NN$ we add a constant
+$\mathtt{func}_f$ of type $\ttnat \to \ttnat$ to $PCF$ and extend the
+reduction operation with the rules
+%
+\begin{equation*}
+  \infer
+  {e \oneto e'}
+  {\mathtt{func}_f\,e \oneto \mathtt{func}_f\,e}
+  \qquad\qquad
+  \axiom
+  {\mathtt{func}_f\,\numeral{n} \oneto \numeral{f(n)}}
+\end{equation*}
+%
+We usually write just $f$ instead of $\mathtt{func}_f$. The resulting
+NR-TPCA is denoted as $\PCFinf$. The original $\PCF$ is a sub-NR-TPCA
+of $\PCFinf$.
 
 
 \subsection{Real-world programming languages}
 \label{sec:programming-languages}
 
-Real-world programming languages, such as C/C++, fortran, Java, and
+Real-world programming languages, such as C/C++, Fortran, Java, and
 Python, are not mathematical objects because they do not have precise
 mathematical definitions. An exception to this rule is SML which has a
 formal mathematical definition, see~\cite{MilnerR:defsml}. Ocaml and
-Haskell also come close having formal specification. Nevertheless,
+Haskell also come close having formal specifications. Nevertheless,
 when it comes to actual implementation of computable structures, we
 shall use real-world programming languages as if they were NR-TPCAs
 since they mostly are, anyway.
