@@ -1,22 +1,3 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% Macros for indexing
-
-\newcommand{\footstyle}[1]{{#1}n}
-\newcommand{\defstyle}[1]{\textsl{#1}}
-
-\newcommand{\indexdef}[1]{\index{#1|defstyle}}%
-\newcommand{\indexfoot}[1]{\index{#1|footstyle}}%
-\newcommand{\indexsee}[2]{\index{#1|see{#2}}}%
-
-%%% Theorems
-\newtheorem{theorem}{Theorem}[chapter]
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{definition}[theorem]{Definition}
-\newtheorem{exercise}[theorem]{Exercise}
-
 \newenvironment{proof}{\medskip\noindent\emph{Proof.}}{\hfill$\Box$\medskip}
 
 %%% Blackboard bold letters
@@ -70,6 +51,8 @@
 \newcommand{\cScott}{\Scott_{\#}}
 
 %%% Functions
+\newcommand{\id}{\mathrm{id}}
+
 \newcommand{\parto}{\mathbin{\rightharpoonup}}
 \newcommand{\dom}[1]{\mathsf{dom}(#1)}
 \newcommand{\invim}[1]{{#1}^{-1}}
