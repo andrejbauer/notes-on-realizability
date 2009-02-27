@@ -1243,26 +1243,26 @@ We outline programming in $\lambda$-calculus but do not provide the
 proofs. First, a pairing with projections may be defined as follows:
 %
 \begin{equation*}
-  \mathsf{pair} = \xulam{x y z}{z\, x\, y},
+  \combPair = \xulam{x y z}{z\, x\, y},
   \qquad
-  \mathsf{fst} = \xulam{p}{p \, (\xulam{x y}{x})},
+  \combFst = \xulam{p}{p \, (\xulam{x y}{x})},
   \quad\text{and}\quad
-  \mathsf{snd} = \xulam{p}{p \, (\xulam{x y}{y})}.
+  \combSnd = \xulam{p}{p \, (\xulam{x y}{y})}.
 \end{equation*}
 %
 With these we have
 %
 \begin{equation*}
-  \mathsf{fst} (\mathsf{pair}\, a\, b) = a
+  \combFst (\combPair\, a\, b) = a
   \quad\text{and}\quad
-  \mathsf{snd} (\mathsf{pair}\, a\, b) = b.
+  \combSnd (\combPair\, a\, b) = b.
 \end{equation*}
 %
 For example,
 %
 \begin{equation*}
-  \mathsf{fst} (\mathsf{pair}\, a\, b) =
-  \mathsf{fst} (\xulam{z}{z\, a\, b}) =
+  \combFst (\combPair\, a\, b) =
+  \combFst (\xulam{z}{z\, a\, b}) =
   (\xulam{z}{z\, a\, b}) \, (\xulam{x y}{x}) =
   (\xulam{x y}{x}) \, a \, b = a.
 \end{equation*}
@@ -1270,19 +1270,19 @@ For example,
 The Boolean values and the conditional statement are defined by
 %
 \begin{equation*}
-  \mathsf{if} = \xulam{x}{x},
+  \combIf = \xulam{x}{x},
   \qquad
-  \mathsf{true} = \xulam{x y}{x},
+  \combTrue = \xulam{x y}{x},
   \quad\text{and}\quad
-  \mathsf{false} = \xulam{x y}{y}.
+  \combFalse = \xulam{x y}{y}.
 \end{equation*}
 %
 They satisfy
 %
 \begin{equation*}
-  \mathsf{if}\,\mathsf{false}\,a\,b = b
+  \combIf\,\combFalse\,a\,b = b
   \quad\text{and}\quad
-  \mathsf{if}\,\mathsf{true}\,a\,b = a.
+  \combIf\,\combTrue\,a\,b = a.
 \end{equation*}
 %
 The natural numbers are encoded by \emph{Church numerals}. The $n$-th
@@ -1299,9 +1299,9 @@ iteration:
 Successor, addition and multiplication are, respectively,
 %
 \begin{align*}
-  \mathsf{succ} &= \xulam{n\,f\,x}{n f (f x)},\\
-  \mathsf{add} &= \xulam{m\,n\,f\,x}{m f (n f x)},\\
-  \mathsf{mult} &= \xulam{m\,n\,f\,x}{m (n f) x}.
+  \combSucc &= \xulam{n\,f\,x}{n f (f x)},\\
+  \pcacomb{add} &= \xulam{m\,n\,f\,x}{m f (n f x)},\\
+  \pcacomb{mult} &= \xulam{m\,n\,f\,x}{m (n f) x}.
 \end{align*}
 %
 We leave it as exercise to figure out how the following work and what
@@ -1311,40 +1311,40 @@ they do:\footnote{A legend says that Alonzo Church was at the
   out?}
 %
 \begin{align*}
-  \mathsf{power} &= \xulam{m\,n}{n\,m},\\
-  \mathsf{iszero} &= \xulam{n}{n\, (\xulam{x}{\mathsf{false}})\, \mathsf{true}},\\
-  \mathsf{pred} &=
+  \pcacomb{power} &= \xulam{m\,n}{n\,m},\\
+  \pcacomb{iszero} &= \xulam{n}{n\, (\xulam{x}{\combFalse})\, \combTrue},\\
+  \pcacomb{pred} &=
     \xulam{n}{
-      \mathsf{snd}\, (n\, (\xulam{p}{
-        \mathsf{pair}\, (\mathsf{succ}\, (\mathsf{fst}\, p))\,
-        (\mathsf{fst}\, p)})
-      (\mathsf{pair}\, \overline{0}\, \overline{0}))}.
+      \combSnd\, (n\, (\xulam{p}{
+        \combPair\, (\combSucc\, (\combFst\, p))\,
+        (\combFst\, p)})
+      (\combPair\, \overline{0}\, \overline{0}))}.
 \end{align*}
 %
 Recursion is accomplished by means of the fixed-point operator
 %
 \begin{equation*}
-  \mathsf{fix} = \xulam{f}{(\xulam{x}{f\,(x\,x)}) (\xulam{x}{f\,(x\,x)})}.
+  \combFix = \xulam{f}{(\xulam{x}{f\,(x\,x)}) (\xulam{x}{f\,(x\,x)})}.
 \end{equation*}
 %
 For any $a$ we have
 %
 \begin{align*}
-  \mathsf{fix}\,a &=
+  \combFix\,a &=
   (\xulam{x}{a\,(x\,x)}) (\xulam{x}{a\,(x\,x)}) \\
   &= a\,((\xulam{x}{a\,(x\,x)})\,(\xulam{x}{a\,(x\,x)})) \\
-  &= a\,(\mathsf{fix}\,a).
+  &= a\,(\combFix\,a).
 \end{align*}
 %
 The fix-point operator is used to define recursive functions, for
 example equality of numbers is computed as follows:
 %
 \begin{equation*}
-  \mathsf{equal} = \mathsf{fix}\,(\xulam{e\,m\,n}{
-    \mathsf{if}\,
-    (\mathsf{iszero}\,m)\,
-    (\mathsf{iszero}\,n)\,
-    (e\,(\mathsf{pred}\,m)\,(\mathsf{pred}\,n))}).
+  \pcacomb{equal} = \combFix\,(\xulam{e\,m\,n}{
+    \combIf\,
+    (\pcacomb{iszero}\,m)\,
+    (\pcacomb{iszero}\,n)\,
+    (e\,(\combPred\,m)\,(\combPred\,n))}).
 \end{equation*}
 %
 By continuing in this manner we can build a general-purpose
@@ -1435,7 +1435,7 @@ where in the last clause $f : D \to D$ is the map $f (b) =
 To see how the $\lambda$-calculus helps prove things about reflexive
 domains, let us show that $D \times D$ is a retract of~$D$. A purely
 topological proof is doable, but it is much easier to just interpret
-pairing $\mathsf{pair} = \xulam{x y z}{z\,x\,y}$ in~$D$. Let $s : D
+pairing $\combPair = \xulam{x y z}{z\,x\,y}$ in~$D$. Let $s : D
 \times D \to D$ be defined as
 %
 \begin{equation*}
@@ -1461,7 +1461,7 @@ As another example we observe that the utm and smn theorems are
 expressed easily in the untyped $\lambda$-calculus. The universal
 function $u$ from the utm theorem is $u = \xulam{x y}{x\, y}$ and the
 function $s$ from the smn theorem is $s = \xulam{p
-  z}{(\mathsf{fst}\,p)\,(\mathsf{pair}\,(\mathsf{snd}\, p)\,z)}$.
+  z}{(\combFst\,p)\,(\combPair\,(\combSnd\, p)\,z)}$.
 Therefore, every reflexive domain enjoys the utm and smn theorems.
 
 
@@ -1592,13 +1592,41 @@ see~\cite{LongleyJ:reatls}.
 Just like in the case of untyped $\lambda$-calculus, we can build up
 the identity function, pairs, conditionals, natural numbers, and
 recursion by combining the two basic combinators $\combK$ and
-$\combS$. In doing so the notation $\xpcalam{x}{e}$ is handy because it
-saves a lot of space and makes expressions much more comprehensible,
-as even the translation of a simple term like $\pcalam{x y z}{z\, x\,
-  y}$ is quite unwieldy,
+$\combS$. The encoding of basic programming constructs is similar to
+the encoding by untyped $\lambda$-calculus.
+%
+\index{combinator!pair@{$\combPair$}}%
+\index{combinator!fst@{$\combFst$}}%
+\index{combinator!snd@{$\combSnd$}}%
+\label{sym:combPair}%
+\label{sym:combFst}%
+\label{sym:combSnd}%
+%
+Pairing, projections, Boolean values and conditional statement are the
+same, except that $\lambda$-abstraction must be replaced by
+$\langle\,\rangle$-notation:
+%
+\begin{xalignat*}{3}
+  \combPair &= \xulam{x y z}{z\, x\, y},
+  &
+  \combFst &= \xulam{p}{p \, (\xulam{x y}{x})},
+  &
+  \combSnd &= \xulam{p}{p \, (\xulam{x y}{y})}
+  \\
+  \combIf &= \xulam{x}{x},
+  &
+  \combTrue &= \xulam{x y}{x},
+  &
+  \combFalse &= \xulam{x y}{y}.
+\end{xalignat*}
+%
+The notation $\langle\,\rangle$ makes expressions much more
+comprehensible and saves a lot of space, for example the term
+$\combPair = \pcalam{x y z}{z\, x\, y}$ is quite unwieldy when written
+just with~$\combS$ and~$\combK$:
 %
 \begin{equation*}
-  \pcalam{x y z}{z\, x\, y} =
+  \combPair =
   \begin{aligned}[t]
   & {\combS} (
     {\combS} ({\combK}{\combS}) (
@@ -1622,20 +1650,7 @@ as even the translation of a simple term like $\pcalam{x y z}{z\, x\,
   \end{aligned}
 \end{equation*}
 %
-
-The encoding of basic programming constructs is similar to the
-encoding by untyped $\lambda$-calculus.
-%
-\index{combinator!pair@{$\combPair$}}%
-\index{combinator!fst@{$\combFst$}}%
-\index{combinator!snd@{$\combSnd$}}%
-\label{sym:combPair}%
-\label{sym:combFst}%
-\label{sym:combSnd}%
-%
-Pairing, projections, Boolean values and conditional statement are the
-same, except that $\lambda$-abstraction must be replaced by
-$\langle\,\rangle$-notation. For natural numbers we may use the
+For natural numbers we may use the
 %
 \index{combinator!Curry numeral}%
 \index{Curry numeral}%
@@ -1825,8 +1840,7 @@ The definition of a PCA with types is not as short as that of an
 ordinary PCA because the types prevent us from cooking up everything
 from the basic combinators $\combK$ and $\combS$, so we need to
 postulate the existence of other combinators. The end result looks
-more like a programming language and less like a mysterious
-``algebra''.
+more like a programming language and less like magic.
 
 A \emph{type system} $\mathcal{T}$ is a non-empty set, whose elements
 are called \emph{types}, equipped with two binary operations $\times$
@@ -2072,6 +2086,7 @@ general PCA or type~1 machines because only the primitive recursive
 functions are expressible in this system.
 
 \subsection{PCF}
+\label{sec:pcf}
 
 The programming language PCF was introduced by Gordon
 Plotkin~\cite{plotkin77:_lcf_consid_as_progr_languag}. It has since
