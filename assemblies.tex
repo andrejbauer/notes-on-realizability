@@ -1,21 +1,28 @@
 \chapter{Realizability}
 \label{chap:realizability}
 
-\section{The basic idea and definition}
+\section{Basic definitions}
+\label{sec:basic-definitions}
+
+\subsection{Motivation and the basic idea}
 \label{sec:realizability-basic-idea}
 
-Given a mathematical structure (constants, functions, relations, and
-axioms), what should a computer implementation look like? For simple
-cases, the answer is obvious. A group would have a type whose values
-represent group elements, a value representing the neutral element,
-and functions which compute the group operation and inverses. But for
-more interesting structures, especially those arising in mathematical
-analysis, the answer is less clear. How do we implement the real
-numbers (and we do not mean floating-point arithmetic, we mean the
-\emph{real} real numbers)? Which operations on a compact metric space
-can be implemented? How do we implement a space of smooth functions?
-Significant research goes into finding satisfactory answers to such
-questions~\cite{Wei00,TZ98,Bla97}.
+Realizability was introduced by Stephen Kleene~\cite{KleeneSC:intint}
+who used it to build a model of intuitionistic arithmetic. Our purpose
+is to study computability in mathematics, especially in analysis and
+topology. Thus we motivate the basic idea by asking a practical
+question: given a mathematical structure (constants, functions,
+relations, and axioms), what should a computer implementation look
+like? For simple cases, the answer is obvious. A group would have a
+type whose values represent group elements, a value representing the
+neutral element, and functions which compute the group operation and
+inverses. But for more interesting structures, especially those
+arising in mathematical analysis, the answer is less clear. How do we
+implement the real numbers (and we do not mean floating-point
+arithmetic, we mean the \emph{real} real numbers)? Which operations on
+a compact metric space can be implemented? How do we implement a space
+of smooth functions? Significant research goes into finding
+satisfactory answers to such questions~\cite{Wei00,TZ98,Bla97}.
 
 To explain the basic idea behind realizability we consider a small
 real-world programming example. Suppose we are asked to design a data
@@ -77,8 +84,21 @@ write
 ([1, 2, 3, 4], [(1,2), (2,2), (2,3), (3,2), (3,1)]) \rz G.
 \end{equation*}
 %
-We now give a precise definition.
+The purpose of representing $\mathsf{Graphs}$ by a datatype in a
+programming language is to compute with it. But what does it mean to
+compute a function $f : \mathsf{Graphs} \to \mathsf{Graphs}$? The
+answer again is quite natural for a programmer: $f$ is computed by a
+program $p : \mathtt{graph} \to \mathtt{graph}$ when $p$ does to
+realizers what $f$ does to elements: if $r \rz G$ then $p(r) \rz
+f(G)$. We say that the map $f$ is \emph{realized} or \emph{tracked} by
+the program~$p$.
 
+
+\subsection{Assemblies}
+\label{sec:assemblies}
+
+We now give a precise definition of the ideas presented in the
+previous section.
 
 \begin{definition}[Assemblies]
   Let $A$ be a TPCA and $\comp{A}$ a sub-TPCA. An \emph{assembly}
@@ -91,9 +111,6 @@ We now give a precise definition.
   {\rz_S})$ and $(T, |T|, {\rz_T})$ is a map for which there exists $p
   \in \comp{A}_{|S| \to |T|}$ satisfying: if $r \rz_S x$ then $\defined{p
     \cdot r}$ and $p \cdot r \rz_T f(x)$.
-
-  Assemblies and realized maps form the \emph{category
-    $\Asm{A,\comp{A}}$ of assemblies over $(A, \comp{A})$}.
 \end{definition}
 
 \noindent
@@ -163,23 +180,52 @@ of computable mathematics'':
 \item Closely related to the previous case is $A = U$ where~$U$ is a
   universal Scott domain~\cite{GunterScott}. This again gives as three
   variants of \emph{domain representations}~\cite{Bla97,Bla97a}.
-\item The case $A = \PCFinf$ and $\comp{A} = \PCF$, cf.
-  Section~\ref{sec:pcf} is interesting because we may actually test
-  the performance of PCF realizers by running them as Haskell
-  programs.
 \end{enumerate}
 %
 In Section~\ref{variants} we shall study some of these in greater
 detail.
 
+By an abuse of notiation we shall often denote an assembly $(S, |S|,
+{\rz_S})$ simply as~$S$.
+
+\begin{proposition}
+  Assemblies and realized maps form the \emph{category
+    $\Asm{A,\comp{A}}$ of assemblies over $(A, \comp{A})$}.
+\end{proposition}
+
+\begin{proof}
+  If $f : S \to T$ and $g : T \to U$ are realized by $q \in A_{|S| \to
+    |T|}$ and $r \in A_{|T| \to |U|}$, respectively, then their
+  composition $g \circ f$ is realized by
+  $\pcalam{\annot{x}{|S|}}{r\,(q\,x)} =
+  \combS\,(\combK\,r)\,(\combS\,(\combK\,q)\,(\combS\,\combK\,\combK))$.
+  The identity map $\id_S : S \to S$ is realized by
+  $\pcalam{\annot{x}{|S|}}{x} = \combS\,\combK\,\combK$. Composition
+  is associative because it is just composition of maps.
+\end{proof}
+
+\subsection{Sets as assemblies}
+\label{sec:nabla}
+
+Suppose $(S, |S|, {\rz_S})$ is an assembly over $(A, \comp{A})$. The
+only requirement on the realizability relation $\rz_S$ is that every
+$x \in S$ be realized by some $r \in A_{|S|}$. In particular,
+different elements of~$S$ are allowed to share the same realizer. In
+the extreme case all elements share all realizers.
+
+\begin{definition}
+  If $X$ is a set then $\nabla X = (X, (o \to o), {\rz_{\nabla X}})$
+  is the assembly whose realizability relation is characterized by
+  $\xall{x}{X}{\xall{r}{A_{o \to o}{r \rz_{\nabla X} x}}}$.
+\end{definition}
 
 
+
+\subsection{Modest sets}
+\label{sec:modest-sets}
 
 \section{Equivalent formulations}
-\label{sec:representations-formulations}
-
-\subsection{Assemblies and modest sets}
-\label{sec:assemblies}
+\label{sec:equivalent-formulations}
 
 \subsection{Partial equivalence relations}
 \label{sec:pers}
@@ -187,20 +233,22 @@ detail.
 \subsection{Representations}
 \label{sec:representations}
 
+\section{Schools of Computabile Mathematics}
+\label{sec:schools}
 
-\section{Type 1 representations}
-\label{sec:type-1-representations}
+\subsection{Recursive Mathematics}
+\label{sec:recursive-math}
 
-\section{Type 2 representations}
-\label{sec:tte-representations}
+\subsection{Type Two Effectivity}
+\label{sec:tte}
 
-Admissibility.
+% Admissibility.
 
-\section{Equilogical spaces and domain representations}
+\subsection{Equilogical spaces}
 \label{sec:equilogical-spaces}
 
-\section{A convenient category of spaces}
-\label{sec:qcb-spaces}
+\subsection{Domain representations}
+\label{sec:domain-representations}
 
 
 
