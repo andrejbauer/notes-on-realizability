@@ -1790,10 +1790,11 @@ by an argument similar to that for the first Kleene algebra. The
 $\combK$ and $\combS$ so obtained turn out to be computable sequences.
 
 There are actually two version, the \emph{continuous} second Kleene
-algebra which consists of the entire Baire space, and the
-\emph{computable} one, which consists only of the computable sequences
-in~$\Baire$. The computable Baire space is a sub-PCA of the continuous
-one because the combinators~$\combK$ and~$\combS$ are computable.
+algebra which consists of the entire Baire space~$\Baire$, and the
+\emph{computable} one~$\comp{\Baire}$, which consists only of the
+computable sequences in~$\Baire$. The computable Baire
+space~$\comp{\Baire}$ is a sub-PCA of the continuous one because the
+combinators~$\combK$ and~$\combS$ are computable.
 
 \paragraph{Untyped $\lambda$-calculus.}
 
@@ -1818,7 +1819,8 @@ retraction onto the function space. The combinators $\combK$ and
 $\combS$ are (the interpretations of) those from the untyped
 $\lambda$-calculus.
 
-The graph model contains a computable sub-PCA of c.e.~sets.
+The graph model contains a computable sub-PCA $\comp{\Scott}$ which
+consists of c.e.~sets.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1850,7 +1852,7 @@ a type system $\mathcal{T}$ consists of
 \begin{enumerate}
 \item a set $A_t$ for each $t \in \mathcal{T}$, and
 \item a partial function $\cdot_{s,t} : A_{s \to t} \times A_s \to
-  A_t$, called \emph{application}, for each $s, t \in \mathcal{T}$,
+  A_t$, called \emph{application}, for all $s, t \in \mathcal{T}$,
 \end{enumerate}
 %
 such that for any types $s, t, u \in \mathcal{T}$ there exist elements
@@ -1893,8 +1895,8 @@ such that for all $x$, $f$ of appropriate types and all $n \in \NN$
 \begin{align*}
   \combSucc \, \numeral{n} &= \numeral{n + 1}, \\
   \combRec \, x \, f \, \numeral{0} &= x, \\
-  \combRec \, x \, f \, \numeral{n+1} &= f \, \numeral{n},
-     (\combRec \, x \, f \, \numeral{n}).
+  \combRec \, x \, f \, \numeral{n+1} &=
+  f \, \numeral{n} \, (\combRec \, x \, f \, \numeral{n}).
 \end{align*}
 %
 Note that $A_\ttnat$ may contain elements other than the
@@ -1944,12 +1946,14 @@ inductively define \emph{expressions over $A$}:
 \end{enumerate}
 %
 Note that we explicitly annotate variables with their types. We also
-assume that the type of a primitive constant is uniquely
-determined.\footnote{This can be achieved with type annotations for
-  primitive constants,} Consequently, every expression has a uniquely
-determined type. A closed expression $e$ of type~$t$ is defined,
-written $\defined{e}$, when all applications appearing in it are
-defined. Such an expression denotes an element of~$A_t$.
+assume that the type of a primitive constant is uniquely given.
+Consequently, every expression has a uniquely determined type. A
+closed expression $e$ of type~$t$ is defined, written $\defined{e}$,
+when all applications appearing in it are defined. Such an expression
+denotes an element of~$A_t$. If $e$ contains variables
+$\annot{x_1}{t_1}, \ldots, \annot{x_n}{t_n}$, we write $defined{e}$
+when $\subst{e}{x_1 \subto a_1, \ldots, x_n \subto a_n}$ is defined
+for all $a_1 \in A_{t_1}, \ldots, a_n \in A_{t_n}$.
 
 \begin{theorem}[Combinatory completeness]
   Let $A$ be a TPCA. For every expression $e$ over~$A$ of type~$u$ and
@@ -1968,8 +1972,8 @@ defined. Such an expression denotes an element of~$A_t$.
       t} \, \combK_{t,t}$,
   \item $\xtpcalam{x}{t}{y} = \combK_{s,t}\, y$ if $\annot{y}{s}$ is a
     variable distinct from $\annot{x}{t}$,
-  \item $\xtpcalam{x}{t}{a} = \combK_{s,t} \, a$ if $a$ is an element
-    of $A_s$,
+  \item $\xtpcalam{x}{t}{a} = \combK_{s,t} \, a$ if $a$ is a primitive
+    constant of type~$s$.
   \item $\tpcalam{x}{t}{e_1\, e_2} = \combS_{t,u,v}\,
     (\xtpcalam{x}{t}{e_1}) \, (\xtpcalam{x}{t}{e_2})$ if $e_1$ and
     $e_2$ have types $u \to v$ and $u$, respectively.
@@ -1988,8 +1992,8 @@ Every PCA is a NR-TPCA if we enrich it with the trivial types system
 that contains a single type, $\mathcal{T} = \set{\star}$ with (the
 only possible) operations $\star \times \star = \star \to \star =
 \star$, and $A_\star = A$. The required combinators are the ones we
-defined in Section~\ref{sec:pcas}, we just need to annotate them with
-the (trivial) types.
+defined in Section~\ref{sec:pcas}, we just need to annotate the
+$\combK$ and $\combS$ with the (trivial) type.
 
 
 \subsection{Typed $\lambda$-calculus}
@@ -1997,15 +2001,18 @@ the (trivial) types.
 
 The typed $\lambda$-calculus is to the untyped $\lambda$-calculus as
 TPCA is to a PCA. The types are inductively generated from the
-\emph{ground type} $o$ (sometimes more than one ground type is
-allowed) using the type constructors $\times$ and $\to$. Each
-expression of the typed $\lambda$-calculus has a uniquely
-determined type. Expressions are built inductively as follows, where
-$s$ and $t$ are types:
+\emph{unit type $\unit$}, a (possibly empty) collection of
+\emph{ground types}, by using the type constructors $\times$ and
+$\to$. Expressions are built inductively as follows, where $s$ and $t$
+are types:
 %
 \begin{enumerate}
 \item An annotated variable $\annot{x}{t}$ is an expression of type
   $t$.
+\item We may be given (a possibly empty) collection of \emph{primitive
+  constants} with their types.
+\item The constant $\ttunit$, called the \emph{unit}, has type
+  $\unit$.
 \item If $e$ is an expression of type $t$ then
   $\xulam{\annot{x}{s}}{e}$ is an expression of type $s \to t$. The
   variable $x$ is bound in $e$.
@@ -2018,7 +2025,7 @@ $s$ and $t$ are types:
   $\snd{e}$ are expressions of type $s$ and $t$, respectively.
 \end{enumerate}
 %
-An alternative syntax for omits annotations from variables, except in
+An alternative syntax omits annotations from variables, except in
 $\lambda$-abstractions where $\xulam{\annot{x}{t}}{e}$ is then written
 as $\xtlam{x}{t}{e}$. This is in fact the notation we normally prefer.
 
@@ -2029,17 +2036,25 @@ $\beta$-reduction
   (\xtlam{x}{t}{e_1}) e_2 = \subst{e_1}{x \subto e_2}.
 \end{equation*}
 %
-There is also a corresponding $\eta$-reduction rule, for $e : s \to t$,
+There is also a corresponding $\eta$-reduction rule, for an expression
+$e$ of type $s \to t$,
 %
 \begin{equation*}
-  \xulam{x}{s}{e\,x} = e.
+  \xtlam{x}{s}{e\,x} = e.
 \end{equation*}
 %
 In the untyped $\lambda$-calculus we did not assume the $\eta$-rule,
 but now we do.
 
-Additionally, there are rules for pairing and projections, for all
-$e_1$, $e_2$, $e$ of type $s$, $t$, $s \times t$, respectively:
+The unit type is characterized by the equation, for any expression $e$
+of type $\ttunit$,
+%
+\begin{equation*}
+  \ttunit = e.
+\end{equation*}
+%
+The rules for pairing and projections are, for all $e_1$, $e_2$, $e$
+of type $s$, $t$, $s \times t$:
 %
 \begin{equation*}
   \combFst\,(e_1, e_2) = e_1,
@@ -2048,23 +2063,27 @@ $e_1$, $e_2$, $e$ of type $s$, $t$, $s \times t$, respectively:
   \qquad\text{and}\qquad
   e = (\combFst\,e, \combSnd\,e),
 \end{equation*}
+%
+There may be additional equations involving primitive constants.
+
+The \emph{pure} typed $\lambda$-calculus has only a single ground
+type~$o$ and not primitive constants.
 
 The typed $\lambda$-calculus is a TPCA whose types are those of the
 calculus. For a type~$t$ we take $A_t$ to be the set of closed
 expressions of type~$t$, quotiented by the least equivalence relation
-generated by $\eta$- and $\beta$-reduction and the rules for
-projections and pairing.
+generated by $\eta$- and $\beta$-reduction and the rules for the unit,
+projections, pairing, and primitive constants.
 
 
 \subsection{G\"odel's $T$}
 
 The typed $\lambda$-calculus is not a N-TPCA because it lacks the
 natural numbers and primitive recursion. To make it into a N-TPCA, we
-write the ground type $o$ as $\ttnat$ instead and postulate basic
-constants $0$ of type $\ttnat$, $\combSucc$ of type $\ttnat \to
-\ttnat$, and for each type~$t$, a constant $\combRec_t$ of type $t
-\to (\mathtt{nat} \to t \to t) \to \ttnat \to t$. We also add two
-further reduction rules
+add a ground type $\ttnat$ and primitive constants $0$ of type
+$\ttnat$, $\combSucc$ of type $\ttnat \to \ttnat$, and for each
+type~$t$, a constant $\combRec_t$ of type $t \to (\mathtt{nat} \to t
+\to t) \to \ttnat \to t$. We also add two further reduction rules
 %
 \begin{equation*}
   \combRec \, e_1 \, e_2 \, 0 = e_1
@@ -2076,8 +2095,8 @@ further reduction rules
 This gives us an N-TPCA~$T$ with numerals defined by $\numeral{0} = 0$
 and $\numeral{n+1} = \combSucc \, \numeral{n}$. More precisely, the
 elements of $A_t$ are closed expressions of type~$t$, quotiented by
-the equivalence relation generated by the rules of $\beta$-reduction
-and primitive recursion, as given above.
+the equivalence relation generated by the rules of type
+$\lambda$-calculus and primitive recursion, as given above.
 
 This N-TPCA goes by the name \emph{G\"odel's
   $T$}~\cite{GoedelK:ubeefs}. It was defined by Kurt G\"odel to give a
@@ -2111,13 +2130,21 @@ primitive constants of PCF with their types are:
   \combFix_t &: (t \to t) \to t \quad\text{(for each type $t$),}
 \end{align*}
 %
-A \emph{program} of type $t$ is a closed expression of type $t$. A
-\emph{value} is a program that is considered to be ``finished''. The
-values are the primitive constants, in particular the numerals
-$\numeral{n}$, $\combTrue$, and $\combFalse$, $\lambda$-abstractions,
-and pairs $(e_1, e_2)$ where $e_1$ and $e_2$ are
-programs.\footnote{The pairs are \emph{lazy} in the sense that they do
-  not compute their components until they are projected out.}
+A \emph{program} of type $t$ is a closed expression of type $t$. The
+\emph{values} are programs of the following form, where $e_1$ and
+$e_2$ are programs of appropriate types:
+%
+\begin{gather*}
+  \star,\qquad \overline{n},\qquad \combSucc,\qquad \combPred,\\
+  \combTrue,\qquad \combFalse,\qquad \combIsZero,\\
+  \combIf_t,\qquad \combIf_t \, e_1,\qquad \combIf_t \, e_1\, e_2,\\
+  \combFix_t,\qquad \xtlam{x}{t}{e},\qquad (e_1, e_2).
+\end{gather*}
+%
+Think of these as ``finished'' programs, or in the case of partially
+applied conditional statement and $\lambda$-abstractions as suspended
+computations that make progress when more arguments are supplied.
+
 Execution of a program is described with the reduction relation $e
 \oneto e'$, which you can think of as ``$e$ evaluates to $e'$ in one
 step'', defined by the rules in Figure~\ref{fig:pcf}. Each rule says
@@ -2205,11 +2232,11 @@ maps programs to values,
 \end{equation*}
 %
 Evaluation is well defined because the reduction rules are
-\emph{deterministic}, i.e., for each~$e$ at most one~$e'$ such that $e
-\oneto e'$. In fact, for a program~$e$ we only have two options:
-either there is an infinite sequence of reduction steps $e \oneto e'
-\oneto e'' \oneto \cdots$, or there is a finite sequence $e \oneto e'
-\oneto \cdots \oneto v$ ending with a value. We say that $e$
+\emph{deterministic}, i.e., for each~$e$ there is at most one~$e'$
+such that $e \oneto e'$. In fact, for a program~$e$ we only have two
+options: either there is an infinite sequence of reduction steps $e
+\oneto e' \oneto e'' \oneto \cdots$, or there is a finite sequence $e
+\oneto e' \oneto \cdots \oneto v$ ending with a value. We say that $e$
 \emph{diverges} in the former case, and \emph{terminates} in the
 latter. The third option, namely that the reduction sequence ends with
 a non-value, cannot happen.
@@ -2272,7 +2299,7 @@ uncountable structures. To achieve the same effect in PCF we extend it
 with all set-theoretic functions.
 
 For every function $f : \NN \to \NN$ we add a constant
-$\mathtt{func}_f$ of type $\ttnat \to \ttnat$ to $PCF$ and extend the
+$\mathtt{func}_f$ of type $\ttnat \to \ttnat$ to PCF and extend the
 reduction operation with the rules
 %
 \begin{equation*}

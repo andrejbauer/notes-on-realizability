@@ -9,20 +9,21 @@
 
 Realizability was introduced by Stephen Kleene~\cite{KleeneSC:intint}
 who used it to build a model of intuitionistic arithmetic. Our purpose
-is to study computability in mathematics, especially in analysis and
-topology. Thus we motivate the basic idea by asking a practical
-question: given a mathematical structure (constants, functions,
-relations, and axioms), what should a computer implementation look
-like? For simple cases, the answer is obvious. A group would have a
-type whose values represent group elements, a value representing the
-neutral element, and functions which compute the group operation and
-inverses. But for more interesting structures, especially those
-arising in mathematical analysis, the answer is less clear. How do we
-implement the real numbers (and we do not mean floating-point
-arithmetic, we mean the \emph{real} real numbers)? Which operations on
-a compact metric space can be implemented? How do we implement a space
-of smooth functions? Significant research goes into finding
-satisfactory answers to such questions~\cite{Wei00,TZ98,Bla97}.
+is to study not only the theoretical aspects of computable
+mathematics, but also practical issues. Thus we approach realizability
+by asking a practical question: given a mathematical structure
+(constants, functions, relations, and axioms), what should a computer
+implementation look like? For simple cases, the answer is obvious. A
+group would have a type whose values represent group elements, a value
+representing the neutral element, and functions which compute the
+group operation and inverses. But for more interesting structures,
+especially those arising in mathematical analysis, the answer is less
+clear. How do we implement the real numbers (and we do not mean
+floating-point arithmetic, we mean the \emph{real} real numbers)?
+Which operations on a compact metric space can be implemented? How do
+we implement a space of smooth functions? Significant research goes
+into finding satisfactory answers to such
+questions~\cite{Wei00,TZ98,Bla97}.
 
 To explain the basic idea behind realizability we consider a small
 real-world programming example. Suppose we are asked to design a data
@@ -67,11 +68,11 @@ not expressed by the type, e.g.,
 \item The source and target of each arrow must appear in the list of vertices.
 \end{enumerate}
 %
-Thus, to implement the mathematical set~$\mathsf{Graphs}$, we must not
-only decide on the underlying datatype $\mathtt{graph}$, but also
-determine what values of that type represent which elements
-of~$\mathsf{Graphs}$. All this can be expressed with a \emph{realizability
-  relation}
+Consequently, to fully implement the mathematical
+set~$\mathsf{Graphs}$ we must not only decide on the underlying
+datatype $\mathtt{graph}$, but also determine what values of that type
+represent which elements of~$\mathsf{Graphs}$. All this can be
+expressed with a \emph{realizability relation}
 %
 \begin{equation*}
   r \rz x
@@ -84,9 +85,9 @@ write
 ([1, 2, 3, 4], [(1,2), (2,2), (2,3), (3,2), (3,1)]) \rz G.
 \end{equation*}
 %
-The purpose of representing $\mathsf{Graphs}$ by a datatype in a
-programming language is to compute with it. But what does it mean to
-compute a function $f : \mathsf{Graphs} \to \mathsf{Graphs}$? The
+Once the set $\mathsf{Graphs}$ is implemented as a datatype, an
+obvious thing to do is to compute with it. When can we say that a
+function $f : \mathsf{Graphs} \to \mathsf{Graphs}$ is computable? The
 answer again is quite natural for a programmer: $f$ is computed by a
 program $p : \mathtt{graph} \to \mathtt{graph}$ when $p$ does to
 realizers what $f$ does to elements: if $r \rz G$ then $p(r) \rz
@@ -114,6 +115,9 @@ previous section.
 \end{definition}
 
 \noindent
+By a traditional abuse of notiation we shall often denote an assembly
+$(S, |S|, {\rz_S})$ simply as~$S$.
+
 There are many versions of realizability. Ours is known as \emph{typed
   relative realizability}. It is typed because we used typed PCAs
 rather than the ordinary ones. It is relative because we used one
@@ -137,7 +141,7 @@ is $r \in A$ and $r \rz_S x$.
 Another special case occurs when $\comp{A} = A$. In this case we write
 $\Asm{A}$ instead of $\Asm{A,A}$.
 
-Normally the TPCA $A$ will actually be an NR-TPCA, and $\comp{A}$ a
+In most examples the TPCA $A$ is actually an NR-TPCA, and $\comp{A}$ a
 sub-NR-TPCA of~$A$.
 
 Particular choices of a TPCA with sub-TPCA yield well known ``schools
@@ -180,13 +184,14 @@ of computable mathematics'':
 \item Closely related to the previous case is $A = U$ where~$U$ is a
   universal Scott domain~\cite{GunterScott}. This again gives as three
   variants of \emph{domain representations}~\cite{Bla97,Bla97a}.
+\item The case $A = \PCFinf$ and $\comp{A} = \PCF$ was used by
+  Mart{\'\i}n Escard\'o in his investigations of compact, exhausitble
+  and searchable sets~\cite{Escardo}.
 \end{enumerate}
 %
 In Section~\ref{variants} we shall study some of these in greater
 detail.
 
-By an abuse of notiation we shall often denote an assembly $(S, |S|,
-{\rz_S})$ simply as~$S$.
 
 \begin{proposition}
   Assemblies and realized maps form the \emph{category
@@ -208,24 +213,70 @@ By an abuse of notiation we shall often denote an assembly $(S, |S|,
 \label{sec:nabla}
 
 Suppose $(S, |S|, {\rz_S})$ is an assembly over $(A, \comp{A})$. The
-only requirement on the realizability relation $\rz_S$ is that every
+only requirement for the realizability relation $\rz_S$ is that every
 $x \in S$ be realized by some $r \in A_{|S|}$. In particular,
-different elements of~$S$ are allowed to share the same realizer. In
-the extreme case all elements share all realizers.
+different elements of~$S$ are allowed to share the same realizer.
+The extreme case, in which all elements share all realizers, 
 
-\begin{definition}
-  If $X$ is a set then $\nabla X = (X, (o \to o), {\rz_{\nabla X}})$
-  is the assembly whose realizability relation is characterized by
-  $\xall{x}{X}{\xall{r}{A_{o \to o}{r \rz_{\nabla X} x}}}$.
-\end{definition}
-
-
+Let $t$ be a type such that $A_t$ is inhabited. Such a type always
+exists, because there is some type $s$, and then $t = s \to s \to s$
+contains $\combK_{s,s}$. Given any set $X$, let $\nabla X = (X, t,
+{\rz_{\nabla X}})$ be the assembly whose underlying set is~$X$ and the
+realizability relation is trivial, i.e., $r \rz_{\nabla X} x$ for all
+$x \in X$ and $r \in A_t$. If $f : X \to Y$ is any map between
+sets~$X$ and~$Y$ then~$f$ is a morphism $\nabla f : \nabla X \to
+\nabla Y$ because it is tracked by $\pcalam{\annot{x}{t}}{x}$. This
+defines a functor
+%
+\begin{equation*}
+  \nabla : \Set \to \Asm{A,\comp{A}}.
+\end{equation*}
+%
+Up to natural isomorphism, $\nabla$ is independent of the choice of
+type~$t$. We will study the properties of $\nabla$ later on. For now
+we notice that $\nabla$ is full and faithful, which means that
+$\Asm{A,\comp{A}}$ contains the category of sets as a full
+subcategory.
 
 \subsection{Modest sets}
 \label{sec:modest-sets}
 
+The functor $\nabla$ is devoid of any computational content because it
+represents a set~$X$ by a trivial realizability relation which conveys
+no information at all about the elements of~$X$. Consequently, we
+cannot compute anything interesting regarding~$X$. It is useful to
+impost a further restriction on the realizability relations which
+prevents such anomalies.
+
+\begin{definition}
+  An assembly $(S, |S|, {\rz_S})$ is \emph{modest} when each $r \in
+  A_{|S|}$ realizes at most one element of~$S$. A modest assembly is
+  also called a \emph{modest set}.
+\end{definition}
+
+\noindent
+In symbols, modesty is the property
+%
+\begin{equation*}
+  \xall{r}{A_{|S|}}{
+    \all{x,y}{S}{
+      r \rz_S x \land r \rz_S y \implies x = y
+    }
+  }.
+\end{equation*}
+%
+The full subcategory of $\Asm{A,\comp{A}}$ of the modest sets is
+denoted by~$\Mod{A, \comp{A}}$. The terminology was suggested by Dana
+Scott because the cardinality of modest sets does not exceed the
+cardinality of the TPCA~$A$.
+
+
+
 \section{Equivalent formulations}
 \label{sec:equivalent-formulations}
+
+\subsection{Existence predicates}
+\label{sec:existence-predicates}
 
 \subsection{Partial equivalence relations}
 \label{sec:pers}
