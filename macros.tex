@@ -34,7 +34,12 @@
 
 %%% Substitution
 \newcommand{\subst}[2]{#1[#2]}
-\newcommand{\subto}{\shortrightarrow}
+
+%%% Arrows
+\newcommand{\subto}{\shortrightarrow} % for substitution
+\newcommand{\oneto}{\mapsto}
+\newcommand{\manyto}{\oneto^{*}}
+\newcommand{\multito}{\rightrightarrows}
 
 %%% Sets
 \newcommand{\set}[1]{\{#1\}}
@@ -169,8 +174,7 @@
 \newcommand{\combIsZero}{\pcacomb{iszero}}
 \newcommand{\cond}[3]{\mathtt{if}\;#1\;\mathtt{then}\;#2\;\mathtt{else}\;#3}
 
-\newcommand{\oneto}{\mapsto}
-\newcommand{\manyto}{\oneto^{*}}
+
 
 % PCF
 \newcommand{\PCF}{\mathsf{PCF}}
@@ -180,10 +184,12 @@
 % Realizability
 \newcommand{\comp}[1]{#1^{\#}}
 \newcommand{\rz}{\Vdash}
+\newcommand{\Ex}{\mathsf{E}}
 
 \newcommand{\Set}{\mathsf{Set}}
 \newcommand{\Asm}[1]{\mathsf{Asm}(#1)}
 \newcommand{\Mod}[1]{\mathsf{Mod}(#1)}
+
 
 
 %%% Local Variables: 

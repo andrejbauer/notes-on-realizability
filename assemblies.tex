@@ -144,6 +144,195 @@ $\Asm{A}$ instead of $\Asm{A,A}$.
 In most examples the TPCA $A$ is actually an NR-TPCA, and $\comp{A}$ a
 sub-NR-TPCA of~$A$.
 
+\begin{proposition}
+  Assemblies and realized maps form the \emph{category
+    $\Asm{A,\comp{A}}$ of assemblies over $(A, \comp{A})$}.
+\end{proposition}
+
+\begin{proof}
+  If $f : S \to T$ and $g : T \to U$ are realized by $q \in A_{|S| \to
+    |T|}$ and $r \in A_{|T| \to |U|}$, respectively, then their
+  composition $g \circ f$ is realized by
+  $\pcalam{\annot{x}{|S|}}{r\,(q\,x)} =
+  \combS\,(\combK\,r)\,(\combS\,(\combK\,q)\,(\combS\,\combK\,\combK))$.
+  The identity map $\id_S : S \to S$ is realized by
+  $\pcalam{\annot{x}{|S|}}{x} = \combS\,\combK\,\combK$. Composition
+  is associative because it is just composition of maps.
+\end{proof}
+
+\subsection{Modest sets}
+\label{sec:modest-sets}
+
+Suppose $(S, |S|, {\rz_S})$ is an assembly over $(A, \comp{A})$. The
+only requirement for the realizability relation $\rz_S$ is that every
+$x \in S$ be realized by some $r \in A_{|S|}$. In particular,
+different elements $x, y \in S$ may share the same realizer $r \in
+A_{|S|}$. It is often reasonable to prohibit such anomalies.
+
+\begin{definition}
+  An assembly $(S, |S|, {\rz_S})$ is \emph{modest} when each $r \in
+  A_{|S|}$ realizes at most one element of~$S$. A modest assembly is
+  also called a \emph{modest set}.
+\end{definition}
+
+\noindent
+In symbols, modesty is the property
+%
+\begin{equation*}
+  \xall{r}{A_{|S|}}{
+    \all{x,y}{S}{
+      r \rz_S x \land r \rz_S y \implies x = y
+    }
+  }.
+\end{equation*}
+%
+The full subcategory of $\Asm{A,\comp{A}}$ of the modest sets is
+denoted by~$\Mod{A, \comp{A}}$. The terminology was suggested by Dana
+Scott, and modesty refers to the fact that the cardinality of a
+modest~$S$ set does not exceed the cardinality of $A_{|S|}$.
+
+Most structures in computable mathematics turn out to be modest.
+However, sometimes assemblies are needed, especially when we talk
+about multi-valued maps and hyperspaces,
+cf.~Sections~\ref{sec:multi-valued-functions}
+and~\ref{sec:hyperspaces}.
+
+
+\subsection{Sets as assemblies}
+\label{sec:nabla}
+
+The extreme case of elements sharing the same realizer happens when
+all elements of a set share all realizers. Assemblies with this
+property give us a way of representing arbitrary sets.
+
+Let $t$ be a type such that $A_t$ is inhabited. Such a type always
+exists, because there is at least one type $s$, and then $t = s \to s
+\to s$ contains $\combK_{s,s}$. Given any set $X$, let $\nabla X = (X,
+t, {\rz_{\nabla X}})$ be the assembly whose underlying set is~$X$ and
+the realizability relation is trivial, i.e., $r \rz_{\nabla X} x$ for
+all $x \in X$ and $r \in A_t$. If $f : X \to Y$ is any map between
+sets~$X$ and~$Y$ then~$f$ is a morphism $\nabla f : \nabla X \to
+\nabla Y$ because it is tracked by $\pcalam{\annot{x}{t}}{x}$. This
+defines a functor
+%
+\begin{equation*}
+  \nabla : \Set \to \Asm{A,\comp{A}}.
+\end{equation*}
+%
+Up to natural isomorphism, $\nabla$ is independent of the choice of
+type~$t$. We will study the properties of $\nabla$ later on. For now
+we notice that $\nabla$ is full and faithful, which means that
+$\Asm{A,\comp{A}}$ contains the category of sets as a full
+subcategory.
+
+The functor $\nabla$ is devoid of any computational content because it
+represents a set~$X$ by a trivial realizability relation which conveys
+no information at all about the elements of~$X$. Consequently, from
+the realizers we cannot compute anything interesting regarding~$X$.
+
+
+\section{Equivalent formulations}
+\label{sec:equivalent-formulations}
+
+
+Assemblies and modest sets have several equivalent formulations, which
+appeared historically as special cases of our definitions.
+
+
+\subsection{Existence predicates}
+\label{sec:existence-predicates}
+
+A realizability relation $\rz_S$, which is a subset of $A_{|S|} \times
+S$ may be equivalently expressed as a map $\Ex_S : S \to
+\pow{A_{|S|}}$. The correspondence is
+%
+\begin{equation*}
+  r \rz_S x \iff r \in \Ex_S(x).
+\end{equation*}
+%
+Because every $x$ is realized by something, $\Ex_S(x)$ always contains
+at least one element. Thus an assembly $(S, |S|, {\rz_S})$ may be
+equivalently presented as a triple $(S, |S|, \Ex_S)$ where $\Ex_S : S
+\to \pow{A_{|S|}}$ is a map such that $\Ex_S(x)$ contains at least one
+element for every $x \in S$. The map $\Ex_S$ is called \emph{existence
+predicate} because we can think of the realizers $\Ex_S(x)$ as
+computational witnesses for ``existence of~$x$''.
+
+An assembly $S$ is modest if, and only if, $\Ex_S(x) \cap \Ex_S(y)
+\neq \emptyset$ implies $x = y$.
+
+Under this formulation a map $f : S \to T$ is realized if there exists
+$p \in A_{|S| \to |T|}$ such that, for all $x \in S$ and $r \in
+\Ex_S(x)$, $\defined{p\,r}$ and $p\,r \in \Ex_T(f(x))$.
+
+\subsection{Representations}
+\label{sec:representations}
+
+By turning the existence predicate around we obtain
+\emph{representations}. Suppose first that $S$ is a modest set. Since
+every realizer $r \in A_{|S|}$ realizes at most one $x \in S$, we may
+define a partial map $\delta_S : A_{|S|} \parto S$ by
+%
+\begin{equation*}
+  \delta_S(x) = r \iff r \rz_S x.
+\end{equation*}
+%
+The map $\delta_S$ is surjective because every $x \in S$ is realized,
+but it need not be defined everywhere. The triple $(S, |S|, \delta_S)$
+uniquely describes the modest set~$S$. The map $\delta_S$ is called a
+\emph{representation} of~$S$.
+
+A map $f : S \to T$ is tracked by $p \in A_{|S| \to |T|}$ when, for
+all $x \in S$ and $r \in \delta_S(x)$, $\defined{p\,r}$ and
+$\delta_T(p\,r) = f(x)$.
+
+A general assembly $S$ may also be expressed as a representation, if
+we allow $\delta_S$ to be a multi-valued partial surjection $\delta_S
+: A_{|S|} \multito S$. The relationship between the realizaiblity
+relation $\rz_S$, the existence predicate $\Ex_s$ and the
+representation $\delta_S$ is
+%
+\begin{equation*}
+  r \rz_S x \iff
+  r \in \Ex_S(x) \iff
+  x \in \delta_S(r).
+\end{equation*}
+
+
+\subsection{Partial equivalence relations}
+\label{sec:pers}
+
+This formulation only works for modest sets, not for general
+assemblies. With each modest set~$S$ we may associate a partial
+equivalence relation (per)\footnote{A partial equivalence relation is
+  a relation which is transitive and antisymmetric.} $\per_S$ on
+$A_{|S|}$ which realizes~$q$ and~$r$ when they realize the same
+element:
+%
+\begin{equation*}
+  q \per_S r \iff
+  \xsome{x}{S}{q \rz_S x \land r \rz_S x}.
+\end{equation*}
+%
+The pair $(|S|, {\per_S})$ suffices for the reconstruction of the
+original modest set, up to isomorphism. Let us be a bit more precise
+about this.
+
+\begin{definition}
+  Let $A$ be a TPCA and $\comp{A}$ a sub-TPCA. A \emph{partial
+    equivalence relation} on~$A$ is a pair $S = (|S|, {\per_S})$ where
+  $|S|$ is a type and $\per_S$ is a transitive and antisymmetric
+  relation on $A_{|S|}$.
+  
+\end{definition}
+
+
+\subsection{Equivalence relations}
+\label{sec:ers}
+
+\section{Schools of Computabile Mathematics}
+\label{sec:schools}
+
 Particular choices of a TPCA with sub-TPCA yield well known ``schools
 of computable mathematics'':
 %
@@ -189,103 +378,6 @@ of computable mathematics'':
   and searchable sets~\cite{Escardo}.
 \end{enumerate}
 %
-In Section~\ref{variants} we shall study some of these in greater
-detail.
-
-
-\begin{proposition}
-  Assemblies and realized maps form the \emph{category
-    $\Asm{A,\comp{A}}$ of assemblies over $(A, \comp{A})$}.
-\end{proposition}
-
-\begin{proof}
-  If $f : S \to T$ and $g : T \to U$ are realized by $q \in A_{|S| \to
-    |T|}$ and $r \in A_{|T| \to |U|}$, respectively, then their
-  composition $g \circ f$ is realized by
-  $\pcalam{\annot{x}{|S|}}{r\,(q\,x)} =
-  \combS\,(\combK\,r)\,(\combS\,(\combK\,q)\,(\combS\,\combK\,\combK))$.
-  The identity map $\id_S : S \to S$ is realized by
-  $\pcalam{\annot{x}{|S|}}{x} = \combS\,\combK\,\combK$. Composition
-  is associative because it is just composition of maps.
-\end{proof}
-
-\subsection{Sets as assemblies}
-\label{sec:nabla}
-
-Suppose $(S, |S|, {\rz_S})$ is an assembly over $(A, \comp{A})$. The
-only requirement for the realizability relation $\rz_S$ is that every
-$x \in S$ be realized by some $r \in A_{|S|}$. In particular,
-different elements of~$S$ are allowed to share the same realizer.
-The extreme case, in which all elements share all realizers, 
-
-Let $t$ be a type such that $A_t$ is inhabited. Such a type always
-exists, because there is some type $s$, and then $t = s \to s \to s$
-contains $\combK_{s,s}$. Given any set $X$, let $\nabla X = (X, t,
-{\rz_{\nabla X}})$ be the assembly whose underlying set is~$X$ and the
-realizability relation is trivial, i.e., $r \rz_{\nabla X} x$ for all
-$x \in X$ and $r \in A_t$. If $f : X \to Y$ is any map between
-sets~$X$ and~$Y$ then~$f$ is a morphism $\nabla f : \nabla X \to
-\nabla Y$ because it is tracked by $\pcalam{\annot{x}{t}}{x}$. This
-defines a functor
-%
-\begin{equation*}
-  \nabla : \Set \to \Asm{A,\comp{A}}.
-\end{equation*}
-%
-Up to natural isomorphism, $\nabla$ is independent of the choice of
-type~$t$. We will study the properties of $\nabla$ later on. For now
-we notice that $\nabla$ is full and faithful, which means that
-$\Asm{A,\comp{A}}$ contains the category of sets as a full
-subcategory.
-
-\subsection{Modest sets}
-\label{sec:modest-sets}
-
-The functor $\nabla$ is devoid of any computational content because it
-represents a set~$X$ by a trivial realizability relation which conveys
-no information at all about the elements of~$X$. Consequently, we
-cannot compute anything interesting regarding~$X$. It is useful to
-impost a further restriction on the realizability relations which
-prevents such anomalies.
-
-\begin{definition}
-  An assembly $(S, |S|, {\rz_S})$ is \emph{modest} when each $r \in
-  A_{|S|}$ realizes at most one element of~$S$. A modest assembly is
-  also called a \emph{modest set}.
-\end{definition}
-
-\noindent
-In symbols, modesty is the property
-%
-\begin{equation*}
-  \xall{r}{A_{|S|}}{
-    \all{x,y}{S}{
-      r \rz_S x \land r \rz_S y \implies x = y
-    }
-  }.
-\end{equation*}
-%
-The full subcategory of $\Asm{A,\comp{A}}$ of the modest sets is
-denoted by~$\Mod{A, \comp{A}}$. The terminology was suggested by Dana
-Scott because the cardinality of modest sets does not exceed the
-cardinality of the TPCA~$A$.
-
-
-
-\section{Equivalent formulations}
-\label{sec:equivalent-formulations}
-
-\subsection{Existence predicates}
-\label{sec:existence-predicates}
-
-\subsection{Partial equivalence relations}
-\label{sec:pers}
-
-\subsection{Representations}
-\label{sec:representations}
-
-\section{Schools of Computabile Mathematics}
-\label{sec:schools}
 
 \subsection{Recursive Mathematics}
 \label{sec:recursive-math}
