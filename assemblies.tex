@@ -318,13 +318,56 @@ The pair $(|S|, {\per_S})$ suffices for the reconstruction of the
 original modest set, up to isomorphism. Let us be a bit more precise
 about this.
 
-\begin{definition}
-  Let $A$ be a TPCA and $\comp{A}$ a sub-TPCA. A \emph{partial
-    equivalence relation} on~$A$ is a pair $S = (|S|, {\per_S})$ where
-  $|S|$ is a type and $\per_S$ is a transitive and antisymmetric
-  relation on $A_{|S|}$.
-  
-\end{definition}
+Let $A$ be a TPCA and $\comp{A}$ a sub-TPCA. A \emph{partial
+  equivalence relation} on~$A$ is a pair $S = (|S|, {\per_S})$ where
+$|S|$ is a type and $\per_S$ is a transitive and antisymmetric
+relation on $A_{|S|}$. A realizer $r \in A_{|S|}$ is \emph{total} if
+$r \per_S r$. The set of total realizers is denoted by $\|S\| = \set{r
+  \in A_{|S|} \such r \per_S r}$.
+
+An \emph{extensional realizer} between pers $S$ and $T$ is $p \in
+\comp{A}_{|S| \to |T|}$ such that, for all $q, r \in A_{|S|}$, if $q
+\per_S r$ then $\defined{p\,q}$, $\defined{p\,r}$, and $p\,q \per_T
+p\,r$. Extensional realizers $p$ and $p'$ are \emph{equivalent} when
+$q \per_S r$ implies $p\,q \per_T p'\,r$.
+
+Pers and extensional maps form a category $\Per{A, \comp{A}}$ whose
+objects are pers on~$A$ and morphisms are equivalence classes of
+extensional realizers. The composition of $[p] : S \to T$ and $[q] : T
+\to U$ is $[q \circ p] : S \to U$ where $q \circ p =
+\pcalam{\annot{x}{|S|}}{q\,(p\,x)}$. The identity morphism $\id_S : S
+\to S$ is represented by $\pcalam{\annot{x}{|S|}}{x}$. It is easy to
+check that this forms a category.
+
+Let $S$ and $T$ be pers over $(A, \comp{A})$. A morphism $[p] : S \to
+T$ may be alternatively described as a function $f : \|S\|/{\per_S}
+\to \|T\|/{\per_T}$ which maps an equivalence class $[r]_S$ to the
+equivalence class $f([r]) = [p\,r]_T$.
+
+\begin{proposition}
+  The categories $\Mod{A, \comp{A}}$ and $\Per{A, \comp{A}}$ are
+  equivalent.
+\end{proposition}
+
+\begin{proof}
+  A modest set $(S, |S|, {\rz_S})$ determines a per $(S, {\per_S})$,
+  as described above. A morphism $f : S \to T$ which is tracked by $p
+  \in \comp{A}{|S| \to |T|}$ determines a morphism of pers $[p] : (S,
+  {\per_S}) \to (T, {\per_T})$. This defines a functor $F : \Mod{A,
+    \comp{A}} \to \Per{A, \comp{A}}$.
+
+  The functor going in the other direction $G : \Per{A, \comp{A}} \to
+  \Mod{A, \comp{A}}$ sends a per $(|T|, {\per_T})$ to the modest set
+  $(\|T\|/{\per_T}, |T|, {\rz_T})$ whose realizability relation is
+  %
+  \begin{equation*}
+    r \rz_T [q] \iff r \per_T q.
+  \end{equation*}
+  %
+  A morphism $[p] : (S, {\per_S}) \to (T, {\per_T})$ is mapped to the
+  map $f : \|S\|/{\per_S} \to \|T\|/{\per_T}$, as described above,
+  $f([r]_S) = [p\,r]_T$. Obviously, $f$ is tracked by~$p$.
+\end{proof}
 
 
 \subsection{Equivalence relations}
