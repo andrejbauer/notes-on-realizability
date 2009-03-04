@@ -160,6 +160,25 @@ sub-NR-TPCA of~$A$.
   is associative because it is just composition of maps.
 \end{proof}
 
+A common way to get isomorphic assemblies is the following.
+
+\begin{lemma}
+  \label{lemma:iso-assembly}
+  %
+  Suppose $(S, |S|, {\rz_S})$ is an assembly, $T$ is a set, and $f : T
+  \to S$ is a bijection. Then $(S, |S|, {\rz_S})$ is isomorphic to
+  $(T, |S|, {\rz_T})$ where $r \rz_T x$ is defined as $r \rz_S f(x)$.
+\end{lemma}
+
+\begin{proof}
+  The map $f$ is a morphism from $(S, |S|, {\rz_S})$ to $(T, |S|,
+  {\rz_T})$ because it is tracked by~$\pcalam{\annot{x}{|S|}}{x}$.
+  Similarly, $\inv{f}$ is a morphism because it is also tracked by the
+  same realizer. Obviously, $f$ and $\inv{f}$ are inverses of each
+  other.
+\end{proof}
+
+
 \subsection{Modest sets}
 \label{sec:modest-sets}
 
@@ -323,7 +342,8 @@ Let $A$ be a TPCA and $\comp{A}$ a sub-TPCA. A \emph{partial
 $|S|$ is a type and $\per_S$ is a transitive and antisymmetric
 relation on $A_{|S|}$. A realizer $r \in A_{|S|}$ is \emph{total} if
 $r \per_S r$. The set of total realizers is denoted by $\|S\| = \set{r
-  \in A_{|S|} \such r \per_S r}$.
+  \in A_{|S|} \such r \per_S r}$. Each $r \in \|S\|$ is a member of
+its equivalence class $[r]_S = \set{q \in A_{|S|} \such r \per_S q}$.
 
 An \emph{extensional realizer} between pers $S$ and $T$ is $p \in
 \comp{A}_{|S| \to |T|}$ such that, for all $q, r \in A_{|S|}$, if $q
@@ -352,11 +372,11 @@ equivalence class $f([r]) = [p\,r]_T$.
 \begin{proof}
   A modest set $(S, |S|, {\rz_S})$ determines a per $(S, {\per_S})$,
   as described above. A morphism $f : S \to T$ which is tracked by $p
-  \in \comp{A}{|S| \to |T|}$ determines a morphism of pers $[p] : (S,
+  \in \comp{A}_{|S| \to |T|}$ determines a morphism of pers $[p] : (S,
   {\per_S}) \to (T, {\per_T})$. This defines a functor $F : \Mod{A,
     \comp{A}} \to \Per{A, \comp{A}}$.
 
-  The functor going in the other direction $G : \Per{A, \comp{A}} \to
+  In the other direction the functor $G : \Per{A, \comp{A}} \to
   \Mod{A, \comp{A}}$ sends a per $(|T|, {\per_T})$ to the modest set
   $(\|T\|/{\per_T}, |T|, {\rz_T})$ whose realizability relation is
   %
@@ -365,13 +385,38 @@ equivalence class $f([r]) = [p\,r]_T$.
   \end{equation*}
   %
   A morphism $[p] : (S, {\per_S}) \to (T, {\per_T})$ is mapped to the
-  map $f : \|S\|/{\per_S} \to \|T\|/{\per_T}$, as described above,
-  $f([r]_S) = [p\,r]_T$. Obviously, $f$ is tracked by~$p$.
+  map $G[p] : \|S\|/{\per_S} \to \|T\|/{\per_T}$, as described above,
+  $(G[p])([r]_S) = [p\,r]_T$. Obviously, $G[p]$ is tracked by~$p$.
+
+  The functors $F$ and $G$ form an equivalence of categories. The
+  composition $F \circ G$ is actually equal to identity, as is easily
+  verified. A modest set~$(S, |S|, {\rz_S})$ is isomorphic to $T =
+  G(F(S))$ by Lemma~\ref{lemma:iso-assembly} applied to the bijection
+  which takes an $x \in S$ to $[r]_T$ where $r \in A_{|S|}$ is any
+  realizer such that $r \rz_S x$. We leave the verification that the
+  isomorphisms are natural as exercise.
 \end{proof}
 
 
 \subsection{Equivalence relations}
 \label{sec:ers}
+
+A per $(|S|, {\per_S})$ may be viewed as an equivalence relation on
+$\|S\| = \set{r \in A_{|S|} \such r \per_S r}$. This gives us yet
+another equivalent formulation of modest sets.
+
+Let us state explicitly what the category $\Er{A, \comp{A}}$ of
+equivalence relations is. The objects are triples $(S, |S|,
+{\equiv_S})$ where $|S|$ is a type, $S \subseteq A_{|S|}$, and
+$\equiv_S$ is an equivalence relation on~$S$. As in the case of pers,
+a morphism $(S, |S|, {\equiv_S}) \to (T, |T|, {\equiv_T})$ is
+represented by an extensional realizer $p \in \comp{A}_{|S| \to |T|}$.
+
+The difference between pers and equivalence relations is a
+bureaucratic one. Nevertheless, it is useful to know about equivalence
+relations because they sometimes have a simple and slick definition,
+see~\ref{sec:equilogical-spaces}.
+
 
 \section{Schools of Computabile Mathematics}
 \label{sec:schools}

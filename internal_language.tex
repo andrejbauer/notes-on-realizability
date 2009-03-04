@@ -4,6 +4,43 @@
 \section{Constructions of assemblies}
 \label{sec:constructions}
 
+
+\subsection{Projective assemblies}
+\label{sec:projective-assemblies}
+
+\begin{definition}
+  An assembly is \emph{canonically projective} if each element has
+  precisely one realizer.
+\end{definition}
+
+\noindent
+In symbols, an assembly $S$ is canonically projective when, for all
+$x, y \in S$, $r \in A_{|S|}$,
+%
+\begin{equation*}
+  r \rz_S x \land r \rz_S y \implies x = y.
+\end{equation*}
+%
+The canonically projective assemblies are, up to isomorphism,
+precisely the projective objects of the category of assemblies.
+
+A canonically projective modest set $(S, |S|, {\rz_S})$ is determined,
+up to isomorphism, by the set of the total realizers~$\|S\|$. This
+follows from Lemma~\ref{lemma:iso-assembly} and the fact that
+projectivity ensures that $S$ and $\|S\|$ are in bijective
+correspondence. This combined with the fact that every modest set is a
+quotient of a canonically projective one leads to the following
+definition.
+
+Let $\subcat{A, \comp{A}}$ be the category whose objects are pairs
+$(S, |S|)$ where $|S|$ is a type and $S \subseteq A_{|S|}$. A morphism
+$f : (S, |S|) \to (T, |T|)$ is a map $f : S \to T$ which is tracked by
+some $p \in \comp{A}_{|S| \to |T|}$, i.e., for all $p \in S$,
+$\defined{p\,r}$ and $p\,r \in T$. This category is equivalent to the
+full subcategory of $\Mod{A, \comp{A}}$ on the canonically projective
+modest sets.
+
+
 \section{The realizability interpretation of logic}
 \label{sec:realizability-interpretation}
 
