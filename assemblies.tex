@@ -217,12 +217,13 @@ cf.~Sections~\ref{sec:multi-valued-functions}
 and~\ref{sec:hyperspaces}.
 
 
-\subsection{Sets as assemblies}
+\subsection{Constant assemblies}
 \label{sec:nabla}
 
 The extreme case of elements sharing the same realizer happens when
 all elements of a set share all realizers. Assemblies with this
-property give us a way of representing arbitrary sets.
+property are called \emph{constant assemblies}. They give us a way of
+representing arbitrary sets.
 
 Let $t$ be a type such that $A_t$ is inhabited. Such a type always
 exists, because there is at least one type $s$, and then $t = s \to s
@@ -301,9 +302,14 @@ but it need not be defined everywhere. The triple $(S, |S|, \delta_S)$
 uniquely describes the modest set~$S$. The map $\delta_S$ is called a
 \emph{representation} of~$S$.
 
-A map $f : S \to T$ is tracked by $p \in A_{|S| \to |T|}$ when, for
-all $x \in S$ and $r \in \delta_S(x)$, $\defined{p\,r}$ and
-$\delta_T(p\,r) = f(x)$.
+A map $f : S \to T$ is realized or tracked by $p \in \comp{A}_{|S| \to
+  |T|}$ when, for all $r \in \dom(\delta_S)$, $\defined{p\,r}$ and
+$\delta_T(p\,r) = f(\delta_S(r))$.
+
+The category of representations and realized maps is denoted
+by~$\Rep{A,\comp{A}}$. It is of course equivalent to $\Mod{A,
+  \comp{A}}$, but sometimes we want to make the distinction and so we
+give it a symbol.
 
 A general assembly $S$ may also be expressed as a representation, if
 we allow $\delta_S$ to be a multi-valued partial surjection $\delta_S
@@ -412,17 +418,20 @@ $\equiv_S$ is an equivalence relation on~$S$. As in the case of pers,
 a morphism $(S, |S|, {\equiv_S}) \to (T, |T|, {\equiv_T})$ is
 represented by an extensional realizer $p \in \comp{A}_{|S| \to |T|}$.
 
-The difference between pers and equivalence relations is a
+The difference between pers and equivalence relations is mostly a
 bureaucratic one. Nevertheless, it is useful to know about equivalence
-relations because they sometimes have a simple and slick definition,
-see~\ref{sec:equilogical-spaces}.
+relations because they sometimes have a useful alternative
+description, see~\ref{sec:equilogical-spaces}.
 
 
 \section{Schools of Computabile Mathematics}
 \label{sec:schools}
 
-Particular choices of a TPCA with sub-TPCA yield well known ``schools
-of computable mathematics'':
+Computable mathematics was developed by several ``schools'', mostly
+independent of each other, and each coming from its own tradition. Our
+approach covers most approaches to computable mathematics that have
+been proposed. To get a particular variation we just choose an
+appropriate TPCA with sub-TPCA:
 %
 \begin{enumerate}
 \item When $A = \comp{A} = \NN$ is the first Kleene algebra we get the
@@ -432,8 +441,9 @@ of computable mathematics'':
   of type~1 machines.
 \item When $A = \Baire$ is the second Kleene algebra we get Kleene's
   \emph{function realizability}~\cite{KleeneSC:fouim}, also known by
-  its newer name \emph{type two effectivity (TTE)}~\cite{tte}. There
-  are actually three variants:
+  its newer name \emph{type two effectivity
+    (TTE)}~\cite{Wei00}. This is currently the most
+  influential school. There are actually three variants of TTE:
   %
   \begin{enumerate}
   \item $A = \comp{A} = \Baire$ is \emph{continuous} function
@@ -450,7 +460,7 @@ of computable mathematics'':
   realizaiblity.
 \item When $A = \Scott$ is the graph model we get a version of
   realizability that is closely related to equilogical
-  spaces~\cite{BauerA:equs}. Here two there are three variants:
+  spaces~\cite{BauerA:equs}. Here too there are three variants:
   %
   \begin{enumerate}
   \item $A = \comp{A} = \Scott$ is the continuous model,
@@ -466,9 +476,29 @@ of computable mathematics'':
   and searchable sets~\cite{Escardo}.
 \end{enumerate}
 %
+We now look at some of these in greater detail.
+
 
 \subsection{Recursive Mathematics}
 \label{sec:recursive-math}
+
+Recursive Mathematics is mathematics as developed in $\Rep{\NN}$, the
+representations over the first Kleene algebra. It is usually phrased
+in the language of representations, as follows.
+
+A \emph{numbered set $(S, \delta_S)$} is a set $S$ with a partial
+surjection $\delta_S : \NN \parto S$, called a \emph{numbering}
+of~$S$. A function $f : S \to T$ is \emph{realized} by $n \in \NN$
+when, for all $m \in \dom{\delta_S}$,
+%
+\begin{equation*}
+  \text{$\defined{\pr{n}{m}}$ and $\delta_T(\pr{n}{m}) = f(\delta_S(m))$.}
+\end{equation*}
+%
+A numbered set $(S, \delta_S)$ has countably many elements because it
+is covered by a countable set $\dom{\delta_S}$.
+
+% Reductions between numberings. This can be done more generally.
 
 \subsection{Type Two Effectivity}
 \label{sec:tte}
