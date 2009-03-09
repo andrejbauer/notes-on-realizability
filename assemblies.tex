@@ -431,85 +431,164 @@ Computable mathematics was developed by several ``schools'', mostly
 independent of each other, and each coming from its own tradition. Our
 approach covers most approaches to computable mathematics that have
 been proposed. To get a particular variation we just choose an
-appropriate TPCA with sub-TPCA:
-%
-\begin{enumerate}
-\item When $A = \comp{A} = \NN$ is the first Kleene algebra we get the
-  Russian school of \emph{recursive
-    mathematics}~\cite{recursive-math}, also known as \emph{type I
-    computability} because the underlying computational model is that
-  of type~1 machines.
-\item When $A = \Baire$ is the second Kleene algebra we get Kleene's
-  \emph{function realizability}~\cite{KleeneSC:fouim}, also known by
-  its newer name \emph{type two effectivity
-    (TTE)}~\cite{Wei00}. This is currently the most
-  influential school. There are actually three variants of TTE:
-  %
-  \begin{enumerate}
-  \item $A = \comp{A} = \Baire$ is \emph{continuous} function
-    realizability because maps are realized by arbitrary continuous
-    realizers,
-  \item $A = \Baire$ and $\comp{A} = \comp{\Baire}$, where
-    $\comp{\Baire}$ is the set of computable sequences, is the
-    \emph{relative} type 2 realizability,
-  \item $A = \comp{A} = \comp{\Baire}$ is the \emph{computable}
-    function realizability.
-  \end{enumerate}
-  %
-  We will mostly study the continuous and the relative function
-  realizaiblity.
-\item When $A = \Scott$ is the graph model we get a version of
-  realizability that is closely related to equilogical
-  spaces~\cite{BauerA:equs}. Here too there are three variants:
-  %
-  \begin{enumerate}
-  \item $A = \comp{A} = \Scott$ is the continuous model,
-  \item $A = \Scott$ and $A = \comp{\Scott}$ is the family of
-    c.e.~sets is the relative model,
-  \item $A = \Scott = \comp{\Scott}$ is the computable model.
-  \end{enumerate}
-\item Closely related to the previous case is $A = U$ where~$U$ is a
-  universal Scott domain~\cite{GunterScott}. This again gives as three
-  variants of \emph{domain representations}~\cite{Bla97,Bla97a}.
-\item The case $A = \PCFinf$ and $\comp{A} = \PCF$ was used by
-  Mart{\'\i}n Escard\'o in his investigations of compact, exhausitble
-  and searchable sets~\cite{Escardo}.
-\end{enumerate}
-%
-We now look at some of these in greater detail.
-
+appropriate TPCA with sub-TPCA. We look at some of them and relate the
+traditional terminology and notions to ours.
 
 \subsection{Recursive Mathematics}
 \label{sec:recursive-math}
 
-Recursive Mathematics is mathematics as developed in $\Rep{\NN}$, the
-representations over the first Kleene algebra. It is usually phrased
-in the language of representations, as follows.
+\emph{Recursive Mathematics}~\cite{type-1}, also known as \emph{type
+  one effectivity} or \emph{Russian constructivism}~\cite{russ}, is
+computable mathematics done with type 1 machines, cf.\
+Section~\ref{sec:type-1}. In our settings it corresponds to the
+category $\Rep{\NN}$ of representations over the first Kleene algebra.
 
-A \emph{numbered set $(S, \delta_S)$} is a set $S$ with a partial
-surjection $\delta_S : \NN \parto S$, called a \emph{numbering}
-of~$S$. A function $f : S \to T$ is \emph{realized} by $n \in \NN$
-when, for all $m \in \dom{\delta_S}$,
+An object of $\Rep{\NN}$ is called a \emph{numbered set}. It is a pair
+$(S, \delta_S)$, where $S$ is a set $\delta_S : \NN \parto S a partial
+surjection$, called a \emph{numbering} of~$S$. A function $f : S \to
+T$ is \emph{realized} by $n \in \NN$ when, for all $m \in
+\dom{\delta_S}$,
 %
 \begin{equation*}
   \text{$\defined{\pr{n}{m}}$ and $\delta_T(\pr{n}{m}) = f(\delta_S(m))$.}
 \end{equation*}
 %
 A numbered set $(S, \delta_S)$ has countably many elements because it
-is covered by a countable set $\dom{\delta_S}$.
+is covered by the countable set~$\dom{\delta_S}$. This is sometimes
+considered a disadvantage and a reason for preferring type~2 machines,
+which are able to compute with uncountable structures such as real
+numbers. However, in Section~\ref{countable-sets} we will see that a
+numbered set may be \emph{internally uncountable}, i.e., it appears to
+be uncountable inside the category of numbered sets. In fact, it is
+perfectly possible to develop analysis in this setting. One gets an
+unusual variant which is a rich source of counter-examples.
 
-% Reductions between numberings. This can be done more generally.
 
 \subsection{Type Two Effectivity}
 \label{sec:tte}
 
-% Admissibility.
+\emph{Type Two Effectivity (TTE)}~\cite{Wei00} is computable
+mathematics done with type~2 machines. It is captured by the category
+$\Rep{\Baire, \comp{\Baire}}$ of representations over the Baire space.
+It was invented by Kleene~\cite{KV65}, and an older name for it is
+\emph{function realizability} (because the realizers are functions
+rather than G\"odel codes). There are actually three versions:
+%
+\begin{enumerate}
+\item $\Rep{\Baire, \Baire}$ is the \emph{continuous} version in which
+  maps are realized by continuos realizers.
+\item $\Rep{\Baire, \comp{\Baire}}$ is the \emph{relative} version.
+\item $\Rep{\comp{\Baire}, \comp{\Baire}}$ is the \emph{computable}
+  version in which all realizers must be computable.
+\end{enumerate}
+%
+Mostly only the first two of these are used. TTE is a popular setting
+for the study of computable analysis. It requires a little less
+technical knowledge and familiarity with non-Hausdorff spaces than
+domain theoretic representation, see
+Section~\ref{sec:domain-representations},
+
 
 \subsection{Equilogical spaces}
 \label{sec:equilogical-spaces}
 
+
+An equilogical space is a topological space\footnote{Originally Dana
+  Scott restricted the definition to $T_0$-spaces.} with an
+equivalence relation~\cite{BauerA:equs}. We show how this notions
+is equivalent to assemblies over the graph model when we restrict to
+countably-based spaces.
+
+More precisely, a \emph{(countably-based) equilogical space} $(X,
+{\equiv_X})$ is a countably-based space~$X$ with an equivalence
+relation~$\equiv_X$. An \emph{extensional map} $f : (X, {\equiv_X})
+\to (Y, {\equiv_Y})$ is a continuous map $f : X \to Y$ which respects
+the equivalence relations: if $x \equiv_X y$ then $f(x) \equiv_Y
+f(y)$. Extensional maps $f, g : X \to Y$ are \emph{equivalent},
+written $f \equiv_{X \to Y} g$, when $x \equiv_X y$ implies $f(x)
+\equiv_Y g(y)$. The category $\Equ$ has objects countably-based
+equilogical spaces and morphisms are equivalence classes of
+extensional maps.
+
+A \emph{pre-embedding} $e : X \to Y$ between topological spaces is a
+continuous map such that $\inv{e} : \topol{Y} \to \topol{X}$ is
+surjective. For $T_0$-spaces this is equivalent to~$e$ being an
+embedding. If $(U_i)_{i \in I}$ is a topological basis for $Y$ and $e
+: X \to Y$ is a pre-embedding, then $(\invim{e}(U_i))_{i \in I}$ is a
+topological basis for~$X$.
+
+\begin{theorem}[Embedding Theorem for $\Scott$]
+  \label{thm:scott-embedding}%
+  A space $X$ may be pre-emebedded in~$\Scott$ if, and only if, it is
+  countably based.
+\end{theorem}
+
+\begin{proof}
+  Here $\Scott$ is equipped with the Scott topology. If $X$ is
+  pre-embedded in~$\Scott$ then it is countably based becase we may
+  transfer the countable basis from~$\Scott$ to~$X$ along the inverse
+  image of the pre-embedding.
+
+  Conversely, suppose $(U_n)_{n \in \NN}$ is a countable topological
+  basis for~$X$. Define the map $e : X \to \Scott$ by
+  %
+  \begin{equation*}
+    e(x) = \set{n \in \NN \such x \in U_n}.
+  \end{equation*}
+  %
+  We claim that $e$ is a pre-embedding. It is continuous because
+  $\invim{e}(\upper{n}) = U_n$. Let $V \subseteq X$ be open. Then $V =
+  \tbigcup_{n_i} U_{n_i}$ for some sequence $(n_i)_{i \in \NN}$. Now
+  %
+  \begin{equation*}
+    \invim{e}(\tbigcup_i \upper{n_i}) =
+      \tbigcup_i \invim{e}(\upper{n_i}) =
+      \tbigcup_i U_{n_i} = V,
+  \end{equation*}
+  %
+  therefore $\invim{e}$ is surjective, as required.
+\end{proof}
+
+\begin{theorem}[Extension Theorem for $\Scott$]
+  \label{thm:scott-extension}%
+  Suppose $e : X \to \Scott$ is a pre-embedding and $f : X \to Y$
+  continuous. Then~$f$ has a continuous extension $g : \Scott \to Y$
+  along~$e$.
+\end{theorem}
+
+\begin{proof}
+  Missing.
+\end{proof}
+
+The above two theorems now give us the desired equivalence.
+
+\begin{proposition}
+  The categories $\Equ$ and $\Asm{\Scott}$ are equivalent.
+\end{proposition}
+
+\begin{proof}
+  Mising.
+\end{proof}
+
+
+
 \subsection{Domain representations}
 \label{sec:domain-representations}
+
+
+Closely related to the previous case is $A = U$ where~$U$ is a
+universal Scott domain~\cite{GunterScott}. This again gives three
+variants of \emph{domain representations}~\cite{Bla97,Bla97a}.
+
+
+\subsection{PCF realizability}
+\label{sec:pcf-realizability}
+
+The case $A = \PCFinf$ and $\comp{A} = \PCF$ was used by
+Mart{\'\i}n Escard\'o in his investigations of compact, exhausitble
+and searchable sets~\cite{Escardo}.
+
+
 
 
 
