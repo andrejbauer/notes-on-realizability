@@ -115,7 +115,7 @@ previous section.
 \end{definition}
 
 \noindent
-By a traditional abuse of notiation we shall often denote an assembly
+By a traditional abuse of notation we shall often denote an assembly
 $(S, |S|, {\rz_S})$ simply as~$S$.
 
 There are many versions of realizability. Ours is known as \emph{typed
@@ -313,7 +313,7 @@ give it a symbol.
 
 A general assembly $S$ may also be expressed as a representation, if
 we allow $\delta_S$ to be a multi-valued partial surjection $\delta_S
-: A_{|S|} \multito S$. The relationship between the realizaiblity
+: A_{|S|} \multito S$. The relationship between the realizability
 relation $\rz_S$, the existence predicate $\Ex_s$ and the
 representation $\delta_S$ is
 %
@@ -409,7 +409,8 @@ equivalence class $f([r]) = [p\,r]_T$.
 
 A per $(|S|, {\per_S})$ may be viewed as an equivalence relation on
 $\|S\| = \set{r \in A_{|S|} \such r \per_S r}$. This gives us yet
-another equivalent formulation of modest sets.
+another equivalent formulation of modest sets, this time in terms of
+equivalence relations.
 
 Let us state explicitly what the category $\Er{A, \comp{A}}$ of
 equivalence relations is. The objects are triples $(S, |S|,
@@ -419,12 +420,14 @@ a morphism $(S, |S|, {\equiv_S}) \to (T, |T|, {\equiv_T})$ is
 represented by an extensional realizer $p \in \comp{A}_{|S| \to |T|}$.
 
 The difference between pers and equivalence relations is mostly a
-bureaucratic one. Nevertheless, it is useful to know about equivalence
-relations because they sometimes have a useful alternative
-description, see~\ref{sec:equilogical-spaces}.
+bureaucratic one. Nevertheless, it is useful to know about $\Er{A,
+  \comp{A}}$ because sometimes we can describe it in useful
+alternative ways, e.g., in Section~\ref{sec:equilogical-spaces} we
+describe pers on the graph model as equivalence relations on
+topological spaces.
 
 
-\section{Schools of Computabile Mathematics}
+\section{Schools of Computable Mathematics}
 \label{sec:schools}
 
 Computable mathematics was developed by several ``schools'', mostly
@@ -476,7 +479,7 @@ rather than G\"odel codes). There are actually three versions:
 %
 \begin{enumerate}
 \item $\Rep{\Baire, \Baire}$ is the \emph{continuous} version in which
-  maps are realized by continuos realizers.
+  maps are realized by continuous realizers.
 \item $\Rep{\Baire, \comp{\Baire}}$ is the \emph{relative} version.
 \item $\Rep{\comp{\Baire}, \comp{\Baire}}$ is the \emph{computable}
   version in which all realizers must be computable.
@@ -493,22 +496,57 @@ Section~\ref{sec:domain-representations},
 \label{sec:equilogical-spaces}
 
 
-An equilogical space is a topological space\footnote{Originally Dana
-  Scott restricted the definition to $T_0$-spaces.} with an
-equivalence relation~\cite{BauerA:equs}. We show how this notions
-is equivalent to assemblies over the graph model when we restrict to
-countably-based spaces.
+An equilogical space is a topological space with an
+equivalence relation~\cite{BauerA:equs}. If we restrict to
+countably-based spaces we get, up to equivalence, modest sets and
+assemblies over the graph model~$\Scott$.
 
-More precisely, a \emph{(countably-based) equilogical space} $(X,
-{\equiv_X})$ is a countably-based space~$X$ with an equivalence
-relation~$\equiv_X$. An \emph{extensional map} $f : (X, {\equiv_X})
-\to (Y, {\equiv_Y})$ is a continuous map $f : X \to Y$ which respects
-the equivalence relations: if $x \equiv_X y$ then $f(x) \equiv_Y
-f(y)$. Extensional maps $f, g : X \to Y$ are \emph{equivalent},
-written $f \equiv_{X \to Y} g$, when $x \equiv_X y$ implies $f(x)
-\equiv_Y g(y)$. The category $\Equ$ has objects countably-based
-equilogical spaces and morphisms are equivalence classes of
-extensional maps.
+Recall that a \emph{countably-based} space $(X, (U_i)_{i \in \NN}$ is
+a topological space $X$ with a countable collection $(U_i)_{i \in
+  \NN}$ of \emph{basic} open sets which generate its topology, so that
+every open set is a union of the basic ones. While we usually omit an
+explicit mention of the basis $(U_i)_{i \in I}$, we do insist that a
+countably-based space always be given with a particular basis. This
+allows us to avoid the axiom of choice, as well as to formulate a
+computable version of countably based spaces.
+
+A topological space is \emph{zero-dimensional} if it has a basis
+consisting of clopen sets.
+
+A topological space~$X$ is \emph{$T_0$-space} if each point is
+uniquely determined by its open neighborhoods: for all $x, y \in
+X$,
+%
+\begin{equation*}
+  (\all{U}{\topol{X}}{x \in U \iff y \in U}) \implies x = y.
+\end{equation*}
+
+A \emph{(countably-based) equilogical space} $(X, (U_i)_{i \in \NN},
+{\equiv_X})$ is a countably-based topological space~$(X, (U_i)_{i \in
+  \NN})$ with an equivalence relation~$\equiv_X$. We usually do not
+bother writing the basis $(U_i)_{i \in \NN}$. The canonical quotient
+map $q_X : X \to X/{\equiv_X}$ maps each $x \in X$ to its equivalence
+class $[x]_X$. A morphism $f : (X,{\equiv_X}) \to (Y,{\equiv_Y})$ is a
+map $f : X/{\equiv_X} \to Y/{\equiv_Y}$ between equivalence classes
+for which there exists a continuous $g : X \to Y$ such that
+%
+\begin{equation*}
+  \xymatrix@+1em{
+    {X} \ar[d]_{q_X} \ar[r]^g
+    &
+    {Y} \ar[d]^{q_Y}
+    \\
+    {X/{\equiv_X}}
+    \ar[r]_f
+    &
+    {Y/{\equiv_Y}}
+  }
+\end{equation*}
+%
+commutes, i.e., $f([x]_X) = [g(x)]_Y$ for all $x \in X$. Morphisms
+compose as expected. The category of equilogical spaces and morphisms
+between them is denoted by~$\Equ$. We show that $\Equ$ and
+$\Asm{\Scott}$ are equivalent.
 
 A \emph{pre-embedding} $e : X \to Y$ between topological spaces is a
 continuous map such that $\inv{e} : \topol{Y} \to \topol{X}$ is
@@ -524,13 +562,12 @@ topological basis for~$X$.
 \end{theorem}
 
 \begin{proof}
-  Here $\Scott$ is equipped with the Scott topology. If $X$ is
-  pre-embedded in~$\Scott$ then it is countably based becase we may
-  transfer the countable basis from~$\Scott$ to~$X$ along the inverse
-  image of the pre-embedding.
+  Here $\Scott$ is equipped with the Scott topology. If $e : X \to
+  \Scott$ is a pre-embedding then the open sets $U_n =
+  \invim{e}{\upper{n}}$ form a countable subbasis for~$X$.
 
-  Conversely, suppose $(U_n)_{n \in \NN}$ is a countable topological
-  basis for~$X$. Define the map $e : X \to \Scott$ by
+  Conversely, suppose $(U_n)_{n \in \NN}$ is a countable subbasis
+  for~$X$. Define the map $e : X \to \Scott$ by
   %
   \begin{equation*}
     e(x) = \set{n \in \NN \such x \in U_n}.
@@ -551,25 +588,126 @@ topological basis for~$X$.
 
 \begin{theorem}[Extension Theorem for $\Scott$]
   \label{thm:scott-extension}%
-  Suppose $e : X \to \Scott$ is a pre-embedding and $f : X \to Y$
-  continuous. Then~$f$ has a continuous extension $g : \Scott \to Y$
+  Suppose $e : X \to Y$ is a pre-embedding and $f : X \to \Scott$
+  continuous. Then~$f$ has a continuous extension $g : Y \to \Scott$
   along~$e$.
 \end{theorem}
 
 \begin{proof}
-  Missing.
+  Consider the map $g : Y \to \Scott$ defined by
+  %
+  \begin{equation*}
+    g(y) = \tbigcup_{U \in \topol{Y}} \left\{
+      \tbigcap_{z \in \invim{e}(U)} f(z)
+      \such
+      y \in U
+    \right\}.
+  \end{equation*}
+  %
+  This defines a continuous map because
+  %
+  \begin{align*}
+    \invim{g}(\upper{n}) &=
+    \set{y \in Y \such n \in g(y)} \\
+    &=
+    \set{y \in Y \such \xsome{U}{
+        \topol{Y}}{y \in U \land
+        \xall{z}{\invim{e}(U)}{n \in f(z)}
+      }
+    } \\
+    &=
+    \tbigcup_{U \in \topol{Y}} \left\{
+        U \such
+        \xall{z}{\invim{e}(U)}{n \in f(z)}
+      \right\}.
+  \end{align*}
+  %
+  Let us show that $g(e(x)) = f(x)$ for all $x \in X$. Consider the
+  value
+  %
+  \begin{align*}
+    g(e(x)) =
+    \tbigcup_{U \in \topol{Y}} \left\{
+      \tbigcap_{z \in \invim{e}(U)} f(z)
+      \such
+      e(x) \in U \right\}.
+  \end{align*}
+  %
+  Because $f(x)$ appears in every intersection, each of them is
+  contained in~$f(x)$, which shows that $g(e(x)) \subseteq f(x)$.
+  Suppose $n \in f(x)$ and let $V = \invim{f}(\upper{n})$. Because $e$
+  is a pre-embedding there exists $W \in \topol{Y}$ such that $V =
+  \invim{e}(W)$. If $z \in X$ and $e(z) \in W$ then $z \in
+  \invim{e}(W) = V = \invim{f}(\upper{n})$, hence $n \in f(z)$. The
+  intersection $\tbigcap \left\{f(z) \such z \in X \land e(z) \in W
+  \right\}$ contains~$n$ and so $n \in g(e(x))$. We proved that $f(x)
+  \subseteq g(e(x))$, therefore $f(x) = g(e(x))$.
 \end{proof}
 
-The above two theorems now give us the desired equivalence.
+The above two theorems now give us the desired
+equivalence~\cite{Simpson-Menni}.
 
 \begin{proposition}
   The categories $\Equ$ and $\Asm{\Scott}$ are equivalent.
 \end{proposition}
 
 \begin{proof}
-  Mising.
+  Suppose $(X, {\equiv_X})$ is an equilogical space, and let $e : X
+  \to \Scott$ be the pre-embedding from
+  Theorem~\ref{thm:scott-embedding}. Define the assembly $F(X) =
+  (X/{\equiv_X}, \Ex_{F(X)})$ by $\Ex_{F(x)} = \set{e(y) \such x
+    \equiv_X y}$. To make $F$ into a functor we define $F(f) = f$ for
+  a morphism $f : (X, {\equiv_X}) \to (Y, {\equiv_Y})$.
+
+  The functor $G : \Asm{\Scott} \to \Equ$ is defined as follows. An
+  assembly $(S, \Ex_S)$ is mapped to the equilogical space $G(S) =
+  (X_S, \equiv_{G(S)})$ whose underlying space is the set $X_S =
+  \set{(x,A) \in S \times \Scott A \in \Ex_S(x)}$, equipped with the
+  unique topology that makes the projection $X_S \to \Scott$ a
+  pre-embedding. Let $\equiv_{G(S)}$ be the equivalence relation
+  defined by
+  %
+  \begin{equation*}
+    (x,A) \equiv_{G(S)} (y,B) \iff x = y.
+  \end{equation*}
+  %
+  Observe that $S$ is isomorphic to $X_S/{\equiv_{G(S)}}$. The action
+  of $G$ on morphisms is essentially the identity: a morphism $f : (S,
+  {\rz_S}) \to (T, {\rz_T})$ is mapped to the unique $G(f) :
+  X_S/{\equiv_{G(S)}} \to X_T/{\equiv_{G(T)}}$ such that
+  $G(f)([x]_{G(S)}) = [f(x)]_{G(T)}$.
+
+  It is straightforward to check that $F$ and $G$ form an equivalence
+  of categories.
 \end{proof}
 
+By restricting to the $T_0$-spaces we obtain another equivalence. Let
+$\Equ_0$ be the full subcategory of~$\Equ$ in which the underlying
+topological spaces are $T_0$-spaces.
+
+
+\begin{proposition}
+  The categories $\Equ_0$ and $\Mod{\Scott}$ are equivalent.
+\end{proposition}
+
+\begin{proof}
+  Missing.
+\end{proof}
+
+\subsubsection{Computable equilogical spaces}
+\label{sec:computable-equ}
+
+Let $(X, (U_i)_{i \in \NN})$ and $(Y, (V_j)_{j \in \NN})$ be
+countably-based topological spaces with given countable subbases. A
+map $f : X \to Y$ is \emph{computable} when the set
+%
+\begin{equation*}
+  \set{\code{(\code{\set{i_1,\ldots,i_n}},j)} \in \NN \such 
+      \invim{f}(V_j) \subseteq U_{i_1} \cap \cdots \cap U_{i_n}}
+\end{equation*}
+%
+is computably enumerable. This definition requires a bit of
+explanation.
 
 
 \subsection{Domain representations}
@@ -585,7 +723,7 @@ variants of \emph{domain representations}~\cite{Bla97,Bla97a}.
 \label{sec:pcf-realizability}
 
 The case $A = \PCFinf$ and $\comp{A} = \PCF$ was used by
-Mart{\'\i}n Escard\'o in his investigations of compact, exhausitble
+Mart{\'\i}n Escard\'o in his investigations of compact, exhaustible
 and searchable sets~\cite{Escardo}.
 
 
