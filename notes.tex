@@ -38,6 +38,36 @@
 \addtolength{\headwidth}{\marginparwidth}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% xypic
+
+\newcommand{\pbcorner}[1][dr]{\save*!/#1-1.2pc/#1:(-1,1)@^{|-}\restore}
+%  Example of use:
+%        \begin{equation}
+%          \label{eq:abc}
+%          \vcenter{\xymatrix{
+%              A \ar[r] \ar[d] \pullbackcorner  & B \ar[d] \\
+%              C \ar[r]                         & D
+%          }}
+%        \end{equation}
+%
+
+\newcommand{\pocorner}[1][dr]{\save*!/#1+1.2pc/#1:(1,-1)@^{|-}\restore}
+
+
+\newdir{ >}{{}*!/-10pt/@{>}}
+    % used for monomorphisms:  \ar@{ >->} is a mono
+
+\newdir{ (}{{}*!/-5pt/@^{(}}
+   % used for inclusions: \ar@{ (->} is an inclusion
+
+\newdir{|>}{!/5pt/@{|}*:(1,-.2)@{>}*:(1,+.2)@_{>}}
+    % used for covers: \ar@{-|>} is a cover
+% epis: \ar{->>}
+% dotted arrow: \ar{.>}
+% - - arrow: \ar{-->}
+%   
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % Macros for indexing
 
