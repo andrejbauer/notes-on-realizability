@@ -521,10 +521,17 @@ such that
 %
 commutes, i.e., $f([x]_X) = [g(x)]_Y$ for all $x \in X$. Morphisms
 compose as expected. The category of equilogical spaces and morphisms
-between them is denoted by~$\Equ$. We show that $\Equ$ and
-$\Asm{\Scott}$ are equivalent.
+between them is denoted by~$\Equ$.
 
-A \emph{pre-embedding} $e : X \to Y$ between topological spaces is a
+A countably-based topological space $X$ may be construed as an
+equilogical space $(X, {=_X})$ with equality as the equivalence
+relation. A morphism $f : (X, {=_X}) \to (Y, {=_Y})$ is the same
+thing as a continuous map $f : X \to Y$ so that we have a full and
+faithful embedding $\wTop \to \Equ$ of the category $\wTop$ of
+countably-based spaces into the category $\Equ$.
+
+Let us show that $\Equ$ and $\Asm{\Scott}$ are equivalent. A
+\emph{pre-embedding} $e : X \to Y$ between topological spaces is a
 continuous map such that $\inv{e} : \topol{Y} \to \topol{X}$ is
 surjective. For $T_0$-spaces this is equivalent to~$e$ being an
 embedding. If $(U_i)_{i \in I}$ is a topological subbasis for $Y$ and
@@ -905,6 +912,12 @@ Theorems.
   the left by the third condition.
 \end{proof}
 
+We should point out that the computable continuous maps, as defined
+here, work at the level of open sets, i.e., a c.e.~realizer $F$ for $f
+: X \to Y$ operates on the (indices) of subbasic open sets. Therefore,
+$F$ does not distinguish points that share the same neighborhoods,
+even though $f$ might.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -946,24 +959,33 @@ that~$\comp{\Equ}$ is equivalent to $\Asm{\Scott, \comp{\Scott}}$.
 \begin{proof}
   The proof goes just as the proof of
   Propoistion~\ref{prop:equ-equiv-asm-scott} that $\Equ$ and
-  $\Asm{\Scott, \comp{\Scott}}$ are equivalent. The only difference is
-  that we refer to the Computable Embedding
+  $\Asm{\Scott}$ are equivalent. The only difference is that we refer
+  to the Computable Embedding
   Theorem~\ref{th:computable_embedding_theorem} and the Computable
   Extension Theorem~\ref{th:computable_extension_theorem} in order to
   extend computable maps to computable enumeration operators.
 \end{proof}
+
+The category $\comp{\wTop}$ of countably-based spaces and computable
+maps is embedded fully and faithfully into $\comp{\Equ}$. The
+embedding works as in the continuous case: a topological space~$X$ is
+mapped to the equilogical space $(X, {=_X})$, and a computable
+continuous map $f : X \to Y$ is the same thing as a morphism $f : (X,
+{=_X}) \to (Y, {=_Y})$.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Type Two Effectivity}
 \label{sec:tte}
 
-\emph{Type Two Effectivity (TTE)}~\cite{Wei00} is computable
-mathematics done with type~2 machines. It is captured by the category
-$\Rep{\Baire, \comp{\Baire}}$ of representations over the Baire space.
-It was invented by Kleene~\cite{KV65}, and an older name for it is
-\emph{function realizability} (because the realizers are functions
-rather than G\"odel codes). There are actually three versions:
+A popular realizability model is Kleene's~\cite{KV65} \emph{function
+  realizability}, which is better known by its newer name \emph{Type
+  Two Effectivity (TTE)}~\cite{Wei00}. As the names say, it is the
+model of realizability based on functions and type 2 machines. 
+
+TTE is traditionally expressed as a theory of representations, i.e.,
+the category $\Rep{\Baire, \comp{\Baire}}$. There are actuallly three
+variations:
 %
 \begin{enumerate}
 \item $\Rep{\Baire, \Baire}$ is the \emph{continuous} version in which
@@ -973,11 +995,90 @@ rather than G\"odel codes). There are actually three versions:
   version in which all realizers must be computable.
 \end{enumerate}
 %
-Mostly only the first two of these are used. TTE is a popular setting
-for the study of computable analysis. It requires a little less
-technical knowledge and familiarity with non-Hausdorff spaces than
-domain theoretic representation, see
-Section~\ref{sec:domain-representations},
+Mostly only the first two of these are used. Lately, multi-valued
+representations have been considered also and for these we need to
+move to the larger category of assemblies $\Asm{\Baire,
+  \comp{\Baire}}$.
+
+Specifically, a representation $(S, \delta_S)$ over the Baire space is
+a partial surjection $\delta_S : \Baire \to S$. When $\delta_S(\alpha)
+= x$ we say that $\alpha$ is a \emph{$\delta_S$-name} of~$x$. A
+\emph{(continuously) realized map} $f :(S, \delta_S) \to (T,
+\delta_T)$ is a map $f : S \to T$ for which there exists a partial
+continuous map $g : \Baire \parto \Baire$ such that
+$f(\delta_S(\alpha)) = \delta_T(g(\alpha))$ for all $\alpha \in
+\dom{\delta_S}$. If the realizer $g$ is computable we say that $f$ is
+\emph{computably realized}.
+
+In the case of equilogical spaces there was a straightforward way of
+turning a topological space into an equilogical space. The present
+situation is less obvious. One obvious idea is to represent a
+topological space~$X$ by a representation $\delta_X : \Baire \parto X$
+for which $\delta_X$ is a quotient map. However, this is too weak a
+requirement. To see this, suppose $\delta_X : \Baire \parto X$ and
+$\delta_Y : \Baire \parto Y$ are representations of topological spaces
+with $\delta_X$ and $\delta_Y$ topological quotient maps. Then a
+continuous map $f : X \to Y$ may be lifted to $g : \Baire \parto Y$,
+as in the diagram
+%
+\begin{equation*}
+  \xymatrix@+1em{
+    {\Baire}
+    \ar[d]_{\delta_X}
+    \ar[dr]^{g}
+    \ar@{..>}[r]^{h?}
+    &
+    {\Baire}
+    \ar[d]^{\delta_Y}
+    \\
+    {X}
+    \ar[r]_f
+    &
+    {Y}
+  }
+\end{equation*}
+%
+because $\delta_X$ is a quotient map. But to make~$f$ into a morphism
+we need a continuous realizer $h : \Baire \parto \Baire$ on the top
+line, which however might not exist. A stronger property is required.
+
+\begin{definition}
+  Suppose $X$ is a topological space and $\delta_X : \Baire \parto X$
+  is a representation and a topological quotient map. Then $\delta_X$
+  is \emph{admissible} if every continuous $g : \Baire \parto X$ has a
+  continuous lifting $h : \Baire \parto \Baire$ such that
+  $\delta_X(h(\alpha)) = g(\alpha)$ for all $\alpha \in \dom{g}$.
+\end{definition}
+
+Admissible representations are a central concept in TTE because they
+are very well behaved. For example, if $\delta_X : \Baire \parto X$
+and $\delta_Y : \Baire \parto Y$ are admissible, the continuous maps
+$f : X \to Y$ coincide with the realized maps.
+
+The spaces which have admissible representations have been studied in
+depth~\cite{Schroeder,Weihrauch}. We only mention a basic result whose
+proof is not too complicated.
+
+\begin{proposition}
+  Every countably-based $T_0$-space has an admissible representation.
+\end{proposition}
+
+\begin{proof}
+  Suppose $(X, (U_i)_{i \in \NN})$ is a countably-based $T_0$-space,
+  and let $e_X : X \to \Scott$ be the neighborhood filter. Define the
+  representation $\delta_X : \Baire \parto X$ by
+  %
+  \begin{equation*}
+    \delta_X(\alpha) = x \iff
+    e_X(x) = \set{\alpha(n) \such n \in \NN}.
+  \end{equation*}
+  %
+  In words, $\alpha$ is a $\delta_X$-name for $x$ when it enumerates
+  the (indices of) subbasic open neighborhoods of~$x$. Because $X$ is
+  a $T_0$-space, any~$\alpha$ enumerates the neighborhood filter of at
+  most one~$x$, hence $\delta_X$ is single-valued. We leave
+  admissibility of~$\delta_X$ as an exercise.
+\end{proof}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -999,9 +1100,6 @@ our framework. We only mention two:
   Mart{\'\i}n Escard\'o in his investigations of compact, exhaustible
   and searchable sets~\cite{Escardo}.
 \end{enumerate}
-
-
-
 
 
 

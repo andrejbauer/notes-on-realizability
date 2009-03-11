@@ -329,7 +329,7 @@ by recursion.
   $v \in \NN$ such that $\xpr_{v} = f \circ g$. Since $f \circ g$ is a
   total function, $\pr{v}{v}$ is defined. The number $n = g(v)$ has
   the desired property:
-  $\xpr_{g(v)} = \xpr_{\pr{v}{v}} = \xpr_{f(g(v))} = \xpr_{g(n)}$.
+  $\xpr_{g(v)} = \xpr_{\pr{v}{v}} = \xpr_{f(g(v))} = \xpr_{f(n)}$.
 \end{proof}
 
 This was a typical argument in the theory of computable functions. Let
@@ -882,7 +882,7 @@ write $A \wayb B$ when~$A$ is a finite subset of~$B$, this is
 expressed as
 %
 \begin{equation*}
-  B \in \mathcal{U} \iff \xusome{A \wayb B}{B \in \mathcal{U}}.
+  B \in \mathcal{U} \iff \xusome{A \wayb B}{A \in \mathcal{U}}.
 \end{equation*}
 %
 The Scott topology makes $\pow{\NN}$ into a countably based
@@ -1846,8 +1846,9 @@ more like a programming language and less like magic.
 
 A \emph{type system} $\mathcal{T}$ is a non-empty set, whose elements
 are called \emph{types}, equipped with two binary operations $\times$
-and $\to$. A \emph{typed partial combinatory algebra (TPCA)} $A$ over
-a type system $\mathcal{T}$ consists of
+and $\to$. The operation $\to$ associates to the right so that $s \to
+t \to u = s \to (t \to u)$. A \emph{typed partial combinatory algebra
+  (TPCA)} $A$ over a type system $\mathcal{T}$ consists of
 %
 \begin{enumerate}
 \item a set $A_t$ for each $t \in \mathcal{T}$, and
@@ -1959,7 +1960,7 @@ for all $a_1 \in A_{t_1}, \ldots, a_n \in A_{t_n}$.
   Let $A$ be a TPCA. For every expression $e$ over~$A$ of type~$u$ and
   every variable $\annot{x}{t}$ there is an expression $e'$ of type $t
   \to u$ whose variables are those of~$e$ excluding~$\annot{x}{t}$
-  such that $\defined{e'}$ and $e \cdot a \kleq \subst{e}{x \subto
+  such that $\defined{e'}$ and $e' \cdot a \kleq \subst{e}{x \subto
     a}$ for all $a \in A_t$.
 \end{theorem}
 
