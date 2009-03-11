@@ -2245,17 +2245,34 @@ So far we have not specified any notion of equality between programs
 or values in~PCF. We need to do so in order to get a NR-TPCA. For
 programs $e_1$ and $e_2$ of type $t$, say that they are
 \emph{observationally equivalent} and write $e_1 \approx_t e_2$, when
-for every program $e : t \to \ttnat$ and all $n \in \NN$
+for every program $e : t \to \unit$
 %
 \begin{equation*}
-  \mathsf{eval}(e\,e_1) = \numeral{n} \iff
-  \mathsf{eval}(e\,e_2) = \numeral{n}.
+  \mathsf{eval}(e\,e_1) = \ttunit \iff
+  \mathsf{eval}(e\,e_2) = \ttunit.
 \end{equation*}
 %
 The idea is that $e_1$ and $e_2$ are equivalent if they cannot be
 distinguished by ``probing'' $e_1$ and $e_2$ with a function that
-returns a ground value. We usually omit the index~$t$ in $\approx_t$.
-Some useful observational equivalences are:
+terminates or diverges. For example, if $e_1$ of type $\ttnat$
+evaluates to a numeral $\numeral{n}$ then we may distinguish it from
+other programs $e_2$ which diverge or evaluate to other numerals
+with the program
+%
+\begin{equation*}
+  \xtlam{x}{\ttnat}{
+    \cond
+    {\mathtt{eq}\,x\,\numeral{n}}
+    {\ttunit}
+    {\combFix\,(\xtlam{x}{\unit}{x})}
+  },
+\end{equation*}
+%
+where we leave it as exercise for you to write $\mathtt{eq} : \ttnat
+\to \ttnat \to \ttbool$, which compares natural numbers for equality.
+
+We usually omit the index~$t$ in $\approx_t$. Some useful
+observational equivalences are:
 %
 \begin{xalignat*}{2}
   \combSucc\,\overline{n} &\approx \overline{n+1}, &

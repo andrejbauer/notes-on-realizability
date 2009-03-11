@@ -30,8 +30,7 @@ real-world programming example. Suppose we are asked to design a data
 structure for the set $\mathsf{Graphs}$ of all finite
 simple\footnote{Simple means at most one arrow between any two
   vertices.} directed graphs with vertices labeled by distinct
-integers. An typical such graph~$G$ is shown in
-Figure~\ref{fig:digraph}.
+integers. A typical graph~$G$ is shown in Figure~\ref{fig:digraph}.
 %
 \begin{figure}[htp]
   \centering
@@ -78,8 +77,8 @@ expressed with a \emph{realizability relation}
   r \rz x
 \end{equation*}
 %
-which is read as ``$r$ realizes $x$''. In the above example we would
-write
+which is read as ``datum~$r$ realizes (or implements, or represents)
+element~$x$''. In the above example we would write
 %
 \begin{equation*}
 ([1, 2, 3, 4], [(1,2), (2,2), (2,3), (3,2), (3,1)]) \rz G.
@@ -90,7 +89,7 @@ obvious thing to do is to compute with it. When can we say that a
 function $f : \mathsf{Graphs} \to \mathsf{Graphs}$ is computable? The
 answer again is quite natural for a programmer: $f$ is computed by a
 program $p : \mathtt{graph} \to \mathtt{graph}$ when $p$ does to
-realizers what $f$ does to elements: if $r \rz G$ then $p(r) \rz
+realizers what $f$ does to elements: if $r \rz G$ then $p \, r \rz
 f(G)$. We say that the map $f$ is \emph{realized} or \emph{tracked} by
 the program~$p$.
 
@@ -254,10 +253,13 @@ the realizers we cannot compute anything interesting regarding~$X$.
 \section{Equivalent formulations}
 \label{sec:equivalent-formulations}
 
-
 Assemblies and modest sets have several equivalent formulations, which
-appeared historically as special cases of our definitions.
-
+were formulated by different communities for particular choices of
+$(A, \comp{A})$. Consequently, different people prefer to work with
+different formulations of realizability, and use their own notation
+and terminology. In this section we review the equivalent
+formulations, and in the next one the popular ``schools'' of
+computability.
 
 \subsection{Existence predicates}
 \label{sec:existence-predicates}
@@ -303,7 +305,7 @@ uniquely describes the modest set~$S$. The map $\delta_S$ is called a
 \emph{representation} of~$S$.
 
 A map $f : S \to T$ is realized or tracked by $p \in \comp{A}_{|S| \to
-  |T|}$ when, for all $r \in \dom(\delta_S)$, $\defined{p\,r}$ and
+  |T|}$ when, for all $r \in \dom{\delta_S}$, $\defined{p\,r}$ and
 $\delta_T(p\,r) = f(\delta_S(r))$.
 
 The category of representations and realized maps is denoted
@@ -331,7 +333,7 @@ This formulation only works for modest sets, not for general
 assemblies. With each modest set~$S$ we may associate a partial
 equivalence relation (per)\footnote{A partial equivalence relation is
   a relation which is transitive and antisymmetric.} $\per_S$ on
-$A_{|S|}$ which realizes~$q$ and~$r$ when they realize the same
+$A_{|S|}$ which relates~$q$ and~$r$ when they realize the same
 element:
 %
 \begin{equation*}
@@ -357,18 +359,19 @@ An \emph{extensional realizer} between pers $S$ and $T$ is $p \in
 p\,r$. Extensional realizers $p$ and $p'$ are \emph{equivalent} when
 $q \per_S r$ implies $p\,q \per_T p'\,r$.
 
-Pers and extensional maps form a category $\Per{A, \comp{A}}$ whose
-objects are pers on~$A$ and morphisms are equivalence classes of
-extensional realizers. The composition of $[p] : S \to T$ and $[q] : T
-\to U$ is $[q \circ p] : S \to U$ where $q \circ p =
-\pcalam{\annot{x}{|S|}}{q\,(p\,x)}$. The identity morphism $\id_S : S
-\to S$ is represented by $\pcalam{\annot{x}{|S|}}{x}$. It is easy to
-check that this forms a category.
+Pers and equivalence classes of extensional realizers form a category
+$\Per{A, \comp{A}}$ whose objects are pers on~$A$ and morphisms are
+equivalence classes of extensional realizers. The composition of $[p]
+: S \to T$ and $[q] : T \to U$ is $[q \circ p] : S \to U$ where $q
+\circ p = \pcalam{\annot{x}{|S|}}{q\,(p\,x)}$. The identity morphism
+$\id_S : S \to S$ is represented by $\xpcalam{\annot{x}{|S|}}{x}$. It
+is easy to check that this forms a category.
 
-Let $S$ and $T$ be pers over $(A, \comp{A})$. A morphism $[p] : S \to
-T$ may be alternatively described as a function $f : \|S\|/{\per_S}
-\to \|T\|/{\per_T}$ which maps an equivalence class $[r]_S$ to the
-equivalence class $f([r]) = [p\,r]_T$.
+Let $S$ and $T$ be pers over $(A, \comp{A})$. A morphism between them
+may be alternatively described as a function $f : \|S\|/{\per_S} \to
+\|T\|/{\per_T}$ between the equivalence classes for which there exists
+a realizer $p \in \comp{A}_{|S| \to |T|}$ that tracks it: for every
+equivalence class $[r]_S$, $\defined{p\,r}$ and $[p\,r]_T = f([r]_S)$.
 
 \begin{proposition}
   The categories $\Mod{A, \comp{A}}$ and $\Per{A, \comp{A}}$ are
@@ -391,16 +394,16 @@ equivalence class $f([r]) = [p\,r]_T$.
   \end{equation*}
   %
   A morphism $[p] : (S, {\per_S}) \to (T, {\per_T})$ is mapped to the
-  map $G[p] : \|S\|/{\per_S} \to \|T\|/{\per_T}$, as described above,
-  $(G[p])([r]_S) = [p\,r]_T$. Obviously, $G[p]$ is tracked by~$p$.
+  map $G [p] : \|S\|/{\per_S} \to \|T\|/{\per_T}$, defined by $G [p]
+  [r]_S = [p\,r]_T$, which is obviously tracked by~$p$.
 
   The functors $F$ and $G$ form an equivalence of categories. The
   composition $F \circ G$ is actually equal to identity, as is easily
-  verified. A modest set~$(S, |S|, {\rz_S})$ is isomorphic to $T =
-  G(F(S))$ by Lemma~\ref{lemma:iso-assembly} applied to the bijection
-  which takes an $x \in S$ to $[r]_T$ where $r \in A_{|S|}$ is any
-  realizer such that $r \rz_S x$. We leave the verification that the
-  isomorphisms are natural as exercise.
+  verified. A modest set~$(S, |S|, {\rz_S})$ is isomorphic to
+  $G(F(S))$ by Lemma~\ref{lemma:iso-assembly} applied to the bijection
+  which takes an $x \in S$ to $[r]_{G(F(S))}$, where $r \in A_{|S|}$
+  is any realizer such that $r \rz_S x$. We leave the verification
+  that the isomorphisms are natural as exercise.
 \end{proof}
 
 
@@ -431,9 +434,9 @@ topological spaces.
 \label{sec:schools}
 
 Computable mathematics was developed by several ``schools'', mostly
-independent of each other, and each coming from its own tradition. Our
-approach covers most approaches to computable mathematics that have
-been proposed. To get a particular variation we just choose an
+independent of each other, and each coming from its own tradition.
+Realizability covers most approaches to computable mathematics that
+have been proposed. To get a particular variation we just choose an
 appropriate TPCA with sub-TPCA. We look at some of them and relate the
 traditional terminology and notions to ours.
 
@@ -447,9 +450,9 @@ Section~\ref{sec:type-1}. In our settings it corresponds to the
 category $\Rep{\NN}$ of representations over the first Kleene algebra.
 
 An object of $\Rep{\NN}$ is called a \emph{numbered set}. It is a pair
-$(S, \delta_S)$, where $S$ is a set $\delta_S : \NN \parto S a partial
-surjection$, called a \emph{numbering} of~$S$. A function $f : S \to
-T$ is \emph{realized} by $n \in \NN$ when, for all $m \in
+$(S, \delta_S)$, where $S$ is a set $\delta_S : \NN \parto S$ a
+partial surjection, called a \emph{numbering} of~$S$. A function $f :
+S \to T$ is \emph{realized} by $n \in \NN$ when, for all $m \in
 \dom{\delta_S}$,
 %
 \begin{equation*}
@@ -466,64 +469,42 @@ be uncountable inside the category of numbered sets. In fact, it is
 perfectly possible to develop analysis in this setting. One gets an
 unusual variant which is a rich source of counter-examples.
 
-
-\subsection{Type Two Effectivity}
-\label{sec:tte}
-
-\emph{Type Two Effectivity (TTE)}~\cite{Wei00} is computable
-mathematics done with type~2 machines. It is captured by the category
-$\Rep{\Baire, \comp{\Baire}}$ of representations over the Baire space.
-It was invented by Kleene~\cite{KV65}, and an older name for it is
-\emph{function realizability} (because the realizers are functions
-rather than G\"odel codes). There are actually three versions:
-%
-\begin{enumerate}
-\item $\Rep{\Baire, \Baire}$ is the \emph{continuous} version in which
-  maps are realized by continuous realizers.
-\item $\Rep{\Baire, \comp{\Baire}}$ is the \emph{relative} version.
-\item $\Rep{\comp{\Baire}, \comp{\Baire}}$ is the \emph{computable}
-  version in which all realizers must be computable.
-\end{enumerate}
-%
-Mostly only the first two of these are used. TTE is a popular setting
-for the study of computable analysis. It requires a little less
-technical knowledge and familiarity with non-Hausdorff spaces than
-domain theoretic representation, see
-Section~\ref{sec:domain-representations},
-
-
 \subsection{Equilogical spaces}
 \label{sec:equilogical-spaces}
 
-
 An equilogical space is a topological space with an
-equivalence relation~\cite{BauerA:equs}. If we restrict to
-countably-based spaces we get, up to equivalence, modest sets and
-assemblies over the graph model~$\Scott$.
+equivalence relation~\cite{BauerA:equs}. We study equilogical spaces
+in some detail because they give us a general theory of computable
+maps between countably-based spaces. In Section~\ref{sec:tte} we
+relate equilogical spaces to Type Two Effectivity, which is another
+school of computability on general topological spaces.
 
 Recall that a topological space is \emph{countably-based} if it has a
-countable topological base. Equivalently, a space is countably-based
-when it has a countable \emph{subbase}. We prefer to work with
-subbases because they give a technically simpler definition of
-computable topological spaces alter on. Thus we define a
-countably-based space to be a pair $(X, (U_i)_{i \in \NN})$ is a
-topological space $X$ with a countable collection $(U_i)_{i \in \NN}$
-where the $U_i$ are \emph{subbasic} open sets. They generate the
-topology of $X$ by taking finite intersections and arbitrary unions.
-While we usually omit an explicit mention of the subbasis $(U_i)_{i
-  \in I}$, we do insist that a countably-based space always be given
-with a particular subbasis. This allows us to avoid the axiom of
-choice, as well as to formulate a computable version of countably
-based spaces.
+countable topological basis. Equivalently, a space is countably-based
+when it has a countable \emph{subbasis}. We prefer to work with
+subbases because they simplify the treatment of computable maps
+between spaces. Thus we define a countably-based space to be a pair
+$(X, (U_i)_{i \in \NN})$ where $X$ is a topological space and
+$(U_i)_{i \in \NN}$ is an enumeration of \emph{subbasic} open sets.
+These generate the topology of $X$ by taking finite intersections and
+arbitrary unions. While we usually omit an explicit mention of the
+subbasis $(U_i)_{i \in \NN}$, we do insist that a countably-based
+space always be given \emph{together with} a particular subbasis. This
+allows us to avoid the axiom of choice.
+
+The graph model~$\Scott$ is a countably-based space. We always take it
+with the subbasis $(\upper{n})_{n \in \NN}$. Recall that $\upper{n} =
+\set{A \subseteq \NN \such n \in A}$.
 
 A \emph{(countably-based) equilogical space} $(X, (U_i)_{i \in \NN},
 {\equiv_X})$ is a countably-based topological space~$(X, (U_i)_{i \in
   \NN})$ with an equivalence relation~$\equiv_X$. We usually do not
-bother writing the basis $(U_i)_{i \in \NN}$. The canonical quotient
-map $q_X : X \to X/{\equiv_X}$ maps each $x \in X$ to its equivalence
-class $[x]_X$. A morphism $f : (X,{\equiv_X}) \to (Y,{\equiv_Y})$ is a
-map $f : X/{\equiv_X} \to Y/{\equiv_Y}$ between equivalence classes
-for which there exists a continuous $g : X \to Y$ such that
+bother writing the subbasis $(U_i)_{i \in \NN}$. The canonical
+quotient map $q_X : X \to X/{\equiv_X}$ maps each $x \in X$ to its
+equivalence class $[x]_X$. A morphism $f : (X,{\equiv_X}) \to
+(Y,{\equiv_Y})$ is a map $f : X/{\equiv_X} \to Y/{\equiv_Y}$ between
+equivalence classes for which there exists a continuous $g : X \to Y$
+such that
 %
 \begin{equation*}
   \xymatrix@+1em{
@@ -546,9 +527,9 @@ $\Asm{\Scott}$ are equivalent.
 A \emph{pre-embedding} $e : X \to Y$ between topological spaces is a
 continuous map such that $\inv{e} : \topol{Y} \to \topol{X}$ is
 surjective. For $T_0$-spaces this is equivalent to~$e$ being an
-embedding. If $(U_i)_{i \in I}$ is a topological basis for $Y$ and $e
-: X \to Y$ is a pre-embedding, then $(\invim{e}(U_i))_{i \in I}$ is a
-topological basis for~$X$.
+embedding. If $(U_i)_{i \in I}$ is a topological subbasis for $Y$ and
+$e : X \to Y$ is a pre-embedding, then $(\invim{e}(U_i))_{i \in I}$ is
+a topological subbasis for~$X$.
 
 \begin{theorem}[Embedding Theorem for $\Scott$]
   \label{thm:scott-embedding}%
@@ -570,7 +551,7 @@ topological basis for~$X$.
   %
   We claim that $e$ is a pre-embedding. It is continuous because
   $\invim{e}(\upper{n}) = U_n$. Let $V \subseteq X$ be open. Then $V =
-  \tbigcup_{n_i} U_{n_i}$ for some sequence $(n_i)_{i \in \NN}$. Now
+  \tbigcup_i U_{n_i}$ for some sequence $(n_i)_{i \in \NN}$. Now
   %
   \begin{equation*}
     \invim{e}(\tbigcup_i \upper{n_i}) =
@@ -605,7 +586,7 @@ neighborhoods of~$x$.
     \right\}.
   \end{equation*}
   %
-  This defines a continuous map because
+  It is continuous because
   %
   \begin{align*}
     \invim{g}(\upper{n}) &=
@@ -636,28 +617,17 @@ neighborhoods of~$x$.
   %
   Because $f(x)$ appears in every intersection, each of them is
   contained in~$f(x)$, which shows that $g(e(x)) \subseteq f(x)$.
-  Suppose $n \in f(x)$ and let $V = \invim{f}(\upper{n})$. Because $e$
-  is a pre-embedding there exists $W \in \topol{Y}$ such that $V =
-  \invim{e}(W)$. If $z \in X$ and $e(z) \in W$ then $z \in
-  \invim{e}(W) = V = \invim{f}(\upper{n})$, hence $n \in f(z)$. The
-  intersection $\tbigcap \left\{f(z) \such z \in X \land e(z) \in W
-  \right\}$ contains~$n$ and so $n \in g(e(x))$. We proved that $f(x)
-  \subseteq g(e(x))$, therefore $f(x) = g(e(x))$.
+  Suppose $n \in f(x)$. Because $e$ is a pre-embedding there exists $W
+  \in \topol{Y}$ such that $\invim{f}{\upper{n}} = \invim{e}(W)$. If
+  $z \in X$ and $e(z) \in W$ then $z \in \invim{e}(W) =
+  \invim{f}(\upper{n})$, hence $n \in f(z)$. The intersection
+  $\tbigcap \left\{f(z) \such z \in X \land e(z) \in W \right\}$
+  contains~$n$ and so $n \in g(e(x))$. We proved that $f(x) \subseteq
+  g(e(x))$, therefore $f(x) = g(e(x))$.
 \end{proof}
 
 \noindent
 %
-Let us work out an explicit description of the continuous
-extension~$g$ in the case when $Y = \Scott$ and $e : X \to \Scott$ is
-the neighborhood filter. The union in the definition of~$g$ may be
-restricted to a basis, so we get
-%
-\begin{equation*}
-  g(A) = \tbigcup_{B \wayb A} f(\invim{e}(\upper{B})) =
-  \tbigcup_{i_1, \ldots, i_n \in A}
-  f(U_{i_1} \cap \cdots \cap U_{i_n}).
-\end{equation*}
-
 The Embedding and Extension theorems now give us the desired
 equivalence~\cite{Simpson-Menni}.
 
@@ -667,33 +637,37 @@ equivalence~\cite{Simpson-Menni}.
 \end{proposition}
 
 \begin{proof}
-  Suppose $(X, {\equiv_X})$ is an equilogical space, and let $e : X
-  \to \Scott$ be the pre-embedding from
+  Suppose $(X, {\equiv_X})$ is an equilogical space, and let $e_X : X
+  \to \Scott$ be the neighborhood filter pre-embedding from
   Theorem~\ref{thm:scott-embedding}. Define the assembly $F(X) =
-  (X/{\equiv_X}, \Ex_{F(X)})$ by $\Ex_{F(x)} = \set{e(y) \such x
+  (X/{\equiv_X}, \Ex_{F(X)})$ by $\Ex_{F(x)} = \set{e_X(y) \such x
     \equiv_X y}$. To make $F$ into a functor we define $F(f) = f$ for
-  a morphism $f : (X, {\equiv_X}) \to (Y, {\equiv_Y})$.
+  a morphism $f : (X, {\equiv_X}) \to (Y, {\equiv_Y})$. If $f$ is
+  tracked by $g : X \to Y$, then $F(f)$ is realized by a continuous
+  extension of $e_Y \circ g : X \to \Scott$ along~$e_X$, which exists
+  by the Extension Theorem~\ref{thm:scott-extension}.
 
   The functor $G : \Asm{\Scott} \to \Equ$ is defined as follows. An
   assembly $(S, \Ex_S)$ is mapped to the equilogical space $G(S) =
   (X_S, \equiv_{G(S)})$ whose underlying space is the set $X_S =
   \set{(x,A) \in S \times \Scott \such A \in \Ex_S(x)}$, equipped with
-  the unique topology that makes the projection $X_S \to \Scott$ a
-  pre-embedding. Let $\equiv_{G(S)}$ be the equivalence relation
+  the unique topology that makes the projection $p : X_S \to \Scott$,
+  $p : (x,A) \mapsto A$, a pre-embedding. Explicitly, the open subsets
+  of $X_S$ are the inverse images $\invim{p}(U)$ of open subsets $U
+  \subseteq \Scott$. Let $\equiv_{G(S)}$ be the equivalence relation
   defined by
   %
   \begin{equation*}
     (x,A) \equiv_{G(S)} (y,B) \iff x = y.
   \end{equation*}
   %
-  Observe that $S$ is isomorphic to $X_S/{\equiv_{G(S)}}$. The action
-  of $G$ on morphisms is essentially the identity: a morphism $f : (S,
-  {\rz_S}) \to (T, {\rz_T})$ is mapped to the unique $G(f) :
-  X_S/{\equiv_{G(S)}} \to X_T/{\equiv_{G(T)}}$ such that
-  $G(f)([x]_{G(S)}) = [f(x)]_{G(T)}$.
+  A morphism $f : (S, {\rz_S}) \to (T, {\rz_T})$ which is tracked by
+  $B \in \comp{\Scott}$ is mapped to $G(f) : X_S/{\equiv_{G(S)}} \to
+  X_T/{\equiv_{G(T)}}$ defined by $G(f)([(x,A)]_{G(S)}) = [(f(x), B
+  \cdot A)]_{G(T)}$.
 
-  It is straightforward to check that $F$ and $G$ form an equivalence
-  of categories.
+  We leave the verification that $F$ and $G$ form an equivalence of
+  categories as exercise.
 \end{proof}
 
 By restricting to the $T_0$-spaces we obtain another equivalence. Let
@@ -708,8 +682,8 @@ topological spaces are $T_0$-spaces.
 
 \begin{proof}
   We verify that the equivalence functors $F$ and $G$ from the proof
-  of Proposition~\ref{prop:equ-equiv-asm-scott} restrict to the
-  desired equivalence. If $(X, {\equiv_X})$ is an equilogical space
+  of Proposition~\ref{prop:equ-equiv-asm-scott} restrict to $\Equ_0$
+  and $\Mod{\Scott}$. If $(X, {\equiv_X})$ is an equilogical space
   whose underlying space $X$ is $T_0$, then the pre-embedding $e : X
   \to \Scott$ is actually an embedding. Because it is injective the
   assembly $F(X)$ is modest. This shows that $F$ restricts to a
@@ -729,264 +703,206 @@ over the graph model in which the realizers for morphisms may be
 arbitrary continuous maps. But what about the \emph{mixed}
 version~$\Asm{\Scott, \comp{\Scott}}$, is it also equivalent to a
 version of equilogical spaces? To see that the answer to the question
-is affirmative, we first need to define computable topological spaces.
+is affirmative, we first need to define computable maps between
 countably-based spaces.
 
-Recall that an enumeration operator $f: \Scott \to \Scott$ is computable
-when its graph $\Gamma f$ is an r.e.~set. By the Embedding Theorem,
-every countably based $T_0$-space $X$ can be embedded in $\Scott$, and
-every continuous map $g: X \to Y$ can be extended to an enumeration
-operator $\bar{g}: \Scott \to \Scott$, so that the following diagram
-commutes:
+Recall from Section~\ref{sec:graph-model} that an enumeration operator
+$g: \Scott \to \Scott$ is computable when its graph $\Gamma(g)$ is a
+c.e.~set. By the Embedding Theorem~\ref{thm:scott-embedding}, every
+countably based $T_0$-space $X$ can be embedded in $\Scott$, and every
+continuous map $f: X \to Y$ can be extended to an enumeration operator
+$g: \Scott \to \Scott$, so that the following diagram commutes:
 %
 \begin{equation*}
   \xymatrix{
-    {X}   \ar@{ >->}[d] \ar[r]^g  &  {Y} \ar@{ >->}[d] \\
-    {\Scott} \ar[r]^{\bar{g}}          & {\Scott}
+    {X}   \ar@{ >->}[d]_{e_X} \ar[r]^f  &
+    {Y} \ar@{ >->}[d]^{e_Y} \\
+    {\Scott} \ar[r]^{g} &
+    {\Scott}
   }
 \end{equation*}
 %
-The embeddings $X \monoto \Scott$ and $Y \monoto \Scott$ are determined by a
-choice of subbases for $X$ and $Y$. Once such subbases are chosen, we
-can define a \emph{computable continuous map} $g: X \to Y$ to be a
+The embeddings $e_X : X \monoto \Scott$ and $e_Y : Y \monoto \Scott$
+are the neighborhood filters for~$X$ and~$Y$, respectively. We can
+define a \emph{computable continuous map} $f: X \to Y$ to be a
 continuous map for which there exists a computable enumeration
-operator $\bar{g}: \Scott \to \Scott$ which makes the above diagram
-commute. This idea gives the following definition of effective
-topological spaces.
+operator $g: \Scott \to \Scott$ which makes the above diagram commute.
+This idea gives the following definition of computable continuous maps:
 
 \begin{definition}
-  \label{def:eff_top}%
+  \label{def:computable-map}%
   %
-  \indexdef{effective!topological space}%
-  \indexdef{topological!effective space}%
+  \indexdef{computable continuous map}%
   %
-  An \emph{effective topological space} is a pair $(X, S_X)$ where $X$
-  is a countably based $T_0$-space and $S_X: \NN \to \topol{X}$ is
-  an enumeration of a countable subbasis for $X$.
-  %
-  \indexdef{computable!continuous map}%
-  \indexdef{map!computable continuous}%
-  %
-  A \emph{computable continuous map} $f: (X, S_X) \to (Y, S_Y)$ is a
-  continuous map $f: X \to Y$ for which there exists an
-  r.e.~relation $F \subseteq \Scott_0 \times \NN$ such that:
+  A continuous map $f : X \to Y$ between countably-based spaces $(X,
+  (U_i)_{i \in \NN})$ and $(Y, (V_j)_{j \in \NN})$ is
+  \emph{computable} when there exists a c.e.~set $F \subseteq \NN
+  \times \NN$ such that:
   %
   \begin{enumerate}
   \item
     %
-    $F$ is monotone: $x \subseteq y$ and $F(x, m)$ implies $F(y, m)$.
+    $F$ is monotone in the first argument: if $A \subseteq B \wayb
+    \NN$ and $\pair{\code{A}, m} \in F$ then $(\code{B}, m) \in
+    F$.
   \item
     %
-    $F$ approximates~$f$: if $F(\set{n_1, \ldots, n_k}, m)$ then
-    $S_X(n_1) \cap \cdots \cap S_X(n_k) \subseteq
-    f^{*}(S_Y(m))$.
+    $F$ approximates~$f$: if $(\code{\set{i_1, \ldots, i_n}}, m) \in
+    F$ then $f(U_{i_1} \cap \cdots \cap U_{i_n}) \subseteq V_m$.
   \item
     %
-    $F$ converges to~$f$: if $f t \in S_Y(m)$ then there exists
-    $\set{n_1, \ldots, n_k} \in \Scott_0$ such that $t \in S_X(n_1)
-    \cap \cdots \cap S_X(n_k)$ and $F(\set{n_1, \ldots, n_k},
-    m)$.
+    $F$ converges to~$f$: if $f(x) \in V_m$ then there exist $i_1,
+    \ldots, i_n$ such that $x \in U_{i_1} \cap \cdots \cap U_{i_n}$
+    and $(\code{\set{i_1, \ldots, i_n}}, m) \in F$.
   \end{enumerate}
   %
   \indexdef{realizer!for computable continuous map}%
   %
-  The relation~$F$ is called an~\emph{r.e.~realizer} for~$f$. We also
+  The relation~$F$ is called a~\emph{c.e.~realizer} for~$f$. We also
   say that~$F$ \emph{tracks}~$f$.
   %
   \indexdef{category!of effective topological spaces}%
   %
-  The category of effective
-  topological spaces and computable continuous maps is denoted by
-  $\compTop$.
+  The category of countably based spaces and computable continuous
+  maps is denoted by $\compTop$.
 \end{definition}
 
-Note that in the above definition the empty set is allowed as a
-subbasic open set. We often simplify notation and denote an effective
-topological space $(X, S_X)$ by $X$. The category $\compTop$ is
-well-defined. The identity morphism $\id_X: (X, S_X) \to (X, S_X)$
-is the identity function $\id_{X}: X \to X$, which has an
-r.e.~realizer $I_X$, defined by
+The category $\compTop$ is well-defined. The identity map $\id_X:
+X \to X$ is tracked by the relation $I_X$, defined by
 %
 \begin{equation*}
-  I_X(\set{n_1, \ldots, n_k}, m) \iff
-  m \in \set{n_1, \ldots, n_k} \;.
+  I_X = \set{
+    (\code{\set{i_1, \ldots, i_n}}, m) \in \NN \times \NN \such
+    m \in \set{i_1, \ldots, i_n}
+  }.
 \end{equation*}
 %
-The composition of computable maps $f: X \to Y$ and $g: Y \to Z$ is
-again a computable map $g \circ f: X \to Z$ because it has an
-r.e.~realizer $H$ defined by
+The composition of computable maps $f: X \to Y$ and $g: Y \to Z$,
+which are tracked by $F$ and $G$ respectively, is again a computable
+map $g \circ f: X \to Z$ because it has a c.e.~realizer $H$ defined by
 %
-\begin{equation*}
-  H(x, n) \iff
-  \xsome{y}{\Scott_0}{\bigg( G(y, n) \land \bigwedge_{m \in y}
-    F(x,m)\bigg)} \;,
-\end{equation*}
+\begin{multline*}
+  (\code{\set{j_1, \ldots, j_k}}, \ell) \in H
+  \iff {} \\
+    \xsome{i_1, \ldots, i_n}{\NN}{
+      (\code{\set{i_1, \ldots, i_n}}, \ell) \in G \land
+      \bigwedge\nolimits_{s = 1}^{n}
+      (\code{\set{j_1, \ldots, j_k}}, i_s) \in F
+    }.
+\end{multline*}
 %
-where $F$ and $G$ are r.e.~realizers for $f$ and $g$, respectively.
-
-The monotonicity condition in Definition~\ref{def:eff_top} is
-redundant, for if $F$ is an r.e.~relation that satisfies the second
+The monotonicity condition in Definition~\ref{def:computable-map} is
+redundant, for if $F$ is an c.e.~relation that satisfies the second
 and the third condition, then we can recover monotonicity by defining
 a new relation $F'$ by
 %
 \begin{equation*}
-  F'(x, n) \iff
-  \bigvee_{y \subseteq x} F(y, n) \;,
+  F' = \set{(\code{A}, m) \in \NN \times \NN \such
+    \bigvee\nolimits_{B \subseteq A} (B, m) \in F
+  }.
 \end{equation*}
 %
 It is easy to see that $F'$ satisfies all three conditions and
 realizes the same function as~$f$.
 
-The singleton space $1 = \set{\star}$ is an effective space with
-the subbase $S_1 n = \set{\star}$. We can use it to define
-computability of points as follows.
-
-\begin{definition}
-  %
-  \index{point!computable, in eff. topol. space@{computable, in eff.~topol.~space}|defstyle}%
-  \index{computable!point, in eff. topol. space@{point, in eff.~topol.~space}|defstyle}%
-  %
-  A point $t \in X$ of an effective space $(X, S_X)$ is
-  \emph{computable} when the continuous map $1 \to X$, defined by
-  $\star \mapsto t$, is computable.
-\end{definition}
-
-This definition amounts to saying that a point $t \in X$ is computable
-when the set of indices of its subbasic open neighborhoods $\set{n
-  \in \NN \such t \in S_X n}$ is~r.e.
-  
-The algebraic lattice~$\Scott$ is an effective space with the
-subbasis~$S_{\Scott}$ given by
-%
-\begin{equation*}
-  S_{\Scott}(n) = \upper{\set{n}} \;,
-\end{equation*}
-%
-where $foo: \NN \to \Scott_0$ is a standard enumeration of
-finite elements of $\Scott$. We also pick a particular subbase for the
-algebraic lattice $\Scott^\Scott$ of enumeration operators, namely
-%
-\begin{equation*}
-  S_{\Scott^\Scott}((m, n)) = \upper{step_{finset{m},
-      \set{n}}} \;.
-\end{equation*}
-%
-The coding functions $(\place, \place($ and $finsetsym$ are
-described in Subsection~\ref{sec:graph_model}, and the step function
-$step_{x,y}$ is defined by
-%
-\label{sym:step}%
-%
-\begin{equation*}
-  step_{x,y}(z) = 
-  \begin{cases}
-    y          &   \text{if $x \subseteq z$} \;, \\
-    \emptyset  &   \text{otherwise} \;.
-  \end{cases}
-  \tag{$x, y \in \Scott_0$}
-\end{equation*}
-%
-It is easily checked that with this choice of subbases for $\Scott$ and
-$\Scott^\Scott$, the computable continuous maps $\Scott \to \Scott$ are exactly
-the r.e.~enumeration operators, the evaluation map $e: \Scott^\Scott
-\times \Scott \to \Scott$ is computable, and so are the pairing function
-$\pair{\place, \place}: \Scott \times \Scott \to \Scott$, the graph function
-$\Gamma: \Scott^\Scott \to \Scott$, and the retraction $\Lambda: \Scott \to
-\Scott^\Scott$.
+A point $x \in X$ is \emph{computable} when the map $\set{\star} \to
+X$ which maps $\star$ to~$x$ is computable. This is equivalent to
+requiring that $e_X(x) = \set{i \in \NN \such x \in U_i}$ is a
+c.e.~set.
 
 Next, we prove effective versions of the Embedding and Extension
 Theorems.
 
-\begin{theorem}[Effective Embedding Theorem]
-  \label{th:effective_embedding_theorem}%
+\begin{theorem}[Computable Embedding Theorem]
+  \label{th:computable_embedding_theorem}%
   %
-  \index{Theorem!Effective Embedding Theorem}%
-  \index{effective!Effective Embedding Theorem}%
+  \index{Theorem!Computable Embedding Theorem}%
+  \index{computable!Computable Embedding Theorem}%
   %
-  Every effective topological space can be effectively embedded
+  Every countably-based space can be computably pre-embedded
   into~$\Scott$.
 \end{theorem}
 
 \begin{proof}
-  Let $(X, S_X)$ be an effective topological space.  We show that the
-  embedding $e: X \to \Scott$, defined in the proof of the Embedding
-  Theorem~\ref{th:embedding_theorem} by
+  We just need to provide a c.e.~realizer~$E_X$ for the neighborhood
+  filter $e_X : X \to \Scott$. It is
   %
   \begin{equation*}
-    e t = \set{n \in \NN \such t \in S_X(n)} \;,
+    E_X = \set{
+      (\code{\set{i_1, \ldots, i_n}}, m) \in \NN \times \NN \such
+      m \in \set{i_1, \ldots, i_n}
+    }.
   \end{equation*}
   %
-  is a computable map. It has an r.e.~realizer $E$ defined by
+  This is obviously a c.e.~relation which is monotone in the first
+  argument. The second condition for the c.e.~realizer~$E_X$ is
   %
   \begin{equation*}
-    E(\set{n_0, \ldots, n_k}, m) \iff
-    m \in \set{n_0, \ldots, n_k} \;.
+     (\code{\set{i_0, \ldots, i_n}}, m) \in E_X
+     \implies
+     e_X(U_{i_1}, \ldots, U_{i_n}) \subseteq \upper{m},
   \end{equation*}
   %
-  This is obviously an r.e.~relation which is monotone in the first
-  argument. Clearly,
+  which clearly holds.
   %
-  \begin{equation*}
-     E(\set{n_0, \ldots, n_k}, m) \implies
-     S_X(n_0) \cap \cdots \cap S_x(n_k) \subseteq
-     e^{*}(\upper{m}) = S_X(m) \;.
-  \end{equation*}
-  %
-  Suppose $e t \in \upper{\set{m}}$. Then $t \in S_X(m)$, and
-  $E(\set{m}, m)$. Therefore, $e$ is a computable map because it
-  satisfies all three conditions from Definition~\ref{def:eff_top}.
+  Suppose $e_X(x) \in \upper{m}$. Then $x \in U_m$, and
+  $(\code{\set{m}}, m) \in E_X$, which proves the third condition.
 \end{proof}
 
-\begin{theorem}[Effective Extension Theorem]
-  \label{th:effective_extension_theorem}%
+\begin{theorem}[Computable Extension Theorem]
+  \label{th:computable_extension_theorem}%
   %
-  \index{Theorem!Effective Extension Theorem}%
-  \index{effective!Effective Extension Theorem}%
+  \index{Theorem!Computable Extension Theorem}%
+  \index{computable!Computable Extension Theorem}%
   %
-  Let $X$ and $Y$ be effective topological spaces and $f: X \to Y$ a 
-  computable map between them. Then there exists a computable map
-  $\overline{f}: \Scott \to \Scott$ such that the following diagram commutes:
+  Let $X$ and $Y$ be coutnably-based topological spaces and $f: X \to
+  Y$ a computable map between them. Then there exists a computable map
+  $g: \Scott \to \Scott$ such that the following diagram commutes:
   %
   \begin{equation*}
     \xymatrix{
-      {X} \ar[r]^{f} \ar[d]_{e_X}  &  {Y} \ar[d]^{e_Y} \\
-      {\Scott} \ar[r]_{\overline{f}} & {\Scott} 
+      {X} \ar[r]^{f} \ar@{ >->}[d]_{e_X}  &
+      {Y} \ar@{ >->}[d]^{e_Y} \\
+      {\Scott} \ar[r]_{\overline{f}} &
+      {\Scott} 
     }
   \end{equation*}
   %
-  The maps $e_X$ and $e_Y$ are the computable embeddings defined in
-  the Theorem~\ref{th:effective_embedding_theorem}.
 \end{theorem}
 
 \begin{proof}
-  Let $F$ be an r.e.~realizer for $f$.  We define the map
-  $\overline{f}: \Scott \to \Scott$ by defining its graph to be~$F$, i.e.,
+  The maps $e_X$ and $e_Y$ are the computable embeddings from
+  Theorem~\ref{th:computable_embedding_theorem}. Let $F$ be a
+  c.e.~realizer for $f$. We define the map $g: \Scott \to \Scott$ by
+  specifying its graph to be~$F$, i.e.,
   %
   \begin{equation*}
-    m \in \overline{f}(\set{n_0, \ldots, n_k})
+    m \in g(A)
     \iff
-    F(\set{n_0, \ldots, n_k}, m) \;.
+    \xsome{i_1, \ldots, i_n}{\NN}{
+      (\code{\set{i_1, \ldots, i_n}}, m) \in F
+    }.
   \end{equation*}
   %
-  All we have to show is that this choice of $\overline{f}$ makes 
-  the diagram commute. For any $t \in X$,
+  All we have to show is that this choice of $g$ makes the diagram
+  commute. For any $x \in X$,
   %
-  \begin{multline*}
-    \overline{f}(e_X t) \\
-      = \set{m \in \NN \such 
-      \some{n_0, \ldots, n_k}{\NN}{
-        t \in S_X(n_0) \cap \cdots \cap S_X(n_k) \land
-        F(\set{n_0, \ldots, n_k}, m)
-        }
+  \begin{align*}
+    m \in g(e_X(x)) &\iff
+      \xsome{i_1, \ldots, i_n}{\NN}{
+        x \in U_{i_1} \cap \cdots \cap U_{i_n} \land
+        (\code{\set{i_1, \ldots, i_n}}, m) \in F
       } \\
-    = \set{m \in \NN \such f t \in S_Y(m)}
-    = e_Y(f t) \;.
-  \end{multline*}
+      &\iff
+      f(x) \in V_m
+      \\
+      &\iff
+      m \in e_Y(f(x)).
+  \end{align*}
   %
-  The second set in the above sequence of equalities is contained in
-  the third set because~$f$ satisfies the third condition of
-  Definition~\ref{def:eff_top}. The reverse inclusion follows from the
-  second condition for~$f$.
+  The second equivalence is implied from left to right by the second
+  condition in Definition~\ref{def:computable-map}, and from right to
+  the left by the third condition.
 \end{proof}
 
 
@@ -996,183 +912,72 @@ Theorems.
 \label{sec:computable-equ}
 
 
-Countably based equilogical spaces correspond to the modest
-sets~$\Mod{\Scott}$. Since the computability predicate in $\Mod{\Scott}$ is
-trivial $\Equ$ is not a suitable category for studying computability.
-We refine the notion of equilogical spaces so that the resulting
-category of \emph{effective equilogical spaces} correspond to the
-modest sets~$\Mod{\Scott, \comp{\Scott}}$. We do this by first defining
-\emph{effective topological spaces}, and then constructing the
-effective equilogical spaces as equivalence relations on effective
-topological spaces.
-
-With a notion of effective topological spaces at hand, we can define
-the effective equilogical spaces just like the ordinary ones, except
-that we replace topological spaces and continuous maps by their
-effective versions.
+With a notion of computable maps between spaces at hand, we can define
+the computable equilogical spaces just like the ordinary ones, except
+that we replace continuous maps by their computable versions.
 
 \begin{definition}
-  \label{def:eff}%
+  \label{def:computable-equ}%
   %
-  \indexdef{effective!equilogical space}%
-  \indexsee{effective!equilogical space}{equilogical space, effective}%
-  \indexdef{equilogical space!effective}%
+  \indexdef{computable!equilogical space}%
+  \indexsee{computable!equilogical space}{equilogical space, comuptable}%
+  \indexdef{equilogical space!computable}%
   %
-  An \emph{effective equilogical space} $A = (|A|, {\equiv_A}, S_A)$
-  is an effective topological space $(|A|, S_A)$ together with an
-  equivalence relation $\equiv_A$ on $|A|$.  Two computable
-  equivariant maps $f,g: |A| \to |B|$ are equivalent when they map
-  related elements to related elements.  A morphism $[f]: A \to B$
-  between effective equilogical spaces is an equivalence class of
-  computable equivariant maps.
+  A morphism $f : (X, {\equiv_X}) \to (Y, {\equiv_Y}$ between
+  equilogical spaces is \emph{computable} if there exists a computable
+  continuous map $g : X \to Y$ which tracks~$f$.
   %
-  \indexdef{category!of effective equilogical spaces}%
-  %
-  The category of effective equilogical
-  spaces and morphisms between them is denoted by $\comp{\Equ}$.
+  The category of equilogical spaces and computable morphisms between
+  them is denoted by $\comp{\Equ}$.
 \end{definition}
 
-We check that we got the definition right by proving that~$\comp{\Equ}$ is 
-equivalent to $\Mod{\Scott, \comp{\Scott}}$, as we originally intended it to be.
+We check that we got the definition right by proving
+that~$\comp{\Equ}$ is equivalent to $\Asm{\Scott, \comp{\Scott}}$.
 
 \begin{proposition}
-  \label{th:equivalence_eff_effperpp_effmodpp}%
+  \label{th:equivalence_compEqu_AsmScott}%
   %
-  \index{equilogical space!effective!equivalent definitions}%
+  \index{equilogical space!computable!equivalent definitions}%
   %
-  The categories $\Mod{\Scott, \comp{\Scott}}$ and $\comp{\Equ}$ are
+  The categories $\Asm{\Scott, \comp{\Scott}}$ and $\comp{\Equ}$ are
   equivalent.
 \end{proposition}
 
 \begin{proof}
-  We show equivalence of $\Per{\Scott, \comp{\Scott}}$ and
-  $\comp{\Equ}$. First, we define an equivalence functor $R: \Per{\Scott,\comp{\Scott}}
-  \to \comp{\Equ}$ as follows. Given an effective partial equivalence
-  relation $P = (\Scott, \per_P) \in \Per{\Scott,\comp{\Scott}}$, let $R P = (\|P\|,
-  S_P, \per_P)$ be the effective equilogical space whose underlying
-  effective topological space is the domain $\|P\|$ of $\per_P$,
-  considered as an effective subspace of $\Scott$. A morphism $[f]: P
-  \to Q$ is mapped by~$R$ to the morphism $R[f] =
-  [f\restriction_{\|P\|}]$, where $f\restriction_{\|P\|}$ is the
-  restriction of~$f$ to~$\|P\|$. The map $f\restriction_{\|P\}}$ is
-  obviously equivariant. Its r.e.~realizer is the graph of the
-  enumeration operator~$f$.
-  
-  Next we define a functor $I: \comp{\Equ} \to \Per{\Scott,\comp{\Scott}}$. Given an
-  effective equilogical space $A = (|A|, S_A, \equiv_A)$, let $e_A:
-  |A| \to \Scott$ be the embedding from the Effective Embedding
-  Theorem~\ref{th:effective_embedding_theorem}, and let $I A$ be the
-  partial equivalence relation on~$\Scott$ defined by
-  %
-  \begin{equation*}
-    x \per_{I A} y \iff
-    \some{t,y}{|A|}{x = e_A t \land y = e_A u \land t \equiv_A u} \;.
-  \end{equation*}
-  %
-  A computable map $[f]: A \to B$ is mapped to the morphism $I [f] =
-  [\overline{f}]: I A \to I B$, where $\overline{f}: \Scott \to \Scott$
-  is an effective extension of~$f$, which exists by the Effective
-  Extension Theorem~\ref{th:effective_extension_theorem}. It is
-  obvious that such an extension is equivariant, and that the
-  morphism~$[\overline{f}]$ does not depend on the choice
-  of~$\overline{f}$.  We leave the easy proof that~$I$ and~$R$
-  constitute an equivalence of categories as an exercise.
+  The proof goes just as the proof of
+  Propoistion~\ref{prop:equ-equiv-asm-scott} that $\Equ$ and
+  $\Asm{\Scott, \comp{\Scott}}$ are equivalent. The only difference is
+  that we refer to the Computable Embedding
+  Theorem~\ref{th:computable_embedding_theorem} and the Computable
+  Extension Theorem~\ref{th:computable_extension_theorem} in order to
+  extend computable maps to computable enumeration operators.
 \end{proof}
 
-The basic constructions in the category $\comp{\Equ}$, such as products,
-coproducts, limits, colimits, and exponentials, are the same as those
-in $\Equ$. The reason for this is that all the morphisms needed in
-these constructions in $\Equ$, such as the projection maps, are built
-up using $\lambda$-calculus and are thus automatically computable. It
-is useful to describe exponentials in $\comp{\Equ}$ directly in terms of
-effective weak exponentials in $\compTop$.
 
-\begin{proposition}
-  \label{th:effequ_weak}%
-  If $A$ and $B$ are effective equilogical spaces and $V$ is an
-  effective weak exponential of $|A|$ and $|B|$ with an evaluation map
-  $e: V \times |A| \to |B|$, then the exponential $B^A$ in $\comp{\Equ}$
-  is an effective equilogical space $W = (|W|, S_{|W|}, \equiv_W)$
-  whose underlying space is the effective subspace $|W| \subseteq V$,
-  %
-  \begin{equation*}
-    |W| = \set{f \in V \such f \equiv_W f} \;,
-  \end{equation*}
-  where $\equiv_W$ is the partial equivalence relation on $V$, defined
-  by
-  %
-  \begin{equation*}
-    f \equiv_W g \iff
-    \all{a,a'}{|A|}{a \equiv_A a' \implies e(f,a) \equiv_B e(g,a')} \;.
-  \end{equation*}
-  %
-  The evaluation morphism is $[\restrict{e}{|W|}]: W \times A \to B$.
-\end{proposition}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Type Two Effectivity}
+\label{sec:tte}
 
-\begin{proof}
-  The proof is analogous to the proof of
-  Proposition~\ref{th:equ_weak}, just replace the topological spaces
-  with their effective versions.
-\end{proof}
-
-We conclude this section with the definition of a \emph{`sharp'
-  operator}, $\effsym: \comp{\Equ} \to \comp{\Equ}$. The basic idea is that
-the elements of $\eff{A}$ are the computable elements of $\eff{A}$.
-
-\begin{definition}
-  \label{def:sharp}%
-  %
-  \indexdef{operator!sharp@{``sharp''~$\effsym$}}%
-  %
-  The sharp operator $\effsym: \Per{\Scott,\comp{\Scott}} \to \Per{\Scott,\comp{\Scott}}$ is a functor
-  defined as follows. If $P \in \Mod{\Scott,\comp{\Scott}}$ then $\eff{P}$ is the
-  equivalence relation ${\per_P} \cap (\comp{\Scott} \times \comp{\Scott})$, that 
-  is,
-  %
-  \begin{equation*}
-    x \per_{\eff{P}} y \iff
-    x \per_P y \land x, y \in \comp{\Scott} \;.
-  \end{equation*}
-  %
-  If $[f]: P \to R$ is a morphism represented by a computable
-  enumeration operator $f: \Scott \to \Scott$, then $\eff{[f]} = [f]$ is
-  the morphism represented by the same operator.
-\end{definition}
-
-The action of $\effsym$ on morphisms is well-defined because a
-computable enumeration operator applied to an r.e.~set yields an
-r.e~set. The same functor can be defined equivalently on~$\comp{\Equ}$ as
-follows. If $A \in \comp{\Equ}$ then the underlying space $|\eff{A}|$ is
+\emph{Type Two Effectivity (TTE)}~\cite{Wei00} is computable
+mathematics done with type~2 machines. It is captured by the category
+$\Rep{\Baire, \comp{\Baire}}$ of representations over the Baire space.
+It was invented by Kleene~\cite{KV65}, and an older name for it is
+\emph{function realizability} (because the realizers are functions
+rather than G\"odel codes). There are actually three versions:
 %
-\begin{equation*}
-  |\eff{A}| = \set{t \in |A|
-    \such \set{n \in \NN \such t \in S_n} \in \comp{\Scott}}
-    \subseteq |A| \;,
-\end{equation*}
+\begin{enumerate}
+\item $\Rep{\Baire, \Baire}$ is the \emph{continuous} version in which
+  maps are realized by continuous realizers.
+\item $\Rep{\Baire, \comp{\Baire}}$ is the \emph{relative} version.
+\item $\Rep{\comp{\Baire}, \comp{\Baire}}$ is the \emph{computable}
+  version in which all realizers must be computable.
+\end{enumerate}
 %
-the subbasis $S_{\eff{A}}$ is
-%
-\begin{equation*}
-  S_{\eff{A}}(n) = S_A(n) \cap |\eff{A}| \;,
-\end{equation*}
-%
-and the equivalence relation $\equiv_\eff{A}$ is the restriction of
-$\equiv_A$ to $|\eff{A}|$. If $[f]: A \to B$ is a morphism in
-$\comp{\Equ}$, then $\eff{[f]}$ is the restriction $\eff{[f]} =
- [\restrict{f}{|\eff{A}|}]$. This is well defined
-because~$\restrict{f}{|\eff{A}|}$ has the same r.e.~realizer as~$f$.
-
-Note that $\eff{A}$ is a subobject of $A$, and that $\effsym$ is
-idempotent, which means $\effsym \circ \effsym = \effsym$. In other
-words, $\effsym$ is
-%
-\index{comonad}%
-%
-a comonad on $\comp{\Equ}$ whose counit $\epsilon: \effsym \to 1$
-at $A$ is the inclusion $\eff{A} \into A$, and comultiplication
-$\mu: \effsym \to \effsym^2$ at $A$ is the identity map $\mu_A =
-1_A$.
-
+Mostly only the first two of these are used. TTE is a popular setting
+for the study of computable analysis. It requires a little less
+technical knowledge and familiarity with non-Hausdorff spaces than
+domain theoretic representation, see
+Section~\ref{sec:domain-representations},
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
