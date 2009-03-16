@@ -206,8 +206,9 @@ In symbols, modesty is the property
 %
 The full subcategory of $\Asm{A,\comp{A}}$ of the modest sets is
 denoted by~$\Mod{A, \comp{A}}$. The terminology was suggested by Dana
-Scott, and modesty refers to the fact that the cardinality of a
-modest~$S$ set does not exceed the cardinality of $A_{|S|}$.
+Scott~\cite{Scott:modest-sets}, and modesty refers to the fact that
+the cardinality of a modest~$S$ set does not exceed the cardinality of
+$A_{|S|}$.
 
 Most structures in computable mathematics turn out to be modest.
 However, sometimes assemblies are needed, especially when we talk
@@ -550,30 +551,31 @@ a topological subbasis for~$X$.
   \invim{e}(\upper{n})$ form a countable subbasis for~$X$.
 
   Conversely, suppose $(U_n)_{n \in \NN}$ is a countable subbasis
-  for~$X$. Define the map $e : X \to \Scott$ by
+  for~$X$. Define the map $e_X : X \to \Scott$ by
   %
   \begin{equation*}
-    e(x) = \set{n \in \NN \such x \in U_n}.
+    e_X(x) = \set{n \in \NN \such x \in U_n}.
   \end{equation*}
   %
-  We claim that $e$ is a pre-embedding. It is continuous because
-  $\invim{e}(\upper{n}) = U_n$. Let $V \subseteq X$ be open. Then $V =
+  We claim that $e_X$ is a pre-embedding. It is continuous because
+  $\invim{e_X}(\upper{n}) = U_n$. Let $V \subseteq X$ be open. Then $V =
   \tbigcup_i U_{n_i}$ for some sequence $(n_i)_{i \in \NN}$. Now
   %
   \begin{equation*}
-    \invim{e}(\tbigcup_i \upper{n_i}) =
-      \tbigcup_i \invim{e}(\upper{n_i}) =
+    \invim{e_X}(\tbigcup_i \upper{n_i}) =
+      \tbigcup_i \invim{e_X}(\upper{n_i}) =
       \tbigcup_i U_{n_i} = V,
   \end{equation*}
   %
-  therefore $\invim{e}$ is surjective, as required.
+  therefore $\invim{e_X}$ is surjective, as required.
 \end{proof}
 
 \noindent
 %
-The pre-embedding $e : X \to \Scott$ is called the \emph{neighborhood
-  filter} because $e(x)$ is just the set of (indices of) subbasic
-neighborhoods of~$x$.
+The pre-embedding $e_X : X \to \Scott$ is called the \emph{(subbasic)
+  neighborhood filter} because $e_X(x)$ is just the set of (indices
+of) subbasic neighborhoods of~$x$. Henceforth $e_X : X \to \Scott$
+will always denote the subbasic neighobrhood filter.
 
 \begin{theorem}[Extension Theorem for $\Scott$]
   \label{thm:scott-extension}%
@@ -645,14 +647,14 @@ equivalence~\cite{Simpson-Menni}.
 
 \begin{proof}
   Suppose $(X, {\equiv_X})$ is an equilogical space, and let $e_X : X
-  \to \Scott$ be the neighborhood filter pre-embedding from
-  Theorem~\ref{thm:scott-embedding}. Define the assembly $F(X) =
-  (X/{\equiv_X}, \Ex_{F(X)})$ by $\Ex_{F(x)} = \set{e_X(y) \such x
-    \equiv_X y}$. To make $F$ into a functor we define $F(f) = f$ for
-  a morphism $f : (X, {\equiv_X}) \to (Y, {\equiv_Y})$. If $f$ is
-  tracked by $g : X \to Y$, then $F(f)$ is realized by a continuous
-  extension of $e_Y \circ g : X \to \Scott$ along~$e_X$, which exists
-  by the Extension Theorem~\ref{thm:scott-extension}.
+  \to \Scott$ be the subbasic neighborhood filter pre-embedding.
+  Define the assembly $F(X) = (X/{\equiv_X}, \Ex_{F(X)})$ by
+  $\Ex_{F(x)} = \set{e_X(y) \such x \equiv_X y}$. To make $F$ into a
+  functor we define $F(f) = f$ for a morphism $f : (X, {\equiv_X}) \to
+  (Y, {\equiv_Y})$. If $f$ is tracked by $g : X \to Y$, then $F(f)$ is
+  realized by a continuous extension of $e_Y \circ g : X \to \Scott$
+  along~$e_X$, which exists by the Extension
+  Theorem~\ref{thm:scott-extension}.
 
   The functor $G : \Asm{\Scott} \to \Equ$ is defined as follows. An
   assembly $(S, \Ex_S)$ is mapped to the equilogical space $G(S) =
@@ -703,7 +705,7 @@ topological spaces are $T_0$-spaces.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Computable countably-based spaces}
-\label{sec:computable-coutnably-based-spaces}
+\label{sec:computable-countably-based-spaces}
 
 We have so far studied the \emph{continuous} version of realizability
 over the graph model in which the realizers for morphisms may be
@@ -729,12 +731,11 @@ $g: \Scott \to \Scott$, so that the following diagram commutes:
   }
 \end{equation*}
 %
-The embeddings $e_X : X \monoto \Scott$ and $e_Y : Y \monoto \Scott$
-are the neighborhood filters for~$X$ and~$Y$, respectively. We can
-define a \emph{computable continuous map} $f: X \to Y$ to be a
+We can define a \emph{computable continuous map} $f: X \to Y$ to be a
 continuous map for which there exists a computable enumeration
 operator $g: \Scott \to \Scott$ which makes the above diagram commute.
-This idea gives the following definition of computable continuous maps:
+This idea gives the following definition of computable continuous
+maps.
 
 \begin{definition}
   \label{def:computable-map}%
@@ -805,7 +806,7 @@ a new relation $F'$ by
 %
 \begin{equation*}
   F' = \set{(\code{A}, m) \in \NN \times \NN \such
-    \bigvee\nolimits_{B \subseteq A} (B, m) \in F
+    \bigvee\nolimits_{B \subseteq A} (\code{B}, m) \in F
   }.
 \end{equation*}
 %
@@ -862,7 +863,7 @@ Theorems.
   \index{Theorem!Computable Extension Theorem}%
   \index{computable!Computable Extension Theorem}%
   %
-  Let $X$ and $Y$ be coutnably-based topological spaces and $f: X \to
+  Let $X$ and $Y$ be countably-based topological spaces and $f: X \to
   Y$ a computable map between them. Then there exists a computable map
   $g: \Scott \to \Scott$ such that the following diagram commutes:
   %
@@ -870,7 +871,7 @@ Theorems.
     \xymatrix{
       {X} \ar[r]^{f} \ar@{ >->}[d]_{e_X}  &
       {Y} \ar@{ >->}[d]^{e_Y} \\
-      {\Scott} \ar[r]_{\overline{f}} &
+      {\Scott} \ar[r]_{g} &
       {\Scott} 
     }
   \end{equation*}
@@ -884,11 +885,10 @@ Theorems.
   specifying its graph to be~$F$, i.e.,
   %
   \begin{equation*}
-    m \in g(A)
-    \iff
-    \xsome{i_1, \ldots, i_n}{\NN}{
-      (\code{\set{i_1, \ldots, i_n}}, m) \in F
-    }.
+    g(A) = \set{m \in \NN \such
+      \xsome{i_1, \ldots, i_n}{\NN}{
+        (\code{\set{i_1, \ldots, i_n}}, m) \in F
+      }}.
   \end{equation*}
   %
   All we have to show is that this choice of $g$ makes the diagram
@@ -916,7 +916,8 @@ We should point out that the computable continuous maps, as defined
 here, work at the level of open sets, i.e., a c.e.~realizer $F$ for $f
 : X \to Y$ operates on the (indices) of subbasic open sets. Therefore,
 $F$ does not distinguish points that share the same neighborhoods,
-even though $f$ might.
+even though $f$ might. This is not an issue with $T_0$-spaces in which
+points are distinguished by their neighborhoods.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -936,7 +937,7 @@ that we replace continuous maps by their computable versions.
   \indexsee{computable!equilogical space}{equilogical space, comuptable}%
   \indexdef{equilogical space!computable}%
   %
-  A morphism $f : (X, {\equiv_X}) \to (Y, {\equiv_Y}$ between
+  A morphism $f : (X, {\equiv_X}) \to (Y, {\equiv_Y})$ between
   equilogical spaces is \emph{computable} if there exists a computable
   continuous map $g : X \to Y$ which tracks~$f$.
   %
@@ -983,9 +984,8 @@ A popular realizability model is Kleene's~\cite{KV65} \emph{function
   Two Effectivity (TTE)}~\cite{Wei00}. As the names say, it is the
 model of realizability based on functions and type 2 machines. 
 
-TTE is traditionally expressed as a theory of representations, i.e.,
-the category $\Rep{\Baire, \comp{\Baire}}$. There are actuallly three
-variations:
+TTE is traditionally expressed as a theory of representations. There
+are actuallly three variations:
 %
 \begin{enumerate}
 \item $\Rep{\Baire, \Baire}$ is the \emph{continuous} version in which
@@ -995,10 +995,9 @@ variations:
   version in which all realizers must be computable.
 \end{enumerate}
 %
-Mostly only the first two of these are used. Lately, multi-valued
-representations have been considered also and for these we need to
-move to the larger category of assemblies $\Asm{\Baire,
-  \comp{\Baire}}$.
+Mostly only the first two of these are used. Sometimes multi-valued
+representations are considered also, and for these we need to move to
+the larger category of assemblies $\Asm{\Baire, \comp{\Baire}}$.
 
 Specifically, a representation $(S, \delta_S)$ over the Baire space is
 a partial surjection $\delta_S : \Baire \to S$. When $\delta_S(\alpha)
@@ -1008,7 +1007,9 @@ a partial surjection $\delta_S : \Baire \to S$. When $\delta_S(\alpha)
 continuous map $g : \Baire \parto \Baire$ such that
 $f(\delta_S(\alpha)) = \delta_T(g(\alpha))$ for all $\alpha \in
 \dom{\delta_S}$. If the realizer $g$ is computable we say that $f$ is
-\emph{computably realized}.
+\emph{computably realized}. Recall that a computable $g$ corresponds
+to a type~2 machine which converts a $\delta_S$-name of~$x$ to a
+$\delta_T$-name of $f(x)$.
 
 In the case of equilogical spaces there was a straightforward way of
 turning a topological space into an equilogical space. The present
@@ -1075,10 +1076,141 @@ proof is not too complicated.
   %
   In words, $\alpha$ is a $\delta_X$-name for $x$ when it enumerates
   the (indices of) subbasic open neighborhoods of~$x$. Because $X$ is
-  a $T_0$-space, any~$\alpha$ enumerates the neighborhood filter of at
-  most one~$x$, hence $\delta_X$ is single-valued. We leave
-  admissibility of~$\delta_X$ as an exercise.
+  a $T_0$-space, any~$\alpha$ enumerates the subbasic neighborhood
+  filter of at most one~$x$, hence $\delta_X$ is single-valued. We
+  leave admissibility of~$\delta_X$ as an exercise.
 \end{proof}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{A relationship between equilogical spaces and TTE}
+\label{sec:equ-tte}
+
+Equilogical spaces and type~2 representations are related by a pair of
+adjoint functors. We outline the relationship here and refer
+to~\cite{Bauer:equ-tte} for details.
+
+We would like to translate assemblies over $\Scott$ to asemblies over
+$\Baire$, and vice versa. This can be done systematically if can
+``simulate'' the PCA $\Baire$ within the PCA $\Scott$, and vice versa.
+%
+Define the map $\iota : \Baire \to \Scott$ by
+%                                %
+\begin{equation*}
+  \iota(\alpha) =
+  \set{ \code{\seg{\alpha}{n}} \such n \in \NN}.
+\end{equation*}
+                                %
+In words, an infinite sequence $\alpha$ is represented as the set (of
+codes) of its finite prefixes. This is a topological embedding, as can
+be easily verified. Observe also that if $\alpha \in \comp{\Baire}$
+then $\iota(\alpha) \in \comp{\Scott}$, hence $\iota$ restricts to a
+map $\comp{\Baire} \to \comp{\Scott}$.
+%
+The map $\iota$ is computable if we equip $\Baire$ with the subbasic
+open sets $U_{i,j} = \set{\alpha \in \Baire \such \alpha(i) = j}$.
+Next we seek a computable continuous map $p : \Scott \times \Scott \to
+\Scott$ which simulates application in~$\Baire$, i.e., whenever
+$\fpr{\alpha}{\beta}$ is defined then
+%
+\begin{equation*}
+  p (\iota(\alpha), \iota(\beta)) = \iota(\fpr{\alpha}{\beta}).
+\end{equation*}
+%
+The existence of~$p$ may be inferred from the Computable Extension
+Theorem~\ref{th:computable_extension_theorem} by noting that the map
+$(\alpha, \beta) \mapsto \fpr{\alpha}{\beta}$ is continuous and
+computable, where defined.
+
+The map $\iota$ transfers realizers in~$\Baire$ to realizers
+in~$\Scott$ and so induces a functor
+%
+\begin{equation*}
+  I : \Asm{\Baire, \comp{\Baire}} \to \Asm{\Scott, \comp{\Scott}}
+\end{equation*}
+%
+which maps an assembly $(S, {\rz_S})$ to $I(S) = (S, {\rz_{I(S)}})$
+where $\rz_{I(S)}$ is characterized as
+%
+\begin{equation*}
+  \alpha \rz_S x \iff
+  \iota(\alpha) \rz_{I(S)} x,
+\end{equation*}
+%
+for $x \in S$ and $\alpha \in \Baire$.
+%
+Suppose $f : (S, {\rz_S}) \to (T, {\rz_T})$ is a morphism in
+$\Asm{\Baire, \comp{\Baire}}$, realized by $\gamma \in \comp{\Baire}$.
+Then $f$ is realized as a morphism $I(f) = f : I(S) \to I(T)$ by the
+computable enumeration operator $A \mapsto p(\iota(\gamma), A)$
+because
+%
+\begin{multline*}
+  \iota(\alpha) \rz_{I(S)} x \implies
+  \alpha \rz_S x \implies
+  \fpr{\gamma}{\alpha} \rz_T f(x) \implies {}\\
+  \iota(\fpr{\gamma}{\alpha}) \rz_T f(x) \implies
+  p(\iota(\gamma), \iota(\alpha)) \rz_T f(x).
+\end{multline*}
+%
+
+
+
+There is also a simulation $\delta: \Scott \pcato \Baire$, defined for
+$x \in \Scott$, $\alpha \in \Baire$ by
+                                %
+\begin{equation*}
+  \delta(x, \alpha)
+  \iff
+  x = \set{n \in \NN \such \xsome{k}{\NN}{\alpha k = n + 1}} \;.
+\end{equation*}
+                                %
+In words, $\alpha$ is a $\delta$-implementation of~$x$ when it
+enumerates~$x$. We added~$1$ to~$n$ in the above definition so that
+the empty set is enumerated as well. Clearly, if $\alpha \in \comp{\Baire}$
+then~$x \in \comp{\Scott}$. In order for~$\delta$ to be an applicative
+morphism, it must have a realizer~$\rho \in \comp{\Baire}$ such that
+                                %
+\begin{equation*}
+  \delta(x, \alpha) \land
+  \delta(y, \beta)
+  \implies
+  \delta(x \cdot y, \fpr{\fpr{\rho}{\alpha}}{\beta}) \;.
+\end{equation*}
+                                %
+Equivalently, we may require that $\delta(x \cdot y, \rho \kap
+\pair{\alpha, \beta})$. Such a~$\rho$ can be obtained as follows.
+To determine the value $(\rho \kap \pair{\alpha, \beta})
+(\code{(m, n)})$, let $A = \set{\alpha_0, \ldots, \alpha_{m-1}}$
+and $B = \set{\beta_0, \ldots, \beta_{m-1}}$. If there exists $k
+\in B$ such that $k = 1 + \code{(n, \code{B})}$ and $B \subseteq
+A$ then the value is~$n+1$, otherwise it is~$0$. Clearly, this is an
+effective procedure, therefore it is continuous and realized by an
+element~$\rho \in \comp{\Baire}$. If we compare the definition of~$\rho$ to
+the definition of application in~$\Scott$, we see that they match.
+
+Let us show that $\iota \dashv \delta$ is an applicative retraction.
+Suppose $\alpha \in \Baire$, $x = \iota(\alpha)$, and $\delta(x,
+\beta)$. We can effectively reconstruct $\alpha$ from~$\beta$,
+because $\beta$ enumerates the initial segments of~$\alpha$. This
+shows that $\delta \circ \iota \preceq \id_{\Baire}$. Also, given
+$\alpha$ we can easily construct a sequence~$\beta$ which enumerates
+the initial segments of~$\alpha$, therefore $\id_{\Baire} \preceq
+\delta \circ \iota$, and we conclude that $\delta \circ \iota \sim
+\id_{\Baire}$.
+
+To see that $\iota \circ \delta \preceq \id_{\Scott}$, consider $x, y \in
+\Scott$ and $\alpha \in \Baire$ such that $\delta(x, \alpha)$ and $y =
+\iota(\alpha)$. The sequence~$\alpha$ enumerates~$x$, and $y$
+consists of the initial segments of~$\alpha$. Hence, we can
+effectively reconstruct $x$ from $y$, by
+                                %
+\begin{equation*}
+  m \in x
+  \iff
+  \some{n}{y}{n = 1 + \code{a} \land \xusome{i < |a|}{m = a_i}} \;.
+\end{equation*}
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1100,6 +1232,7 @@ our framework. We only mention two:
   Mart{\'\i}n Escard\'o in his investigations of compact, exhaustible
   and searchable sets~\cite{Escardo}.
 \end{enumerate}
+
 
 
 
