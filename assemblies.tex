@@ -1086,9 +1086,13 @@ proof is not too complicated.
 \subsection{A relationship between equilogical spaces and TTE}
 \label{sec:equ-tte}
 
-Equilogical spaces and type~2 representations are related by a pair of
-adjoint functors. We outline the relationship here and refer
-to~\cite{Bauer:equ-tte} for details.
+Type~2 representations, or more precisely $\Asm{\Baire,
+  \comp{\Baire}}$ are embedded in $\Asm{\Scott, \comp{\Scott}}$ by a
+full and faithful embedding. The embedding has a right adjoint. We
+outline the relationship here and refer to~\cite{Bauer:equ-tte} for
+details.\footnote{The general topic of comparing realizability models
+  is important but excluded from these lecture notes, for the time
+  being.}
 
 We would like to translate assemblies over $\Scott$ to asemblies over
 $\Baire$, and vice versa. This can be done systematically if can
@@ -1101,17 +1105,17 @@ Define the map $\iota : \Baire \to \Scott$ by
   \set{ \code{\seg{\alpha}{n}} \such n \in \NN}.
 \end{equation*}
                                 %
-In words, an infinite sequence $\alpha$ is represented as the set (of
-codes) of its finite prefixes. This is a topological embedding, as can
-be easily verified. Observe also that if $\alpha \in \comp{\Baire}$
-then $\iota(\alpha) \in \comp{\Scott}$, hence $\iota$ restricts to a
-map $\comp{\Baire} \to \comp{\Scott}$.
+An infinite sequence $\alpha$ is represented as the set (of codes) of
+its finite prefixes. This is a topological embedding, as can be easily
+verified. Observe also that if $\alpha \in \comp{\Baire}$ then
+$\iota(\alpha) \in \comp{\Scott}$, hence $\iota$ restricts to a map
+$\comp{\Baire} \to \comp{\Scott}$.
 %
 The map $\iota$ is computable if we equip $\Baire$ with the subbasic
-open sets $U_{i,j} = \set{\alpha \in \Baire \such \alpha(i) = j}$.
-Next we seek a computable continuous map $p : \Scott \times \Scott \to
-\Scott$ which simulates application in~$\Baire$, i.e., whenever
-$\fpr{\alpha}{\beta}$ is defined then
+open sets $U_{\code{i,j}} = \set{\alpha \in \Baire \such \alpha(i) =
+  j}$. Next we seek a computable continuous map $p : \Scott \times
+\Scott \to \Scott$ which simulates application in~$\Baire$, i.e.,
+whenever $\fpr{\alpha}{\beta}$ is defined then
 %
 \begin{equation*}
   p (\iota(\alpha), \iota(\beta)) = \iota(\fpr{\alpha}{\beta}).
@@ -1153,64 +1157,45 @@ because
   p(\iota(\gamma), \iota(\alpha)) \rz_T f(x).
 \end{multline*}
 %
+The embedding $I$ is full and faithful.
 
-
-
-There is also a simulation $\delta: \Scott \pcato \Baire$, defined for
-$x \in \Scott$, $\alpha \in \Baire$ by
-                                %
+To get a functor $D : \Asm{\Scott, \comp{\Scott}} \to \Asm{\Baire,
+  \comp{\Baire}}$ we use a similar idea, except this time the
+simulation $\delta : \Scott \multito \Baire$ is a multi-valued map.
+Define
+%
 \begin{equation*}
-  \delta(x, \alpha)
-  \iff
-  x = \set{n \in \NN \such \xsome{k}{\NN}{\alpha k = n + 1}} \;.
+  \delta(A) = \set{\alpha \in \Baire \such
+    \all{n}{\NN}{n \in A \iff \xsome{m}{\NN}{\alpha(m) = n + 1}}
+  }.
 \end{equation*}
-                                %
-In words, $\alpha$ is a $\delta$-implementation of~$x$ when it
-enumerates~$x$. We added~$1$ to~$n$ in the above definition so that
-the empty set is enumerated as well. Clearly, if $\alpha \in \comp{\Baire}$
-then~$x \in \comp{\Scott}$. In order for~$\delta$ to be an applicative
-morphism, it must have a realizer~$\rho \in \comp{\Baire}$ such that
-                                %
+%
+A set $A \subseteq \NN$ is represented by any enumeration $\alpha$ of
+its elements, where we used the usual trick of adding~$1$ so that the
+empty set is represented. Again, it does not take much effort to see
+that there is a computable map $q : \Baire \times \Baire \to \Baire$
+which simulates application in~$\Scott$,
+%
 \begin{equation*}
-  \delta(x, \alpha) \land
-  \delta(y, \beta)
-  \implies
-  \delta(x \cdot y, \fpr{\fpr{\rho}{\alpha}}{\beta}) \;.
+  \alpha \in \delta(A) \land
+  \beta \in \delta(B) \implies q(\alpha, \beta) \in \delta(A \cdot B).
 \end{equation*}
-                                %
-Equivalently, we may require that $\delta(x \cdot y, \rho \kap
-\pair{\alpha, \beta})$. Such a~$\rho$ can be obtained as follows.
-To determine the value $(\rho \kap \pair{\alpha, \beta})
-(\code{(m, n)})$, let $A = \set{\alpha_0, \ldots, \alpha_{m-1}}$
-and $B = \set{\beta_0, \ldots, \beta_{m-1}}$. If there exists $k
-\in B$ such that $k = 1 + \code{(n, \code{B})}$ and $B \subseteq
-A$ then the value is~$n+1$, otherwise it is~$0$. Clearly, this is an
-effective procedure, therefore it is continuous and realized by an
-element~$\rho \in \comp{\Baire}$. If we compare the definition of~$\rho$ to
-the definition of application in~$\Scott$, we see that they match.
-
-Let us show that $\iota \dashv \delta$ is an applicative retraction.
-Suppose $\alpha \in \Baire$, $x = \iota(\alpha)$, and $\delta(x,
-\beta)$. We can effectively reconstruct $\alpha$ from~$\beta$,
-because $\beta$ enumerates the initial segments of~$\alpha$. This
-shows that $\delta \circ \iota \preceq \id_{\Baire}$. Also, given
-$\alpha$ we can easily construct a sequence~$\beta$ which enumerates
-the initial segments of~$\alpha$, therefore $\id_{\Baire} \preceq
-\delta \circ \iota$, and we conclude that $\delta \circ \iota \sim
-\id_{\Baire}$.
-
-To see that $\iota \circ \delta \preceq \id_{\Scott}$, consider $x, y \in
-\Scott$ and $\alpha \in \Baire$ such that $\delta(x, \alpha)$ and $y =
-\iota(\alpha)$. The sequence~$\alpha$ enumerates~$x$, and $y$
-consists of the initial segments of~$\alpha$. Hence, we can
-effectively reconstruct $x$ from $y$, by
-                                %
+%
+The functor $D$ maps an assembly $(S, {\rz_S})$ over~$\Scott$ to the
+assembly $D(S) = (S, {\rz_{D(S)}})$ over $\Baire$ whose realizability
+relation is characterized by
+%
 \begin{equation*}
-  m \in x
-  \iff
-  \some{n}{y}{n = 1 + \code{a} \land \xusome{i < |a|}{m = a_i}} \;.
+  \alpha \rz_{D(S)} x \iff
+  \alpha \in \delta(A) \land A \rz_S x,
 \end{equation*}
-
+%
+for $\alpha in \Baire$, $A \in \Scott$, and $x \in S$. If $f : (S,
+{\rz_S}) \to (T, {\rz_T})$ is realized by a computable enumeration
+operator $g : \Scott \to \Scott$, then it is realized as a morphism
+$D(f) = f : D(S) \to D(T)$ by the computable map $\alpha \mapsto
+q(\gamma, \alpha)$ where $\gamma$ is any member of
+$\delta(\Gamma(g))$. The functor $D$ is faithful but is not full.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1232,7 +1217,6 @@ our framework. We only mention two:
   Mart{\'\i}n Escard\'o in his investigations of compact, exhaustible
   and searchable sets~\cite{Escardo}.
 \end{enumerate}
-
 
 
 
