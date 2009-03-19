@@ -55,11 +55,11 @@
 \newcommand{\tbigcup}{\bigcup\nolimits}
 \newcommand{\tbigcap}{\bigcap\nolimits}
 
+\newcommand{\one}{\mathsf{1}}
 \newcommand{\two}{\mathsf{2}}
+
 \newcommand{\Baire}{\mathbb{B}}
-\newcommand{\cBaire}{\Baire_{\#}}
 \newcommand{\Scott}{\mathbb{P}}
-\newcommand{\cScott}{\Scott_{\#}}
 
 %%% Topology
 \newcommand{\topol}[1]{\mathcal{O}(#1)}
@@ -147,6 +147,9 @@
 \newcommand{\UU}{\mathbb{U}}
 
 %%%% PCAs
+\renewcommand{\AA}{\mathbb{A}}
+\newcommand{\compAA}{\comp{\AA}}
+
 \newcommand{\xpcalam}[2]{\langle #1 \rangle\,#2}
 \newcommand{\pcalam}[2]{\langle #1 \rangle\,(#2)}
 \newcommand{\annot}[2]{#1^{#2}}
@@ -198,8 +201,17 @@
 \newcommand{\Ex}{\mathsf{E}}
 \newcommand{\per}{\approx}
 
+\newcommand{\typ}[2]{#1_{#2}}
+\newcommand{\Atyp}[1]{\typ{\AA}{#1}}
+\newcommand{\xAtyp}[1]{\typ{\AA}{|#1|}}
+\newcommand{\compAtyp}[1]{\typ{\compAA}{#1}}
+
 \newcommand{\effsym}{\#}
 \newcommand{\eff}[1]{\effsym #1}
+
+\newcommand{\R}[1]{\mathtt{#1}}
+\newcommand{\xasm}[1]{(#1, |#1|, {\rz_{#1}})}
+\newcommand{\asm}[1]{\mathbf{#1}}
 
 % Categories
 
@@ -209,6 +221,8 @@
 
 \newcommand{\Set}{\mathsf{Set}}
 \newcommand{\Asm}[1]{\mathsf{Asm}(#1)}
+\newcommand{\AsmA}{\Asm{\AA,\compAA}}
+
 \newcommand{\Mod}[1]{\mathsf{Mod}(#1)}
 \newcommand{\Rep}[1]{\mathsf{Rep}(#1)}
 \newcommand{\Per}[1]{\mathsf{Per}(#1)}

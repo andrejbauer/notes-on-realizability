@@ -12,30 +12,269 @@ logic that assigns to a logical formula its computational meaning.
 \label{sec:constructions}
 
 In their everyday lives mathematicians use a limited set of
-constructions on sets, such as cartesian products, disjoint sums,
-subsets, quotient sets, powersets, and others. For all of these,
-except powersets, there are analogous constructions of assemblies.
-Therefore, if we need a computable version of a given mathematical
-structure, we may just mimick its set-theoretic definition in the
-category of assemblies. This way we do not invent or guess the
-datatypes and the realizability relations, but rather simply
-\emph{compute} them.
+constructions on sets: products, disjoint sums, subsets, quotient
+sets, function spaces, inductive and coinductive definitions, and
+powersets. For all of these, except powersets, there are analogous
+constructions of assemblies. Therefore, if we need a computable
+version of a given mathematical structure, we may just mimick its
+set-theoretic definition in the category of assemblies. This way we do
+not invent or guess the datatypes and the realizability relations, but
+simply \emph{compute} them.
 
-\subsection{Products and equalizers}
-\label{sec:products-equalizers}
+\subsection{The cartesian structure}
+\label{sec:cartesian-structure}
 
 A construction which makes a new set, space, or an algebraic structure
 out of old ones is usually characterized by a \emph{universal
-  property} which determines it up to isomorphism. We start with an
-easy one, the binary product.
+  property} which determines it up to isomorphism. We start slowly
+with an easy one, the binary product.
+
+Recall the definition of a \emph{(binary) product} in a category: the
+product of objects $S$ and $T$ is an object $P$ with morphisms $p_1 :
+P \to S$ and $p_2 : P \to T$, satisfying the following universal
+property: for all morphisms $f : U \to S$ and $g : U \to T$ there is a
+unique morphism $h : U \to P$ making the following diagram commute:
+%
+\begin{equation*}
+  \xymatrix@+1em{
+    &
+    {U}
+    \ar[ld]_{f}
+    \ar[d]^h
+    \ar[rd]^{g}
+    &
+    \\
+    {S}
+    &
+    {P}
+    \ar[l]^{p_1}
+    \ar[r]_{p_2}
+    &
+    {T}
+  }
+\end{equation*}
+%
+This determines $(P, p_1, p_2)$ uniquely up to a unique isomorphism.
+For suppose we had another product $(Q, q_1, q_2)$. By the universal
+property of $P$ there is a map $h : P \to Q$ such that $p_1 \circ h =
+q_1$ and $p_2 \circ h = q_2$. Similarly, there is $k : Q \to P$ such
+that $q_1 \circ k = p_1$ and $q_2 \circ k = p_2$. Now $h \circ k$
+satisfies
+%
+\begin{equation*}
+  p_1 \circ h \circ k = q_1 \circ k = p_1
+  \qquad\text{and}\qquad
+  p_2 \circ h \circ k = q_2 \circ k = p_2
+\end{equation*}
+%
+Since $\id_P$ also satisfies $p_1 \circ \id_P = p_1$ and $p_2 \circ
+\id_P = p_2$, it follows by the uniqueness condition of the universal
+property that $h \circ k = \id_P$. A similar argument shows that $k
+\circ h = \id_Q$, hence $P$ and $Q$ are isomorphic.
+
+A category has binary products if every pair of objects has a binary
+product. In most cases we can actually provide an operation $\times$
+which maps a pair of objects $S$, $T$ to a specifically given product
+$S \times T$ with corresponding projections. The unique map $h$
+determined by $f$ and $g$ is denoted by $\pair{f,g}$.
+
+In the category~$\Set$ the product is just the usual cartesian product
+of sets. In assemblies we need to worry about the underlying types and
+realizability relations. Let us verify that the product of assemblies
+$\asm{S}$ and $\asm{T}$ is the assembly
+%
+\begin{equation*}
+  \asm{S} \times \asm{T} =
+  (S \times T, |S| \times |T|, {\rz_{S \times T}})
+\end{equation*}
+%
+with the realizability relation
+%
+\begin{equation*}
+  \combPair\,q\,r \rz_{S \times T} (x,y)
+  \iff
+  q \rz_S x
+  \land
+  r \rz_T y.
+\end{equation*}
+%
+The projection maps $p_1 : S \times T \to S$ and $p_2 : S \times T \to
+T$ are realized by $\combFst$ and $\combSnd$, respectively.
+
+To see that the product of assemblies has the universal property,
+suppose $f : \asm{U} \to \asm{S}$ and $g : \asm{U} \to \asm{T}$ are
+realized by $\R{f} \in \comp{A}_{|U| \to |S|}$ and $\R{g} \in
+\comp{A}_{|U| \to |T|}$, respectively. There is a unique map $h : U
+\to S \times T$ for which $f = p_1 \circ h$ and $g = p_2 \circ g$,
+namely $h(u) = \pair{f,g}(u) = (f(u), g(u))$. We only need a realizer
+for~$h$, and $\R{h} =
+\pcalam{\annot{u}{|U|}}{\combPair\,(\R{f}\,u)\,(\R{g}\,u)}$ does the
+job:
+%
+\begin{multline*}
+  \R{u} \rz_U u
+  \implies
+  \R{f}\,\R{u} \rz_S f(u)
+  \land
+  \R{g}\,\R{u} \rz_T g(u)
+  \implies {} \\
+  \combPair\, (\R{f}\,\R{u})\, (\R{g}\,\R{u}) \rz_{S \times T} (f(u), g(u))
+  \iff
+  \R{h}\,\R{u} \rz_{S \times T} h(u).
+\end{multline*}
+
+Once we have binary products we may form $n$-ary products $S_1 \times
+\cdots \times S_n$ for $n \geq 1$ by repeatedly forming binary
+products. The case $n = 0$ corresponds to the \emph{terminal object},
+which is an object $\one$ such that for every object~$S$ there is
+exactly one morphism $S \to \one$. In the category of sets the
+terminal object is (any) singleton set, say $\one = \set{\star}$. Then
+$\nabla \one$ is the terminal assembly, since for any assembly
+$\asm{S}$ the only map $S \to \one$ is realized. We denote the
+terminal assembly as $\one$.
+
+We may also ask whether $\AsmA$ has infinite products. The answer
+depends on the underlying TPCAs $(\AA, \compAA)$. We state without
+proof that $\Asm{\Scott, \comp{\Scott}}$ and $\Asm{\Baire,
+  \comp{\Baire}}$ have countable products, whereas $\Asm{\NN}$ does
+not.
+
+Products are a special case of categorical limits. Two other common
+kinds of limits are equalizers and pullbacks. An \emph{equalizer} of a
+pair of morphisms $f, g : S \to T$ is an object $E$ with a morphism $e
+: E \to S$ such that $e$ equalizes $f$ and $g$, which means that $f
+\circ e = g \circ e$, and the following universal property is
+satisfied: if $k : K \to S$ also equalizes $f$ and $g$ then there
+exists a unique morphism $i : K \to E$ such that $k = e \circ i$:
+%
+\begin{equation*}
+  \xymatrix@+1em{
+    {E}
+    \ar[r]^{e}
+    &
+    {S}
+    \ar@<+0.25em>[r]^{f}
+    \ar@<-0.25em>[r]_{g}
+    &
+    {T}
+    \\
+    {K}
+    \ar[u]^{i}
+    \ar[ru]_{k}
+    & & 
+  }
+\end{equation*}
+%
+Think of $E$ as the solution-set of equation $f(x) =
+g(x)$.\footnote{If we have a system of equations $f_i(x) = g_i(x)$, $i
+  = 1, \ldots, n$, then we may express them as a single vector
+  equation $f(x) = g(x)$ where $f(x) = (f_1(x), \ldots, f_n(x))$ and
+  $g(x) = (g_1(x), \ldots, g_n(x))$. Equalizers are thus an abstract
+  formulation of the notion ``solution of a system of equations''.}
+Indeed, in the category of sets the equalizer of functions $f, g : S
+\to T$ is the subset $E = \set{x \in S \such f(x) = g(x)}$ and $e : E
+\to S$ is the subset inclusion. In the category of assemblies we
+need to augment this with realizers. If $f, g : \asm{S} \to \asm{T}$
+are realized by $f, g \in \compAtyp{|S| \to |T|}$, respectively, then
+their equalizer is
+%
+\begin{equation*}
+  \asm{E} =
+  (\set{x \in S \such f(x) = g(x)},
+   |S|,
+   {\rz_E})
+\end{equation*}
+%
+where $\R{x} \rz_E x$ if, and only if, $\R{x} \rz_S x$. The map $e : E
+\to S$ is the subset inclusion, $e(x) = x$. It is realized by
+$\xpcalam{\annot{x}{|S|}}{x}$. Clearly, $e$ equalizes~$f$ and~$g$. We
+leave the verification of the universal property as exercise.
+
+A \emph{pullback}, sometimes called \emph{fibered products}, is a
+combination of product and equalizer. Given morphisms $f : S \to U$
+and $g : T \to U$, the pullback of $f$ and $g$ is an object $P$ with
+morphisms $p_1 : P \to S$ and $p_2 : P \to T$ such that $f \circ p_1 =
+g \circ p_2$. Furthermore, if $q_1 : Q \to S$ and $q_2 : Q \to T$ are
+such that $f \circ q_1 = g \circ q_2$ then there is a unique $i : Q
+\to P$ which makes the following diagram commute:
+%
+\begin{equation*}
+  \xymatrix@+0.5em{
+    {Q}
+    \ar[dr]^{i}
+    \ar@/_1em/[ddr]_{q_2}
+    \ar@/^1em/[rrd]^{q_1}
+    &
+    &
+    \\
+    &
+    {P} \pbcorner
+    \ar[r]^{p_1}
+    \ar[d]_{p_2}
+    &
+    {S}
+    \ar[d]^{f}
+    \\
+    &
+    {T}
+    \ar[r]_{g}
+    &
+    {U}
+  }
+\end{equation*}
+%
+The fact that $P$ is a pullback is traditionally marked in a diagram
+with the ``corner'' symbol. In the category of assemblies the pullback
+of $f : \asm{S} \to \asm{U}$ and $g : \asm{T} \to \asm{U}$ is the
+assembly
+%
+\begin{equation*}
+  \asm{P} = (\set{(x,y) \in S \times T \such f(x) = g(y)}, |S| \times
+  |T|, {\rz_P})
+\end{equation*}
+%
+where $\combPair\,\R{x}\,\R{y} \rz_P (x,y)$ if, and only if, $\R{x}
+\rz_S x$ and $\R{y} \rz_T y$.
+
+Finite products, the terminal object, equalizers, and pullbacks are
+special cases of \emph{finite limits}. A category which has all finite
+limits is called \emph{cartesian} or \emph{finitely
+  complete}.\footnote{We do not like much the still older terminology
+  \emph{left exact} or just \emph{lex}.}
+
+\begin{proposition}
+  The categories $\AsmA$ and $\Mod{\AA, \compAA}$ are cartesian.
+\end{proposition}
+
+\begin{proof}
+  It is well known that every finite limit may be constructed as a
+  combination of a finite product and an equalizer, hence $\AsmA$ is
+  cartesian. It is easy to verify that finite products and equalizers
+  of modest assemblies are again modest, therefore $\Mod{\AA,
+    \compAA}$ is cartesian.
+\end{proof}
 
 
-% terminal object
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Cocartesian structure}
+\label{sec:cocartesian-structure}
 
-\subsection{Coproducts and quotients}
-\label{sec:products-equalizers}
 
-% initial object
+The dual notion to finite limit is finite \emph{colimit}. In
+particular, products, terminal object, equalizers, and pullbacks
+correspond respectively to coproducts, initial object, coequalizers,
+and pushouts. Let us show that $\AsmA$ has these. We refer to a
+standard text on category theory for background and definitions of
+these concepts~\cite{MacLane,Awodey}.
+
+A \emph{(binary) coproduct} or \emph{disjoint sum} of assemblies
+$\asm{S}$ and $\asm{T}$ is the assembly
+%
+\begin{equation*}
+  \asm{S} + \asm{T} = (S + T, |S| + |T|, \rz_{S+T})
+\end{equation*}
+
+
 
 \subsection{Epis and monos}
 \label{sec:epis-monos}
