@@ -267,12 +267,298 @@ and pushouts. Let us show that $\AsmA$ has these. We refer to a
 standard text on category theory for background and definitions of
 these concepts~\cite{MacLane,Awodey}.
 
-A \emph{(binary) coproduct} or \emph{disjoint sum} of assemblies
-$\asm{S}$ and $\asm{T}$ is the assembly
+First we discuss (binary) coproducts of sets, also known as disjoint
+sums. For some reason there does not seem to be a well-established and
+practical notation for these, possibly because the related union
+operation is taken as primitive in set theory. The disjoint sum of
+sets~$S$ and~$T$ is usually defined as
 %
 \begin{equation*}
-  \asm{S} + \asm{T} = (S + T, |S| + |T|, \rz_{S+T})
+  S + T = (\set{0} \times S) \cup (\set{1} \times T).
 \end{equation*}
+%
+The canonical injections $\iota_1 : S \to S + T$ and $\iota_2 : T \to
+S + T$ are the maps $x \mapsto (0,x)$ and $y \mapsto (1,x)$,
+respectively. A slight inconvenience arises when want to define a map
+$f : S + T \to U$ by cases $f_1 : S \to U$ and $f_2 : T \to U$. One
+possibility is
+%
+\begin{equation*}
+  f(u) =
+  \begin{cases}
+    f_1(x) & \text{if $u = (0,x)$,}\\
+    f_2(y) & \text{if $u = (1,y)$,}
+  \end{cases}
+\end{equation*}
+%
+but this is seen rarely. In pratice mathematicians prefer to assume,
+or shall we say \emph{pretend}, that the sets~$S$ and~$T$ are disjoint
+and just write $S + T = S \cup T$. This allows us to write get rid of
+the encoding by pairs,
+%
+\begin{equation*}
+  f(u) =
+  \begin{cases}
+    f_1(u) & \text{if $u \in S$,}\\
+    f_2(u) & \text{if $u \in T$.}
+  \end{cases}
+\end{equation*}
+%
+Unlike people, computers do not pretend, and so as computer scientists
+we need notation that is actually correct. However, it is unnecessary
+to write the elements of a disjoint sum as uninformative pairs $(0,x)$
+and $(1,y)$. Instead, we simply take the injections $\iota_1$ and
+$\iota_2$ as \emph{labels} that indicate which part of a disjoint sum
+we are referring to. Thus, every element of $S + T$ is either of the
+form $\iota_1(x)$ for a unique $x \in S$, or $\iota_2(y)$ for a unique
+$y \in T$.\footnote{If you feel the urge to really encode everything
+  with sets, you can still define $\iota_1(x) = (0, x)$ and
+  $\iota_2(y) = (1, y)$ bu then forget the definition.} We may even
+choose descriptive names for the injections if we wish. Definition by
+cases is a primitive concept which deserves its own notation,
+preferrably one that fits on a single line. A notation which mimicks
+Haskell is
+%
+\begin{equation*}
+  \case{e}{\iota_1(x)}{e_1}{\iota_2(y)}{e_2}.
+\end{equation*}
+%
+Read this as ``if $e$ is of the form $\iota_1(x)$ then $e_1$, else if
+$e$ is of the form $\iota_2(y)$ then $e_2$''. The variables $x$ and
+$y$ are bound in $e_1$ and $e_2$, respectively. The definition of $f$
+above would be written as
+%
+\begin{equation*}
+  f(u) = \case{u}{\iota_1(x)}{f_1(x)}{\iota_2(y)}{f_2(y)},
+\end{equation*}
+%
+or spanning several lines
+%
+\begin{equation*}
+  f(u) = \xcase{u}{\iota_1(x)}{f_1(x)}{\iota_2(y)}{f_2(y).}
+\end{equation*}
+%
+We shall use this notation. Let us mention that in Haskell $\iota_1$
+and $\iota_2$ are called $\mathtt{Left}$ and $\mathtt{Right}$,
+respectively.
+
+In a general category the universal property a (binary) coproduct of
+objects~$S$ and~$T$ is an object $C$ with morphisms $\iota_1 : S \to
+C$ and $\iota_2 : T \to C$ such that, for all morphisms $f : S \to U$
+and $g : T \to U$ there exists a unique $h : C \to U$ such that the
+following diagram commutes:
+%
+\begin{equation*}
+  \xymatrix@+1em{
+    &
+    {U}
+    &
+    \\
+    {S}
+    \ar[r]_{\iota_1}
+    \ar[ru]^{f}
+    &
+    {C}
+    \ar[u]^{h}
+    &
+    {T}
+    \ar[l]^{\iota_2}
+    \ar[lu]_{g}
+  }
+\end{equation*}
+%
+Notice that we have exactly reversed all the morphisms with respect to
+the definition of products. We write the coproduct of $S$ and $T$ as
+$S + T$ when it is given as an operation, and the unique morphism~$h$
+as~$[f,g]$.
+
+Whether assemblies $\AsmA$ have binary coproducts is an interesting
+question. The answer seems to depend on the structure of the
+underlying TPCAs.
+
+\begin{definition}
+  A TPCA~$\AA$ with \emph{sums} is a TPCA with a binary operation $+$
+  on the types such that, for all types $s$, $t$, and $u$ there exist
+  constants
+  %
+  \begin{align*}
+    \combLeft_{s,t} &\in \Atyp{s \to (s + t)} \\
+    \combRight_{s,t} &\in \Atyp{t \to (s + t)} \\
+    \combCase_{s,t,u} &\in \Atyp{(s + t) \to (s \to u) \to (t \to u) \to u}
+  \end{align*}
+  %
+  satisfying, for all $x$, $y$, $f$, $g$ of appopriate types,
+  %
+  \begin{align*}
+    \defined{\combLeft_{s,t}\,x} &, \\
+    \defined{\combRight_{s,t}\,y} &,\\
+    \combCase_{s,t,u}\,(\combLeft_{s,t}\,x)\,f\,g &\klgeq f\,x, \\
+    \combCase_{s,t,u}\,(\combRight_{s,t}\,y)\,f\,g &\klgeq g\,y.
+  \end{align*}
+  %
+  We say that the elements $\combLeft$, $\combRight$, and $\combCase$
+  are \emph{suitable} for sums when they satisfy these properties.
+
+  A \emph{sub-TPCA with sums} is a sub-TPCA $\compAA$ of~$\AA$ such
+  that there exists $\combLeft$, $\combRight$, $\combCase$
+  in~$\compAA$ suitable for $\AA$.
+\end{definition}
+
+\begin{proposition}
+  Suppose $\AA$ is a TPCA and $\compAA$ its sub-TPCA. The category
+  $\AsmA$ has binary coproducts if, and only if, $\AA$ is a TPCA with
+  sums and $\compAA$ is its sub-TPCA with sums.
+\end{proposition}
+
+\begin{proof}
+  Suppose first that $\AA$ has sums and that $\compAA$ is a sub-TPCA
+  with sums. The coproduct of $\asm{S}$ and $\asm{T}$ is the assembly
+  %
+  \begin{equation*}
+    \asm{S} + \asm{T} = (S + T, |S| + |T|, \rz_{S + T})
+  \end{equation*}
+  %
+  where $\rz_{S+T}$ is most easily defined in terms of the existence
+  predicate $\Ex_{S+T}$:
+  %
+  \begin{equation*}
+    \Ex_{S+T}(u) =
+    \xcase{u}
+    {\iota_1(x)}{\set{\combLeft\,\R{x} \such \R{x} \rz_S x}}
+    {\iota_2(y)}{\set{\combRight\,\R{y} \such \R{y} \rz_T y}.}
+  \end{equation*}
+  %
+  That is, the realizers for $\iota_1(x)$ are of the form
+  $\combLeft\,\R{x}$ where $\R{x} \rz_S x$, and the realizers for
+  $\iota_2(y)$ are of the form $\combRight\,\R{y}$ where $\R{y} \rz_T
+  y$. The canonical inclusions $\iota_1 : S \to S + T$ and $\iota_2 :
+  T \to S + T$ are realized by $\combLeft_{|S|,|T|}$ and
+  $\combRight_{|S|,|T|}$, respectively.
+  %
+  To see that $\asm{S} + \asm{T}$ has the required universal property,
+  consider $f : \asm{S} \to \asm{U}$ and $g : \asm{T} \to \asm{U}$,
+  realized by $\R{f}$ and $\R{g}$, respectively. The map $h = [f,g] :
+  S + T \to U$, defined by
+  %
+  \begin{equation*}
+    h(u) = \case{u}{\iota_1(x)}{f(x)}{\iota_2(y)}{g(y)},
+  \end{equation*}
+  %
+  is realized by
+  $\pcalam{\annot{u}{|S|+|T|}}{\combCase\,u\,\R{f}\,\R{g}}$. It is the
+  unique morphism satisfying $h \circ \iota_1 = f$ and $h \circ
+  \iota_2 = g$.
+
+  Conversely, suppose $\AsmA$ has binary coproducts. For every type
+  $t$, define the assembly
+  %
+  \begin{equation*}
+    \asm{A}_t = (\Atyp{t}, t, {\rz_t})
+  \end{equation*}
+  %
+  with $r \rz_t q \iff r = q$. For types $s$ and $t$ let $s+t$ be the
+  underlying type of the coproduct $\asm{A}_s + \asm{A}_t$,
+  %
+  \begin{equation*}
+    s + t = |\asm{A}_s + \asm{A}_t|.
+  \end{equation*}
+  %
+  Let $\combLeft_{s,t}$ and $\combRight_{s,t}$ be a realizers for the
+  canonical inclusions $\iota_1 : \asm{A}_s \to \asm{A}_s + \asm{A}_t$
+  and $\iota_2 : \asm{A}_t \to \asm{A}_s + \asm{A}_t$, respectively.
+
+  Suppose $s$, $t$, and $u$ are types. Define $a \in \compAA_{s \to (s
+    \to u) \to (t \to u) \to u}$ and $b \in \compAA_{t \to (s \to u)
+    \to (t \to u) \to u}$ by
+  %
+  \begin{equation*}
+    a = \pcalam{\annot{x}{s}
+                 \annot{f}{s \to u}
+                 \annot{g}{t \to u}}
+                 {f\,x}
+   \qquad\text{and}\qquad
+    b = \pcalam{\annot{x}{s}
+                 \annot{f}{s \to u}
+                 \annot{g}{t \to u}}
+                 {g\,x}.
+  \end{equation*}
+  %
+  The map $x \mapsto a\,x$ is a morphism from $\asm{A}_s$ to
+  $\asm{A}_{(s \to u) \to (t \to u) \to u}$ because it is realized
+  by~$a$. Similarly, the map $y \mapsto b\,y$ is a morphism from
+  $\asm{A}_t$ to $\asm{A}_{(s \to u) \to (t \to u) \to u}$, realized
+  by~$b$. There is a unique morphism $h : \asm{A}_s + \asm{A}_t \to
+  \asm{A}_{(s \to u) \to (t \to u) \to u}$ such that $h(\iota(x)) =
+  a\,x$ and $h(\iota(y)) = b\,y$ for all $x \in \asm{A}_s$ and $y \in
+  \asm{A}_t$. There exists
+  %
+  \begin{equation*}
+    \combCase_{s,t,u} \in \compAtyp{(s+t) \to (s \to u) \to (t \to u) \to u}
+  \end{equation*}
+  %
+  which realizes~$h$. We claim that $\combLeft_{s,t}$,
+  $\combRight_{s,t}$, and $\combCase_{s,t,u}$ have the desired
+  properties. It is obvious that $\defined{\combLeft_{s,t}\,x}$ and
+  $\defined{\combRight_{s,t}\,y}$ for all $x \in \typA{s}$, $y \in
+  \typA{t}$. Next, because $\combCase_{s,t,u}$ realizes $h$,
+  $\combLeft_{s,t}$ realizes $\iota_1$, and $h(\iota_1(x)) = a\,x$, we
+  have $\combCase_{s,t,u}\,(\combLeft_{s,t}\,x) = a\,x$, therefore
+  %
+  \begin{equation*}
+    \combCase_{s,t,u}\,(\combLeft_{s,t}\,x)\,f\,g \kleq
+    a\,x\,f\,g \kleq f\,x
+  \end{equation*}
+  %
+  for all $x$, $f$, and $g$ of relevant types. Similarly,
+  $\combCase_{s,t,u}\,(\combRight_{s,t}\,y)\,f\,g \kleq g\,y$ holds
+  as well.
+\end{proof}
+
+The obvious question to ask is when a TPCA has sums.
+
+\begin{proposition}
+  A TPCA $\AA$ has sums if, and only if, it has \emph{booleans}, by
+  which we mean that there is a type $\ttbool$, and for each type~$t$
+  elements
+  %
+  \begin{equation*}
+    \combFalse, \combTrue \in \Atyp{\ttbool}
+    \qquad\text{and}\qquad
+    \combIf_t &\in \Atyp{\ttbool \to t \to t \to t}
+  \end{equation*}
+  %
+  satisfying, for all $x, y \in \Atyp{t}$,
+  %
+  \begin{equation*}
+    \combIf_t\,\combTrue\,x\,y = x
+    \qquad\text{and}\qquad
+    \combIf_t\,\combFalse\,x\,y = y.
+  \end{equation*}
+\end{proposition}
+
+\begin{proof}
+  Suppose $\AA$ has sums. Let $o$ be any inhabited type and $r \in
+  \typA{o}$ and realizer in it, and define
+  %
+  \begin{align*}
+    \ttbool &= o + o, \\
+    \combTrue &= \combLeft\,r, \\
+    \combFalse &= \combRight\,r \\
+    \combIf_t &= \pcalam{\annot{b}{\ttbool}
+                         \annot{x}{t}
+                         \annot{y}{t}}
+                        {\combCase_{o,o,t}\,b\,(\combK_{o,t}\,x)\,(\combK_{o,t}\,y)}
+  \end{align*}
+  %
+  It is easy to check that these satisfying the required conditions.
+
+  Conversely, suppose $\AA$ has booleans. For type $s$ and $t$ define
+  %
+  \begin{align*}
+    s + t &= \ttbool \times (\ttbool \times s \to s) \times (\ttbool
+    \times t \to t)
+  \end{align*}
+\end{proof}
 
 
 
