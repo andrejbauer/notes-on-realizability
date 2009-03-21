@@ -187,7 +187,7 @@ may again be encoded by a single number $\code{[n_0, \ldots, n_k]}$,
 which we define as iterated pairing:
 %
 \begin{align*}
-  \code{[\,]} &= 0 \\
+  \code{[\;]} &= 0 \\
   \code{[n_0, \ldots, n_k]} &= \code{(n_0, \code{[n_1, \ldots, n_k]})}.
 \end{align*}
 %
@@ -562,7 +562,7 @@ by~$\beta$. We would like to know which maps are realizable.
   \begin{equation*}
     \gamma(\code{a}) =
     \begin{cases}
-      \alpha(\code{a}) & \text{if $a = [\,]$,}\\
+      \alpha(\code{a}) & \text{if $a = [\;]$,}\\
       \alpha(\code{a}) & \text{if $a = \cons{i}{a'}$ and
         $\gamma(\code{a'}) = 0$,}\\
       \gamma(\code{a'}) & \text{if $a = \cons{i}{a'}$ and
@@ -1089,7 +1089,7 @@ The $\lambda$-calculus is the abstract theory of functions, just like
 group theory is the abstract theory of symmetries. There are two basic
 operations that can be performed with functions. The first one is the
 \emph{application} of a function to an argument: if~$f$ is a function
-and $a$ is an argument, then $f\, a$ is the application of~$f$ to~$a$.
+and $a$ is an argument, then $f\; a$ is the application of~$f$ to~$a$.
 The second operation is \emph{abstraction}: if $x$ is a variable
 and~$t$ is an expression in which~$x$ may appear freely, then there is
 a function~$f$ defined by
@@ -1124,13 +1124,13 @@ There are two kinds of $\lambda$-calculus, the \emph{typed} and the
 on how application is formed, so that an expression such as
 %
 \begin{equation*}
-  \xulam{x}{x\, x}
+  \xulam{x}{x\; x}
 \end{equation*}
 %
 is valid, whatever it means. In typed $\lambda$-calculus every
 expression has a \emph{type}, and there are rules for forming valid
 expressions and types. For example, we can only form an
-application~$f\, a$ when~$a$ has a type~$A$ and~$f$ has a type $A \to
+application~$f\; a$ when~$a$ has a type~$A$ and~$f$ has a type $A \to
 B$, which indicates a function taking arguments of type~$A$ and giving
 results of type~$B$. We postpone discussion of the type
 $\lambda$-calculus to Section~\ref{sec:typed-lambda-calculus}.
@@ -1144,8 +1144,8 @@ application and abstraction. More precisely, the calculus consists of:
 \begin{itemize}
 \item An infinite supply of variables $x, y, z, \ldots$,
 \item For any expressions $e_1$ and $e_2$ we may form their
-  application $e_1\, e_2$. Application associates to the left so that
-  $e_1\, e_2\, e_3 = (e_1\, e_2)\, e_3$.
+  application $e_1\; e_2$. Application associates to the left so that
+  $e_1\; e_2\; e_3 = (e_1\; e_2)\; e_3$.
 \item If $e$ is an expression, then $\xulam{x}{e}$ is its abstraction,
   where~$x$ is bound in~$e$. Think of $\xulam{x}{e}$ as the function
   which maps $x$ to $e$. We abbreviate a nested abstraction
@@ -1156,14 +1156,14 @@ This can be expressed succinctly by the grammar rules:
 %
 \begin{align*}
   \text{Variable}\ v &\bnfis x \bnfor y \bnfor z \bnfor \cdots \\
-  \text{Expression}\ e &\bnfis v \bnfor e_1\,e_2 \bnfor \xulam{x}{e}
+  \text{Expression}\ e &\bnfis v \bnfor e_1\;e_2 \bnfor \xulam{x}{e}
 \end{align*}
 %
 In the \emph{pure} calculus, which we are considering, there are no
 constants, numbers, or other operations.
 
 Expressions which only differ in the naming of bound variables are
-equal, thus $\xulam{x}{y\, x} = \xulam{z}{y\, z} \neq \xulam{y}{y\,
+equal, thus $\xulam{x}{y\; x} = \xulam{z}{y\; z} \neq \xulam{y}{y\;
   y}$. Substitution replaces free variables with expressions. We write
 $\subst{e}{x_1 \subto e_1, \ldots, x_n \subto e_n}$ for a
 simultaneous substitution of expressions $e_1, \ldots, e_n$ for
@@ -1176,7 +1176,7 @@ substitutions.\footnote{It is notoriously easy to commit errors when
 The basic axiom of $\lambda$-calculus is \emph{$\beta$-reduction}:
 %
 \begin{equation*}
-  (\xulam{x}{e_1})\, e_2 = \subst{e_1}{x \subto e_2}.
+  (\xulam{x}{e_1})\; e_2 = \subst{e_1}{x \subto e_2}.
 \end{equation*}
 %
 It says that the application of a function $\xulam{x}{e_1}$ to an
@@ -1185,7 +1185,7 @@ body~$e_1$. A second axiom, which is sometimes assumed is
 \emph{$\eta$-reduction}, which says that
 %
 \begin{equation*}
-  \xulam{x}{e\, x} = e,
+  \xulam{x}{e\; x} = e,
 \end{equation*}
 %
 provided $x$ does not occur freely in~$e$. We will \emph{not} assume
@@ -1197,29 +1197,29 @@ $e \mapsto e'$ when $e'$ is obtained from $e$ by a single application
 of $\beta$-reduction to a redex in~$e$. For example, we could reduce
 %
 \begin{equation*}
-  ((\xulam{x}{x})\, a)\,((\xulam{y}{y})\,b) \mapsto
-  a\, ((\xulam{y}{y})\,b)
+  ((\xulam{x}{x})\; a)\;((\xulam{y}{y})\;b) \mapsto
+  a\; ((\xulam{y}{y})\;b)
   \quad\text{or}\quad
-  ((\xulam{x}{x})\, a)\,((\xulam{y}{y})\,b) \mapsto
-  ((\xulam{x}{x})\, a)\, b.
+  ((\xulam{x}{x})\; a)\;((\xulam{y}{y})\;b) \mapsto
+  ((\xulam{x}{x})\; a)\; b.
 \end{equation*}
 %
 The \href{http://en.wikipedia.org/wiki/Church%E2%80%93Rosser_theorem}{Church-Rosser theorem}~\cite{church36:_some_proper_of_conver} says that
 $\lambda$-calculus is \emph{confluent}, which means that the order of
 reductions is not important in the sense that two different ways of
 reducing and expression may always be reduced further so that they
-become equal. In the example above, we get $a\,b$ in both cases after
+become equal. In the example above, we get $a\;b$ in both cases after
 one more reduction.
 
 There are expressions which we can keep reducing forever, for example
-the term $\omega\,\omega$ where $\omega = \xulam{x}{f\,(x\,x)}$ has an
+the term $\omega\;\omega$ where $\omega = \xulam{x}{f\;(x\;x)}$ has an
 infinite reduction sequence
 %
 \begin{equation*}
-  \omega\, \omega \mapsto
-  f(\omega\, \omega) \mapsto 
-  f(f(\omega\, \omega)) \mapsto 
-  f(f(f(\omega\, \omega))) \mapsto
+  \omega\; \omega \mapsto
+  f(\omega\; \omega) \mapsto 
+  f(f(\omega\; \omega)) \mapsto 
+  f(f(f(\omega\; \omega))) \mapsto
   \cdots
 \end{equation*}
 %
@@ -1235,7 +1235,7 @@ It may seem a bit surprising, but $\lambda$-calculus is as powerful as
 Turing machines, and was proposed by Alonzo Church~\cite{church32:_set_of_postul_for_found_of_logic} as a
 notion of computability before Turing invented his machines. In
 $\lambda$-calculus we may write seemingly non-sensical expressions,
-such as $e\, e$. It is a bit puzzling how $e$ could be both a function
+such as $e\; e$. It is a bit puzzling how $e$ could be both a function
 and its own argument, but this is what gives $\lambda$-calculus its
 power.
 
@@ -1243,28 +1243,28 @@ We outline programming in $\lambda$-calculus but do not provide the
 proofs. First, a pairing with projections may be defined as follows:
 %
 \begin{equation*}
-  \combPair = \xulam{x y z}{z\, x\, y},
+  \combPair = \xulam{x y z}{z\; x\; y},
   \qquad
-  \combFst = \xulam{p}{p \, (\xulam{x y}{x})},
+  \combFst = \xulam{p}{p \; (\xulam{x y}{x})},
   \quad\text{and}\quad
-  \combSnd = \xulam{p}{p \, (\xulam{x y}{y})}.
+  \combSnd = \xulam{p}{p \; (\xulam{x y}{y})}.
 \end{equation*}
 %
 With these we have
 %
 \begin{equation*}
-  \combFst (\combPair\, a\, b) = a
+  \combFst (\combPair\; a\; b) = a
   \quad\text{and}\quad
-  \combSnd (\combPair\, a\, b) = b.
+  \combSnd (\combPair\; a\; b) = b.
 \end{equation*}
 %
 For example,
 %
 \begin{equation*}
-  \combFst (\combPair\, a\, b) =
-  \combFst (\xulam{z}{z\, a\, b}) =
-  (\xulam{z}{z\, a\, b}) \, (\xulam{x y}{x}) =
-  (\xulam{x y}{x}) \, a \, b = a.
+  \combFst (\combPair\; a\; b) =
+  \combFst (\xulam{z}{z\; a\; b}) =
+  (\xulam{z}{z\; a\; b}) \; (\xulam{x y}{x}) =
+  (\xulam{x y}{x}) \; a \; b = a.
 \end{equation*}
 %
 The Boolean values and the conditional statement are defined by
@@ -1280,9 +1280,9 @@ The Boolean values and the conditional statement are defined by
 They satisfy
 %
 \begin{equation*}
-  \combIf\,\combFalse\,a\,b = b
+  \combIf\;\combFalse\;a\;b = b
   \quad\text{and}\quad
-  \combIf\,\combTrue\,a\,b = a.
+  \combIf\;\combTrue\;a\;b = a.
 \end{equation*}
 %
 The natural numbers are encoded by \emph{Church numerals}. The $n$-th
@@ -1290,18 +1290,18 @@ Church numeral is a function which maps a function to its $n$-th
 iteration:
 %
 \begin{align*}
-  \overline{0} &= \xulam{f\,x}{x},\\
-  \overline{1} &= \xulam{f\,x}{f\,x},\\
-  \overline{2} &= \xulam{f\,x}{f\,(f\,x)},\\
-  \overline{n} &= \xulam{f\,x}{\underbrace{f\,(\cdots (f}_n\,x) \cdots)}.
+  \overline{0} &= \xulam{f\;x}{x},\\
+  \overline{1} &= \xulam{f\;x}{f\;x},\\
+  \overline{2} &= \xulam{f\;x}{f\;(f\;x)},\\
+  \overline{n} &= \xulam{f\;x}{\underbrace{f\;(\cdots (f}_n\;x) \cdots)}.
 \end{align*}
 %
 Successor, addition and multiplication are, respectively,
 %
 \begin{align*}
-  \combSucc &= \xulam{n\,f\,x}{n f (f x)},\\
-  \pcacomb{add} &= \xulam{m\,n\,f\,x}{m f (n f x)},\\
-  \pcacomb{mult} &= \xulam{m\,n\,f\,x}{m (n f) x}.
+  \combSucc &= \xulam{n\;f\;x}{n f (f x)},\\
+  \pcacomb{add} &= \xulam{m\;n\;f\;x}{m f (n f x)},\\
+  \pcacomb{mult} &= \xulam{m\;n\;f\;x}{m (n f) x}.
 \end{align*}
 %
 We leave it as exercise to figure out how the following work and what
@@ -1311,40 +1311,40 @@ they do:\footnote{A legend says that Alonzo Church was at the
   out?}
 %
 \begin{align*}
-  \pcacomb{power} &= \xulam{m\,n}{n\,m},\\
-  \pcacomb{iszero} &= \xulam{n}{n\, (\xulam{x}{\combFalse})\, \combTrue},\\
+  \pcacomb{power} &= \xulam{m\;n}{n\;m},\\
+  \pcacomb{iszero} &= \xulam{n}{n\; (\xulam{x}{\combFalse})\; \combTrue},\\
   \pcacomb{pred} &=
     \xulam{n}{
-      \combSnd\, (n\, (\xulam{p}{
-        \combPair\, (\combSucc\, (\combFst\, p))\,
-        (\combFst\, p)})
-      (\combPair\, \overline{0}\, \overline{0}))}.
+      \combSnd\; (n\; (\xulam{p}{
+        \combPair\; (\combSucc\; (\combFst\; p))\;
+        (\combFst\; p)})
+      (\combPair\; \overline{0}\; \overline{0}))}.
 \end{align*}
 %
 Recursion is accomplished by means of the fixed-point operator
 %
 \begin{equation*}
-  \combFix = \xulam{f}{(\xulam{x}{f\,(x\,x)}) (\xulam{x}{f\,(x\,x)})}.
+  \combFix = \xulam{f}{(\xulam{x}{f\;(x\;x)}) (\xulam{x}{f\;(x\;x)})}.
 \end{equation*}
 %
 For any $a$ we have
 %
 \begin{align*}
-  \combFix\,a &=
-  (\xulam{x}{a\,(x\,x)}) (\xulam{x}{a\,(x\,x)}) \\
-  &= a\,((\xulam{x}{a\,(x\,x)})\,(\xulam{x}{a\,(x\,x)})) \\
-  &= a\,(\combFix\,a).
+  \combFix\;a &=
+  (\xulam{x}{a\;(x\;x)}) (\xulam{x}{a\;(x\;x)}) \\
+  &= a\;((\xulam{x}{a\;(x\;x)})\;(\xulam{x}{a\;(x\;x)})) \\
+  &= a\;(\combFix\;a).
 \end{align*}
 %
 The fix-point operator is used to define recursive functions, for
 example equality of numbers is computed as follows:
 %
 \begin{equation*}
-  \pcacomb{equal} = \combFix\,(\xulam{e\,m\,n}{
-    \combIf\,
-    (\pcacomb{iszero}\,m)\,
-    (\pcacomb{iszero}\,n)\,
-    (e\,(\combPred\,m)\,(\combPred\,n))}).
+  \pcacomb{equal} = \combFix\;(\xulam{e\;m\;n}{
+    \combIf\;
+    (\pcacomb{iszero}\;m)\;
+    (\pcacomb{iszero}\;n)\;
+    (e\;(\combPred\;m)\;(\combPred\;n))}).
 \end{equation*}
 %
 By continuing in this manner we can build a general-purpose
@@ -1400,7 +1400,7 @@ pair of maps
 %
 Furthermore, $\Gamma$ should be a retraction and~$\Lambda$ a section
 because in the untyped $\lambda$-calculus
-$\xulam{y}{(\xulam{x}{e\,x})\, y} = \xulam{y}{e\,y}$, provided $x$ and
+$\xulam{y}{(\xulam{x}{e\;x})\; y} = \xulam{y}{e\;y}$, provided $x$ and
 $y$ do not occur freely in~$e$. We have already seen the above
 diagram: the graph model~$\Scott$ from Section~\ref{sec:graph-model}
 is an example. In general, a non-trivial\footnote{By non-trivial we
@@ -1424,7 +1424,7 @@ inductively on the structure of~$e$:
 %
 \begin{align*}
   \sem{\Gamma \ctx x_k}(a) &= a_k, \\
-  \sem{\Gamma \ctx e_1\, e_2}(a) &= 
+  \sem{\Gamma \ctx e_1\; e_2}(a) &= 
   \Lambda(\sem{\Gamma \ctx e_1}(a))(\sem{\Gamma \ctx e_2}(a)), \\
   \sem{\xulam{x}{e}}(a) &= \Gamma(f),
 \end{align*}
@@ -1435,33 +1435,33 @@ where in the last clause $f : D \to D$ is the map $f (b) =
 To see how the $\lambda$-calculus helps prove things about reflexive
 domains, let us show that $D \times D$ is a retract of~$D$. A purely
 topological proof is doable, but it is much easier to just interpret
-pairing $\combPair = \xulam{x y z}{z\,x\,y}$ in~$D$. Let $s : D
+pairing $\combPair = \xulam{x y z}{z\;x\;y}$ in~$D$. Let $s : D
 \times D \to D$ be defined as
 %
 \begin{equation*}
-  s (a, b) = \sem{x,y \ctx \xulam{z}{z\,x\,y}}(a,b),
+  s (a, b) = \sem{x,y \ctx \xulam{z}{z\;x\;y}}(a,b),
 \end{equation*}
 %
 and let $r : D \to D \times D$ be the map
 %
 \begin{equation*}
-  r(c) = (\sem{p \ctx p\,(\xulam{x y}{x})}(c),
-          \sem{p \ctx p\,(\xulam{x y}{y})}(c)).
+  r(c) = (\sem{p \ctx p\;(\xulam{x y}{x})}(c),
+          \sem{p \ctx p\;(\xulam{x y}{y})}(c)).
 \end{equation*}
 %
 Then $r (s (a, b)) = (a, b)$ because $\lambda$-calculus proves
 %
 \begin{equation*}
-  (\xulam{x y}{x})\, x \, y = x
+  (\xulam{x y}{x})\; x \; y = x
   \qquad\text{and}\qquad
-  (\xulam{x y}{y})\, x \, y = y.
+  (\xulam{x y}{y})\; x \; y = y.
 \end{equation*}
 %
 As another example we observe that the utm and smn theorems are
 expressed easily in the untyped $\lambda$-calculus. The universal
-function $u$ from the utm theorem is $u = \xulam{x y}{x\, y}$ and the
+function $u$ from the utm theorem is $u = \xulam{x y}{x\; y}$ and the
 function $s$ from the smn theorem is $s = \xulam{p
-  z}{(\combFst\,p)\,(\combPair\,(\combSnd\, p)\,z)}$.
+  z}{(\combFst\;p)\;(\combPair\;(\combSnd\; p)\;z)}$.
 Therefore, every reflexive domain enjoys the utm and smn theorems.
 
 
@@ -1472,7 +1472,7 @@ Therefore, every reflexive domain enjoys the utm and smn theorems.
 The Baire space from Section~\ref{sec:type-2} is almost a model of the
 untyped $\lambda$-calculus, because every $\alpha \in \Baire$ may be
 viewed both as a (realizer of) a function and an argument. One is then
-tempted to define application by $\alpha \, \beta =
+tempted to define application by $\alpha \; \beta =
 \fpr{\alpha}{\beta}$, but this fails to give a model of the untyped
 $\lambda$-calculus because the result $\fpr{\alpha}{\beta}$ need not
 be defined, whereas application in $\lambda$-calculus is a total
@@ -1499,17 +1499,17 @@ is the Baire space.
   \indexsee{partial!application}{application, partial in PCA}%
                                 %
   \emph{partial} binary operation ${\cdot} : A \times A \parto A$. We
-  usually write $x\, y$ instead of $x \cdot y$, and recall that
+  usually write $x\; y$ instead of $x \cdot y$, and recall that
   application associates to the left. Furthermore, there must exist
   $\combK, \combS \in A$ such that, for all $x, y, z \in A$,
   %
   \begin{equation}
     \label{eq:pca}%
-    \combK\, x\, y = x,
+    \combK\; x\; y = x,
     \qquad
-    \combS\, x\, y\, z \simeq (x\, z)\,(y\, z),
+    \combS\; x\; y\; z \simeq (x\; z)\;(y\; z),
     \quad\text{and}\quad
-    \defined{\combS\, x\, y}.
+    \defined{\combS\; x\; y}.
   \end{equation}
   %
   A \emph{total combinatory algebra (CA)} is a PCA whose application
@@ -1572,10 +1572,10 @@ a_n \in A$,
   We give a construction of such an expression $\xpcalam{x}{e}$:
   %
   \begin{enumerate}
-  \item $\xpcalam{x}{x} = \combS\, \combK\, \combK$,
-  \item $\xpcalam{x}{y} = \combK\, y$ if $y$ is a variable distinct from~$x$,
-  \item $\xpcalam{x}{a} = \combK\, a$ if $a$ is an element of~$A$,
-  \item $\pcalam{x}{e_1\, e_2} = \combS\, (\xpcalam{x}{e_1})\, (\xpcalam{x}{e_2})$
+  \item $\xpcalam{x}{x} = \combS\; \combK\; \combK$,
+  \item $\xpcalam{x}{y} = \combK\; y$ if $y$ is a variable distinct from~$x$,
+  \item $\xpcalam{x}{a} = \combK\; a$ if $a$ is an element of~$A$,
+  \item $\pcalam{x}{e_1\; e_2} = \combS\; (\xpcalam{x}{e_1})\; (\xpcalam{x}{e_2})$
   \end{enumerate}
   %
   We omit the verification that $e' = \xpcalam{x}{e}$ has the required
@@ -1604,14 +1604,14 @@ the encoding by untyped $\lambda$-calculus.
 %
 Pairing, projections, Boolean values and conditional statement are the
 same, except that $\lambda$-abstraction must be replaced by
-$\langle\,\rangle$-notation:
+$\langle\;\rangle$-notation:
 %
 \begin{xalignat*}{3}
-  \combPair &= \xulam{x y z}{z\, x\, y},
+  \combPair &= \xulam{x y z}{z\; x\; y},
   &
-  \combFst &= \xulam{p}{p \, (\xulam{x y}{x})},
+  \combFst &= \xulam{p}{p \; (\xulam{x y}{x})},
   &
-  \combSnd &= \xulam{p}{p \, (\xulam{x y}{y})}
+  \combSnd &= \xulam{p}{p \; (\xulam{x y}{y})}
   \\
   \combIf &= \xulam{x}{x},
   &
@@ -1620,9 +1620,9 @@ $\langle\,\rangle$-notation:
   \combFalse &= \xulam{x y}{y}.
 \end{xalignat*}
 %
-The notation $\langle\,\rangle$ makes expressions much more
+The notation $\langle\;\rangle$ makes expressions much more
 comprehensible and saves a lot of space, for example the term
-$\combPair = \pcalam{x y z}{z\, x\, y}$ is quite unwieldy when written
+$\combPair = \pcalam{x y z}{z\; x\; y}$ is quite unwieldy when written
 just with~$\combS$ and~$\combK$:
 %
 \begin{equation*}
@@ -1659,9 +1659,9 @@ For natural numbers we may use the
 \emph{Curry numerals} which are defined by 
 %
 \begin{equation*}
-  \overline{0} = \combI = \combS\, \combK\, \combK
+  \overline{0} = \combI = \combS\; \combK\; \combK
   \qquad\text{and}\qquad
-  \overline{n+1} = \combPair \, \combFalse \, \overline{n}.
+  \overline{n+1} = \combPair \; \combFalse \; \overline{n}.
 \end{equation*}
 %
 There exist elements
@@ -1694,10 +1694,10 @@ for all $n \in \NN$,
 To see this, take
 %
 \begin{align*}
-  \pcacomb{succ} &= \pcalam{x}{\combPair \, \combFalse \,x},\\ 
+  \pcacomb{succ} &= \pcalam{x}{\combPair \; \combFalse \;x},\\ 
   \pcacomb{iszero} &= \combFst,\\
   \pcacomb{pred} &=
-  \pcalam{x}{\combIf\, (\pcacomb{iszero}\, x)\, \overline{0}\, (\combSnd\, x)}.
+  \pcalam{x}{\combIf\; (\pcacomb{iszero}\; x)\; \overline{0}\; (\combSnd\; x)}.
 \end{align*}
 %
 In a PCA we can define functions by recursion by using the
@@ -1713,22 +1713,22 @@ In a PCA we can define functions by recursion by using the
 \emph{fixed point combinators~$\combY$ and $\combZ$}, defined by
 %
 \begin{alignat*}{2}
-  W &= \pcalam{x y}{y(x\, x\, y)}\;, &
+  W &= \pcalam{x y}{y(x\; x\; y)}\;, &
   \qquad
-  \combZ &= W\, W \;, \\
-  X &= \pcalam{x y z}{y (x\, x\, y) z} \;, &
+  \combZ &= W\; W \;, \\
+  X &= \pcalam{x y z}{y (x\; x\; y) z} \;, &
   \qquad
-  \combY &= X\, X \;.
+  \combY &= X\; X \;.
 \end{alignat*}
 %
 These combinators satisfy, for all $f, x \in A$,
 %
 \begin{equation*}
-  \combZ\, f \kleq f\, (\combZ\, f) \;,
+  \combZ\; f \kleq f\; (\combZ\; f) \;,
   \qquad
   \defined{\combY f} \;,
   \qquad
-  (\combY\, f)\, x \kleq f\, (\combY f)\, x \;.
+  (\combY\; f)\; x \kleq f\; (\combY f)\; x \;.
 \end{equation*}
 
 Finally, let us see how to define functions by primitive recursion.
@@ -1738,17 +1738,17 @@ Finally, let us see how to define functions by primitive recursion.
 The element
 %
 \begin{equation*}
-  \pcacomb{rec} = \pcalam{x f m}{((\combZ\, R)\, x\, f\, m\, \combI)} \;,
+  \pcacomb{rec} = \pcalam{x f m}{((\combZ\; R)\; x\; f\; m\; \combI)} \;,
 \end{equation*}
 %
-where $R = \pcalam{r x f m}{\combIf\, (\pcacomb{iszero}\, m)\, (\combK\, x)
-  (\pcalam{y}{f\, (\pcacomb{pred}\, m)(r\, x\, f\, (\pcacomb{pred}\, m)\,
+where $R = \pcalam{r x f m}{\combIf\; (\pcacomb{iszero}\; m)\; (\combK\; x)
+  (\pcalam{y}{f\; (\pcacomb{pred}\; m)(r\; x\; f\; (\pcacomb{pred}\; m)\;
     \combI)})}$, satisfies
 %
 \begin{equation*}
   \pcacomb{rec}\; x\; f\; \overline{0} = x \;,\qquad
   \pcacomb{rec}\; x\; f\; \overline{n+1} \kleq
-    f\, \overline{n}\, (\pcacomb{rec}\, x\, f\, \overline{n}).
+    f\; \overline{n}\; (\pcacomb{rec}\; x\; f\; \overline{n}).
 \end{equation*}
 %
 It turns out that every partial recursive function can be encoded in a
@@ -1803,7 +1803,7 @@ The closed expressions of the untyped $\lambda$-calculus form a
 $\lambda$-calculus. More precisely, we quotient the set of closed
 expressions by the equivalence relation generated by
 $\beta$-reduction. Then the combinators are $\combK = \xulam{x y}{x}$
-and $\combS = \xulam{x y z}{(x \, z)(y \, z)}$.
+and $\combS = \xulam{x y z}{(x \; z)(y \; z)}$.
 
 In Section~\ref{sec:typed-lambda-calculus} we shall elaborate
 (the typed version of) the $\lambda$-calculus as a programming
@@ -1851,7 +1851,7 @@ t \to u = s \to (t \to u)$. A \emph{typed partial combinatory algebra
   (TPCA)} $A$ over a type system $\mathcal{T}$ consists of
 %
 \begin{enumerate}
-\item a set $A_t$ for each $t \in \mathcal{T}$, and
+\item a non-empty set $A_t$ for each $t \in \mathcal{T}$, and
 \item a partial function $\cdot_{s,t} : A_{s \to t} \times A_s \to
   A_t$, called \emph{application}, for all $s, t \in \mathcal{T}$,
 \end{enumerate}
@@ -1867,15 +1867,15 @@ such that for any types $s, t, u \in \mathcal{T}$ there exist elements
 \end{align*}
 %
 For all elements $x, y, z$ of appropriate types we require:\footnote{We
-  usually omit the types in subscripts and write $x \, y$ for $x
+  usually omit the types in subscripts and write $x \; y$ for $x
   \cdot_{s,t} y$.}
 %
 \begin{align*}
-  \combK \, x \, y &= x, \\
-  \defined{\combS \, x \, y}, & \\
-  \combS \, x \, y \, z &\klgeq  (x \, z) (y \, z), \\
-  \combFst \, (\combPair \, x \, y) &= x, \\
-  \combSnd \, (\combPair \, x \, y) &= y.
+  \combK \; x \; y &= x, \\
+  \defined{\combS \; x \; y}, & \\
+  \combS \; x \; y \; z &\klgeq  (x \; z) (y \; z), \\
+  \combFst \; (\combPair \; x \; y) &= x, \\
+  \combSnd \; (\combPair \; x \; y) &= y.
 \end{align*}
 %
 We say that the elements $\combK_{s,t}$, $\combS_{s,t,u}$,
@@ -1894,10 +1894,10 @@ type $\ttnat$ and elements
 such that for all $x$, $f$ of appropriate types and all $n \in \NN$
 %
 \begin{align*}
-  \combSucc \, \numeral{n} &= \numeral{n + 1}, \\
-  \combRec \, x \, f \, \numeral{0} &= x, \\
-  \combRec \, x \, f \, \numeral{n+1} &=
-  f \, \numeral{n} \, (\combRec \, x \, f \, \numeral{n}).
+  \combSucc \; \numeral{n} &= \numeral{n + 1}, \\
+  \combRec \; x \; f \; \numeral{0} &= x, \\
+  \combRec \; x \; f \; \numeral{n+1} &=
+  f \; \numeral{n} \; (\combRec \; x \; f \; \numeral{n}).
 \end{align*}
 %
 Note that $A_\ttnat$ may contain elements other than the
@@ -1915,24 +1915,25 @@ N-TPCA $A$ containing elements
 such that, for all $f \in A_{(s \to t) \to (s \to t)}$ and $x \in A_s$,
 %
 \begin{equation*}
-  \defined{\combY \, f}
+  \defined{\combY \; f}
   \qquad\text{and}\qquad
-  \combY \, f \, x \klgeq f \, (\combY\, f) \, x.
+  \combY \; f \; x \klgeq f \; (\combY\; f) \; x.
 \end{equation*}
 %
 Such a $\combY_{s,t}$ is \emph{suitable} for~$A$. This concludes the
 definition of typed PCAs.
 
-A \emph{sub-TPCA} $A'$ of a TPCA~$A$ is a collection of subsets $A'_t
-\subseteq A_t$, for each $t \in \mathcal{T}$, such that applications
-in~$A$ restrict to~$A'$, and there exist elements
+A \emph{sub-TPCA} $A'$ of a TPCA~$A$ is a collection of non-empty
+subsets $A'_t \subseteq A_t$, for each $t \in \mathcal{T}$, such that
+applications in~$A$ restrict to~$A'$, and there exist elements
 $\combK_{s,t}$, $\combS_{s,t,u}$, $\combPair_{s,t}$, $\combFst_{s,t}$,
 and $\combSnd_{s,t}$ in the corresponding subsets $A'_{\place}$ of
 appropriate types which are suitable for~$A$. Consequently, these
-elements are also suitable for~$A'$.
+elements are also suitable for~$A'$. The notions of \emph{sub-N-TPCA}
+and \emph{sub-NR-TPCA} are defined similarly.
 
-The notions of \emph{sub-N-TPCA} and \emph{sub-NR-TPCA} are defined
-similarly.
+We have required the sets $A_t$ to be non-empty. While this is not
+strictly necessary, it simplifies several constructions.
 
 A TPCA $A$ is combinatory complete. To express this precisely, we
 inductively define \emph{expressions over $A$}:
@@ -1969,14 +1970,14 @@ for all $a_1 \in A_{t_1}, \ldots, a_n \in A_{t_n}$.
   $\xtpcalam{x}{t}{e}$ inductively as follows:
   %
   \begin{enumerate}
-  \item $\xtpcalam{x}{t}{x} = \combS_{t,t \to t,t} \, \combK_{t,t \to
-      t} \, \combK_{t,t}$,
-  \item $\xtpcalam{x}{t}{y} = \combK_{s,t}\, y$ if $\annot{y}{s}$ is a
+  \item $\xtpcalam{x}{t}{x} = \combS_{t,t \to t,t} \; \combK_{t,t \to
+      t} \; \combK_{t,t}$,
+  \item $\xtpcalam{x}{t}{y} = \combK_{s,t}\; y$ if $\annot{y}{s}$ is a
     variable distinct from $\annot{x}{t}$,
-  \item $\xtpcalam{x}{t}{a} = \combK_{s,t} \, a$ if $a$ is a primitive
+  \item $\xtpcalam{x}{t}{a} = \combK_{s,t} \; a$ if $a$ is a primitive
     constant of type~$s$.
-  \item $\tpcalam{x}{t}{e_1\, e_2} = \combS_{t,u,v}\,
-    (\xtpcalam{x}{t}{e_1}) \, (\xtpcalam{x}{t}{e_2})$ if $e_1$ and
+  \item $\tpcalam{x}{t}{e_1\; e_2} = \combS_{t,u,v}\;
+    (\xtpcalam{x}{t}{e_1}) \; (\xtpcalam{x}{t}{e_2})$ if $e_1$ and
     $e_2$ have types $u \to v$ and $u$, respectively.
   \end{enumerate}
   %
@@ -2018,7 +2019,7 @@ are types:
   $\xulam{\annot{x}{s}}{e}$ is an expression of type $s \to t$. The
   variable $x$ is bound in $e$.
 \item If $e_1$ and $e_2$ are expressions of types $s \to t$ and
-  $t$, respectively, then $e_1\, e_2$ is an expressions of type~$t$.
+  $t$, respectively, then $e_1\; e_2$ is an expressions of type~$t$.
 \item If $e_1$ and $e_2$ are expressions of types $s$ and $t$,
   respectively, then $(e_1, e_2)$ is an expression of type $s \times
   t$.
@@ -2041,7 +2042,7 @@ There is also a corresponding $\eta$-reduction rule, for an expression
 $e$ of type $s \to t$,
 %
 \begin{equation*}
-  \xtlam{x}{s}{e\,x} = e.
+  \xtlam{x}{s}{e\;x} = e.
 \end{equation*}
 %
 In the untyped $\lambda$-calculus we did not assume the $\eta$-rule,
@@ -2058,11 +2059,11 @@ The rules for pairing and projections are, for all $e_1$, $e_2$, $e$
 of type $s$, $t$, $s \times t$:
 %
 \begin{equation*}
-  \combFst\,(e_1, e_2) = e_1,
+  \combFst\;(e_1, e_2) = e_1,
   \qquad
-  \combSnd\,(e_1, e_2) = e_2,
+  \combSnd\;(e_1, e_2) = e_2,
   \qquad\text{and}\qquad
-  e = (\combFst\,e, \combSnd\,e),
+  e = (\combFst\;e, \combSnd\;e),
 \end{equation*}
 %
 There may be additional equations involving primitive constants.
@@ -2087,14 +2088,14 @@ type~$t$, a constant $\combRec_t$ of type $t \to (\mathtt{nat} \to t
 \to t) \to \ttnat \to t$. We also add two further reduction rules
 %
 \begin{equation*}
-  \combRec \, e_1 \, e_2 \, 0 = e_1
+  \combRec \; e_1 \; e_2 \; 0 = e_1
   \qquad\text{and}\qquad
-  \combRec \, e_1 \, e_2 \, (\combSucc \, e_3) =
-  e_2 \, e_3 \, (\combRec \, e_1 \, e_2 \, e_3).
+  \combRec \; e_1 \; e_2 \; (\combSucc \; e_3) =
+  e_2 \; e_3 \; (\combRec \; e_1 \; e_2 \; e_3).
 \end{equation*}
 %
 This gives us an N-TPCA~$T$ with numerals defined by $\numeral{0} = 0$
-and $\numeral{n+1} = \combSucc \, \numeral{n}$. More precisely, the
+and $\numeral{n+1} = \combSucc \; \numeral{n}$. More precisely, the
 elements of $A_t$ are closed expressions of type~$t$, quotiented by
 the equivalence relation generated by the rules of type
 $\lambda$-calculus and primitive recursion, as given above.
@@ -2138,7 +2139,7 @@ $e_2$ are programs of appropriate types:
 \begin{gather*}
   \star,\qquad \overline{n},\qquad \combSucc,\qquad \combPred,\\
   \combTrue,\qquad \combFalse,\qquad \combIsZero,\\
-  \combIf_t,\qquad \combIf_t \, e_1,\qquad \combIf_t \, e_1\, e_2,\\
+  \combIf_t,\qquad \combIf_t \; e_1,\qquad \combIf_t \; e_1\; e_2,\\
   \combFix_t,\qquad \xtlam{x}{t}{e},\qquad (e_1, e_2).
 \end{gather*}
 %
@@ -2151,7 +2152,7 @@ Execution of a program is described with the reduction relation $e
 step'', defined by the rules in Figure~\ref{fig:pcf}. Each rule says
 that the reduction under the line is valid, provided the reductions
 above the line are. For example, the first rules says that in an
-application $e_1\,e_2$ we should evaluate $e_1$ if we can. The second
+application $e_1\;e_2$ we should evaluate $e_1$ if we can. The second
 rule is essentially a directed version of $\beta$-reduction.
 
 \begin{figure}[htpb]
@@ -2159,49 +2160,49 @@ rule is essentially a directed version of $\beta$-reduction.
 \begin{gather*}
   \infer
   {e_1 \oneto e_1'}
-  {e_1 \, e_2 \oneto e_1'\, e_2}
+  {e_1 \; e_2 \oneto e_1'\; e_2}
   \qquad
   \axiom
-  {(\xtlam{x}{t}{e})\,e_2 \oneto \subst{e}{x \subto e_2}}
+  {(\xtlam{x}{t}{e})\;e_2 \oneto \subst{e}{x \subto e_2}}
   \\ \\
   \infer
   {e \oneto e'}
-  {\combFst\,e \oneto \combFst\,e'}
+  {\combFst\;e \oneto \combFst\;e'}
   \qquad
   \axiom
-  {\combFst\,(e_1, e_2) \oneto e_1}
+  {\combFst\;(e_1, e_2) \oneto e_1}
   \qquad
   \infer
   {e \oneto e'}
-  {\combSnd\,e \oneto \combSnd\,e'}
+  {\combSnd\;e \oneto \combSnd\;e'}
   \qquad
   \axiom
-  {\combSnd\,(e_1, e_2) \oneto e_2}
+  {\combSnd\;(e_1, e_2) \oneto e_2}
   \\ \\
   \infer
   {e \oneto e'}
-  {\combSucc\,e \oneto \combSucc\,e'}
+  {\combSucc\;e \oneto \combSucc\;e'}
   \qquad
   \axiom
-  {\combSucc\,\overline{n} \oneto \overline{n+1}}
+  {\combSucc\;\overline{n} \oneto \overline{n+1}}
   \\ \\
   \infer
   {e \oneto e'}
-  {\combPred\,e \oneto \combPred\,e'}
+  {\combPred\;e \oneto \combPred\;e'}
   \qquad
   \axiom
-  {\combPred\,\overline{n+1} \oneto \overline{n}}
+  {\combPred\;\overline{n+1} \oneto \overline{n}}
   \qquad
   \axiom
-  {\combPred\,0 \oneto 0}
+  {\combPred\;0 \oneto 0}
   \\ \\
   \infer
   {e \oneto e'}
-  {\combIsZero\,e \oneto \combIsZero\,e'}
+  {\combIsZero\;e \oneto \combIsZero\;e'}
   \qquad
-  \axiom{\combIsZero\,0 \oneto \combTrue}
+  \axiom{\combIsZero\;0 \oneto \combTrue}
   \qquad
-  \axiom{\combIsZero\,\numeral{n+1} \oneto \combFalse}
+  \axiom{\combIsZero\;\numeral{n+1} \oneto \combFalse}
   \\ \\
   \infer
   {e_1 \oneto e_1'}
@@ -2214,7 +2215,7 @@ rule is essentially a directed version of $\beta$-reduction.
   {\cond{\combFalse}{e_2}{e_3} \oneto e_3}
   \\ \\
   \axiom
-  {\combFix_t\,e \oneto e\,(\combFix_t e)}
+  {\combFix_t\;e \oneto e\;(\combFix_t e)}
 \end{gather*}
   \caption{Small-step semantics of PCF}
   \label{fig:pcf}
@@ -2249,8 +2250,8 @@ programs $e_1$ and $e_2$ of type $t$, say that they are
 for every program $e : t \to \unit$
 %
 \begin{equation*}
-  \mathsf{eval}(e\,e_1) = \ttunit \iff
-  \mathsf{eval}(e\,e_2) = \ttunit.
+  \mathsf{eval}(e\;e_1) = \ttunit \iff
+  \mathsf{eval}(e\;e_2) = \ttunit.
 \end{equation*}
 %
 The idea is that $e_1$ and $e_2$ are equivalent if they cannot be
@@ -2263,9 +2264,9 @@ with the program
 \begin{equation*}
   \xtlam{x}{\ttnat}{
     \cond
-    {\mathtt{eq}\,x\,\numeral{n}}
+    {\mathtt{eq}\;x\;\numeral{n}}
     {\ttunit}
-    {\combFix\,(\xtlam{x}{\unit}{x})}
+    {\combFix\;(\xtlam{x}{\unit}{x})}
   },
 \end{equation*}
 %
@@ -2276,14 +2277,14 @@ We usually omit the index~$t$ in $\approx_t$. Some useful
 observational equivalences are:
 %
 \begin{xalignat*}{2}
-  \combSucc\,\overline{n} &\approx \overline{n+1}, &
-  \combIsZero\,\numeral{0} &\approx \combTrue,\\
-  \combPred\,\overline{n+1} &\approx \overline{n},&
-  \combIsZero\,\numeral{n+1} &\approx \combFalse,\\  
-  \combPred\,0 &\approx 0, &
-  \combIf_t \, \combTrue \, e_1 \, e_2 &\approx e_1,\\
-  \combFix_t \, e &\approx e \, (\combFix_t \, e), &
-  \combIf_t \, \combFalse \, e_1 \, e_2 &\approx e_2.
+  \combSucc\;\overline{n} &\approx \overline{n+1}, &
+  \combIsZero\;\numeral{0} &\approx \combTrue,\\
+  \combPred\;\overline{n+1} &\approx \overline{n},&
+  \combIsZero\;\numeral{n+1} &\approx \combFalse,\\  
+  \combPred\;0 &\approx 0, &
+  \combIf_t \; \combTrue \; e_1 \; e_2 &\approx e_1,\\
+  \combFix_t \; e &\approx e \; (\combFix_t \; e), &
+  \combIf_t \; \combFalse \; e_1 \; e_2 &\approx e_2.
 \end{xalignat*}
 %
 Also, if $e_1$ and $e_2$ are both diverging programs of the same type,
@@ -2297,9 +2298,9 @@ terms of general recursion, Booleans, and predecessors as
 %
 \begin{equation*}  
   \combRec_t =
-  \combFix \,
-  (\xulam{r\,x\,f\,n}
-            \cond{n = 0}{x}{f\,n\,(r \, x\, f \, (\combPred\, n))})
+  \combFix \;
+  (\xulam{r\;x\;f\;n}
+            \cond{n = 0}{x}{f\;n\;(r \; x\; f \; (\combPred\; n))})
 \end{equation*}
 %
 where $\combFix$ is at type $t \to (\ttnat \to t \to t) \to \ttnat \to
@@ -2323,10 +2324,10 @@ reduction operation with the rules
 \begin{equation*}
   \infer
   {e \oneto e'}
-  {\mathtt{func}_f\,e \oneto \mathtt{func}_f\,e}
+  {\mathtt{func}_f\;e \oneto \mathtt{func}_f\;e}
   \qquad\qquad
   \axiom
-  {\mathtt{func}_f\,\numeral{n} \oneto \numeral{f(n)}}
+  {\mathtt{func}_f\;\numeral{n} \oneto \numeral{f(n)}}
 \end{equation*}
 %
 We usually write just $f$ instead of $\mathtt{func}_f$. The resulting

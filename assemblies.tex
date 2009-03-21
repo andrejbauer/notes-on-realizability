@@ -89,7 +89,7 @@ obvious thing to do is to compute with it. When can we say that a
 function $f : \mathsf{Graphs} \to \mathsf{Graphs}$ is computable? The
 answer again is quite natural for a programmer: $f$ is computed by a
 program $p : \mathtt{graph} \to \mathtt{graph}$ when $p$ does to
-realizers what $f$ does to elements: if $r \rz G$ then $p \, r \rz
+realizers what $f$ does to elements: if $r \rz G$ then $p \; r \rz
 f(G)$. We say that the map $f$ is \emph{realized} or \emph{tracked} by
 the program~$p$.
 
@@ -153,10 +153,10 @@ sub-NR-TPCA of~$\AA$.
   If $f : \asm{S} \to \asm{T}$ and $g : \asm{T} \to \asm{U}$ are
   realized by $\R{f} \in \compAtyp{|S| \to |T|}$ and $\R{g} \in
   \compAtyp{|T| \to |U|}$, respectively, then their composition $g
-  \circ f$ is realized by $\pcalam{\annot{x}{|S|}}{r\,(q\,x)} =
-  \combS\,(\combK\,r)\,(\combS\,(\combK\,q)\,(\combS\,\combK\,\combK))$.
+  \circ f$ is realized by $\pcalam{\annot{x}{|S|}}{r\;(q\;x)} =
+  \combS\;(\combK\;r)\;(\combS\;(\combK\;q)\;(\combS\;\combK\;\combK))$.
   The identity map $\id_S : \asm{S} \to \asm{S}$ is realized by
-  $\pcalam{\annot{x}{|S|}}{x} = \combS\,\combK\,\combK$. Composition
+  $\pcalam{\annot{x}{|S|}}{x} = \combS\;\combK\;\combK$. Composition
   is associative because it is just composition of maps.
 \end{proof}
 
@@ -286,8 +286,8 @@ An assembly $S$ is modest if, and only if, $\Ex_S(x) \cap \Ex_S(y)
 
 Under this formulation a map $f : \asm{S} \to \asm{T}$ is realized if
 there exists $\R{f} \in \compAtyp{|S| \to |T|}$ such that, for all $x
-\in S$ and $\R{x} \in \Ex_S(x)$, $\defined{\R{f}\,\R{x}}$ and
-$\R{f}\,\R{x} \in \Ex_T(f(x))$.
+\in S$ and $\R{x} \in \Ex_S(x)$, $\defined{\R{f}\;\R{x}}$ and
+$\R{f}\;\R{x} \in \Ex_T(f(x))$.
 
 \subsection{Representations}
 \label{sec:representations}
@@ -308,7 +308,7 @@ uniquely describes the modest set~$S$. The map $\delta_S$ is called a
 
 A map $f : S \to T$ is realized or tracked by $\R{f} \in \compAtyp{|S|
   \to |T|}$ when, for all $\R{x} \in \dom{\delta_S}$,
-$\defined{\R{f}\,\R{x}}$ and $\delta_T(\R{f}\,\R{x}) =
+$\defined{\R{f}\;\R{x}}$ and $\delta_T(\R{f}\;\R{x}) =
 f(\delta_S(x))$.
 
 The category of representations and realized maps is denoted
@@ -358,15 +358,15 @@ its equivalence class $[r]_S = \set{q \in \xAtyp{S} \such r \per_S q}$.
 
 An \emph{extensional realizer} between pers $S$ and $T$ is $p \in
 \compAtyp{|S| \to |T|}$ such that, for all $q, r \in \xAtyp{S}$, if $q
-\per_S r$ then $\defined{p\,q}$, $\defined{p\,r}$, and $p\,q \per_T
-p\,r$. Extensional realizers $p$ and $p'$ are \emph{equivalent} when
-$q \per_S r$ implies $p\,q \per_T p'\,r$.
+\per_S r$ then $\defined{p\;q}$, $\defined{p\;r}$, and $p\;q \per_T
+p\;r$. Extensional realizers $p$ and $p'$ are \emph{equivalent} when
+$q \per_S r$ implies $p\;q \per_T p'\;r$.
 
 Pers and equivalence classes of extensional realizers form a category
 $\Per{\AA, \compAA}$ whose objects are pers on~$\AA$ and morphisms are
 equivalence classes of extensional realizers. The composition of $[p]
 : S \to T$ and $[q] : T \to U$ is $[q \circ p] : S \to U$ where $q
-\circ p = \pcalam{\annot{x}{|S|}}{q\,(p\,x)}$. The identity morphism
+\circ p = \pcalam{\annot{x}{|S|}}{q\;(p\;x)}$. The identity morphism
 $\id_S : S \to S$ is represented by $\xpcalam{\annot{x}{|S|}}{x}$. It
 is easy to check that this forms a category.
 
@@ -374,7 +374,7 @@ Let $S$ and $T$ be pers over $(\AA, \compAA)$. A morphism between them
 may be alternatively described as a function $f : \|S\|/{\per_S} \to
 \|T\|/{\per_T}$ between the equivalence classes for which there exists
 a realizer $p \in \compAtyp{|S| \to |T|}$ that tracks it: for every
-equivalence class $[r]_S$, $\defined{p\,r}$ and $[p\,r]_T = f([r]_S)$.
+equivalence class $[r]_S$, $\defined{p\;r}$ and $[p\;r]_T = f([r]_S)$.
 
 \begin{proposition}
   The categories $\Mod{\AA, \compAA}$ and $\Per{\AA, \compAA}$ are
@@ -398,7 +398,7 @@ equivalence class $[r]_S$, $\defined{p\,r}$ and $[p\,r]_T = f([r]_S)$.
   %
   A morphism $[p] : (S, {\per_S}) \to (T, {\per_T})$ is mapped to the
   map $G [p] : \|S\|/{\per_S} \to \|T\|/{\per_T}$, defined by $G [p]
-  [r]_S = [p\,r]_T$, which is obviously tracked by~$p$.
+  [r]_S = [p\;r]_T$, which is obviously tracked by~$p$.
 
   The functors $F$ and $G$ form an equivalence of categories. The
   composition $F \circ G$ is actually equal to identity, as is easily

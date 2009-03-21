@@ -91,7 +91,7 @@ $\asm{S}$ and $\asm{T}$ is the assembly
 with the realizability relation
 %
 \begin{equation*}
-  \combPair\,q\,r \rz_{S \times T} (x,y)
+  \combPair\;q\;r \rz_{S \times T} (x,y)
   \iff
   q \rz_S x
   \land
@@ -108,19 +108,19 @@ realized by $\R{f} \in \comp{A}_{|U| \to |S|}$ and $\R{g} \in
 \to S \times T$ for which $f = p_1 \circ h$ and $g = p_2 \circ g$,
 namely $h(u) = \pair{f,g}(u) = (f(u), g(u))$. We only need a realizer
 for~$h$, and $\R{h} =
-\pcalam{\annot{u}{|U|}}{\combPair\,(\R{f}\,u)\,(\R{g}\,u)}$ does the
+\pcalam{\annot{u}{|U|}}{\combPair\;(\R{f}\;u)\;(\R{g}\;u)}$ does the
 job:
 %
 \begin{multline*}
   \R{u} \rz_U u
   \implies
-  \R{f}\,\R{u} \rz_S f(u)
+  \R{f}\;\R{u} \rz_S f(u)
   \land
-  \R{g}\,\R{u} \rz_T g(u)
+  \R{g}\;\R{u} \rz_T g(u)
   \implies {} \\
-  \combPair\, (\R{f}\,\R{u})\, (\R{g}\,\R{u}) \rz_{S \times T} (f(u), g(u))
+  \combPair\; (\R{f}\;\R{u})\; (\R{g}\;\R{u}) \rz_{S \times T} (f(u), g(u))
   \iff
-  \R{h}\,\R{u} \rz_{S \times T} h(u).
+  \R{h}\;\R{u} \rz_{S \times T} h(u).
 \end{multline*}
 
 Once we have binary products we may form $n$-ary products $S_1 \times
@@ -233,7 +233,7 @@ assembly
   |T|, {\rz_P})
 \end{equation*}
 %
-where $\combPair\,\R{x}\,\R{y} \rz_P (x,y)$ if, and only if, $\R{x}
+where $\combPair\;\R{x}\;\R{y} \rz_P (x,y)$ if, and only if, $\R{x}
 \rz_S x$ and $\R{y} \rz_T y$.
 
 Finite products, the terminal object, equalizers, and pullbacks are
@@ -260,12 +260,10 @@ limits is called \emph{cartesian} or \emph{finitely
 \label{sec:cocartesian-structure}
 
 
-The dual notion to finite limit is finite \emph{colimit}. In
-particular, products, terminal object, equalizers, and pullbacks
-correspond respectively to coproducts, initial object, coequalizers,
-and pushouts. Let us show that $\AsmA$ has these. We refer to a
-standard text on category theory for background and definitions of
-these concepts~\cite{MacLane,Awodey}.
+Colimits are the dual of limits. In particular, the dual of products,
+terminal object, equalizers, and pullbacks are respectively
+coproducts, initial object, coequalizers, and pushouts. We study which
+of these exist in~$\AsmA$.
 
 First we discuss (binary) coproducts of sets, also known as disjoint
 sums. For some reason there does not seem to be a well-established and
@@ -300,7 +298,7 @@ the encoding by pairs,
   f(u) =
   \begin{cases}
     f_1(u) & \text{if $u \in S$,}\\
-    f_2(u) & \text{if $u \in T$.}
+   f_2(u) & \text{if $u \in T$.}
   \end{cases}
 \end{equation*}
 %
@@ -313,11 +311,11 @@ we are referring to. Thus, every element of $S + T$ is either of the
 form $\iota_1(x)$ for a unique $x \in S$, or $\iota_2(y)$ for a unique
 $y \in T$.\footnote{If you feel the urge to really encode everything
   with sets, you can still define $\iota_1(x) = (0, x)$ and
-  $\iota_2(y) = (1, y)$ bu then forget the definition.} We may even
-choose descriptive names for the injections if we wish. Definition by
-cases is a primitive concept which deserves its own notation,
-preferrably one that fits on a single line. A notation which mimicks
-Haskell is
+  $\iota_2(y) = (1, y)$ bu then forget the definition.} In a specific
+case we may choose different, descriptive names for the injections.
+Definition by cases is a primitive concept which deserves its own
+notation, preferrably one that fits on a single line. A notation which
+mimicks Haskell is
 %
 \begin{equation*}
   \case{e}{\iota_1(x)}{e_1}{\iota_2(y)}{e_2}.
@@ -390,10 +388,10 @@ underlying TPCAs.
   satisfying, for all $x$, $y$, $f$, $g$ of appopriate types,
   %
   \begin{align*}
-    \defined{\combLeft_{s,t}\,x} &, \\
-    \defined{\combRight_{s,t}\,y} &,\\
-    \combCase_{s,t,u}\,(\combLeft_{s,t}\,x)\,f\,g &\klgeq f\,x, \\
-    \combCase_{s,t,u}\,(\combRight_{s,t}\,y)\,f\,g &\klgeq g\,y.
+    \defined{\combLeft_{s,t}\;x} &, \\
+    \defined{\combRight_{s,t}\;y} &,\\
+    \combCase_{s,t,u}\;(\combLeft_{s,t}\;x)\;f\;g &\klgeq f\;x, \\
+    \combCase_{s,t,u}\;(\combRight_{s,t}\;y)\;f\;g &\klgeq g\;y.
   \end{align*}
   %
   We say that the elements $\combLeft$, $\combRight$, and $\combCase$
@@ -405,6 +403,7 @@ underlying TPCAs.
 \end{definition}
 
 \begin{proposition}
+  \label{prop:asm-coproducts-iff-tpca-sums}
   Suppose $\AA$ is a TPCA and $\compAA$ its sub-TPCA. The category
   $\AsmA$ has binary coproducts if, and only if, $\AA$ is a TPCA with
   sums and $\compAA$ is its sub-TPCA with sums.
@@ -424,13 +423,13 @@ underlying TPCAs.
   \begin{equation*}
     \Ex_{S+T}(u) =
     \xcase{u}
-    {\iota_1(x)}{\set{\combLeft\,\R{x} \such \R{x} \rz_S x}}
-    {\iota_2(y)}{\set{\combRight\,\R{y} \such \R{y} \rz_T y}.}
+    {\iota_1(x)}{\set{\combLeft\;\R{x} \such \R{x} \rz_S x}}
+    {\iota_2(y)}{\set{\combRight\;\R{y} \such \R{y} \rz_T y}.}
   \end{equation*}
   %
   That is, the realizers for $\iota_1(x)$ are of the form
-  $\combLeft\,\R{x}$ where $\R{x} \rz_S x$, and the realizers for
-  $\iota_2(y)$ are of the form $\combRight\,\R{y}$ where $\R{y} \rz_T
+  $\combLeft\;\R{x}$ where $\R{x} \rz_S x$, and the realizers for
+  $\iota_2(y)$ are of the form $\combRight\;\R{y}$ where $\R{y} \rz_T
   y$. The canonical inclusions $\iota_1 : S \to S + T$ and $\iota_2 :
   T \to S + T$ are realized by $\combLeft_{|S|,|T|}$ and
   $\combRight_{|S|,|T|}$, respectively.
@@ -445,7 +444,7 @@ underlying TPCAs.
   \end{equation*}
   %
   is realized by
-  $\pcalam{\annot{u}{|S|+|T|}}{\combCase\,u\,\R{f}\,\R{g}}$. It is the
+  $\pcalam{\annot{u}{|S|+|T|}}{\combCase\;u\;\R{f}\;\R{g}}$. It is the
   unique morphism satisfying $h \circ \iota_1 = f$ and $h \circ
   \iota_2 = g$.
 
@@ -475,21 +474,21 @@ underlying TPCAs.
     a = \pcalam{\annot{x}{s}
                  \annot{f}{s \to u}
                  \annot{g}{t \to u}}
-                 {f\,x}
+                 {f\;x}
    \qquad\text{and}\qquad
     b = \pcalam{\annot{x}{s}
                  \annot{f}{s \to u}
                  \annot{g}{t \to u}}
-                 {g\,x}.
+                 {g\;x}.
   \end{equation*}
   %
-  The map $x \mapsto a\,x$ is a morphism from $\asm{A}_s$ to
+  The map $x \mapsto a\;x$ is a morphism from $\asm{A}_s$ to
   $\asm{A}_{(s \to u) \to (t \to u) \to u}$ because it is realized
-  by~$a$. Similarly, the map $y \mapsto b\,y$ is a morphism from
+  by~$a$. Similarly, the map $y \mapsto b\;y$ is a morphism from
   $\asm{A}_t$ to $\asm{A}_{(s \to u) \to (t \to u) \to u}$, realized
   by~$b$. There is a unique morphism $h : \asm{A}_s + \asm{A}_t \to
   \asm{A}_{(s \to u) \to (t \to u) \to u}$ such that $h(\iota(x)) =
-  a\,x$ and $h(\iota(y)) = b\,y$ for all $x \in \asm{A}_s$ and $y \in
+  a\;x$ and $h(\iota(y)) = b\;y$ for all $x \in \asm{A}_s$ and $y \in
   \asm{A}_t$. There exists
   %
   \begin{equation*}
@@ -498,68 +497,193 @@ underlying TPCAs.
   %
   which realizes~$h$. We claim that $\combLeft_{s,t}$,
   $\combRight_{s,t}$, and $\combCase_{s,t,u}$ have the desired
-  properties. It is obvious that $\defined{\combLeft_{s,t}\,x}$ and
-  $\defined{\combRight_{s,t}\,y}$ for all $x \in \typA{s}$, $y \in
-  \typA{t}$. Next, because $\combCase_{s,t,u}$ realizes $h$,
-  $\combLeft_{s,t}$ realizes $\iota_1$, and $h(\iota_1(x)) = a\,x$, we
-  have $\combCase_{s,t,u}\,(\combLeft_{s,t}\,x) = a\,x$, therefore
+  properties. It is obvious that $\defined{\combLeft_{s,t}\;x}$ and
+  $\defined{\combRight_{s,t}\;y}$ for all $x \in \Atyp{s}$, $y \in
+  \Atyp{t}$. Next, because $\combCase_{s,t,u}$ realizes $h$,
+  $\combLeft_{s,t}$ realizes $\iota_1$, and $h(\iota_1(x)) = a\;x$, we
+  have $\combCase_{s,t,u}\;(\combLeft_{s,t}\;x) = a\;x$, therefore
   %
   \begin{equation*}
-    \combCase_{s,t,u}\,(\combLeft_{s,t}\,x)\,f\,g \kleq
-    a\,x\,f\,g \kleq f\,x
+    \combCase_{s,t,u}\;(\combLeft_{s,t}\;x)\;f\;g \kleq
+    a\;x\;f\;g \kleq f\;x
   \end{equation*}
   %
   for all $x$, $f$, and $g$ of relevant types. Similarly,
-  $\combCase_{s,t,u}\,(\combRight_{s,t}\,y)\,f\,g \kleq g\,y$ holds
+  $\combCase_{s,t,u}\;(\combRight_{s,t}\;y)\;f\;g \kleq g\;y$ holds
   as well.
 \end{proof}
 
-The obvious question to ask is when a TPCA has sums.
+The obvious question to ask is when a TPCA has sums. We do not know
+whether there is a TPCA without sums, and we do not explore the
+question further. We satisfying ourselves with a sufficient condition
+that covers the instances we care about.
 
-\begin{proposition}
-  A TPCA $\AA$ has sums if, and only if, it has \emph{booleans}, by
-  which we mean that there is a type $\ttbool$, and for each type~$t$
-  elements
+\begin{definition}
+  \label{def:tpca-booleans}%
+  A TPCA $\AA$ has \emph{booleans} when there is a type $\ttbool$, and
+  for each type~$t$ elements
   %
   \begin{equation*}
     \combFalse, \combTrue \in \Atyp{\ttbool}
     \qquad\text{and}\qquad
-    \combIf_t &\in \Atyp{\ttbool \to t \to t \to t}
+    \combIf_t \in \Atyp{\ttbool \to t \to t \to t}
   \end{equation*}
   %
   satisfying, for all $x, y \in \Atyp{t}$,
   %
   \begin{equation*}
-    \combIf_t\,\combTrue\,x\,y = x
+    \combIf_t\;\combTrue\;x\;y = x
     \qquad\text{and}\qquad
-    \combIf_t\,\combFalse\,x\,y = y.
+    \combIf_t\;\combFalse\;x\;y = y.
   \end{equation*}
+  %
+  We say that $\combFalse$, $\combTrue$, $\combIf_t$ are
+  \emph{acceptable} for~$\AA$.
+
+  A sub-TPCA with booleans is a sub-TPCA $\compAA$ of~$\AA$ such that
+  there exists $\combFalse$, $\combTrue$, $\combIf_t$ in $\compAA$
+  which are acceptable for~$\AA$.
+\end{definition}
+
+
+\begin{proposition}
+  \label{prop:tpca-sums-iff-booleans}
+  A TPCA $\AA$ has sums if, and only if, it has booleans. Furthermore,
+  a sub-TPCA~$\compAA$ is a sub-TPCA with sums if, and only if, it is
+  a sub-TPCA with booleans.
 \end{proposition}
 
 \begin{proof}
-  Suppose $\AA$ has sums. Let $o$ be any inhabited type and $r \in
-  \typA{o}$ and realizer in it, and define
+  Suppose $\AA$ has sums. Pick any type $o$, an element $\omega_o \in
+  \Atyp{o}$, and define
   %
   \begin{align*}
     \ttbool &= o + o, \\
-    \combTrue &= \combLeft\,r, \\
-    \combFalse &= \combRight\,r \\
+    \combTrue &= \combLeft\;\omega_o, \\
+    \combFalse &= \combRight\;\omega_o \\
     \combIf_t &= \pcalam{\annot{b}{\ttbool}
                          \annot{x}{t}
                          \annot{y}{t}}
-                        {\combCase_{o,o,t}\,b\,(\combK_{o,t}\,x)\,(\combK_{o,t}\,y)}
+                        {\combCase_{o,t,t}\;b\;(\combK_{o,t}\;x)\;(\combK_{o,t}\;y)}
   \end{align*}
   %
-  It is easy to check that these satisfying the required conditions.
+  It is easy to check that these satisfy the conditions from
+  Definition~\ref{def:tpca-booleans}.
 
-  Conversely, suppose $\AA$ has booleans. For type $s$ and $t$ define
+  Conversely, suppose $\AA$ has booleans, and let $s$, $t$, and $u$ be
+  types. There exist $\omega_s \in \Atyp{s}$ and $\omega_t \in
+  \Atyp{t}$. Define
   %
   \begin{align*}
-    s + t &= \ttbool \times (\ttbool \times s \to s) \times (\ttbool
-    \times t \to t)
+    s + t &= \ttbool \times (s \times t),\\
+    \combLeft_{s,t} &=
+    \pcalam{\annot{x}{s}}{\combPair\;\combTrue\;(\combPair\;x \; \omega_t)} \\
+    \combRight_{s,t} &=
+    \pcalam{\annot{y}{t}}{\combPair\;\combFalse\;(\combPair \; \omega_s \; y)} \\
+    \combCase_{s,t,u} &=
+    \pcalam{\annot{z}{s+t}
+            \annot{f}{s \to u}
+            \annot{g}{s \to u}}
+    {\combIf\;(\combFst\;z)\;(f\;(\combFst\;(\combFst\;z)))\;(g\;(\combSnd\;(\combFst\;z)))}
   \end{align*}
+  %
+  These have the required properties, as is easily checked.
 \end{proof}
 
+\begin{proposition}
+  \label{prop:n-tpca-booleans}
+  Every N-TPCA has booleans and every sub-N-TPCA is a sub-N-TPCA with
+  booleans.
+\end{proposition}
+
+\begin{proof}
+  Let $\AA$ be a N-TPCA and $\compAA$ its sub-N-TPCA. Define
+  %
+  \begin{align*}
+    \ttbool &= \ttnat, \\
+    \combFalse &= \numeral{0}, \\
+    \combTrue &= \numeral{1}, \\
+    \combIf_t &= \pcalam{\annot{b}{\ttbool}
+                         \annot{x}{t}
+                         \annot{y}{t}}{
+                         \combRec_t \; y \; (\xpcalam{\annot{n}{\ttnat} \annot{z}{t}}{x})
+                       }
+  \end{align*}
+  %
+  Again, it is easy to check that these have the desired properties.
+\end{proof}
+
+\noindent
+Finally, let us put all these together.
+
+\begin{proposition}
+  If $\AA$ is a N-TPCA and $\compAA$ its sub-N-TPCA then $\AsmA$ has
+  binary coproducts.
+\end{proposition}
+
+\begin{proof}
+  Combine Propositions~\ref{prop:asm-coproducts-iff-tpca-sums},
+  \ref{prop:tpca-sums-iff-booleans}, and \ref{prop:n-tpca-booleans}.
+\end{proof}
+
+The other finite colimits are more easily dealt with. The initial
+object is the \emph{empty assembly}
+%
+\begin{equation*}
+  \zero = (\emptyset, o, \rz_\zero)
+\end{equation*}
+%
+where $o$ is any type.\footnote{If you are wondering what $\rz_\zero$
+  is, ask yourself how many relations there are between $\Atyp{o}$ and
+  $\emptyset$.} Its universal property is that there is exactly one
+morphism $\zero \to \asm{S}$ for every assembly~$\asm{S}$.
+
+A \emph{coequalizer} of morphisms $f, g : S \to T$ is an object $Q$
+with a morphism $q : T \to Q$ that equalizes~$f$ and $g$, which means
+$q \circ f = q \circ g$, and has the following universal property: if
+$k : T \to K$ equalizes~$f$ and~$g$ then there is a unique morphism $i
+: Q \to K$ such that $k = i \circ q$:
+%
+\begin{equation*}
+  \xymatrix@+1em{
+    {S}
+    \ar@<+0.25em>[r]^{f}
+    \ar@<-0.25em>[r]_{g}
+    &
+    {T}
+    \ar[rd]_{k}
+    \ar[r]^{q}
+    &
+    {Q}
+    \ar[d]^{i}
+    \\
+    & & 
+    {K}
+  }
+\end{equation*}
+%
+In the category of sets the coequalizer~$Q$ is the quotient of~$T$ by
+the least equivalence relation~$\sim$ satisfying, for all $x \in S$,
+$f(x) \sim g(x)$. The map $q : T \to T/{\sim}$ is the canonical
+quotient map which takes $y \in T$ to its equivalence class
+$[y]_{\sim}$.
+
+In $\AsmA$ the coequalizer of $f, g : \asm{S} \to \asm{T}$ is the
+assembly $\asm{Q} = \xasm{Q}$ where $Q$ is the coequalizer of $f$ and
+$g$ computed in sets, as described above, $|Q| = |T|$, and $\rz_Q$ is
+defined by
+%
+\begin{equation*}
+  \R{y} \rz_Q [z]_{\sim} \iff
+  \xsome{y}{T}{\R{y} \rz y \land y \sim z}.
+\end{equation*}
+%
+The canonical quotient map $q : T \to Q$ is realized by
+$\xpcalam{\annot{y}{|T|}}{y}$.
+
+Lastly, pushouts are dual to pullbacks. They exist in~$\AsmA$ because
+every finite colimit is a coequalizer of a finite coproduct. We leave
+an explicit description of pushouts as exercise.
 
 
 \subsection{Epis and monos}
@@ -617,7 +741,7 @@ Let $\subcat{A, \comp{A}}$ be the category whose objects are pairs
 $(S, |S|)$ where $|S|$ is a type and $S \subseteq A_{|S|}$. A morphism
 $f : (S, |S|) \to (T, |T|)$ is a map $f : S \to T$ which is tracked by
 some $p \in \comp{A}_{|S| \to |T|}$, i.e., for all $p \in S$,
-$\defined{p\,r}$ and $p\,r \in T$. This category is equivalent to the
+$\defined{p\;r}$ and $p\;r \in T$. This category is equivalent to the
 full subcategory of $\Mod{A, \comp{A}}$ on the canonically projective
 modest sets.
 
