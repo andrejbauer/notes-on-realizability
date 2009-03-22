@@ -636,7 +636,9 @@ object is the \emph{empty assembly}
 where $o$ is any type.\footnote{If you are wondering what $\rz_\zero$
   is, ask yourself how many relations there are between $\Atyp{o}$ and
   $\emptyset$.} Its universal property is that there is exactly one
-morphism $\zero \to \asm{S}$ for every assembly~$\asm{S}$.
+morphism $\zero \to \asm{S}$ for every assembly~$\asm{S}$. The
+property holds because there is a unique map $\emptyset \to S$, which
+is realized by $\combK_{|S|,o}\;a$, where $a \in \compAtyp{o}$.
 
 A \emph{coequalizer} of morphisms $f, g : S \to T$ is an object $Q$
 with a morphism $q : T \to Q$ that equalizes~$f$ and $g$, which means
@@ -681,13 +683,62 @@ defined by
 The canonical quotient map $q : T \to Q$ is realized by
 $\xpcalam{\annot{y}{|T|}}{y}$.
 
-Lastly, pushouts are dual to pullbacks. They exist in~$\AsmA$ because
-every finite colimit is a coequalizer of a finite coproduct. We leave
-an explicit description of pushouts as exercise.
+Pushouts, which are dual to pullbacks, exist in~$\AsmA$ if coproducts
+do, because every finite colimit is a coequalizer of a finite
+coproduct, as recorded in the following proposition. We leave an
+explicit description of pushouts as exercise.
+
+\begin{proposition}
+  \label{prop:asm-cocartesian}%
+  $\AsmA$ is cocartesian\footnote{A category is \emph{cocartesian} or
+    \emph{finitely cocomplete} if it has finite colimits.} if, and
+  only if, $\AA$ is a TPCA with sums and $\compAA$ a sub-TPCA with
+  sums.
+\end{proposition}
+
+\begin{proof}
+  Coequalizers and the initial object always exist. Therefore, all
+  finite colimits exist, provided binary coproducts do. By
+  Proposition~\ref{prop:asm-coproducts-iff-tpca-sums} this is
+  equivalent to the condition that $\AA$ have sums and $\compAA$ be a
+  sub-TPCA with sums.
+\end{proof}
 
 
-\subsection{Epis and monos}
-\label{sec:epis-monos}
+\subsection{Monos and epis}
+\label{sec:monos-epis}
+
+Recall that a morphism $f$ is a \emph{monomorphism (mono)} when it can
+be canceled on the left: if $f \circ g = f \circ h$ then $g = h$. The
+dual notion is \emph{epimorphism (epi)}, which is a morphism that can
+be canceled on the right. In the category of sets the monos and epis
+are precisely the injective and surjective maps, respectively. Let us
+show that the same holds in the category of assemblies.
+
+It is obvious that a morphism $f : \asm{S} \to \asm{T}$ is a mono if
+it injective as a map $f : S \to T$. Conversely, suppose $f$ is a
+mono. To show that it is injective, consider $x, y \in S$ such that
+$f(x) = f(y)$. Let $\R{x}$ and $\R{y}$ be realizers for $x$ and $y$,
+respectively. Define the assembly $\asm{U} = (\set{\star}, |S| \times
+|S|, {\rz_U})$ where the only realizer for $\star$ is
+$\combPair\;\R{x}\;R{y}$. Next, let $g, h : U \to S$ be the maps
+$g(\star) = x$ and $h(\star) = y$. They are realized by $\combFst$ and
+$\combSnd$, respectively. Because $f \circ g = f \circ h$ and $f$ is
+mono, it follows that $g = h$, hence $x = g(\star) = h(\star) = y$.
+This shows that $f$ is injective.
+
+Next we consider epis. Again, it is easy to see that a morphism $f :
+\asm{S} \to \asm{T}$ is epi if it is surjective. Conversely,
+suppose~$f$ is epi. We show that it is epi as a map $f : S \to T$
+in~$\Set$. Suppose $g, h : T \to U$ are maps in~$\Set$ such that $g
+\circ f = h \circ f$. Both $g$ and $h$ are morphisms $g, h : T \to
+\nabla U$ because they are realized by $\combK_{|S|,|\nabla U|} a$,
+where $a \in \compAtyp{|\nabla U|}$. Since $f$ is epi in $\AsmA$, we
+may cancel it and obtain $g = h$. This shows that $f$ is epi
+in~$\Set$.
+
+
+
 
 % When is a numbered set total
 
