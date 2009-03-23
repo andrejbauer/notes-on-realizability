@@ -1418,19 +1418,19 @@ $\lambda$-calculus expression $e$ whose free variables are among $x_1,
 %
 We must explicitly list the variables which may occur freely in $e$ to
 keep track of which variable corresponds to which coordinate in $D^n$.
-We abbreviate the list $x_1, \ldots, x_n$ as $\Gamma$. For $a = (a_1,
-\ldots, a_n) \in D^n$ we define the meaning of $\sem{\Gamma \ctx x}$
+We abbreviate the list $x_1, \ldots, x_n$ as $\overline{x}$. For $a = (a_1,
+\ldots, a_n) \in D^n$ we define the meaning of $\sem{\overline{x} \ctx x}$
 inductively on the structure of~$e$:
 %
 \begin{align*}
-  \sem{\Gamma \ctx x_k}(a) &= a_k, \\
-  \sem{\Gamma \ctx e_1\; e_2}(a) &= 
-  \Lambda(\sem{\Gamma \ctx e_1}(a))(\sem{\Gamma \ctx e_2}(a)), \\
+  \sem{\overline{x} \ctx x_k}(a) &= a_k, \\
+  \sem{\overline{x} \ctx e_1\; e_2}(a) &= 
+  \Lambda(\sem{\overline{x} \ctx e_1}(a))(\sem{\overline{x} \ctx e_2}(a)), \\
   \sem{\xulam{x}{e}}(a) &= \Gamma(f),
 \end{align*}
 %
 where in the last clause $f : D \to D$ is the map $f (b) =
-\sem{\Gamma, x \ctx e}(a_1, \ldots, a_n, b)$.
+\sem{\overline{x}, x \ctx e}(a_1, \ldots, a_n, b)$.
 
 To see how the $\lambda$-calculus helps prove things about reflexive
 domains, let us show that $D \times D$ is a retract of~$D$. A purely

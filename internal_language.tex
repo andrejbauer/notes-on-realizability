@@ -178,12 +178,13 @@ need to augment this with realizers. If $f, g : \asm{S} \to \asm{T}$
 are realized by $f, g \in \compAtyp{|S| \to |T|}$, respectively, then
 their equalizer is
 %
-\begin{equation*}
+\begin{equation}
+  \label{eq:asm-equalizer}%
   \asm{E} =
   (\set{x \in S \such f(x) = g(x)},
    |S|,
    {\rz_E})
-\end{equation*}
+\end{equation}
 %
 where $\R{x} \rz_E x$ if, and only if, $\R{x} \rz_S x$. The map $e : E
 \to S$ is the subset inclusion, $e(x) = x$. It is realized by
@@ -665,10 +666,10 @@ $k : T \to K$ equalizes~$f$ and~$g$ then there is a unique morphism $i
 \end{equation*}
 %
 In the category of sets the coequalizer~$Q$ is the quotient of~$T$ by
-the least equivalence relation~$\sim$ satisfying, for all $x \in S$,
-$f(x) \sim g(x)$. The map $q : T \to T/{\sim}$ is the canonical
+the least equivalence relation~$\equiv$ satisfying, for all $x \in S$,
+$f(x) \equiv g(x)$. The map $q : T \to T/{\equiv}$ is the canonical
 quotient map which takes $y \in T$ to its equivalence class
-$[y]_{\sim}$.
+$[y]_{\equiv}$.
 
 In $\AsmA$ the coequalizer of $f, g : \asm{S} \to \asm{T}$ is the
 assembly $\asm{Q} = \xasm{Q}$ where $Q$ is the coequalizer of $f$ and
@@ -676,8 +677,8 @@ $g$ computed in sets, as described above, $|Q| = |T|$, and $\rz_Q$ is
 defined by
 %
 \begin{equation*}
-  \R{y} \rz_Q [z]_{\sim} \iff
-  \xsome{y}{T}{\R{y} \rz y \land y \sim z}.
+  \R{y} \rz_Q [z]_{\equiv} \iff
+  \xsome{y}{T}{\R{y} \rz y \land y \equiv z}.
 \end{equation*}
 %
 The canonical quotient map $q : T \to Q$ is realized by
@@ -712,37 +713,182 @@ Recall that a morphism $f$ is a \emph{monomorphism (mono)} when it can
 be canceled on the left: if $f \circ g = f \circ h$ then $g = h$. The
 dual notion is \emph{epimorphism (epi)}, which is a morphism that can
 be canceled on the right. In the category of sets the monos and epis
-are precisely the injective and surjective maps, respectively. Let us
-show that the same holds in the category of assemblies.
+are precisely the injective and surjective maps, respectively.
 
-It is obvious that a morphism $f : \asm{S} \to \asm{T}$ is a mono if
-it injective as a map $f : S \to T$. Conversely, suppose $f$ is a
-mono. To show that it is injective, consider $x, y \in S$ such that
-$f(x) = f(y)$. Let $\R{x}$ and $\R{y}$ be realizers for $x$ and $y$,
-respectively. Define the assembly $\asm{U} = (\set{\star}, |S| \times
-|S|, {\rz_U})$ where the only realizer for $\star$ is
-$\combPair\;\R{x}\;R{y}$. Next, let $g, h : U \to S$ be the maps
-$g(\star) = x$ and $h(\star) = y$. They are realized by $\combFst$ and
-$\combSnd$, respectively. Because $f \circ g = f \circ h$ and $f$ is
-mono, it follows that $g = h$, hence $x = g(\star) = h(\star) = y$.
-This shows that $f$ is injective.
+\begin{proposition}
+  \label{prop:asm-mono-epi-when}%
+  A morphism in $\AsmA$ is mono if, and only if, it is mono as a map
+  in $\Set$, and likewise for epis.
+\end{proposition}
 
-Next we consider epis. Again, it is easy to see that a morphism $f :
-\asm{S} \to \asm{T}$ is epi if it is surjective. Conversely,
-suppose~$f$ is epi. We show that it is epi as a map $f : S \to T$
-in~$\Set$. Suppose $g, h : T \to U$ are maps in~$\Set$ such that $g
-\circ f = h \circ f$. Both $g$ and $h$ are morphisms $g, h : T \to
-\nabla U$ because they are realized by $\combK_{|S|,|\nabla U|} a$,
-where $a \in \compAtyp{|\nabla U|}$. Since $f$ is epi in $\AsmA$, we
-may cancel it and obtain $g = h$. This shows that $f$ is epi
-in~$\Set$.
+\begin{proof}
+  It is obvious that a morphism $f : \asm{S} \to \asm{T}$ is a mono in
+  $\AsmA$ if it is mono in $\Set$. Conversely, suppose $f$ is mono in
+  $\AsmA$, and consider maps $g, h : U \to T$ in $\Set$ such that $f
+  \circ g = f \circ h$. Define the assembly $\asm{U} = (U, |S| \times
+  |S|, {\rz_U})$ with the realizability relation
+  % 
+  \begin{equation*}
+    \combPair\;\R{x}\;\R{y} \rz_U u
+    \iff \R{x} \rz_S f(u) \land \R(y) \rz_S g(u).
+  \end{equation*}
+  % 
+  The maps $f$ and $g$ are morphisms from $\asm{U}$ to $\asm{S}$
+  because they are realized by $\combFst$ and $\combSnd$,
+  respectively. Since $f$ is mono as a morphism of assemblies, it
+  follows that $g = h$.
 
+  Next we consider epis. Again, it is easy to see that a morphism $f :
+  \asm{S} \to \asm{T}$ is epi if it is epi in $\Set$. Conversely,
+  suppose~$f$ is epi in $\AsmA$ and consider maps $g, h : T \to U$
+  in~$\Set$ such that $g \circ f = h \circ f$. The maps $g$ and $h$
+  are morphisms $T \to \nabla U$ because they are realized by
+  $\combK_{|S|,|\nabla U|} a$ respectively, where $a \in
+  \compAtyp{|\nabla U|}$. Since $f$ is epi in $\AsmA$, we may cancel
+  it and obtain $g = h$. This shows that $f$ is epi in~$\Set$.
+\end{proof}
 
+A \emph{mono-epi} is a morphism $f : S \to T$ which is both mono and
+epi. In general such a morphism need not be an isomorphism. For
+example, a continuous bijection between topological spaces need not be
+a homeomorphism.
 
+\begin{corollary}
+  A realized map $f : \asm{S} \to \asm{T}$ is mono-epi if, and only
+  if, it is is bijective.
+\end{corollary}
+
+\begin{proof}
+  This follows directly from Proposition~\ref{prop:asm-mono-epi-when}
+  and the fact that an epi-mono in $\Set$ is the same thing as a
+  bijection.
+\end{proof}
+
+It is easy to provide an epi-mono which is not an isomorphism. For
+example if $\asm{S}$ is a modest set with at least two different
+elements, then $\id_S : S \to S$ is realized as a morphism $\id_S :
+\asm{S} \to \nabla S$, hence it is an epi-mono in $\AsmA$. However,
+every morphism $\nabla S \to \asm{S}$ is a constant map, therefore
+$\asm{S}$ is not isomorphic to~$\nabla{S}$.
+
+Recall that $f : \asm{S} \to \asm{T}$ is a \emph{regular mono} if
+there are $g, h : \asm{T} \to \asm{U}$ such that~$f$ is their
+equalizer. Regular monos are well behaved, and we can think of them as
+subspace embeddings. Given an assembly $\asm{T}$ and a subset $T'
+\subseteq T$, define the assembly $\asm{T}' = (T', |T|, {\rz_{T'}})$
+as the restriction of $\asm{T}$, i.e., $\R{x} \rz_{T'} x$ if, and only
+if $x \in T'$ and $\R{x} \rz_T x$. The subset inclusion $i : T' \to T$
+is a regular mono because it is the equalizer of the maps $g, h : T
+\to \nabla \two$, defined by
+%
+\begin{equation*}
+  g(x) = 1
+  \qquad\text{and}\qquad
+  h(x) =
+  \begin{cases}
+    1 & \text{if $x \in T'$,}\\
+    0 & \text{otherwise}.
+  \end{cases}
+\end{equation*}
+%
+Even more, every regular mono is of this form, up to isomorphism. To
+see this, suppose $f : \asm{S} \to \asm{T}$ is a regular mono, thus an
+equalizer of morphisms $g, h : \asm{T} \to \asm{U}$. If we simply
+compute the equalizer of $g$ and $h$ again according to the
+recipe~\eqref{eq:asm-equalizer} from
+Section~\ref{sec:cartesian-structure}, we see that it is precisely the
+restriction of $\asm{T}$ to the subset
+% 
+\begin{equation*}
+  T' = \set{x \in T \such g(x) = h(x)}.
+\end{equation*}
+% 
+Since both $i : \asm{T}' \to \asm{T}$ and $f : \asm{S} \to \asm{T}$
+are equalizers of $g$ and $h$, they are isomorphic.
+
+We repeat the story for \emph{regular epis}, which are those morphisms
+that are coequalizers. They are the well behaved epis which can be
+thought of as quotient maps. In fact, if $f : \asm{S} \to \asm{T}$ is
+a regular epi, we say that $\asm{T}$ is a \emph{quotient} of~$\asm{S}$.
+
+Given an assembly $\asm{T}$ and an equivalence relation $\equiv$
+on~$T$, define the assembly $\asm{T}/{\equiv} = (T/{\equiv}, |T|,
+\rz_{T/{\equiv}})$ of equivalence classes with $\R{x} \rz_{T/{\equiv}}
+[y]$ if, and only if, $\R{x} \rz_T x$ and $x \equiv y$ for some $x \in
+T$. The quotient map $q : T \to T/{\equiv}$ is realized and is a
+coequalizer of $g, h : \asm{V} \to \asm{T}$ where
+%
+\begin{align*}
+  \asm{V} &= (\set{(x,y) \in T \times T \such x \equiv y},
+             |T| \times |T|, {\rz_V}),\\
+  \combPair\;\R{x}\;\R{y} \rz_V (x,y) &\iff
+  \R{x} \rz_T x \land \R{y} \rz_T y, \\
+  g (x, y) &= x,\\
+  h (x, y) &= y.
+\end{align*}
+%
+Every regular epi is isomorphic to one of this form. To see this,
+suppose $f : \asm{T} \to \asm{U}$ is a coequalizer of $g, h : \asm{U}
+\to \asm{T}$. Let $\equiv$ be the least equivalence relation on~$T$
+such that $g(x) = h(x)$ for all $x \in U$. Then $f$ is isomorphic to
+$q : \asm{T} \to \asm{T}/{\equiv}$ because $g : \asm{T} \to
+\asm{T}/{\equiv}$ is the coequalizer of $g$ and $h$ according to
+Section~\ref{sec:cocartesian-structure}.
+
+There is another characterization of regular epis which is usef often
+by the TTE school.
+
+\begin{proposition}
+  in $\AsmA$ a morphism $f : \asm{T} \to \asm{U}$ is a regular epi
+  if, and only if, there exists $\R{i} \in \compAtyp{|U| \to |T|}$
+  such that, whenever $\R{y} \rz_U y$ then $\defined{\R{i}\;\R{y}}$
+  and there is $x \in f^{-1}(y)$ such that $\R{i}\;\R{y} \rz_T x$.
+\end{proposition}
+
+\begin{proof}
+  In Section~\ref{sec:multi-valued-functions} we will see that $\R{i}$
+  is a realizer for a multi-valued right inverse of~$f$, while
+  in Section~\ref{sec:logical-reg-epi} we will see that $\R{i}$ is a
+  realizer for the internal statement
+  $\xall{y}{\asm{S}}{\xsome{x}{\asm{T}}{f(x) = y}}$. For the moment we
+  just concentrate on the proof.
+
+  Suppose first that we have a regular epi $f : \asm{T} \to \asm{U}$
+  which is a coequalizer of~$g, h : \asm{S} \to \asm{T}$. Let $q :
+  \asm{T} \to \asm{T}/{\equiv}$ be the coequalier of~$g$ and~$h$, as
+  computed in Section~\ref{sec:cocartesian-structure}. Because~$f$ and
+  $q$ both equalize $g$ and $h$, there exists a unique isomoprhism $i
+  : \asm{U} \to \asm{T}/{\equiv}$ such that $q = i \circ f$. Let
+  $\R{i} \in \compAtyp{|U| \to |T|}$ be a realizer for~$i$. We claim
+  that it has the required properties. If $\R{y} \rz_U y$ then
+  $\defined{\R{i}\;\R{y}}$ and $\R{i}\;\R{y} \rz_{T/{\equiv}} i(y)$.
+  Because $f$ is surjective there exists $x' \in T$ such that $f(x') =
+  y$, from which we get $i(y) = i(f(x')) = q(x') = [x']$. Since
+  $\R{i}\;\R{y} \rz_{T/{\equiv}} [x']$ there is $x \in T$ such that
+  $\R{i}\;\R{y} \rz_T x$ and $x \equiv x'$. The element~$x$ is the one
+  we are looking for because $x \equiv x'$ implies $f(x) = f(x') = y$.
+
+  Conversely, suppose $\R{i}$ is as in the statement of the
+  proposition, and let $\R{f}$ be a realizer for~$f$. To show that $f
+  : \asm{T} \to \asm{U}$ is a coequalizer, define the equivalence
+  relation $\equiv$ on~$T$ by
+  %
+  \begin{equation*}
+    x \equiv y \iff f(x) = f(y).
+  \end{equation*}
+  %
+  It suffices to show that~$f$ is isomorphic to $q : \asm{T} \to
+  \asm{T}/{\equiv}$. In one direction we have the map $j : T/{\equiv}
+  \to U$ defined by $j([x]) = f(x)$, realized by $\R{f}$. In the other
+  direction we have $i : U \to T/{\equiv}$ defined by $i(f(x)) = [x]$,
+  which is well defined because~$f$ is surjective. The map $i$ is
+  realized by~$\R{i}$. It is obvious that $i$ and $j$ are inverses of
+  each other and that $q = i \circ f$ holds.
+\end{proof}
 
 % When is a numbered set total
 
-\subsection{Factorization of morphisms}
+\subsection{Factorization of morphisms and regular structure}
 \label{sec:factorization}
 
 % Explicitly state regularity
