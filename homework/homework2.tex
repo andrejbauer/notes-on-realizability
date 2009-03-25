@@ -1,0 +1,78 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage{a4wide}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[utf8]{inputenc}
+\usepackage{theorem}
+
+\input{../macros}
+
+\begin{document}
+
+\title{Izračunljivost v topologiji}
+\author{Homework 2}
+\date{Due date: April 9th, 2009}
+
+\maketitle
+
+\subsection*{Instructions}
+
+You are \emph{encouraged} to use the literature and research papers,
+but any mathematical text that your solution relies on must come from
+a peer-reviewed source (published book or journal article).
+
+If you use information from Wikipedia or random PDF files on the
+internet, then the correctness of the source becomes \emph{your}
+responsibility, i.e., you should personally verify the proofs or write
+them if they are missing.
+
+Thus you may solve a problem, or part of a problem, by finding the
+solution in a book or journal article. In this case you may simply
+refer to the text you found (there is no need to copy it). If a
+problem asks for a proof, you must refer to an actual proof (not a
+paper which claims that the proof is trivial or left as exercise).
+
+\subsection*{Problem 1}
+
+Suppose $\AA$ is a TPCA and $\compAA$ a sub-TPCA. Let $t$ be a type
+and $r_0 \in \compAtyp{t}$. Define the functor $\nabla' : \Set \to
+\AsmA$ as follows. Given a set $X$, let $\nabla' X = (X, \Atyp{t},
+{\rz_{\nabla' X}})$ with
+%
+\begin{equation*}
+  r \rz_{\nabla' X} x \iff r = r_0.
+\end{equation*}
+%
+A function $f : X \to Y$ is mapped to $\nabla' f = f$, which is
+obviously realized.
+
+Recall that we defined $\nabla X = (X, \Atyp{t}, {\rz_{\nabla X}})$
+where $r \rz_{\nabla X} x$ for all $r \in \Atyp{t}$ and $x \in X$.
+
+\begin{enumerate}
+\item State the definition of ``functors $F$ and $G$ are naturally
+  isomorphic''.
+\item Verify that $\nabla$ and $\nabla'$ are naturally isomorphic.
+\item Now suppose we picked $r_0 \in \Atyp{t}$ so that $r_0 \not\in
+  \compAtyp{t}$. What would go wrong?
+\end{enumerate}
+
+
+\subsection*{Problem 2}
+
+\begin{enumerate}
+\item Prove that in any category with binary products $A \times B
+  \cong B \times A$.
+\item 
+  Prove that in $\AsmA$ the following distributive law holds:
+  % 
+  \begin{equation*}
+    (\asm{S} + \asm{T}) \times \asm{U} \cong
+    (\asm{S} \times \asm{U}) + (\asm{S} \times \asm{U}).
+  \end{equation*}
+\item Find a category which has binary products and coproducts, but
+  the distributive law does not hold.
+\end{enumerate}
+
+\end{document}

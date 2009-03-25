@@ -3,31 +3,31 @@
 
 In Chapter~\ref{chap:realizability} we defined assemblies as our basic
 structures of interest. To learn more about them we study which
-oeprations on assemblies are supported by the category $\Asm{A,
-  \comp{A}}$. It turns out that there is not only a rich collection of
-constructions available, but also an interpretation of first-order
-logic that assigns to a logical formula its computational meaning.
+operations on assemblies are supported by the category $\AsmA$. It
+turns out that there is not only a rich collection of constructions
+available, but also an interpretation of first-order logic that
+assigns to a logical formula its computational meaning.
 
 \section{Constructions of assemblies}
 \label{sec:constructions}
 
 In their everyday lives mathematicians use a limited set of
 constructions on sets: products, disjoint sums, subsets, quotient
-sets, function spaces, inductive and coinductive definitions, and
-powersets. For all of these, except powersets, there are analogous
-constructions of assemblies. Therefore, if we need a computable
-version of a given mathematical structure, we may just mimick its
-set-theoretic definition in the category of assemblies. This way we do
-not invent or guess the datatypes and the realizability relations, but
-simply \emph{compute} them.
+sets, images, function spaces, inductive and coinductive definitions,
+powersets, unions, intersections, and complements. For all of these,
+except powersets, there are analogous constructions of assemblies.
+Therefore, if we need a computable version of a given mathematical
+structure, may just mimic its set-theoretic definition in the
+category of assemblies.
 
 \subsection{The cartesian structure}
 \label{sec:cartesian-structure}
 
 A construction which makes a new set, space, or an algebraic structure
-out of old ones is usually characterized by a \emph{universal
-  property} which determines it up to isomorphism. We start slowly
-with an easy one, the binary product.
+from old ones is usually characterized by a \emph{universal property}
+which determines it up to isomorphism. The universal property is
+shared among versions of the same construction in different
+categories. We start slowly with an easy one, the binary product.
 
 Recall the definition of a \emph{(binary) product} in a category: the
 product of objects $S$ and $T$ is an object $P$ with morphisms $p_1 :
@@ -54,17 +54,17 @@ unique morphism $h : U \to P$ making the following diagram commute:
   }
 \end{equation*}
 %
-This determines $(P, p_1, p_2)$ uniquely up to a unique isomorphism.
-For suppose we had another product $(Q, q_1, q_2)$. By the universal
-property of $P$ there is a map $h : P \to Q$ such that $p_1 \circ h =
-q_1$ and $p_2 \circ h = q_2$. Similarly, there is $k : Q \to P$ such
-that $q_1 \circ k = p_1$ and $q_2 \circ k = p_2$. Now $h \circ k$
-satisfies
+The products $(P, p_1, p_2)$ is determined uniquely up to a unique
+isomorphism. For suppose we had another product $(Q, q_1, q_2)$ of~$S$
+and~$T$. By the universal property of $P$ there is a map $h : P \to Q$
+such that $p_1 \circ h = q_1$ and $p_2 \circ h = q_2$. Similarly, by
+the universal property of~$Q$ there is $k : Q \to P$ such that $q_1
+\circ k = p_1$ and $q_2 \circ k = p_2$. Now $h \circ k$ satisfies
 %
 \begin{equation*}
   p_1 \circ h \circ k = q_1 \circ k = p_1
   \qquad\text{and}\qquad
-  p_2 \circ h \circ k = q_2 \circ k = p_2
+  p_2 \circ h \circ k = q_2 \circ k = p_2.
 \end{equation*}
 %
 Since $\id_P$ also satisfies $p_1 \circ \id_P = p_1$ and $p_2 \circ
@@ -72,11 +72,11 @@ Since $\id_P$ also satisfies $p_1 \circ \id_P = p_1$ and $p_2 \circ
 property that $h \circ k = \id_P$. A similar argument shows that $k
 \circ h = \id_Q$, hence $P$ and $Q$ are isomorphic.
 
-A category has binary products if every pair of objects has a binary
-product. In most cases we can actually provide an operation $\times$
-which maps a pair of objects $S$, $T$ to a specifically given product
-$S \times T$ with corresponding projections. The unique map $h$
-determined by $f$ and $g$ is denoted by $\pair{f,g}$.
+A category \emph{has binary products} if every pair of objects has a
+binary product. In most cases we can actually provide an operation
+$\times$ which maps a pair of objects $S$, $T$ to a specifically given
+product $S \times T$ with corresponding projections. The unique map
+$h$ determined by $f$ and $g$ is denoted by $\pair{f,g}$.
 
 In the category~$\Set$ the product is just the usual cartesian product
 of sets. In assemblies we need to worry about the underlying types and
@@ -98,14 +98,15 @@ with the realizability relation
   r \rz_T y.
 \end{equation*}
 %
-The projection maps $p_1 : S \times T \to S$ and $p_2 : S \times T \to
-T$ are realized by $\combFst$ and $\combSnd$, respectively.
-
-To see that the product of assemblies has the universal property,
-suppose $f : \asm{U} \to \asm{S}$ and $g : \asm{U} \to \asm{T}$ are
-realized by $\R{f} \in \comp{A}_{|U| \to |S|}$ and $\R{g} \in
-\comp{A}_{|U| \to |T|}$, respectively. There is a unique map $h : U
-\to S \times T$ for which $f = p_1 \circ h$ and $g = p_2 \circ g$,
+and the projection maps $\pi_1 : S \times T \to S$, $\pi_1 : (x,y)
+\mapsto x$, and $\pi_2 : S \times T \to T$, $\pi_2 : (x,y) \mapsto y$,
+which are realized by $\combFst$ and $\combSnd$, respectively.
+%
+To see that $(\asm{S} \times \asm{T}, \pi_1, \pi_2)$ has the universal
+property, suppose $f : \asm{U} \to \asm{S}$ and $g : \asm{U} \to
+\asm{T}$ are realized by $\R{f} \in \comp{A}_{|U| \to |S|}$ and $\R{g}
+\in \comp{A}_{|U| \to |T|}$, respectively. There is a unique map $h :
+U \to S \times T$ for which $f = \pi_1 \circ h$ and $g = \pi_2 \circ g$,
 namely $h(u) = \pair{f,g}(u) = (f(u), g(u))$. We only need a realizer
 for~$h$, and $\R{h} =
 \pcalam{\annot{u}{|U|}}{\combPair\;(\R{f}\;u)\;(\R{g}\;u)}$ does the
@@ -173,10 +174,9 @@ g(x)$.\footnote{If we have a system of equations $f_i(x) = g_i(x)$, $i
   formulation of the notion ``solution of a system of equations''.}
 Indeed, in the category of sets the equalizer of functions $f, g : S
 \to T$ is the subset $E = \set{x \in S \such f(x) = g(x)}$ and $e : E
-\to S$ is the subset inclusion. In the category of assemblies we
-need to augment this with realizers. If $f, g : \asm{S} \to \asm{T}$
-are realized by $f, g \in \compAtyp{|S| \to |T|}$, respectively, then
-their equalizer is
+\to S$ is the subset inclusion. In the category of assemblies we need
+to augment this with realizers. The equalizer of $f, g : \asm{S} \to
+\asm{T}$ is
 %
 \begin{equation}
   \label{eq:asm-equalizer}%
@@ -191,7 +191,7 @@ where $\R{x} \rz_E x$ if, and only if, $\R{x} \rz_S x$. The map $e : E
 $\xpcalam{\annot{x}{|S|}}{x}$. Clearly, $e$ equalizes~$f$ and~$g$. We
 leave the verification of the universal property as exercise.
 
-A \emph{pullback}, sometimes called \emph{fibered products}, is a
+A \emph{pullback}, sometimes called \emph{fibered product}, is a
 combination of product and equalizer. Given morphisms $f : S \to U$
 and $g : T \to U$, the pullback of $f$ and $g$ is an object $P$ with
 morphisms $p_1 : P \to S$ and $p_2 : P \to T$ such that $f \circ p_1 =
@@ -278,9 +278,9 @@ sets~$S$ and~$T$ is usually defined as
 %
 The canonical injections $\iota_1 : S \to S + T$ and $\iota_2 : T \to
 S + T$ are the maps $x \mapsto (0,x)$ and $y \mapsto (1,x)$,
-respectively. A slight inconvenience arises when want to define a map
-$f : S + T \to U$ by cases $f_1 : S \to U$ and $f_2 : T \to U$. One
-possibility is
+respectively. A slight notational inconvenience arises when want to
+define a map $f : S + T \to U$ by cases $f_1 : S \to U$ and $f_2 : T
+\to U$. One possibility is to write
 %
 \begin{equation*}
   f(u) =
@@ -290,10 +290,10 @@ possibility is
   \end{cases}
 \end{equation*}
 %
-but this is seen rarely. In pratice mathematicians prefer to assume,
+but this is seen rarely. In practice mathematicians prefer to assume,
 or shall we say \emph{pretend}, that the sets~$S$ and~$T$ are disjoint
-and just write $S + T = S \cup T$. This allows us to write get rid of
-the encoding by pairs,
+and just write $S + T = S \cup T$. This allows us to get rid of the
+encoding by pairs,
 %
 \begin{equation*}
   f(u) =
@@ -312,11 +312,12 @@ we are referring to. Thus, every element of $S + T$ is either of the
 form $\iota_1(x)$ for a unique $x \in S$, or $\iota_2(y)$ for a unique
 $y \in T$.\footnote{If you feel the urge to really encode everything
   with sets, you can still define $\iota_1(x) = (0, x)$ and
-  $\iota_2(y) = (1, y)$ bu then forget the definition.} In a specific
+  $\iota_2(y) = (1, y)$ but then forget the definition.} In a specific
 case we may choose different, descriptive names for the injections.
-Definition by cases is a primitive concept which deserves its own
-notation, preferrably one that fits on a single line. A notation which
-mimicks Haskell is
+
+Definition by cases is a primitive concept involving disjoint sums
+which deserves its own notation, preferably one that fits on a single
+line. We may mimic Haskell and write
 %
 \begin{equation*}
   \case{e}{\iota_1(x)}{e_1}{\iota_2(y)}{e_2}.
@@ -341,11 +342,11 @@ We shall use this notation. Let us mention that in Haskell $\iota_1$
 and $\iota_2$ are called $\mathtt{Left}$ and $\mathtt{Right}$,
 respectively.
 
-In a general category the universal property a (binary) coproduct of
-objects~$S$ and~$T$ is an object $C$ with morphisms $\iota_1 : S \to
-C$ and $\iota_2 : T \to C$ such that, for all morphisms $f : S \to U$
-and $g : T \to U$ there exists a unique $h : C \to U$ such that the
-following diagram commutes:
+In a general category a \emph{(binary) coproduct} of objects~$S$
+and~$T$ is an object $C$ with morphisms $\iota_1 : S \to C$ and
+$\iota_2 : T \to C$ such that, for all morphisms $f : S \to U$ and $g
+: T \to U$ there exists a unique $h : C \to U$ such that the following
+diagram commutes:
 %
 \begin{equation*}
   \xymatrix@+1em{
@@ -386,7 +387,7 @@ underlying TPCAs.
     \combCase_{s,t,u} &\in \Atyp{(s + t) \to (s \to u) \to (t \to u) \to u}
   \end{align*}
   %
-  satisfying, for all $x$, $y$, $f$, $g$ of appopriate types,
+  satisfying, for all $x$, $y$, $f$, $g$ of appropriate types,
   %
   \begin{align*}
     \defined{\combLeft_{s,t}\;x} &, \\
@@ -400,7 +401,7 @@ underlying TPCAs.
 
   A \emph{sub-TPCA with sums} is a sub-TPCA $\compAA$ of~$\AA$ such
   that there exists $\combLeft$, $\combRight$, $\combCase$
-  in~$\compAA$ suitable for $\AA$.
+  in~$\compAA$ suitable for sums in $\AA$.
 \end{definition}
 
 \begin{proposition}
@@ -539,11 +540,11 @@ that covers the instances we care about.
   \end{equation*}
   %
   We say that $\combFalse$, $\combTrue$, $\combIf_t$ are
-  \emph{acceptable} for~$\AA$.
+  \emph{suitable} for booleans in~$\AA$.
 
   A sub-TPCA with booleans is a sub-TPCA $\compAA$ of~$\AA$ such that
   there exists $\combFalse$, $\combTrue$, $\combIf_t$ in $\compAA$
-  which are acceptable for~$\AA$.
+  which are suitable for booleans in~$\AA$.
 \end{definition}
 
 
@@ -607,7 +608,8 @@ that covers the instances we care about.
     \combIf_t &= \pcalam{\annot{b}{\ttbool}
                          \annot{x}{t}
                          \annot{y}{t}}{
-                         \combRec_t \; y \; (\xpcalam{\annot{n}{\ttnat} \annot{z}{t}}{x})
+                         \combRec_t \; y \;
+                         (\xpcalam{\annot{n}{\ttnat} \annot{z}{t}}{x}) \; b 
                        }
   \end{align*}
   %
@@ -665,23 +667,23 @@ $k : T \to K$ equalizes~$f$ and~$g$ then there is a unique morphism $i
   }
 \end{equation*}
 %
-In the category of sets the coequalizer~$Q$ is the quotient of~$T$ by
-the least equivalence relation~$\equiv$ satisfying, for all $x \in S$,
-$f(x) \equiv g(x)$. The map $q : T \to T/{\equiv}$ is the canonical
-quotient map which takes $y \in T$ to its equivalence class
-$[y]_{\equiv}$.
+In the category of sets the coequalizer is the quotient $Q =
+T/{\equiv}$ of~$T$ by the least equivalence relation~$\equiv$
+satisfying $f(x) \equiv g(x)$ for all $x \in S$. The map $q : T \to
+T/{\equiv}$ is the canonical quotient map which takes $y \in T$ to its
+equivalence class $[y]_{\equiv}$.
 
 In $\AsmA$ the coequalizer of $f, g : \asm{S} \to \asm{T}$ is the
-assembly $\asm{Q} = \xasm{Q}$ where $Q$ is the coequalizer of $f$ and
-$g$ computed in sets, as described above, $|Q| = |T|$, and $\rz_Q$ is
-defined by
+assembly $\asm{T}/{\equiv}$ where $T/{\equiv}$ is the coequalizer of
+$f$ and $g$ computed in sets, as described above, $|\asm{T}/{\equiv}|
+= |T|$, and $\rz_{T/{\equiv}}$ is defined by
 %
 \begin{equation*}
-  \R{y} \rz_Q [z]_{\equiv} \iff
-  \xsome{y}{T}{\R{y} \rz y \land y \equiv z}.
+  \R{y} \rz_{T/{\equiv}} [z]_{\equiv} \iff
+  \xsome{y}{T}{\R{y} \rz_T y \land y \equiv z}.
 \end{equation*}
 %
-The canonical quotient map $q : T \to Q$ is realized by
+The canonical quotient map $q : T \to T/{\equiv}$ is realized by
 $\xpcalam{\annot{y}{|T|}}{y}$.
 
 Pushouts, which are dual to pullbacks, exist in~$\AsmA$ if coproducts
@@ -709,8 +711,8 @@ explicit description of pushouts as exercise.
 \subsection{Monos and epis}
 \label{sec:monos-epis}
 
-Recall that a morphism $f$ is a \emph{monomorphism (mono)} when it can
-be canceled on the left: if $f \circ g = f \circ h$ then $g = h$. The
+Recall that $f$ is a \emph{monomorphism (mono)} when it can be
+canceled on the left: if $f \circ g = f \circ h$ then $g = h$. The
 dual notion is \emph{epimorphism (epi)}, which is a morphism that can
 be canceled on the right. In the category of sets the monos and epis
 are precisely the injective and surjective maps, respectively.
@@ -733,7 +735,7 @@ are precisely the injective and surjective maps, respectively.
     \iff \R{x} \rz_S f(u) \land \R(y) \rz_S g(u).
   \end{equation*}
   % 
-  The maps $f$ and $g$ are morphisms from $\asm{U}$ to $\asm{S}$
+  The maps $g$ and $h$ are morphisms from $\asm{U}$ to $\asm{S}$
   because they are realized by $\combFst$ and $\combSnd$,
   respectively. Since $f$ is mono as a morphism of assemblies, it
   follows that $g = h$.
@@ -760,7 +762,7 @@ a homeomorphism.
 
 \begin{proof}
   This follows directly from Proposition~\ref{prop:asm-mono-epi-when}
-  and the fact that an epi-mono in $\Set$ is the same thing as a
+  and the fact that in $\Set$ an epi-mono is the same thing as a
   bijection.
 \end{proof}
 
@@ -778,8 +780,9 @@ subspace embeddings. Given an assembly $\asm{T}$ and a subset $T'
 \subseteq T$, define the assembly $\asm{T}' = (T', |T|, {\rz_{T'}})$
 as the restriction of $\asm{T}$, i.e., $\R{x} \rz_{T'} x$ if, and only
 if $x \in T'$ and $\R{x} \rz_T x$. The subset inclusion $i : T' \to T$
-is a regular mono because it is the equalizer of the maps $g, h : T
-\to \nabla \two$, defined by
+is a morphism of assemblies because it is realized by
+$\xpcalam{\annot{x}{|T|}}{x}$, and it is a regular mono because it is
+the equalizer of the maps $g, h : T \to \nabla \two$, defined by
 %
 \begin{equation*}
   g(x) = 1
@@ -811,12 +814,18 @@ that are coequalizers. They are the well behaved epis which can be
 thought of as quotient maps. In fact, if $f : \asm{S} \to \asm{T}$ is
 a regular epi, we say that $\asm{T}$ is a \emph{quotient} of~$\asm{S}$.
 
-Given an assembly $\asm{T}$ and an equivalence relation $\equiv$
-on~$T$, define the assembly $\asm{T}/{\equiv} = (T/{\equiv}, |T|,
-\rz_{T/{\equiv}})$ of equivalence classes with $\R{x} \rz_{T/{\equiv}}
-[y]$ if, and only if, $\R{x} \rz_T x$ and $x \equiv y$ for some $x \in
-T$. The quotient map $q : T \to T/{\equiv}$ is realized and is a
-coequalizer of $g, h : \asm{V} \to \asm{T}$ where
+The match between regular epis and quotients is precise in $\AsmA$.
+Note that that in the construction of coequalizers, as described
+above, we may start with an arbitrary equivalence relation: given an
+assembly $\asm{T}$ and an equivalence relation $\equiv$ on~$T$, define
+the \emph{quotient assembly} $\asm{T}/{\equiv} = (T/{\equiv}, |T|,
+\rz_{T/{\equiv}})$ whose realizability relation satisfies $\R{x}
+\rz_{T/{\equiv}} [y]$ if, and only if, $\R{x} \rz_T x$ and $x \equiv
+y$ for some $x \in T$. The quotient map $q : T \to T/{\equiv}$ is
+realized by $\xpcalam{\annot{x}{|T|}}{x}$, and is a coequalizer of $g,
+h : \asm{V} \to \asm{T}$ where\footnote{You should convince yourself
+  that $\asm{V}$ is the \emph{kernel pair} of~$q$, i.e., the pullback
+  of $q$ with itself.}
 %
 \begin{align*}
   \asm{V} &= (\set{(x,y) \in T \times T \such x \equiv y},
@@ -835,8 +844,7 @@ $q : \asm{T} \to \asm{T}/{\equiv}$ because $g : \asm{T} \to
 \asm{T}/{\equiv}$ is the coequalizer of $g$ and $h$ according to
 Section~\ref{sec:cocartesian-structure}.
 
-There is another characterization of regular epis which is usef often
-by the TTE school.
+There is another characterization of regular epis which is used often.
 
 \begin{proposition}
   in $\AsmA$ a morphism $f : \asm{T} \to \asm{U}$ is a regular epi
@@ -855,9 +863,9 @@ by the TTE school.
 
   Suppose first that we have a regular epi $f : \asm{T} \to \asm{U}$
   which is a coequalizer of~$g, h : \asm{S} \to \asm{T}$. Let $q :
-  \asm{T} \to \asm{T}/{\equiv}$ be the coequalier of~$g$ and~$h$, as
+  \asm{T} \to \asm{T}/{\equiv}$ be the coequalizer of~$g$ and~$h$, as
   computed in Section~\ref{sec:cocartesian-structure}. Because~$f$ and
-  $q$ both equalize $g$ and $h$, there exists a unique isomoprhism $i
+  $q$ both equalize $g$ and $h$, there exists a unique isomorphism $i
   : \asm{U} \to \asm{T}/{\equiv}$ such that $q = i \circ f$. Let
   $\R{i} \in \compAtyp{|U| \to |T|}$ be a realizer for~$i$. We claim
   that it has the required properties. If $\R{y} \rz_U y$ then
