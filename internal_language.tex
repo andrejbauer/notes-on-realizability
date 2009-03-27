@@ -899,7 +899,96 @@ There is another characterization of regular epis which is used often.
 \subsection{Factorization of morphisms and regular structure}
 \label{sec:factorization}
 
-% Explicitly state regularity
+In the category of sets every function $f : S \to T$ may be factored
+as $f = e \circ m$ where $e$ is epi and $m$ is mono. Similarly, a
+continuous map between topological spaces may be factored into a
+regular epi and a mono.
+
+In assemblies a realized map $f : \asm{S} \to \asm{T}$ factors as
+%
+\begin{equation*}
+  \xymatrix{
+    {\asm{S}}
+    \ar[rrr]^{f}
+    \ar[rd]_{q}
+    &
+    &
+    &
+    {\asm{T}}
+    \\
+    &
+    {\asm{U}}
+    \ar[r]_{b}
+    &
+    {\asm{V}}
+    \ar[ru]_{i}
+    &
+  }
+\end{equation*}
+%
+where $q$ is a regular epi, $b$ is a mono-epi and $i$ is a regular
+mono. Indeed, we may take $\asm{U} = \asm{S}/{\equiv}$, where $x
+\equiv y \iff f(x) = f(y)$, and $q : \asm{S} \to \asm{S}/{\equiv}$ the
+canonical quotient map. The assembly $\asm{V}$ is the restriction
+of~$\asm{T}$ to the subset $V = \set{y \in T \such \xsome{x}{S}{f(x) =
+    y}}$ so that $|V| = |T|$ and $\R{y} \rz_V y \iff \R{y} \rz_T y$
+for all $y \in V$. The map $i : V \to T$ is the subset inclusion.
+Finally, $b : U \to V$ is characterized by $b([x]_{\equiv}) = f(x)$.
+It is realized by the same realizers as~$f$.
+
+The factorization is unique up to isomorphism. Suppose we had another
+factorization $f = i' \circ b' \circ q'$ where $i'$, $b'$ and $q'$ are
+regular mono, mono-epi, and regular-epi, respectively. We claim that
+there are unique isomorphisms $j$ and $k$ which make the following
+diagram commute:
+%
+\begin{equation*}
+  \xymatrix{
+    {\asm{S}}
+    \ar[rrr]^{f}
+    \ar[rd]^{q}
+    \ar[rdd]_{q'}
+    &
+    &
+    &
+    {\asm{T}}
+    \\
+    &
+    {\asm{U}}
+    \ar[r]^{b}
+    \ar[d]^{j}
+    &
+    {\asm{V}}
+    \ar[ru]^{i}
+    \ar[d]_{k}
+    &
+    \\
+    &
+    {\asm{U}'}
+    \ar[r]_{b'}
+    &
+    {\asm{V}'}
+    \ar[ruu]_{i'}
+    &    
+  }
+\end{equation*}
+%
+Without loss of generality we may assume that $q'$ is a canonical
+quotient map $q' : \asm{S} \to \asm{S}/{\equiv'}$ for an equivalence
+relation~$\equiv'$ on~$S$, and that $i' : V' \to T$ is a subset
+inclusion.
+
+First we show that $\equiv$ and $\equiv'$ coincide. If $x \equiv y$
+then $i'(b'(q'(x))) = f(x) = f(y) = i'(b'(q'(y)))$, and since $i'
+\circ b'$ is a mono $q'(x) = q'(y)$ and $x \equiv' y$ follows.
+Conversely, if $x \equiv' y$ then $q'(x) = q'(y)$ and $f(x) =
+i'(b'(q'(x))) = i'(b'(q'(y))) = f(y)$, hence $x \equiv y$.
+
+Next we verify that $V$ and $V'$ are equal. If $y \in V$ then $f(x) =
+y$ for some $x \in S$.
+
+
+% explicitly state regularity
 
 \subsection{Cartesian closed structure}
 \label{sec:ccc}
