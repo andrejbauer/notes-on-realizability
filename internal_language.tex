@@ -244,6 +244,7 @@ limits is called \emph{cartesian} or \emph{finitely
   \emph{left exact} or just \emph{lex}.}
 
 \begin{proposition}
+  \label{prop:asm-cartesian}%
   The categories $\AsmA$ and $\Mod{\AA, \compAA}$ are cartesian.
 \end{proposition}
 
@@ -847,6 +848,7 @@ Section~\ref{sec:cocartesian-structure}.
 There is another characterization of regular epis which is used often.
 
 \begin{proposition}
+  \label{prop:reg-epi-when}%
   in $\AsmA$ a morphism $f : \asm{T} \to \asm{U}$ is a regular epi
   if, and only if, there exists $\R{i} \in \compAtyp{|U| \to |T|}$
   such that, whenever $\R{y} \rz_U y$ then $\defined{\R{i}\;\R{y}}$
@@ -936,6 +938,11 @@ for all $y \in V$. The map $i : V \to T$ is the subset inclusion.
 Finally, $b : U \to V$ is characterized by $b([x]_{\equiv}) = f(x)$.
 It is realized by the same realizers as~$f$.
 
+In the above factorization we call $\asm{U}$ the \emph{image} of~$f$
+and $\asm{V}$ the \emph{stable image} of~$f$. The reason for the
+terminology is revealed in Section~{internal-epi-reg-epi}, where the
+stable image is related to stable propositions.
+
 The factorization is unique up to isomorphism. Suppose we had another
 factorization $f = i' \circ b' \circ q'$ where $i'$, $b'$ and $q'$ are
 regular mono, mono-epi, and regular-epi, respectively. We claim that
@@ -985,13 +992,84 @@ Conversely, if $x \equiv' y$ then $q'(x) = q'(y)$ and $f(x) =
 i'(b'(q'(x))) = i'(b'(q'(y))) = f(y)$, hence $x \equiv y$.
 
 Next we verify that $V$ and $V'$ are equal. If $y \in V$ then $f(x) =
-y$ for some $x \in S$.
+y$ for some $x \in S$. Because $y = f(x) = i'(b'(q'(x)))$ and $i'$ is
+a subset inclusion, $b'(q'(x)) = f(x) = y$, which shows that $y \in
+V'$. Conversely, if $y \in V'$ then there is $x \in S$ such that $y =
+i'(b'(q'(x))) = f(x)$, but then $y \in V$.
 
+Good factorization properties of $\AsmA$ lead to another important
+feature of assemblies.
 
-% explicitly state regularity
+\begin{proposition}
+  \label{prop:asm-regular}%
+  The category $\AsmA$ is \emph{regular},\footnote{Note that there are
+    several definitions of ``regular category'', but they all agree
+    once we assume the existence of finite limits.} which means that
+  %
+  \begin{enumerate}
+  \item it is cartesian,
+  \item every morphism can be factored as a composition of a regular
+    epi and a mono, and
+  \item the pullback of a regular epi is a regular epi.
+  \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+  The first item was proved in Proposition~\ref{prop:asm-cartesian}.
+  For the second item, take the above factorization $f = i \circ b
+  \circ q$ and notice that $q$ is a regular epi and $i \circ b$ a
+  mono. Lastly, suppose $q : \asm{T} \to \asm{T}/{\equiv}$ is a
+  regular epi, where we assumed without loss of generality that it is
+  a quotient by an equivalence relation. Let $f : \asm{S} \to
+  \asm{T}/{\equiv}$ be realized by~$\R{f} \in \compAtyp{|S| \to |T|}$.
+  The pullback of~$q$ is the map $r : \asm{P} \to \asm{S}$, as in the
+  diagram
+  %
+  \begin{equation*}
+    \xymatrix{
+      {\asm{P}} \pbcorner
+      \ar[r]
+      \ar[d]_{r}
+      &
+      {\asm{T}}
+      \ar[d]^{q}
+      \\
+      {\asm{S}}
+      \ar[r]_{f}
+      &
+      **[r]{\asm{T}/{\equiv}}
+      }
+  \end{equation*}
+  %
+  where
+  %
+  \begin{equation*}
+    \asm{P} = (\set{(x,y) \in S \times T \such f(x) \equiv y},
+               |S| \times |T|, {\rz_P}),
+  \end{equation*}
+  %
+  $\combPair\;\R{x}\;\R{y} \rz_P (x,y)$ if, and only if, $\R{x} \rz_S
+  x$ and $\R{y} \rz_T y$ and $r : (x,y) \mapsto x$. Let us use
+  Proposition~\ref{prop:reg-epi-when} to show that~$r$ is regular epi.
+  The realizer $\R{i} =
+  \pcalam{\annot{x}{|S|}}{\combPair\;x\;(\R{f}\;x)}$ satisfies the
+  conditions of the proposition: if $x \in S$ and $\R{x} \rz_S x$ then
+  $\R{i}\;\R{x} = \combPair\;\R{x}\;(\R{f}\;\R{x})$ is defined. There
+  is $y \in T$ such that $f(x) = [y]_{\equiv}$, hence $r (x, y) = x$,
+  and also $\R{i}\;\R{x} \rz_P (x, y)$.
+\end{proof}
+
+The regular structure of assemblies is important for at least two
+reasons: it gives a well-defined notion of an image of a realized map,
+and it provides an interpretation of existential quantifiers, cf.\
+Section~\ref{sec:realizability-interpretation}.
+
 
 \subsection{Cartesian closed structure}
 \label{sec:ccc}
+
+% realte to u-t-m.
+
 
 \subsection{Families of assemblies}
 \label{sec:dependent-types}
