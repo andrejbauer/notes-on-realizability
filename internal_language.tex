@@ -1068,7 +1068,116 @@ Section~\ref{sec:realizability-interpretation}.
 \subsection{Cartesian closed structure}
 \label{sec:ccc}
 
-% realte to u-t-m.
+
+If~$S$ and~$T$ are objects in a category, we may form the \emph{set}
+$\Hom{S, T}$ of morphisms with domain $S$ and codomain $T$. Sometimes
+$\Hom{S, t}$ may be equipped with additional structure that turns it
+into an object of the category. For example, if $S$ and $T$ are
+abelian groups, then $\Hom{S,T}$ is the set of group homormophisms $S
+\to T$, which is again an abelian group in which the operations are
+defined pointwise: $0(x) = 0_B$, $(f + g)(x0 = f(x) + g(x)$, and
+$(-f)(x) = -f(x)$. If $S$ and $T$ are topological spaces, then
+$\Hom{S,T}$ is the set of continuous maps $S \to T$, which may be
+equipped with the compact-open topology. The following definition
+explains what it means for an object to correspond to the the set of
+morphisms.
+
+\begin{definition}
+  An \emph{exponential} of objects $S$ and $T$ is an object $E$ with a
+  morphism $e : E \times S \to T$, such that for every $f : U \times S
+  \to T$ there exists a \emph{unique} $\curry{f} : U \to E$ such that
+  the following diagram commutes:
+  %
+  \begin{equation*}
+    \xymatrix@+0.5em{
+      {E \times S}
+      \ar[rd]^{e}
+      &
+      \\
+      {U \times S}
+      \ar[r]_{f}
+      \ar[u]^{\curry{f} \times \id_S}
+      &
+      {T}
+    }
+  \end{equation*}
+  %
+  A category with finite products in which all exponentials exist is a
+  \emph{cartesian closed category (ccc)}.
+\end{definition}
+
+\noindent
+%
+The exponential is determined uniquely up to isomorphism. When given
+as an operation, we denote the exponential of $S$ and $T$ by $T^S$.
+The map $e : T^S \times S \to T$ is called the \emph{evaluation
+  morphism}. The map $\curry{f} : U \to T^S$ is called the
+\emph{transpose} of $f : U \times S \to T$.
+
+Let us explain how exponentials work in the category of sets. The
+exponential of sets $S$ and $T$ is the set
+%
+\begin{equation*}
+  T^S = \set{f \such \text{$f$ is a function from $S$ to $T$}}
+\end{equation*}
+%
+and the evaluation map is $e(f,x) = f(x)$. The transpose of $f : U
+\times S \to T$ is $\curry{f}(z)(x) = f (z, x)$. This way the diagram
+commutes because $e((\curry{f} \times \id_S)(z, x)) = e(\curry{f}(z),
+x) = \curry{f}(z)(x) = f(z,x)$. The transpose $\curry{f}$ is the only
+map satisfying this property.
+
+\begin{proposition}
+  The categories $\AsmA$ and $\ModA$ are cartesian closed.
+\end{proposition}
+
+\begin{proof}
+  We prove that $\AsmA$ has exponentials. The same construction works
+  for modest sets. Suppose~$\asm{S}$ and~$\asm{T}$ are assemblies.
+  Define the assembly
+  %
+  \begin{equation*}
+    \asm{T}^{\asm{S}} =
+    (\set{f : S \to T \such \text{$f$ is realized}},
+     |S| \to |T|, {\rz_{S \to T}})
+  \end{equation*}
+  %
+  where
+  %
+  \begin{equation*}
+    \R{f} \rz_{S \to T} f
+    \iff
+    \xall{x}{S}{
+      \all{\R{x}}{|S|}{
+          \R{x} \rz_S x \implies
+          \defined{\R{f}\;\R{x}} \land
+          \R{f}\;\R{x} \rz_T f(x)
+        }
+      }.
+  \end{equation*}
+  %
+  None of this is surprising because we just copied the definition of
+  realized maps. The evaluation map $e : \asm{T}^{\asm{S}} \times
+  \asm{S} \to \asm{T}$ is $e(f, x) = f(x)$, which is realized by
+  %
+  \begin{equation*}
+    \R{e} = \pcalam{\annot{p}{(|S| \to |T|) \times |S| \to
+      |T|}}{(\combFst\;p)\;(\combSnd\;p)}.
+  \end{equation*}
+  %
+  The transpose of $f : \asm{U} \times \asm{S} \to \asm{T}$, realized
+  by $\R{f}$, is the map $\curry{f}(z)(x) = f(z,x)$, which is realized
+  by
+  %
+  \begin{equation*}
+    \R{\curry{f}} = \pcalam{\annot{z}{|U|} \; \annot{x}{|S|}}{
+      \R{f}\;(\combPair\;z\;x)
+    }.
+  \end{equation*}
+\end{proof}
+
+It is instructive to look at the construction of exponentials in case
+of (untyped) PCA, say the second Kleene algebra~$\Baire$.
 
 
 \subsection{Families of assemblies}
