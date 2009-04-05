@@ -780,8 +780,8 @@ equalizer. Regular monos are well behaved, and we can think of them as
 subspace embeddings. Given an assembly $\asm{T}$ and a subset $T'
 \subseteq T$, define the assembly $\asm{T}' = (T', |T|, {\rz_{T'}})$
 as the restriction of $\asm{T}$, i.e., $\R{x} \rz_{T'} x$ if, and only
-if $x \in T'$ and $\R{x} \rz_T x$. The subset inclusion $i : T' \to T$
-is a morphism of assemblies because it is realized by
+if $x \in T'$ and $\R{x} \rz_T x$. The subset inclusion $\iota : T'
+\to T$ is a morphism of assemblies because it is realized by
 $\xpcalam{\annot{x}{|T|}}{x}$, and it is a regular mono because it is
 the equalizer of the maps $g, h : T \to \nabla \two$, defined by
 %
@@ -807,8 +807,53 @@ restriction of $\asm{T}$ to the subset
   T' = \set{x \in T \such g(x) = h(x)}.
 \end{equation*}
 % 
-Since both $i : \asm{T}' \to \asm{T}$ and $f : \asm{S} \to \asm{T}$
-are equalizers of $g$ and $h$, they are isomorphic.
+Since both $\iota : \asm{T}' \to \asm{T}$ and $f : \asm{S} \to
+\asm{T}$ are equalizers of $g$ and $h$, they are isomorphic.
+
+The following characterization of regular monos is often useful.
+
+\begin{proposition}
+  \label{prop:reg-mono-when}%
+  A realized map $f : \asm{S} \to \asm{T}$ is a regular mono if, and
+  only if, $f$ is injective and there exists $\R{i} \in \compAtyp{|T|
+    \to |S|}$ such that, for all $x \in S$ and $\R{y} \in \Atyp{|T|}$,
+  if $\R{y} \rz_T f(x)$ then $\R{i}\;\R{y}$ is defined and
+  $\R{i}\;\R{y} \rz_S x$.
+\end{proposition}
+
+\begin{proof}
+  A regular mono $f : \asm{S} \to \asm{T}$ is injective because it is
+  mono. There exist realized maps $g, h : \asm{T} \to \asm{U}$ such
+  that~$f$ is their equalizer. Let $e : \asm{E} \to \asm{T}$ be the
+  equalizer of~$g$ and~$h$, as computed in~\eqref{eq:asm-equalizer}:
+  %
+  \begin{align*}
+    \asm{E} &= (\set{y \in T \such g(y) = h(y)}, |T|, {\rz_E}), \\
+    \R{y} \rz_E y &\iff \R{y} \rz_T y, \\
+    e(y) &= y.
+  \end{align*}
+  %
+  Because $e$ equalizes $g$ and $h$, there is a realized map $i :
+  \asm{E} \to \asm{S}$ such that $e = f \circ i$. We claim that any
+  realizer $\R{i} \in \compAtyp{|T| \to |S|}$ of~$i$ has the desired
+  property. Suppose $x \in S$, $\R{y} \in \Atyp{|T|}$, and $\R{y}
+  \rz_T f(x)$. Because $g(f(x)) = h(f(x))$, $f(x) \in E$ and so $\R{y}
+  \rz_E f(x)$. Then $\R{i}\;\R{y}$ is defined and $\R{i}\;\R{y} \rz_S
+  i(f(x))$. This is what we want because $f(i(f(x))) = e(f(x)) =
+  f(x)$, from which $i(f(x)) = x$ follows by injectivity of~$f$.
+
+  Conversely, suppose $f : \asm{S} \to \asm{T}$ is injective, realized
+  by~$\R{f}$, and $\R{i}$ is as in statement of the proposition. Let
+  $T' = \set{y \in T \such \xsome{x}{S}{f(x) = y}}$. It suffices to
+  show that $f$ is isomorphic to the inclusion $\iota : \asm{T}' \to
+  \asm{T}$, where $\asm{T}'$ is the restriction of~$\asm{T}$ to $T'$.
+  The map $j : \asm{S} \to \asm{T}'$ defined by $j(x) = f(x)$ is
+  realized by $\R{f}$. The map $i : \asm{T}' \to \asm{S}$, defined by
+  $i(f(x)) = x$, is well defined because~$f$ is injective, and is
+  realized by $\R{i}$. Clearly, $j$ and $i$ are inverses of each other
+  and $f = \iota \circ j$.
+\end{proof}
+
 
 We repeat the story for \emph{regular epis}, which are those morphisms
 that are coequalizers. They are the well behaved epis which can be
@@ -940,8 +985,8 @@ It is realized by the same realizers as~$f$.
 
 In the above factorization we call $\asm{U}$ the \emph{image} of~$f$
 and $\asm{V}$ the \emph{stable image} of~$f$. The reason for the
-terminology is revealed in Section~{internal-epi-reg-epi}, where the
-stable image is related to stable propositions.
+terminology is revealed in Section~\ref{internal-epi-reg-epi}, where
+the stable image is related to stable propositions.
 
 The factorization is unique up to isomorphism. Suppose we had another
 factorization $f = i' \circ b' \circ q'$ where $i'$, $b'$ and $q'$ are
@@ -1071,16 +1116,15 @@ Section~\ref{sec:realizability-interpretation}.
 
 If~$S$ and~$T$ are objects in a category, we may form the \emph{set}
 $\Hom{S, T}$ of morphisms with domain $S$ and codomain $T$. Sometimes
-$\Hom{S, t}$ may be equipped with additional structure that turns it
-into an object of the category. For example, if $S$ and $T$ are
-abelian groups, then $\Hom{S,T}$ is the set of group homormophisms $S
-\to T$, which is again an abelian group in which the operations are
-defined pointwise: $0(x) = 0_B$, $(f + g)(x0 = f(x) + g(x)$, and
-$(-f)(x) = -f(x)$. If $S$ and $T$ are topological spaces, then
-$\Hom{S,T}$ is the set of continuous maps $S \to T$, which may be
-equipped with the compact-open topology. The following definition
-explains what it means for an object to correspond to the the set of
-morphisms.
+$\Hom{S, T}$ carries additional structure that turns it into an object
+of the category. For example, if $S$ and $T$ are abelian groups, then
+$\Hom{S,T}$ is the set of group homormophisms $S \to T$, which is
+again an abelian group in which the operations are defined pointwise:
+$0(x) = 0_B$, $(f + g)(x0 = f(x) + g(x)$, and $(-f)(x) = -f(x)$. If
+$S$ and $T$ are topological spaces, then $\Hom{S,T}$ is the set of
+continuous maps $S \to T$, which may be equipped with the compact-open
+topology. The following definition explains what it means for an
+object to correspond to the the set of morphisms.
 
 \begin{definition}
   An \emph{exponential} of objects $S$ and $T$ is an object $E$ with a
@@ -1109,10 +1153,10 @@ morphisms.
 \noindent
 %
 The exponential is determined uniquely up to isomorphism. When given
-as an operation, we denote the exponential of $S$ and $T$ by $T^S$.
-The map $e : T^S \times S \to T$ is called the \emph{evaluation
-  morphism}. The map $\curry{f} : U \to T^S$ is called the
-\emph{transpose} of $f : U \times S \to T$.
+as an operation, we denote the exponential of $S$ and $T$ by $T^S$,
+and sometimes by $S \to T$. The map $e : T^S \times S \to T$ is called
+the \emph{evaluation morphism}. The map $\curry{f} : U \to T^S$ is
+called the \emph{transpose} of $f : U \times S \to T$.
 
 Let us explain how exponentials work in the category of sets. The
 exponential of sets $S$ and $T$ is the set
@@ -1128,6 +1172,7 @@ x) = \curry{f}(z)(x) = f(z,x)$. The transpose $\curry{f}$ is the only
 map satisfying this property.
 
 \begin{proposition}
+  \label{prop:asm-ccc}%
   The categories $\AsmA$ and $\ModA$ are cartesian closed.
 \end{proposition}
 
@@ -1176,9 +1221,228 @@ map satisfying this property.
   \end{equation*}
 \end{proof}
 
-It is instructive to look at the construction of exponentials in case
-of (untyped) PCA, say the second Kleene algebra~$\Baire$.
+The passage from $f : \asm{U} \times \asm{S} \to \asm{T}$ to its
+transpose $\curry{f} : \asm{U} \to \asm{T}^{\asm{S}}$ has an inverse.
+To every $g : \asm{U} \to \asm{T}^{\asm{S}}$ we may assign
+$\uncurry{g} : \asm{U} \times \asm{S} \to \asm{T}$, defined by
+$\uncurry{g}(z,x) = g(z)(x)$. If $g$ is realized by $\R{g}$ then
+$\uncurry{g}$ is realized by $\uncurry{\R{g}} = \pcalam{\annot{p}{|U|
+    \times |S|}}{\R{g}\;(\combFst\;p)\;(\combSnd\;p)}$. It is easy to
+check that $\uncurry{\curry{f}} = f$ and $\curry{\uncurry{g}} = g$.
+The operation $f \mapsto \curry{f}$ is also known as \emph{currying}
+and its inverse $g \mapsto \uncurry{g}$ as \emph{uncurrying}.
 
+Currying and uncurrying are useful operations, but the above notation
+with ``hats and checks'' is not very practical. We may take better
+advantage of the cartesian closed structure of $\AsmA$ by interpreting
+the $\lambda$-calculus in it. The types of the $\lambda$-calculus are
+the assemblies, where the product and function types are interpreted
+as products and exponentials of assemblies, respectively. The unit
+type is the terminal assembly~$\one$. The expressions are those of the
+$\lambda$-calculus. In addition if $\asm{T}$ is an assembly and $a \in
+T$ is an element for which there exits a realizer $\R{a} \in
+\compAtyp{|T|}$ then~$a$ is a primitive constant of type~$\asm{T}$.
+
+Suppose $e$ is an expression of type~$\asm{T}$ and the freely
+occurring variables of~$e$ are among $\annot{x_1}{\asm{S}_1}, \ldots,
+\annot{x_n}{\asm{S}_n}$. We prefer to write the list of variables as
+$x_1 : \asm{S}_1, \ldots, x_n : \asm{S}_n$, which we abbreviate as
+$\overline{x} : \overline{\asm{S}}$, and call it a \emph{typing
+  context} for~$e$. The expression with the typing context determines
+a realized map
+%
+\begin{equation*}
+  \sem{\overline{x} : \overline{\asm{S}} \ctx e : \asm{T}} :
+  \asm{S}_1 \times \cdots \times \asm{S}_n \to \asm{T},
+\end{equation*}
+%
+defined inductively as follows, where $a = (a_1, \ldots, a_n) \in S_1
+\times \cdots \times S_n$:
+%
+\begin{enumerate}
+\item A primitive constant $b \in \asm{T}$ which is realized by $\R{b}
+  \in \compAtyp{|T|}$ is interpreted as the constant map
+  %
+  \begin{equation*}
+    \sem{\overline{x} : \overline{\asm{S}} \ctx b : \asm{T}}(a) = b,
+  \end{equation*}
+  %
+  which is realized\footnote{Had we allowed as primitive constants
+    \emph{all} elements of~$\asm{T}$, we would face a difficulty here,
+    because we could not exhibit a computable realizer for the
+    constant map.} by $\xpcalam{\annot{x}{|S_1| \times \cdots \times
+      |S_n|}}{\R{b}}$.
+\item A variable $\annot{x_i}{\asm{S}_i}$ is interpreted as the $i$-th
+  projection
+  %
+  \begin{equation*}
+    \sem{\overline{x} : \overline{\asm{S}} \ctx x_i : \asm{S}_i}(a) = a_i.
+  \end{equation*}
+  %
+  which of course is realized.
+\item A $\lambda$-abstraction $\xtlam{y}{\asm{U}}{e}$ of type $\asm{U}
+  \to \asm{T}$ is interpred as follows. Let $f : \asm{S}_1 \times
+  \cdots \asm{S}_n \times \asm{U} \to \asm{T}$ be the interpretation
+  of $e$ in context $y : \asm{U}, \overline{x} : \overline{S}$. Then
+  %
+  \begin{equation*}
+    \sem{\overline{x} : \overline{\asm{S}} \ctx
+      (\xtlam{y}{\asm{U}}{e}) : \asm{U} \to \asm{T}} =
+    \curry{f}
+  \end{equation*}
+  %
+  where $\curry{f} : \asm{S}_1 \times \cdots \asm{S}_n \to
+  \asm{T}^{\asm{U}}$ is the transpose of~$f$. The transpose
+  $\curry{f}$ is realized because $f$ is realized by the induction
+  hypothesis.
+  %
+\item The interpretation of an application $e_1\;e_2$, where $e_1$ has
+  type $\asm{U} \to \asm{T}$ and $e_2$ has type $\asm{U}$, is the map
+  %
+  \begin{equation*}
+    \sem{\overline{x} : \overline{\asm{S}} \ctx
+      e_1\;e_2 : \asm{T}} =
+    \sem{\overline{x} : \overline{\asm{S}} \ctx
+      e_1 : \asm{U} \to \asm{T}}(a)(
+    \sem{\overline{x} : \overline{\asm{S}} \ctx
+      e_2 : \asm{U}}(a)
+    ),
+  \end{equation*}
+  %
+  which is realized by $\xpcalam{\annot{x}{|S_1| \times \cdots \times
+      |S_n|}}{(\R{e}_1\;x)\; (\R{e}_2\;x)}$, where $\R{e}_1$ and
+  $\R{e}_2$ realize $\sem{\overline{x} : \overline{\asm{S}} \ctx e_1 :
+    \asm{U} \to \asm{T}}$ and $\sem{\overline{x} : \overline{\asm{S}}
+    \ctx e_2 : \asm{U}}$, respectively.
+\item The interpretation of a pair $(e_1, e_2)$ of type $\asm{T}
+  \times \asm{U}$ is the map
+  %
+  \begin{equation*}
+    \sem{\overline{x} : \overline{\asm{S}} \ctx
+      (e_1, e_2) : \asm{T} \times \asm{U}}(a) =
+    (\sem{\overline{x} : \overline{\asm{S}} \ctx
+      (e_1, e_2) : \asm{T}}(a),
+    \sem{\overline{x} : \overline{\asm{S}} \ctx
+      (e_1, e_2) : \asm{U}}(a)),
+  \end{equation*}
+  %
+  which is realized by $\xpcalam{\annot{x}{|S_1| \times \cdots \times
+      |S_n|}}{\combPair \; (\R{e}_1\;x)\; (\R{e}_2\;x)}$, where $\R{e}_1$
+  and $\R{e}_2$ realize $\sem{\overline{x} : \overline{\asm{S}} \ctx
+    e_1 : \asm{T}}$ and $\sem{\overline{x} : \overline{\asm{S}} \ctx
+    e_2 : \asm{U}}$, respectively.
+\item A projection $\combFst\;e$ of type $\asm{T}$, where $e$ has type
+  $\asm{T} \times \asm{U}$, is the map
+  %
+  \begin{equation*}
+    \sem{\overline{x} : \overline{\asm{S}} \ctx
+      \combFst\;e : \asm{T}}(a) =
+    \pi_1 (\sem{\overline{x} : \overline{\asm{S}} \ctx e : \asm{T} \times \asm{U}}),
+  \end{equation*}
+  %
+  which is realized by $\xpcalam{\annot{x}{|S_1| \times \cdots \times
+      |S_n|}}{\combFst \; \R{e}}$, where $\R{e}$ is a realizer for
+  $\sem{\overline{x} : \overline{\asm{S}} \ctx e : \asm{T} \times
+    \asm{U}}$. The second projection $\combSnd$ is treated
+  analogously.
+\end{enumerate}
+%
+This rather long definition shows that we may freely use
+$\lambda$-calculus to define realized maps. Although the definition
+tells us exactly how to compute the realizers from the expressions,
+the idea is to \emph{not} do that. We have verified once and for all
+that any map defined by $\lambda$-calculus is realized, which is all
+we need to know in most cases.
+
+
+We may further simplify the notation by allowing \emph{patterns} in
+$\lambda$-abstraction---a technique commonly used in functional
+programming languages. Instead of
+%
+\begin{equation*}
+  \xtlam{p}{\asm{S} \times \asm{T}}{\ldots}
+\end{equation*}
+%
+we write
+%
+\begin{equation*}
+  \xtlam{(x,y)}{\asm{S} \times \asm{T}}{\ldots}
+\end{equation*}
+%
+and replace each occurrence of $\combFst\;p$ by $x$, of $\combSnd\;p$
+by $y$, and all other occurrences of~$p$ by $(x,y)$. For instance, we
+would write
+%
+\begin{equation*}
+  \xtlam{(f,g)}{(\asm{T} \to \asm{U}) \times (\asm{S} \to \asm{T})}{
+    \xtlam{x}{\asm{S}}{f\;(g\;x)}}
+\end{equation*}
+%
+instead of
+%
+\begin{equation*}
+  \xtlam{p}{(\asm{T} \to \asm{U}) \times (\asm{S} \to \asm{T})}{
+    \xtlam{x}{\asm{S}}{(\combFst\;p)\;(\combSnd\;p\;x)}}.
+\end{equation*}
+
+When $\AsmA$ has coproducts, and in most cases of interest it does,
+the $\lambda$-calculus may be extended further to encompass binary
+sums. If $\asm{S}$ and $\asm{T}$ are assemblies, viewed as types, then
+we have the following expressions:
+%
+\begin{enumerate}
+\item If $e$ has type $\asm{S}$ then $\combLeft_{S,T}\; e$ has type
+  $\asm{S} + \asm{T}$.
+\item If $e$ has type $\asm{S}$ then $\combRight_{S,T}\; e$ has type
+  $\asm{S} + \asm{T}$.
+\item If $e_1$ has type $\asm{S} + \asm{T}$.
+\end{enumerate}
+%
+The following equations hold:
+%
+\begin{align*}
+  (\case{\combLeft\;e}{x}{e_1}{y}{e_2}) &=
+  \subst{e_1}{x \subto e}, \\
+  (\case{\combRight\;e}{x}{e_1}{y}{e_2}) &=
+  \subst{e_2}{y \subto e}, \\
+  (\case{u}{x}{\combLeft\;x}{y}{\combRight\;y}) &= u.
+\end{align*}
+%
+Let us demonstrate the usefulness of $\lambda$-calculus by proving the
+distributive law
+%
+\begin{equation*}
+  (\asm{S} + \asm{T}) \times \asm{U} \cong
+  (\asm{S} \times \asm{U}) + (\asm{T} \times \asm{U}).
+\end{equation*}
+%
+in two ways: using the universal properties and by $\lambda$-calculus.
+
+The proof by universal properties goes as follows:
+%
+\begin{equation*}
+  ddd
+\end{equation*}
+
+The isomorphism from left to right is
+%
+\begin{equation*}
+  f = \xtlam{(a,b)}{(\asm{S} + \asm{T}) \times \asm{U}}{
+    \xcase{a}
+    {\iota_1(x)}{\iota_1(x, b)}
+    {\iota_2(y)}{\iota_2(y, b)}
+  }
+\end{equation*}
+%
+and its inverse is
+%
+\begin{equation*}
+  g = \xtlam{c}{(\asm{S} \times \asm{U}) + (\asm{T} \times \asm{U})}{
+    \xcase{c}
+    {\iota_1(x,b)}{(\iota_1(x), b)}
+    {\iota_2(y,b)}{(\iota_2(y), b)}
+  }
+\end{equation*}
 
 \subsection{Families of assemblies}
 \label{sec:dependent-types}
