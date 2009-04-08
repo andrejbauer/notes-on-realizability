@@ -250,6 +250,53 @@
 
 \newcommand{\CanProj}[1]{\mathsf{Proj}(#1)}
 
+% Adjunctions
+
+% Adjunction as a two-way rule
+\newcommand{\adjunction}[2]{%
+  \begin{tabular}{c}
+    $#1$ \\
+    \noalign{
+      \vskip 2pt      
+      \hrule
+      \vskip 1pt      
+      \hrule
+      \vskip 2pt      
+      }
+    $#2$
+  \end{tabular}
+  }
+
+\newcommand{\adjunctionx}[3]{%
+  \begin{tabular}{c}
+    $#1$ \\
+    \noalign{
+      \vskip 2pt      
+      \hrule
+      \vskip 1pt
+      \hrule
+      \vskip 2pt      
+      }
+    $#2$ \\
+    \noalign{
+      \vskip 2pt      
+      \hrule
+      \vskip 1pt
+      \hrule
+      \vskip 2pt      
+      }
+    $#3$
+  \end{tabular}
+  }
+
+\newcommand{\adjrule}{\noalign{\vskip 2pt \hrule \vskip 1pt \hrule \vskip 2pt}}
+
+\newcommand{\longadjunction}[1]{
+\begin{tabular}{>{$}c<{$}}
+#1
+\end{tabular}
+}
+
 
 
 %%% Local Variables: 

@@ -560,14 +560,29 @@ a topological subbasis for~$X$.
   \end{equation*}
   %
   We claim that $e_X$ is a pre-embedding. It is continuous because
-  $\invim{e_X}(\upper{n}) = U_n$. Let $V \subseteq X$ be open. Then $V =
-  \tbigcup_i U_{n_i}$ for some sequence $(n_i)_{i \in \NN}$. Now
+  $\invim{e_X}(\upper{n}) = U_n$. Let $V \subseteq X$ be open. Then 
+  $V$ is a union of finite intersections of subbasic opens,
   %
   \begin{equation*}
-    \invim{e_X}(\tbigcup_i \upper{n_i}) =
-      \tbigcup_i \invim{e_X}(\upper{n_i}) =
-      \tbigcup_i U_{n_i} = V,
+    V = \tbigcup_i U_{n_{i,1}} \cap \cdots \cap U_{n_{i,k_i}}
   \end{equation*}
+  %
+  Now
+  %
+  \begin{align*}
+    \invim{e_X}\left(\tbigcup_i \upper{\set{n_{i,1}, \ldots, n_{i,k_i}}}\right) &=
+      \tbigcup_i \invim{e_X}(\upper{\set{n_{i,1}, \ldots, n_{i,k_i}}})
+      \\
+      &=
+      \tbigcup_i \invim{e_X}(\upper{n_{i,1}} \cap \cdots \cap \upper{n_{i,k_i}})
+      \\
+      &=
+      \tbigcup_i \invim{e_X}(\upper{n_{i,1}}) \cap \cdots \cap \invim{e_X}(\upper{n_{i,k_i}})
+      \\
+      &=
+      \tbigcup_i U_{n_{i,1}} \cap \cdots \cap U_{n_{i,k_i}} \\
+      &= V,
+  \end{align*}
   %
   therefore $\invim{e_X}$ is surjective, as required.
 \end{proof}
