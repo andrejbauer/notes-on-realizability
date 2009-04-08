@@ -1258,8 +1258,10 @@ a realized map
   \asm{S}_1 \times \cdots \times \asm{S}_n \to \asm{T},
 \end{equation*}
 %
-defined inductively as follows, where $a = (a_1, \ldots, a_n) \in S_1
-\times \cdots \times S_n$:
+which we abbreviate to $\sem{e}$ when no confusion may arise. We
+define the meaning of $\sem{e}$ inductively on the structure of~$e$ as
+follows, where $a = (a_1, \ldots, a_n) \in S_1 \times \cdots \times
+S_n$:
 %
 \begin{enumerate}
 \item A primitive constant $b \in \asm{T}$ which is realized by $\R{b}
@@ -1283,86 +1285,76 @@ defined inductively as follows, where $a = (a_1, \ldots, a_n) \in S_1
   %
   which of course is realized.
 \item A $\lambda$-abstraction $\xtlam{y}{\asm{U}}{e}$ of type $\asm{U}
-  \to \asm{T}$ is interpred as follows. Let $f : \asm{S}_1 \times
-  \cdots \asm{S}_n \times \asm{U} \to \asm{T}$ be the interpretation
-  of $e$ in context $y : \asm{U}, \overline{x} : \overline{S}$. Then
+  \to \asm{T}$ is interpreted as the transpose of the map
   %
   \begin{equation*}
-    \sem{\overline{x} : \overline{\asm{S}} \ctx
-      (\xtlam{y}{\asm{U}}{e}) : \asm{U} \to \asm{T}} =
-    \curry{f}
+    \sem{\overline{x} : \overline{\asm{S}}, y : \asm{U} \ctx e : \asm{T}}.
   \end{equation*}
-  %
-  where $\curry{f} : \asm{S}_1 \times \cdots \asm{S}_n \to
-  \asm{T}^{\asm{U}}$ is the transpose of~$f$. The transpose
-  $\curry{f}$ is realized because $f$ is realized by the induction
-  hypothesis.
   %
 \item The interpretation of an application $e_1\;e_2$, where $e_1$ has
   type $\asm{U} \to \asm{T}$ and $e_2$ has type $\asm{U}$, is the map
   %
   \begin{equation*}
-    \sem{\overline{x} : \overline{\asm{S}} \ctx
-      e_1\;e_2 : \asm{T}} =
-    \sem{\overline{x} : \overline{\asm{S}} \ctx
-      e_1 : \asm{U} \to \asm{T}}(a)(
-    \sem{\overline{x} : \overline{\asm{S}} \ctx
-      e_2 : \asm{U}}(a)
-    ),
+    \xymatrix@+2em{
+      **[l]{\asm{S}_1 \times \cdots \times \asm{S}_n}
+      \ar[r]^{\pair{\sem{e_1}, \sem{e_2}}}
+      &
+      {\asm{T}^{\asm{U}} \times \asm{U}}
+      \ar[r]^{\mathsf{ev}}
+      &
+      {\asm{T}}      
+    }
   \end{equation*}
   %
-  which is realized by $\xpcalam{\annot{x}{|S_1| \times \cdots \times
-      |S_n|}}{(\R{e}_1\;x)\; (\R{e}_2\;x)}$, where $\R{e}_1$ and
-  $\R{e}_2$ realize $\sem{\overline{x} : \overline{\asm{S}} \ctx e_1 :
-    \asm{U} \to \asm{T}}$ and $\sem{\overline{x} : \overline{\asm{S}}
-    \ctx e_2 : \asm{U}}$, respectively.
+  where $\mathsf{ev}$ is the evaluation map.
 \item The interpretation of a pair $(e_1, e_2)$ of type $\asm{T}
   \times \asm{U}$ is the map
   %
   \begin{equation*}
-    \sem{\overline{x} : \overline{\asm{S}} \ctx
-      (e_1, e_2) : \asm{T} \times \asm{U}}(a) =
-    (\sem{\overline{x} : \overline{\asm{S}} \ctx
-      (e_1, e_2) : \asm{T}}(a),
-    \sem{\overline{x} : \overline{\asm{S}} \ctx
-      (e_1, e_2) : \asm{U}}(a)),
+    \xymatrix@+2em{
+      **[l]{\asm{S}_1 \times \cdots \times \asm{S}_n}
+      \ar[r]^{\pair{\sem{e_1}, \sem{e_2}}}
+      &
+      {\asm{T} \times \asm{U}}
+    }
   \end{equation*}
   %
-  which is realized by $\xpcalam{\annot{x}{|S_1| \times \cdots \times
-      |S_n|}}{\combPair \; (\R{e}_1\;x)\; (\R{e}_2\;x)}$, where $\R{e}_1$
-  and $\R{e}_2$ realize $\sem{\overline{x} : \overline{\asm{S}} \ctx
-    e_1 : \asm{T}}$ and $\sem{\overline{x} : \overline{\asm{S}} \ctx
-    e_2 : \asm{U}}$, respectively.
 \item A projection $\pi_1(e)$ of type $\asm{T}$, where $e$ has type
-  $\asm{T} \times \asm{U}$, is the map\footnote{Do not confuse the two
-    occurrences of $\pi_1$ in the equation. The one on the left-hand
-    side is just a symbol appearing in the syntactic construct
-    $\pi_1(e)$, while the one on the right-hand side denotes the first
-    projection. If this does not make sense to you, imagine we wrote
-    $\mathtt{barabado}(e_1)$ on the left-hand side. You would then
-    want to know what this means, and the equation would tell you that
-    $\mathtt{barabadoo}$ is the first projection.}
+  $\asm{T} \times \asm{U}$, is the map
   %
   \begin{equation*}
-    \sem{\overline{x} : \overline{\asm{S}} \ctx
-      \pi_1(e) : \asm{T}}(a) =
-    \pi_1 (\sem{\overline{x} : \overline{\asm{S}} \ctx
-      e : \asm{T} \times \asm{U}}(a)),
+    \xymatrix@+2em{
+      **[l]{\asm{S}_1 \times \cdots \times \asm{S}_n}
+      \ar[r]^{\sem{e}}
+      &
+      {\asm{T} \times \asm{U}}
+      \ar[r]^{\pi_1}
+      &
+      {\asm{T}}
+    }
   \end{equation*}
   %
-  which is realized by $\xpcalam{\annot{x}{|S_1| \times \cdots \times
-      |S_n|}}{\combFst \; (\R{e}\; x)}$, where $\R{e}$ is a realizer for
-  $\sem{\overline{x} : \overline{\asm{S}} \ctx e : \asm{T} \times
-    \asm{U}}$. The second projection $\combSnd$ is treated
-  analogously.
+  The second projection $\pi_2$ is treated analogously.
 \end{enumerate}
 %
-This rather long definition shows that we may freely use
-$\lambda$-calculus to define realized maps. Although the definition
-tells us exactly how to compute the realizers from the expressions,
-the idea is to \emph{not} do that. We have verified once and for all
-that any map defined by $\lambda$-calculus is realized, and in most
-cases we do not care which specific realizer is used.
+This definition shows that we may freely use $\lambda$-calculus to
+define realized maps. Although the definition tells us exactly how to
+compute the realizers from the expressions, the idea is to \emph{not}
+do that. We have verified once and for all that any map defined by
+$\lambda$-calculus is realized, and in most cases we do not care which
+specific realizer is used.
+
+When $e$ is a closed expression of type $\asm{S}$ and the typing
+context $\overline{x} : \overline{\asm{S}}$ is an empty list, the
+meaning of $e$ is a realized map
+%
+\begin{equation*}
+  \sem{{\cdot} \ctx e : \one \to \asm{T}}
+\end{equation*}
+%
+which amounts to the same thing as an element of $\asm{T}$. This
+element has a computable realizer, i.e., one in $\compAtyp{|T|}$,
+because the corresponding realized map does.
 
 We may further simplify the notation by allowing \emph{patterns} in
 $\lambda$-abstraction, a technique commonly used in functional
@@ -1393,6 +1385,18 @@ instead of
   \xtlam{p}{(\asm{T} \to \asm{U}) \times (\asm{S} \to \asm{T})}{
     \xtlam{x}{\asm{S}}{(\combFst\;p)\;(\combSnd\;p)\;x}}.
 \end{equation*}
+%
+It is also useful to write the definition of a function as
+%
+\begin{equation*}
+  f\;x_1\;\ldots\; x_n = e
+\end{equation*}
+%
+instead of
+%
+\begin{equation*}
+  f = \xulam{x_1\;\ldots\; x_n}{e}.
+\end{equation*}
 
 When $\AsmA$ has coproducts, and in most cases of interest it does,
 the $\lambda$-calculus may be extended further to encompass binary
@@ -1401,29 +1405,31 @@ we have the following expressions:
 %
 \begin{enumerate}
 \item If $e$ is an expressions of type $\asm{S}$ then
-  $\combLeft_{S,T}\; e$ is an expression of type $\asm{S} + \asm{T}$.
+  $\iota_1^{\asm{S},\asm{T}}(e)$ is an expression of type $\asm{S} +
+  \asm{T}$.
 \item If $e$ is an expression of type $\asm{S}$ then
-  $\combRight_{S,T}\; e$ is an expression of type $\asm{S} + \asm{T}$.
+  $\iota_2^{\asm{S},\asm{T}}(e)$ is an expression of type $\asm{S} +
+  \asm{T}$. We usually omit supscriots $\asm{S}, \asm{T}$ on $\iota_1$
+  and $\iota_2$.
 \item If $e_1$ has type $\asm{S} + \asm{T}$, $e_2$ has type $\asm{U}$,
   and $e_3$ has type $\asm{U}$, then
   %
   \begin{equation*}
-    \case{e_1}{\combLeft\;x}{e_2}{\combRight\;y}{e_3}
+    \case{e_1}{\iota_1(x)}{e_2}{\iota_2(y)}{e_3}
   \end{equation*}
   %
   is an expression of type $\asm{U}$, with $x$ bound in $e_2$ and
   $y$ bound in $e_3$.
 \end{enumerate}
 %
-We usually omit the subscripts on $\combLeft$ and $\combRight$. The
-expressions are interpreted as follows, with notation as above:
+These expressions are interpreted as follows, with notation as above:
 %
 \begin{enumerate}
-\item The interpretation of $\combLeft\;e_1$ is
+\item The interpretation of $\iota_1(e)$ is
   %
   \begin{equation*}
     \sem{\overline{x} : \overline{\asm{S}} \ctx
-      \combLeft\;e_1 : \asm{S} + \asm{T}}(a) =
+      \iota_1(e) : \asm{S} + \asm{T}}(a) =
     \iota_1 (\sem{\overline{x} : \overline{\asm{S}} \ctx e_1 : \asm{S}}(a))
   \end{equation*}
   %
