@@ -1239,9 +1239,11 @@ the $\lambda$-calculus in it. The types of the $\lambda$-calculus are
 the assemblies, where the product and function types are interpreted
 as products and exponentials of assemblies, respectively. The unit
 type is the terminal assembly~$\one$. The expressions are those of the
-$\lambda$-calculus. In addition if $\asm{T}$ is an assembly and $a \in
-T$ is an element for which there exits a realizer $\R{a} \in
-\compAtyp{|T|}$ then~$a$ is a primitive constant of type~$\asm{T}$.
+$\lambda$-calculus, except that we write the projections as $\pi_1$
+and $\pi_2$ instead of $\combFst$ and $\combSnd$, respectively. In
+addition if $\asm{T}$ is an assembly and $a \in T$ is an element for
+which there exits a realizer $\R{a} \in \compAtyp{|T|}$ then~$a$ is a
+primitive constant of type~$\asm{T}$.
 
 Suppose $e$ is an expression of type~$\asm{T}$ and the freely
 occurring variables of~$e$ are among $\annot{x_1}{\asm{S}_1}, \ldots,
@@ -1331,17 +1333,25 @@ defined inductively as follows, where $a = (a_1, \ldots, a_n) \in S_1
   and $\R{e}_2$ realize $\sem{\overline{x} : \overline{\asm{S}} \ctx
     e_1 : \asm{T}}$ and $\sem{\overline{x} : \overline{\asm{S}} \ctx
     e_2 : \asm{U}}$, respectively.
-\item A projection $\combFst\;e$ of type $\asm{T}$, where $e$ has type
-  $\asm{T} \times \asm{U}$, is the map
+\item A projection $\pi_1(e)$ of type $\asm{T}$, where $e$ has type
+  $\asm{T} \times \asm{U}$, is the map\footnote{Do not confuse the two
+    occurrences of $\pi_1$ in the equation. The one on the left-hand
+    side is just a symbol appearing in the syntactic construct
+    $\pi_1(e)$, while the one on the right-hand side denotes the first
+    projection. If this does not make sense to you, imagine we wrote
+    $\mathtt{barabado}(e_1)$ on the left-hand side. You would then
+    want to know what this means, and the equation would tell you that
+    $\mathtt{barabadoo}$ is the first projection.}
   %
   \begin{equation*}
     \sem{\overline{x} : \overline{\asm{S}} \ctx
-      \combFst\;e : \asm{T}}(a) =
-    \pi_1 (\sem{\overline{x} : \overline{\asm{S}} \ctx e : \asm{T} \times \asm{U}}),
+      \pi_1(e) : \asm{T}}(a) =
+    \pi_1 (\sem{\overline{x} : \overline{\asm{S}} \ctx
+      e : \asm{T} \times \asm{U}}(a)),
   \end{equation*}
   %
   which is realized by $\xpcalam{\annot{x}{|S_1| \times \cdots \times
-      |S_n|}}{\combFst \; \R{e}}$, where $\R{e}$ is a realizer for
+      |S_n|}}{\combFst \; (\R{e}\; x)}$, where $\R{e}$ is a realizer for
   $\sem{\overline{x} : \overline{\asm{S}} \ctx e : \asm{T} \times
     \asm{U}}$. The second projection $\combSnd$ is treated
   analogously.
@@ -1351,12 +1361,11 @@ This rather long definition shows that we may freely use
 $\lambda$-calculus to define realized maps. Although the definition
 tells us exactly how to compute the realizers from the expressions,
 the idea is to \emph{not} do that. We have verified once and for all
-that any map defined by $\lambda$-calculus is realized, which is all
-we need to know in most cases.
-
+that any map defined by $\lambda$-calculus is realized, and in most
+cases we do not care which specific realizer is used.
 
 We may further simplify the notation by allowing \emph{patterns} in
-$\lambda$-abstraction---a technique commonly used in functional
+$\lambda$-abstraction, a technique commonly used in functional
 programming languages. Instead of
 %
 \begin{equation*}
@@ -1382,7 +1391,7 @@ instead of
 %
 \begin{equation*}
   \xtlam{p}{(\asm{T} \to \asm{U}) \times (\asm{S} \to \asm{T})}{
-    \xtlam{x}{\asm{S}}{(\combFst\;p)\;(\combSnd\;p\;x)}}.
+    \xtlam{x}{\asm{S}}{(\combFst\;p)\;(\combSnd\;p)\;x}}.
 \end{equation*}
 
 When $\AsmA$ has coproducts, and in most cases of interest it does,
@@ -1391,13 +1400,48 @@ sums. If $\asm{S}$ and $\asm{T}$ are assemblies, viewed as types, then
 we have the following expressions:
 %
 \begin{enumerate}
-\item If $e$ has type $\asm{S}$ then $\combLeft_{S,T}\; e$ has type
-  $\asm{S} + \asm{T}$.
-\item If $e$ has type $\asm{S}$ then $\combRight_{S,T}\; e$ has type
-  $\asm{S} + \asm{T}$.
-\item If $e_1$ has type $\asm{S} + \asm{T}$.
+\item If $e$ is an expressions of type $\asm{S}$ then
+  $\combLeft_{S,T}\; e$ is an expression of type $\asm{S} + \asm{T}$.
+\item If $e$ is an expression of type $\asm{S}$ then
+  $\combRight_{S,T}\; e$ is an expression of type $\asm{S} + \asm{T}$.
+\item If $e_1$ has type $\asm{S} + \asm{T}$, $e_2$ has type $\asm{U}$,
+  and $e_3$ has type $\asm{U}$, then
+  %
+  \begin{equation*}
+    \case{e_1}{\combLeft\;x}{e_2}{\combRight\;y}{e_3}
+  \end{equation*}
+  %
+  is an expression of type $\asm{U}$, with $x$ bound in $e_2$ and
+  $y$ bound in $e_3$.
 \end{enumerate}
 %
+We usually omit the subscripts on $\combLeft$ and $\combRight$. The
+expressions are interpreted as follows, with notation as above:
+%
+\begin{enumerate}
+\item The interpretation of $\combLeft\;e_1$ is
+  %
+  \begin{equation*}
+    \sem{\overline{x} : \overline{\asm{S}} \ctx
+      \combLeft\;e_1 : \asm{S} + \asm{T}}(a) =
+    \iota_1 (\sem{\overline{x} : \overline{\asm{S}} \ctx e_1 : \asm{S}}(a))
+  \end{equation*}
+  %
+  where $\iota_1 : S \to S + T$ is the canonical inclusion. The
+  interpretation is realized by $\combLeft_{|S|,|T|}$. The
+  interpretation of $\combRight\;e_2$ is analogous.
+\item The interpetation of $\case{e_1}{x}{e_2}{y}{e_3}$ is
+  %
+  \begin{equation*}
+    \sem{\overline{x} : \overline{\asm{S}} \ctx
+      (\case{e_1}{x}{e_2}{y}{e_3}) : \asm{U}}(a) =
+    \xcase
+    {\sem{\overline{x} : \overline{\asm{S}} \ctx e_1 : \asm{S} + \asm{T}}(a)}
+    {\iota_1(b)}{\sem{e_2}(b,a)}
+    {\iota_2(b)}{\sem{e_3}(b,a)}
+  \end{equation*}
+\end{enumerate}
+
 The following equations hold:
 %
 \begin{align*}
