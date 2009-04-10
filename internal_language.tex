@@ -1117,14 +1117,11 @@ Section~\ref{sec:realizability-interpretation}.
 If~$S$ and~$T$ are objects in a category, we may form the \emph{set}
 $\Hom{S, T}$ of morphisms with domain $S$ and codomain $T$. Sometimes
 $\Hom{S, T}$ carries additional structure that turns it into an object
-of the category. For example, if $S$ and $T$ are abelian groups, then
-$\Hom{S,T}$ is the set of group homormophisms $S \to T$, which is
-again an abelian group in which the operations are defined pointwise:
-$0(x) = 0_B$, $(f + g)(x0 = f(x) + g(x)$, and $(-f)(x) = -f(x)$. If
-$S$ and $T$ are topological spaces, then $\Hom{S,T}$ is the set of
-continuous maps $S \to T$, which may be equipped with the compact-open
-topology. The following definition explains what it means for an
-object to correspond to the the set of morphisms.
+of the category. For example, in the category of partially ordered
+sets and monotone maps, the set $\Hom{P,Q}$ of monotone maps between
+$(P, {\leq_P})$ and $(Q, {\leq_Q})$ is partially ordered by $f \leq g
+\iff \xall{x}{P}{f(x) \leq_Q g(x)}$. The following definition explains
+what it means for an object to correspond to the the set of morphisms.
 
 \begin{definition}
   An \emph{exponential} of objects $S$ and $T$ is an object $E$ with a
@@ -1549,14 +1546,107 @@ You are invited to redo the proof by drawing the relevant commutative
 diagrams and using the universal properties of products, coproducts,
 and exponentials.
 
+
 \subsection{Families of assemblies}
-\label{sec:dependent-types}
+\label{sec:families-assemblies}
 
-% Uniform families
+In everyday mathematics \emph{parametrized} sets are commonplace. For
+example, when a mathematical text says ``consider a continuous map $f
+: [a,b] \to \RR$ where $a < b$ are real numbers'', there is an
+implicit use of the parametrized set $[a,b] = \set{x \in \RR \such a
+  \leq x \leq b}$, where $a$ and $b$ are the parameters. In general, a
+parametrized set $(T_i)_{i \in I}$ is given by an \emph{index set~$I$}
+and a correspondence which assigns a set $T_i$ to each $i \in I$. This
+is also known as a \emph{family} of sets.
 
-% Dependent products and sums
+We would like a corresponding notion of parametrized assemblies. One
+possibility is to take a family $(\asm{S}_i)_{i \in I}$ of assemblies
+$\asm{S}_i$ indexed by a \emph{set}~$I$. This is known as an
+\emph{external} family of assemblies, because the index set~$I$ is not
+an assembly. We would prefer the index $i$ to range over an assembly.
+This works out well if we also impose a uniformity condition on the
+assemblies $\asm{S}_i$.
 
-% State lccc
+\begin{definition}
+  A \emph{uniform family} of assemblies $(\asm{S}_i)_{i \in \asm{I}}$
+  is given by an \emph{index assembly~$\asm{I}$}, and for each $i \in
+  I$ an assembly $\asm{S}_i = \xasm{S_i}$, such that $|S_i| = |S_j|$
+  for all $i, j \in I$.
+\end{definition}
+
+We only consider uniform families $(\asm{S}_i)_{i \in \asm{I}}$, and
+write the underlying type of $\asm{S}_i$'s as $|S|$. From an
+implementation point of view uniformity is a reasonable condition.
+
+Given a uniform family $(\asm{S}_i)_{i \in \asm{I}}$, we may form the
+\emph{dependent sum}
+%
+\begin{equation*}
+  \dsum_{i \in \asm{I}} \asm{S}_i =
+  (\dsum_{i \in I} S_i, |I| \times |S|, \rz_{\dsum_{i \in I} S_i})
+\end{equation*}
+%
+where $\dsum_{i \in I} S_i = \set{(i,x) \such i \in I \land x \in
+  S_i}$ is the disjoint sum of the sets $S_i$ and
+%
+\begin{equation*}
+  \combPair\;\R{i}\;\R{x} \rz_{\dsum_{i \in I} S_i} (i, x)
+  \iff
+  \R{i} \rz_I i
+  \land
+  x \in S_i
+  \land
+  \R{x} \rz_{S_i} x.  
+\end{equation*}
+%
+Similarly, we may form the \emph{dependent product} of a uniform
+family $(\asm{S}_i)_{i \in \asm{I}}$. First recall that the
+set-theoretic product of the family of \emph{sets} $(S_i)_{i \in I}$
+is
+%
+\begin{equation*}
+  \dprod_{i \in I} S_i =
+  \set{f : I \to \tbigcup_{i \in I} S_i \such
+    \xall{i}{I}{f(i) \in S_i}
+  }.
+\end{equation*}
+%
+Let $\rz_{\dprod_{i \in I} S_i}$ be the relation between $\Atyp{|I|
+  \to |S|}$ and $\dprod_{i \in I} S_i$, defined by
+%
+\begin{equation*}
+  \R{f} \rz_{\dprod_{i \in I} S_i} f
+  \iff
+  \xall{\R{i}}{\Atyp{|I|}}{
+    \all{i}{I}{
+      \R{i} \rz_I i
+      \implies
+      \defined{\R{f}\;\R{i}} \land
+      \R{f}\;\R{i} \rz_{S_i} f(i)
+    }
+  }.
+\end{equation*}
+%
+Finally, define the dependent product of the family to be the assembly
+%
+\begin{equation*}
+  \dprod_{i \in \asm{I}} \asm{S}_i =
+  (\set{f \in \dprod_{i \in I} S_i \such
+    \xsome{\R{f}}{\Atyp{|I| \to |S|}}{\R{f} \rz_{\dprod_{i \in I} S_i}
+      f}},
+  |I| \to |S|, {\rz_{\dprod_{i \in I} S_i}}).
+\end{equation*}
+%
+Notice how at the level of underlying types the dependency on the
+parameter~$i$ disappears because we required the families to be
+uniform. This is fortunate, as most programming languages are not
+equipped with dependent types.
+
+The dependent sums and products have their universal properties which
+are somewhat complicated to state. Suffice it to say that they are the
+constructions needed to show that $\AsmA$ is \emph{locally
+  cartesian-closed (lccc)}, cf.\ \cite{background-lccc}.
+
 
 \subsection{Projective assemblies}
 \label{sec:projective-assemblies}
@@ -1598,6 +1688,7 @@ and exponentials.
 
 \section{The realizability interpretation of logic}
 \label{sec:realizability-interpretation}
+
 
 \section{Realizability toposes}
 \label{sec:realizability-toposes}
