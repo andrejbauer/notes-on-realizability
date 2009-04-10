@@ -1686,8 +1686,44 @@ constructions needed to show that $\AsmA$ is \emph{locally
 % modest sets.
 
 
+
 \section{The realizability interpretation of logic}
 \label{sec:realizability-interpretation}
+
+
+The idea that the elements of a set are represented by values of a
+datatype is familiar to programmers. In the previous section we
+expressed the idea mathematically in terms of realizability relations
+and assemblies. What is perhaps less obvious is that realizability
+carries over to logic, as well. To every statement $\phi$ in
+first-order logic we may assign its realizers, which are computable
+witnesses showing why $\phi$ holds.
+
+Let us first recall how the usual interpretation of first-order logic
+works. A \emph{predicate} on a set~$S$ is a function $\phi : S \to
+\two$, where $\two = \set{0, 1}$ is the set of truth values. Every
+predicate $\phi : S \to \two$ determines the subset $\set{x \in S
+  \such \phi(x) = 1}$, called the \emph{extension} of~$\phi$, and
+conversely, every $T \subseteq S$ determines the predicate $\chi_T(x)
+= (\cond{x \in T}{1}{0})$, called the \emph{characteristic map}
+of~$T$. This correspondence is a bijection between $\two^S$ and
+$\pow{S}$. Either can be used to interpret logic, but $\pow{S}$ is the
+more suitable option in our case. Thus we view a predicate on a set
+$S$ as a subset of~$S$.
+
+The poset $\pow{S}$, ordered by $\subseteq$, is a Boolean algebra. The
+least element is $\emptyset$, the largest $S$, the infimum of $A \in
+\pow{S}$ and $B \in \pow{S}$ is their intersection $A \cap B$, the
+supremum is the union $A \cup B$, and the complement of~$A$ is the
+set-theoretic complement $S \setminus A$. If we think of $A$ and $B$
+as predicates on~$S$, these operations give us the interpretation of
+logical connectives: truth $\top$ is $S$, falsehood $\bot$ is
+$\emptyset$, conjunction $A \land B$ is $A \cap B$, disjunction $A
+\lor B$ is $A \cup B$, negation $\lnot A$ is $S \setminus A$, and
+implication $A \implies B$ is $(S \setminus A) \cup B$. Because
+$\pow{S}$ is a Boolean algebra, the laws of classical propositional
+calculus are validated.
+
 
 
 \section{Realizability toposes}
