@@ -1715,14 +1715,23 @@ The poset $\pow{S}$, ordered by $\subseteq$, is a Boolean algebra. The
 least element is $\emptyset$, the largest $S$, the infimum of $A \in
 \pow{S}$ and $B \in \pow{S}$ is their intersection $A \cap B$, the
 supremum is the union $A \cup B$, and the complement of~$A$ is the
-set-theoretic complement $S \setminus A$. If we think of $A$ and $B$
-as predicates on~$S$, these operations give us the interpretation of
-logical connectives: truth $\top$ is $S$, falsehood $\bot$ is
-$\emptyset$, conjunction $A \land B$ is $A \cap B$, disjunction $A
-\lor B$ is $A \cup B$, negation $\lnot A$ is $S \setminus A$, and
-implication $A \implies B$ is $(S \setminus A) \cup B$. Because
-$\pow{S}$ is a Boolean algebra, the laws of classical propositional
-calculus are validated.
+set-theoretic complement $S \setminus A$. This structure is used in
+the interpretation of classical propositional calculus. If $\phi$ and
+$\psi$ are propositions built from $\bot$, $\top$, $\land$, $\lor$,
+$\lnot$, and variables $p$ ranging over $\pow{S}$,
+%
+\begin{align*}
+  \sem{\bot} &= \emptyset,\\
+  \sem{\top} &= S,\\
+  \sem{\phi \land \psi} &= \sem{\phi} \cap \sem{\psi},\\
+  \sem{\phi \lor \psi} &= \sem{\phi} \cup \sem{\psi},\\
+  \sem{\lnot \phi} &= S \setminus \sem{\phi},\\
+  \sem{p} &= p.
+\end{align*}
+%
+The interpretation can be further extended to the classical predicate
+calculus because $\pow{S}$ is \emph{complete}.
+
 
 
 
