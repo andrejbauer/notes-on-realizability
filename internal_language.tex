@@ -1716,23 +1716,133 @@ least element is $\emptyset$, the largest $S$, the infimum of $A \in
 \pow{S}$ and $B \in \pow{S}$ is their intersection $A \cap B$, the
 supremum is the union $A \cup B$, and the complement of~$A$ is the
 set-theoretic complement $S \setminus A$. This structure is used in
-the interpretation of classical propositional calculus. If $\phi$ and
-$\psi$ are propositions built from $\bot$, $\top$, $\land$, $\lor$,
-$\lnot$, and variables $p$ ranging over $\pow{S}$,
+the interpretation of classical propositional calculus. Suppose $\phi$
+is a proposition built from $\bot$, $\top$, $\land$, $\lor$,
+$\implies$, $\lnot$, and \emph{atomic propositions} $p_1, \ldots,
+p_n$. For a given interpretation of the atomic propositions $p_i$ as
+subsets $P_i \subseteq S$, the meaning of $\phi$ is a subset
+$\sem{\phi} \subseteq S$, defined inductively on the structure
+of~$\phi$ as follows:
 %
 \begin{align*}
   \sem{\bot} &= \emptyset,\\
   \sem{\top} &= S,\\
-  \sem{\phi \land \psi} &= \sem{\phi} \cap \sem{\psi},\\
-  \sem{\phi \lor \psi} &= \sem{\phi} \cup \sem{\psi},\\
+  \sem{\phi_1 \land \phi_2} &= \sem{\phi_1} \cap \sem{\phi_2},\\
+  \sem{\phi_1 \lor \phi_2} &= \sem{\phi_1} \cup \sem{\phi_2},\\
+  \sem{\phi_1 \implies \phi_2} &= (S \setminus \sem{\phi_1}) \cup \sem{\phi_2},\\
   \sem{\lnot \phi} &= S \setminus \sem{\phi},\\
-  \sem{p} &= p.
+  \sem{p_i} &= P_i.
 \end{align*}
 %
 The interpretation can be further extended to the classical predicate
-calculus because $\pow{S}$ is \emph{complete}.
+calculus, which involves the quantifiers $\exists$ and $\forall$.
+Suppose $\phi$ is a predicate with free variables $x$ and $y$ ranging
+over sets $S$ and $T$, respectively. Then the interpretation of $\phi$
+is a subset $\sem{\phi} \subseteq S \times T$. From it we define the
+interpretation of $\xsome{x}{S}{\phi}$ and $\xall{x}{S}{\phi}$ to be
+the subsets of~$T$ given by
+%
+\begin{align*}
+  \sem{\xsome{x}{S}{\phi}} &=
+  \sem{b \in T \such \xsome{a}{S}{(a,b) \in \sem{\phi}}}, \\
+  \sem{\xall{x}{S}{\phi}} &=
+  \sem{b \in T \such \xall{a}{S}{(a,b) \in \sem{\phi}}}.
+\end{align*}
+%
+Observe that $\sem{\xsome{x}{S}{\phi}}$ is the least subset of~$T$
+such that $\sem{\phi} \subseteq S \times \sem{\xsome{x}{S}{\phi}}$,
+and that $\sem{\xall{x}{S}{\phi}}$ is the largest subset of~$T$ such
+that $S \times \sem{\xall{X}{S}{\phi}} \subseteq \sem{\phi}$.
 
+The interpretation of logic in the category of assemblies goes much
+along the same lines, except that we use monos instead of subsets. For
+monos $u : \asm{U} \monoto \asm{S}$ and $t : \asm{T} \monoto \asm{S}$,
+write $u \leq t$, or somewhat less precisely $\asm{U} \leq \asm{T}$,
+if $u$ factors through $t$, i.e., there exists a realized $f : \asm{U}
+\to \asm{B}$ such that
+%
+\begin{equation*}
+  \xymatrix{
+    &
+    {\asm{S}}
+    &
+    \\
+    {\asm{U}}
+    \ar@{ >->}[ur]^{u}
+    \ar[rr]_{f}
+    &
+    &
+    {\asm{T}}
+    \ar[ul]_{t}
+  }
+\end{equation*}
+%
+commutes. If~$f$ exists then it is unique and is a mono.\footnote{Such
+  basic category-theoretic observations are excellent exercises. You
+  should prove them yourself.} If $u \leq t$ and $t \leq u$ we say
+that $u$ and $t$ are \emph{isomorphic} and write $u \cong t$. The
+collection $\Mono{\asm{S}}$ of all monos with codomain~$\asm{S}$ is a
+preorder because $\leq$ is reflexive and transitive.\footnote{By
+  quotienting $\Mono{\asm{S}}$ by $\equiv$ we get the partial order
+  $\Sub{\asm{S}} = \Mono{\asm{S}}/{\cong}$ of \emph{subobjects}
+  of~$\asm{S}$, but we shall not do that because it is cumbersome to
+  work with equivalence classes.}
 
+While the powerset $\pow{S}$ is a complete Boolean algebra,
+$\Mono{\asm{S}}$ is neither complete not Boolean. However, it is a
+\emph{Heyting prealgebra}, which is enough to interpret
+\emph{intuitionistic} propositional calculus. The quantifers may also
+be interpreted, as we will see.
+
+We would like the interpretation of logic in $\AsmA$ to be in specific
+form, for which we first need to focus on a particular kind of monos.
+Let $\asm{S}$ be an assembly, $t$ a type, and $p : S \to
+\pow{\Atyp{t}}$ any function. Define the assembly $\asm{S}_p$ by
+%
+\begin{align*}
+  S_p &= \set{x \in S \such \xsome{\R{r}}{\Atyp{t}}{\R{r} \in p(x)}}, \\
+  |S_w| &= |S| \times t, \\
+  \combPair\;\R{r}\;\R{x} \rz_P x &\iff \R{x} \rz_S x.
+\end{align*}
+%
+The subset inclusion $\iota_p : S_p \to S$ is realized by $\combSnd$.
+The mono $\iota_p : \asm{S}_p \to \asm{S}$ is called a \emph{standard
+  mono}.
+
+\begin{proposition}
+  In $\AsmA$ every mono is equivalent to a standard one.
+\end{proposition}
+
+\begin{proof}
+  Let $u : \asm{U} \monoto \asm{S}$ be a mono, realized by $\R{u}$.
+  Let $t = |U|$ and
+  %
+  \begin{equation*}
+    p(x) = \tbigcup_{y \in \inv{u}(x)} \Ex_U(y) =
+    \set{\R{y} \in \Atyp{t} \such \xsome{y}{U}{u(y) = x \land \R{y} \rz_U y}}.
+  \end{equation*}
+  %
+  We claim that the standard mono $\iota_p$ is isomorphic to~$u$. The
+  function $u : U \to S$ restricts to a bijection $u : U \to S_p$,
+  which is realized as a map from $\asm{U}$ to $\asm{S}_p$ by
+  $\xpcalam{\annot{y}{|U|}}{\combPair\;(\R{u}\;y)\;y}$. The inverse
+  $\inv{u} : S_p \to U$ is realized as a map from $\asm{S}_p$ to
+  $\asm{U}$ by $\combSnd$.
+\end{proof}
+
+\begin{proposition}
+  Let $\asm{S}$ be an assembly, and $\asm{S}_p$, $\asm{S}_q$ standard
+  monos, determined by $p : S \to \pow{\Atyp{t}}$ and $q : S \to
+  \pow{\Atyp{u}}$, respectively. Then $p \leq q$ if, and only if,
+  there exists $\R{f} \in \compAtyp{|S| \to t \to u}$ such that,
+  for all $x \in S$, $\R{x} \in \Atyp{|S|}$, and $\R{r} \in p(x)$, if
+  $\R{x} \rz_S x$ then $\defined{\R{f}\;\R{x}\;\R{r}}$ and
+  $\R{f}\;\R{x}\;\R{r} \in q(x)$.
+\end{proposition}
+
+\begin{proof}
+  
+\end{proof}
 
 
 \section{Realizability toposes}
