@@ -1966,9 +1966,8 @@ structure is uniquely determined by the induced partial order.
   |q|$ and
   %
   \begin{equation*}
-    \combPair\;\R{u}\;\R{v} \rz p(x) \land q(x)
-    \iff
-    \text{$\R{u} \rz p(x)$ and $\R{v} \rz q(x)$}.
+    p(x) \land q(x) = \set{\combPair\;\R{u}\;\R{v} \such
+    \text{$\R{u} \rz p(x)$ and $\R{v} \rz q(x)$}}.
   \end{equation*}
   % 
   Here we wrote $p(x) \land q(x)$ instead of $(p \land q)(x)$. Let us
@@ -1985,14 +1984,11 @@ structure is uniquely determined by the induced partial order.
   whose realizers have the type $|p \land q| = |p| + |q|$. There are
   two ways to realize $p(x) \lor q(x)$:
   %
-  \begin{align*}
-    \combLeft\;\R{u} \rz p(x) \lor q(x)
-    &\iff
-    \R{u} \rz p(x), \\
-    \combRight\;\R{v} \rz p(x) \lor q(x)
-    &\iff
-    \R{v} \rz q(x).
-  \end{align*}
+  \begin{equation*}
+    p(x) \lor q(x) =
+    \set{\combLeft\;\R{u} \such \R{u} \rz p(x)} \cup
+    \set{\combRight\;\R{v} \such \R{v} \rz q(x)}.
+  \end{equation*}
   %
   The inequalities $p \leq p \lor q$ and $q \leq p \lor q$ are
   witnessed by $\pcalam{\annot{x}{|S|} \annot{u}{|p|}}{\combLeft\;u}$
@@ -2011,13 +2007,14 @@ structure is uniquely determined by the induced partial order.
   the type $|p \imp q| = |p| \to |q|$ and
   %
   \begin{equation*}
-    \R{f} \rz p(x) \imp q(x)
-    \iff
-    \all{\R{u}}{\Atyp{|p|}}{
-      \R{u} \rz p(x)
-      \implies
-      \defined{\R{f}\;\R{u}} \land
-      \R{f}\;\R{u} \rz q(x)
+    p(x) \imp q(x) = \set{
+      \R{f} \in \Atyp{|p| \to |q|} \such
+      \all{\R{u}}{\Atyp{|p|}}{
+        \R{u} \rz p(x)
+        \implies
+        \defined{\R{f}\;\R{u}} \land
+        \R{f}\;\R{u} \rz q(x)
+      }
     }.
   \end{equation*}
   %
@@ -2031,10 +2028,12 @@ structure is uniquely determined by the induced partial order.
     \annot{u}{|p|}}{\R{f}\;(\combPair\;w\;u)}$.
 \end{proof}
 
+\subsection{Quantifiers}
+\label{sec:quantifiers}
 
 
-
-
+\subsection{Substitution and the Beck-Chevalley condition}
+\label{sec:substitution}
 
 
 
