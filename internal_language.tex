@@ -1754,6 +1754,10 @@ such that $\sem{\phi} \subseteq S \times \sem{\xsome{x}{S}{\phi}}$,
 and that $\sem{\xall{x}{S}{\phi}}$ is the largest subset of~$T$ such
 that $S \times \sem{\xall{X}{S}{\phi}} \subseteq \sem{\phi}$.
 
+\subsection{Realizability predicates}
+\label{sec:realizability-predicates}
+
+
 The interpretation of logic in the category of assemblies goes much
 along the same lines, except that we use monos instead of subsets. For
 monos $u : \asm{U} \monoto \asm{S}$ and $t : \asm{T} \monoto \asm{S}$,
@@ -1789,23 +1793,34 @@ preorder because $\leq$ is reflexive and transitive.\footnote{By
   work with equivalence classes.}
 
 While the powerset $\pow{S}$ is a complete Boolean algebra,
-$\Mono{\asm{S}}$ is neither complete not Boolean. However, it is a
+$\Mono{\asm{S}}$ is neither complete nor Boolean. However, it is a
 \emph{Heyting prealgebra}, which is enough to interpret
-\emph{intuitionistic} propositional calculus. The quantifers may also
-be interpreted, as we will see.
+\emph{intuitionistic} propositional calculus, and as we shall see,
+completeness is not needed for the interpretation of the quantifers.
 
 We would like the interpretation of logic in $\AsmA$ to be in specific
 form, for which we first need to focus on a particular kind of monos.
-Let $\asm{S}$ be an assembly, $t$ a type, and $p : S \to
-\pow{\Atyp{t}}$ any function. Define the assembly $\asm{S}_p$ by
+Let $\asm{S}$ be an assembly, $|p|$ a type, and $p : S \to
+\pow{\Atyp{|p|}}$ a function. We call $p$ a \emph{realizability
+  predicate} on $\asm{S}$. The map $p$ is equivalently given as a
+relation ${-} \rz p({-})$ between $\Atyp{|p|}$ and $S$. The
+correspondence between the map and the relation is
+%
+\begin{equation*}
+  \R{r} \rz p(x) \iff \R{r} \in p(x).
+\end{equation*}
+%
+Read $\R{r} \rz p(x)$ as ``$\R{r}$ realizes (the fact) $p(x)$''. Now
+define the assembly $\asm{S}_p$ by
 %
 \begin{align*}
-  S_p &= \set{x \in S \such \xsome{\R{r}}{\Atyp{t}}{\R{r} \in p(x)}}, \\
-  |S_w| &= |S| \times t, \\
-  \combPair\;\R{r}\;\R{x} \rz_P x &\iff \R{x} \rz_S x.
+  S_p &= \set{x \in S \such \xsome{\R{r}}{\Atyp{|p|}}{\R{r} \in p(x)}}, \\
+  |S_p| &= |S| \times |p|, \\
+  \combPair\;\R{x}\;\R{r} \rz_P x &\iff
+  \R{r} \in p(x) \land \R{x} \rz_S x.
 \end{align*}
 %
-The subset inclusion $\iota_p : S_p \to S$ is realized by $\combSnd$.
+The subset inclusion $\iota_p : S_p \to S$ is realized by $\combFst$.
 The mono $\iota_p : \asm{S}_p \to \asm{S}$ is called a \emph{standard
   mono}.
 
@@ -1815,41 +1830,236 @@ The mono $\iota_p : \asm{S}_p \to \asm{S}$ is called a \emph{standard
 
 \begin{proof}
   Let $u : \asm{U} \monoto \asm{S}$ be a mono, realized by $\R{u}$.
-  Let $t = |U|$ and
+  Let $|p| = |U|$ and
   %
   \begin{equation*}
     p(x) = \tbigcup_{y \in \inv{u}(x)} \Ex_U(y) =
-    \set{\R{y} \in \Atyp{t} \such \xsome{y}{U}{u(y) = x \land \R{y} \rz_U y}}.
+    \set{\R{y} \in \Atyp{|p|} \such \xsome{y}{U}{u(y) = x \land \R{y} \rz_U y}}.
   \end{equation*}
   %
-  We claim that the standard mono $\iota_p$ is isomorphic to~$u$. The
-  function $u : U \to S$ restricts to a bijection $u : U \to S_p$,
-  which is realized as a map from $\asm{U}$ to $\asm{S}_p$ by
+  We claim that the standard mono $\iota_p : \asm{S}_p \to \asm{S}$ is
+  isomorphic to~$u$. The function $u : U \to S$ restricts to a
+  bijection $u : U \to S_p$, which is realized as a map from $\asm{U}$
+  to $\asm{S}_p$ by
   $\xpcalam{\annot{y}{|U|}}{\combPair\;(\R{u}\;y)\;y}$. The inverse
   $\inv{u} : S_p \to U$ is realized as a map from $\asm{S}_p$ to
   $\asm{U}$ by $\combSnd$.
 \end{proof}
 
+For the purposes of logic we may limit attention to standard monos,
+because the interpretation of a predicate is determined only up to
+isomorphism of monos. Furthermore, since a standard mono $\asm{S}_p
+\to \asm{S}$ is uniquely determined by the corresponding realizability
+predicate $p : S \to \pow{\Atyp{|p|}}$, we may express the
+realizability intepretation of logic directly in terms of
+realizability predicates.
+
+Let $p$ and $q$ be realizability predicates on $\asm{S}$, with the
+corresponding monos $\iota_p : \asm{S}_p \monoto \asm{S}$ and $\iota_q
+: \asm{S}_q \monoto \asm{S}$. We define $p \leq q$ to mean that
+$\iota_p \leq \iota_q$.
+
+\begin{lemma}
+  \label{lemma:realizability-predicate-leq}%
+  For realizability predicates $p$ and $q$ on an assembly $\asm{S}$,
+  $p \leq q$ if, and only if, there exists $\R{f} \in \compAtyp{|S|
+    \to |p| \to |q|}$ such that, for all $x \in S$, whenever $\R{x}
+  \rz_S x$ and $\R{r} \rz p(x)$ then $\defined{\R{f}\;\R{x}\;\R{r}}$
+  and $\R{f}\;\R{x}\;\R{r} \rz q(x)$. We say that $\R{f}$
+  \emph{witnesses} $p \leq q$.
+\end{lemma}
+
+\begin{proof}
+  Suppose first that $p \leq q$. Then $\iota_p \leq \iota_q$, which
+  means that the $S_p \subseteq S_q$ and that the subset inclusion $i
+  : S_p \to S_q$ is realized, say by $\R{i} \in \compAtyp{|S| \times
+    |p| \to |S| \times |q|}$. Let $\R{f} = \pcalam{\annot{x}{|S|}
+    \annot{r}{|p|}}{\combSnd\;(\R{i}\;(\combPair\;x\;r))}$. Suppose $x
+  \in S$, $\R{x} \in \Atyp{|S|}$, $\R{r} \rz p(x)$, and $\R{x} \rz_S
+  x$. Then $\combPair\;\R{x}\;\R{r} \rz_{S_p} x$, therefore
+  $\R{i}\;(\combPair\;\R{x}\;\R{r}) \rz_{S_q} x$, which implies
+  $\R{f}\;\R{x}\;\R{r} \rz q(x)$ because $\R{f}\;\R{x}\;\R{r} =
+  \combSnd\;(\R{i}\;(\combPair\;\R{x}\;\R{r}))$.
+
+  Conversely, let $\R{f}$ be a realizer as in the statement of the
+  lemma, and suppose $\R{x} \rz_S x$ and $\R{r} \rz p(x)$. Because
+  $\R{f}\;\R{x}\;\R{r} \rz q(x)$, we see that $x \in S_q$. Hence $S_p
+  \subseteq S_q$. A realizer for the inclusion map $i : S_p \to S_q$
+  is $\R{i} = \pcalam{\annot{u}{|S| \times
+      |p|}}{\combPair\;(\combFst\;u)\;(\R{f}\;(\combFst\;u)\;(\combSnd\;u))}$,
+  as is easily verified.
+\end{proof}
+
+The lemma is our main tool for analyzing the preorder $\leq$. For
+example, let us show that it is reflexive and transitive, i.e., that
+the family $\Pred{\asm{S}}$ of all realizability predicates on
+$\asm{S}$ is a \emph{preorder}. Reflexivity $p \leq p$ is witnessed by
+the realizer $\pcalam{\annot{x}{|S|} \annot{u}{|p|}}{u}$. For
+transitivity, suppose $p \leq q$ and $q \leq r$ are witnessed by
+$\R{f}$ and $\R{g}$. Then $p \leq r$ is witnessed by
+$\pcalam{\annot{x}{|S|} \annot{u}{|p|}}(\R{g}\;x\;(\R{f}\;x\;u)))$.
+
+
+\subsection{The Heyting prealgebra of realizability predicates}
+\label{sec:heyting-prealgebra}
+
+To give a sound interpretation of intuitionistic propsitional
+calculus, we would like to show that $\Pred{\asm{S}}$ has the
+following structure.
+
+\begin{definition}
+  A \emph{Heyting prealgebra} $(H, {\leq})$ is a preorder (reflexive
+  and transitive) with elements $\bot$, $\top$ and binary operations
+  meet $\land$, join $\lor$, and implication $\imp$ such that, for all
+  $p, q, r \in H$:
+  %
+  \begin{enumerate}
+  \item $\bot$ is a smallest and $\top$ a largest element: $\bot \leq
+    p \leq \top$,
+  \item $p \land q$ is an infimum of $p$ and $q$: $p \land q \leq p$,
+    $p \land q \leq q$, and whenever $r \leq p$ and $r \leq q$ then $r
+    \leq p \land q$,
+  \item $p \lor q$ is a supremum of $p$ and $q$: $p \leq p \lor q$, $q
+    \leq p \lor q$, and whenever $p \leq r$ and $q \leq r$ then $p
+    \lor q \leq r$,
+  \item $p \imp {-}$ is right adjoint to $p \land {-}$: $(p \imp q)
+    \land p \leq q$ and whenever $r \land p \leq q$ then $r \leq p
+    \imp q$.
+  \end{enumerate}
+  %
+  A \emph{Heyting algebra} is a Heyting prealgebra which is partially
+  ordered.
+\end{definition}
+
+We say that elements $p, q \in H$ are \emph{isomorphic}, written $p
+\equiv q$, if $p \leq q$ and $q \leq p$. The structure of a prealgebra
+is determined only up to isomorphism. For example, there may be many
+smallest elements, which are all isomorphic to $\bot$. We are not
+bothered by this. On the contrary, as programmers we actually worry
+about choosing the most efficient realizer among many equivalent ones.
+At any rate, if you prefer algebras to prealgebra, you may reformulate
+everything in terms of the quotient algebra $H/{\equiv}$, whose
+structure is uniquely determined by the induced partial order.
+
 \begin{proposition}
-  Let $\asm{S}$ be an assembly, and $\asm{S}_p$, $\asm{S}_q$ standard
-  monos, determined by $p : S \to \pow{\Atyp{t}}$ and $q : S \to
-  \pow{\Atyp{u}}$, respectively. Then $p \leq q$ if, and only if,
-  there exists $\R{f} \in \compAtyp{|S| \to t \to u}$ such that,
-  for all $x \in S$, $\R{x} \in \Atyp{|S|}$, and $\R{r} \in p(x)$, if
-  $\R{x} \rz_S x$ then $\defined{\R{f}\;\R{x}\;\R{r}}$ and
-  $\R{f}\;\R{x}\;\R{r} \in q(x)$.
+  The preorder $\Pred{\asm{S}}$ of realizability predicates on an
+  assembly $\asm{S}$ is a Heyting prealgebra.
 \end{proposition}
 
 \begin{proof}
+  Let $\asm{S}$ be an assembly and $\unit$ any type with an element
+  $\ttunit \in \compAtyp{\unit}$. Define the predicates $\bot, \top :
+  \asm{S} \to \pow{\Atyp{\unit}}$ by
+  % 
+  \begin{equation*}
+    \bot(x) = \emptyset
+    \qquad\text{and}\qquad
+    \top(x) = \Atyp{\unit}.
+  \end{equation*}
+  % 
+  That is, $\bot$ is realized by nothing and $\top$ by everything. It is
+  easy to check that $\bot \leq p \leq \top$ for all $p \in
+  \Pred{\asm{S}}$.
+
+  For predicates $p$ and $q$ on $\asm{S}$, let $p \land q$ be the
+  predicate whose realizers have the type $|p \land q| = |p| \times
+  |q|$ and
+  %
+  \begin{equation*}
+    \combPair\;\R{u}\;\R{v} \rz p(x) \land q(x)
+    \iff
+    \text{$\R{u} \rz p(x)$ and $\R{v} \rz q(x)$}.
+  \end{equation*}
+  % 
+  Here we wrote $p(x) \land q(x)$ instead of $(p \land q)(x)$. Let us
+  verify that $p \land q$ is the infimum of $p$ and $q$. The
+  inequalities $p \land q \leq p$ and $p \land q \leq q$ are witnessed
+  by $\pcalam{\annot{x}{|S|} \annot{u}{|p| \times |q|}}{\combFst\;u}$
+  and $\pcalam{\annot{x}{|S|} \annot{u}{|p| \times
+      |q|}}{\combSnd\;u}$, respectively. Suppose $r \leq p$ and $r
+  \leq q$ are witnessed by $\R{f}$ and $\R{g}$, respectively. Then $r
+  \leq p \land q$ is witnessed by $\pcalam{\annot{x}{|S|}
+    \annot{u}{|r|}}{\combPair\; (\R{f}\;x\;u)\; (\R{g}\;x\;u)}$
+
+  Next we consider suprema. Define $p \lor q$ to be the predicate
+  whose realizers have the type $|p \land q| = |p| + |q|$. There are
+  two ways to realize $p(x) \lor q(x)$:
+  %
+  \begin{align*}
+    \combLeft\;\R{u} \rz p(x) \lor q(x)
+    &\iff
+    \R{u} \rz p(x), \\
+    \combRight\;\R{v} \rz p(x) \lor q(x)
+    &\iff
+    \R{v} \rz q(x).
+  \end{align*}
+  %
+  The inequalities $p \leq p \lor q$ and $q \leq p \lor q$ are
+  witnessed by $\pcalam{\annot{x}{|S|} \annot{u}{|p|}}{\combLeft\;u}$
+  and $\pcalam{\annot{x}{|S|} \annot{v}{|q|}}{\combRight\;v}$,
+  respectively. If $p \leq r$ and $q \leq r$ are witnessed by $\R{f}$
+  and $\R{g}$ then $p \lor q \leq r$ is witnessed by
+  %
+  g
+  \begin{equation*}
+    \pcalam{\annot{x}{|S|} \annot{w}{|p|+|q|}}{
+      \combCase\;w\;(\R{f}\;x)\;(\R{g}\;x)
+    }.
+  \end{equation*}
   
+  Finally, define $p \imp q$ to be the predicate whose realizers have
+  the type $|p \imp q| = |p| \to |q|$ and
+  %
+  \begin{equation*}
+    \R{f} \rz p(x) \imp q(x)
+    \iff
+    \all{\R{u}}{\Atyp{|p|}}{
+      \R{u} \rz p(x)
+      \implies
+      \defined{\R{f}\;\R{u}} \land
+      \R{f}\;\R{u} \rz q(x)
+    }.
+  \end{equation*}
+  %
+  That is, $\R{f}$ maps realizers for $p(x)$ to realizers for $q(x)$.
+  Note that it need not be computable. Let us show that $p \imp q$ has
+  the desired properties. The inequality $(p \imp q) \land p \leq q$
+  is witnessed by $\pcalam{\annot{x}{|S|} \annot{w}{(|p| \to |q|)
+      \times |p|}}{(\combFst\;w)\; (\combSnd\;w)}$. If $r \land p \leq
+  q$ is witnessed by $\R{f}$ then $r \leq p \imp q$ is witnessed by
+  $\pcalam{\annot{x}{|S|} \annot{w}{|r|}
+    \annot{u}{|p|}}{\R{f}\;(\combPair\;w\;u)}$.
 \end{proof}
 
+
+
+
+
+
+
+
+\subsection{Decidable predicates}
+\label{sec:decidable-predicates}
+
+
+\subsection{Stable predicates}
+\label{sec:stable-predicates}
+
+% stability of equality
+
+% Markov principle
+
+% negative and almost negative formulae
 
 \section{Realizability toposes}
 \label{sec:realizability-toposes}
 
 \section{From constructive to computable mathematics}
 \label{sec:constructive-math}
+
+% monos and regular monos
+
+% epis and regular epis
 
 
 
