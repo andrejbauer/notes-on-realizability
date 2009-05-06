@@ -1648,9 +1648,9 @@ constructions needed to show that $\AsmA$ is \emph{locally
   cartesian-closed (lccc)}, cf.\ \cite{background-lccc}.
 
 
-\subsection{Projective assemblies}
-\label{sec:projective-assemblies}
-
+%\subsection{Projective assemblies}
+%\label{sec:projective-assemblies}
+%
 % % Presentation axiom
 
 % \begin{definition}
@@ -1695,21 +1695,21 @@ The idea that the elements of a set are represented by values of a
 datatype is familiar to programmers. In the previous section we
 expressed the idea mathematically in terms of realizability relations
 and assemblies. What is perhaps less obvious is that realizability
-carries over to logic, as well. To every statement $\phi$ in
+carries over to logic as well. To every statement $\phi$ in
 first-order logic we may assign its realizers, which are computable
 witnesses showing why $\phi$ holds.
 
-Let us first recall how the usual interpretation of first-order logic
-works. A \emph{predicate} on a set~$S$ is a function $\phi : S \to
-\two$, where $\two = \set{0, 1}$ is the set of truth values. Every
-predicate $\phi : S \to \two$ determines the subset $\set{x \in S
-  \such \phi(x) = 1}$, called the \emph{extension} of~$\phi$, and
-conversely, every $T \subseteq S$ determines the predicate $\chi_T(x)
-= (\cond{x \in T}{1}{0})$, called the \emph{characteristic map}
-of~$T$. This correspondence is a bijection between $\two^S$ and
+Let us first recall how the usual interpretation of classical
+first-order logic works. A \emph{predicate} on a set~$S$ is a function
+$\phi : S \to \two$, where $\two = \set{0, 1}$ is the set of truth
+values. Such a predicate determines the subset $\set{x \in S \such
+  \phi(x) = 1} \subseteq S$, called the \emph{extension} of~$\phi$,
+and conversely, every $T \subseteq S$ determines the predicate
+$\chi_T(x) = (\cond{x \in T}{1}{0})$, called the \emph{characteristic
+  map} of~$T$. This correspondence is a bijection between $\two^S$ and
 $\pow{S}$. Either can be used to interpret logic, but $\pow{S}$ is the
-more suitable option in our case. Thus we view a predicate on a set
-$S$ as a subset of~$S$.
+more suitable option in our case. Thus we view predicates on a set
+$S$ as elements of the powerset $\pow{S}$.
 
 The poset $\pow{S}$, ordered by $\subseteq$, is a Boolean algebra. The
 least element is $\emptyset$, the largest $S$, the infimum of $A \in
@@ -1719,10 +1719,9 @@ set-theoretic complement $S \setminus A$. This structure is used in
 the interpretation of classical propositional calculus. Suppose $\phi$
 is a proposition built from $\bot$, $\top$, $\land$, $\lor$,
 $\implies$, $\lnot$, and \emph{atomic propositions} $p_1, \ldots,
-p_n$. For a given interpretation of the atomic propositions $p_i$ as
-subsets $P_i \subseteq S$, the meaning of $\phi$ is a subset
-$\sem{\phi} \subseteq S$, defined inductively on the structure
-of~$\phi$ as follows:
+p_n$. As soon as we assign subsets $P_i \subseteq S$ to the atomic
+propositions $p_i$, the meaning of $\phi$ as a subset $\sem{\phi}
+\subseteq S$ is defined inductively as follows:
 %
 \begin{align*}
   \sem{\bot} &= \emptyset,\\
@@ -1784,7 +1783,7 @@ if $u$ factors through $t$, i.e., there exists a realized $f : \asm{U}
 commutes. If~$f$ exists then it is unique and is a mono.\footnote{Such
   basic category-theoretic observations are excellent exercises. You
   should prove them yourself.} If $u \leq t$ and $t \leq u$ we say
-that $u$ and $t$ are \emph{isomorphic} and write $u \cong t$. The
+that $u$ and $t$ are \emph{isomorphic} and write $u \equiv t$. The
 collection $\Mono{\asm{S}}$ of all monos with codomain~$\asm{S}$ is a
 preorder because $\leq$ is reflexive and transitive.\footnote{By
   quotienting $\Mono{\asm{S}}$ by $\equiv$ we get the partial order
@@ -1795,8 +1794,8 @@ preorder because $\leq$ is reflexive and transitive.\footnote{By
 While the powerset $\pow{S}$ is a complete Boolean algebra,
 $\Mono{\asm{S}}$ is neither complete nor Boolean. However, it is a
 \emph{Heyting prealgebra}, which is enough to interpret
-\emph{intuitionistic} propositional calculus, and as we shall see,
-completeness is not needed for the interpretation of the quantifers.
+\emph{intuitionistic} propositional calculus, and as we shall see, the
+quantifiers may be interpreted too, without completeness.
 
 We would like the interpretation of logic in $\AsmA$ to be in specific
 form, for which we first need to focus on a particular kind of monos.
@@ -1897,15 +1896,16 @@ $\asm{S}$ is a \emph{preorder}. Reflexivity $p \leq p$ is witnessed by
 the realizer $\pcalam{\annot{x}{|S|} \annot{u}{|p|}}{u}$. For
 transitivity, suppose $p \leq q$ and $q \leq r$ are witnessed by
 $\R{f}$ and $\R{g}$. Then $p \leq r$ is witnessed by
-$\pcalam{\annot{x}{|S|} \annot{u}{|p|}}(\R{g}\;x\;(\R{f}\;x\;u)))$.
+$\pcalam{\annot{x}{|S|} \annot{u}{|p|}}{\R{g}\;x\;(\R{f}\;x\;u))}$.
 
 
 \subsection{The Heyting prealgebra of realizability predicates}
 \label{sec:heyting-prealgebra}
 
-To give a sound interpretation of intuitionistic propsitional
-calculus, we would like to show that $\Pred{\asm{S}}$ has the
-following structure.
+We would like to give an interpretation of the intuitionistic
+propositional calculus in the preorder $\Pred{\asm{S}}$. Such an
+interpretation is sound only if $\Pred{\asm{S}}$ is a Heyting
+prealgebra. Let us recall the definition.
 
 \begin{definition}
   A \emph{Heyting prealgebra} $(H, {\leq})$ is a preorder (reflexive
@@ -1932,14 +1932,12 @@ following structure.
 \end{definition}
 
 We say that elements $p, q \in H$ are \emph{isomorphic}, written $p
-\equiv q$, if $p \leq q$ and $q \leq p$. The structure of a prealgebra
-is determined only up to isomorphism. For example, there may be many
-smallest elements, which are all isomorphic to $\bot$. We are not
-bothered by this. On the contrary, as programmers we actually worry
-about choosing the most efficient realizer among many equivalent ones.
-At any rate, if you prefer algebras to prealgebra, you may reformulate
-everything in terms of the quotient algebra $H/{\equiv}$, whose
-structure is uniquely determined by the induced partial order.
+\equiv q$, if $p \leq q$ and $q \leq p$. The operations of a Heyting
+prealgebra are determined only up to isomorphism. For example, there
+may be many smallest elements, but they are all isomorphic to each
+other. We are not bothered by this. On the contrary, as programmers we
+actually worry about choosing the most efficient realizer among many
+equivalent ones.
 
 \begin{proposition}
   The preorder $\Pred{\asm{S}}$ of realizability predicates on an
@@ -1978,7 +1976,7 @@ structure is uniquely determined by the induced partial order.
       |q|}}{\combSnd\;u}$, respectively. Suppose $r \leq p$ and $r
   \leq q$ are witnessed by $\R{f}$ and $\R{g}$, respectively. Then $r
   \leq p \land q$ is witnessed by $\pcalam{\annot{x}{|S|}
-    \annot{u}{|r|}}{\combPair\; (\R{f}\;x\;u)\; (\R{g}\;x\;u)}$
+    \annot{u}{|r|}}{\combPair\; (\R{f}\;x\;u)\; (\R{g}\;x\;u)}$.
 
   Next we consider suprema. Define $p \lor q$ to be the predicate
   whose realizers have the type $|p \land q| = |p| + |q|$. There are
@@ -2028,13 +2026,47 @@ structure is uniquely determined by the induced partial order.
     \annot{u}{|p|}}{\R{f}\;(\combPair\;w\;u)}$.
 \end{proof}
 
-\subsection{Quantifiers}
+\subsection{Quantifiers and the Beck-Chevalley condition}
 \label{sec:quantifiers}
 
+To get an interpretation of the quantifiers we apply methods of
+categorical logic. In general the existential and universal
+quantifiers are defined as left and right adjoints to weakening. Let
+us explain what this means.
 
-\subsection{Substitution and the Beck-Chevalley condition}
-\label{sec:substitution}
+Weakening along the projection $\pi_1 : \asm{S} \times \asm{T} \to
+\asm{S}$ is an operation which maps a mono $\asm{V} \monoto \asm{S}$
+to the mono $\asm{V} \times \asm{T} \monoto \asm{S} \times \asm{T}$.
+This is a monotone map from $\Mono{\asm{S}}$ to $\Mono{\asm{S} \times
+  \asm{T}}$. Existential quantification is its left adjoint, i.e., a
+monotone map $\exists_{\asm{T}} : \Mono{\asm{S} \times \asm{T}} \to
+\Mono{\asm{S}}$ such that, for all monos $\asm{U} \monoto \asm{S}
+\times \asm{T}$ and $\asm{V} \monoto \asm{S}$,
+%
+\begin{equation*}
+  \asm{U} \leq \asm{V} \times \asm{T}
+  \iff
+  \exists_{\asm{T}}(\asm{U}) \leq \asm{V}.
+\end{equation*}
+%
+Similarly, universal quantification is the right adjoint:
+%
+\begin{equation*}
+  \asm{V} \times \asm{T} \leq \asm{U}
+  \iff
+  \asm{V} \leq \forall_{\asm{T}}(\asm{U}).
+\end{equation*}
+%
+We verify that such adjoints really exist in $\AsmA$. We work with
+realizability predicates instead of monos. Weakening 
 
+
+
+
+
+
+\subsection{The realizability interpretation of logic}
+\label{sec:realizability-interpretation}
 
 
 \subsection{Decidable predicates}
@@ -2060,6 +2092,7 @@ structure is uniquely determined by the induced partial order.
 
 % epis and regular epis
 
+% computability for free
 
 
 %%% Local Variables: 

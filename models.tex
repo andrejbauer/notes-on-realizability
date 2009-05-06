@@ -1607,17 +1607,17 @@ same, except that $\lambda$-abstraction must be replaced by
 $\langle\;\rangle$-notation:
 %
 \begin{xalignat*}{3}
-  \combPair &= \xulam{x y z}{z\; x\; y},
+  \combPair &= \pcalam{x y z}{z\; x\; y},
   &
-  \combFst &= \xulam{p}{p \; (\xulam{x y}{x})},
+  \combFst &= \pcalam{p}{p \; (\xpcalam{x y}{x})},
   &
-  \combSnd &= \xulam{p}{p \; (\xulam{x y}{y})}
+  \combSnd &= \pcalam{p}{p \; (\xpcalam{x y}{y})}
   \\
-  \combIf &= \xulam{x}{x},
+  \combIf &= \xpcalam{x}{x},
   &
-  \combTrue &= \xulam{x y}{x},
+  \combTrue &= \xpcalam{x y}{x},
   &
-  \combFalse &= \xulam{x y}{y}.
+  \combFalse &= \xpcalam{x y}{y}.
 \end{xalignat*}
 %
 The notation $\langle\;\rangle$ makes expressions much more
