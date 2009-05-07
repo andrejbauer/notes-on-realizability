@@ -2046,7 +2046,7 @@ monotone map $\exists_{\asm{T}} : \Mono{\asm{S} \times \asm{T}} \to
 \begin{equation*}
   \asm{U} \leq \asm{V} \times \asm{T}
   \iff
-  \exists_{\asm{T}}(\asm{U}) \leq \asm{V}.
+  \exists_{\asm{T}} \asm{U} \leq \asm{V}.
 \end{equation*}
 %
 Similarly, universal quantification is the right adjoint:
@@ -2054,19 +2054,74 @@ Similarly, universal quantification is the right adjoint:
 \begin{equation*}
   \asm{V} \times \asm{T} \leq \asm{U}
   \iff
-  \asm{V} \leq \forall_{\asm{T}}(\asm{U}).
+  \asm{V} \leq \forall_{\asm{T}} \asm{U}.
 \end{equation*}
 %
-We verify that such adjoints really exist in $\AsmA$. We work with
-realizability predicates instead of monos. Weakening 
+We verify that such adjoints really exist in $\AsmA$ but work with
+realizability predicates instead of monos.
 
+Weakening along $\pi_1 : \asm{S} \times \asm{T} \to \asm{S}$ takes $p
+\in \Pred{\asm{S}}$ to the predicate $p \times \asm{T} \in
+\Pred{\asm{S} \times \asm{T}}$ defined by
+%
+\begin{equation*}
+  |p \times \asm{T}| = |p|
+  \qquad\text{and}\qquad
+  (p \times \asm{T})(x,y) = p(x),
+\end{equation*}
+%
+where $x \in S$ and $y \in T$. We claim that the left adjoint
+$\exists_{\asm{T}}$ maps $q \in \Pred{\asm{S} \times \asm{T}}$ to
+$\exists_{\asm{T}} q \in \Pred{\asm{S}}$ defined by
+%
+\begin{align*}
+  |\exists_{\asm{T}} q| &= |T| \times |q| \\
+  (\exists_{\asm{T}} q)(x) &=
+  \set{ \combPair\;\R{y}\;\R{r} \in \Atyp{|T| \times |q|} \such
+    \xsome{y}{T}{\R{y} \rz_T y \land \R{r} \rz q(x,y)}
+  }.
+\end{align*}
+%
+(Missing: verification that this really is a left adjoint.)
 
+Similarly, the universal quantifier $\forall_{\asm{T}}$ maps $q \in
+\Pred{\asm{S} \times \asm{T}}$ to $\forall_{\asm{T}} q \in
+\Pred{\asm{S}}$ defined by
+%
+\begin{align*}
+  |\forall_{\asm{T}} q| &= |T| \to |q| \\
+  (\forall_{\asm{T}} q)(x) &=
+  \set{ \R{r} \in \Atyp{|T| \to |q|} \such
+    \xall{\R{y}}{\Atyp{|T|}}{
+      \all{y}{T}{
+        \R{y} \rz_T y \implies
+        \defined{\R{r}\;\R{y}} \land
+        \R{r}\;\R{y} \rz q(x,y)
+      }
+    }
+  }.
+\end{align*}
+%
+(Missing: verification that this really is a right adjoint.)
 
+It is customary to write $\xsome{y}{T}{q(x,y)}$ and
+$\xall{y}{T}{q(x,y)}$ instead of $\exists_{\asm{T}} q$ and
+$\forall_{\asm{T}} q$.
 
+(Missing: the Beck-Chevalley condition and interaction between
+quantifiers and substitutions.)
 
 
 \subsection{The realizability interpretation of logic}
 \label{sec:realizability-interpretation}
+
+Let us summarize the realizability interpretation of first-order
+intuitionistic logic. A typing context $x_1 : \asm{S}_1, \ldots, x_n :
+\asm{S}_n$ is a list of variables with assemblies that they range
+over. We abbreviate such a context as $\overline{x} :
+\overline{\asm{S}}$. A formula $\phi$ whose free variables are among
+$x_1, \ldots, x_n$.
+
 
 
 \subsection{Decidable predicates}
