@@ -1751,7 +1751,9 @@ the subsets of~$T$ given by
 Observe that $\sem{\xsome{x}{S}{\phi}}$ is the least subset of~$T$
 such that $\sem{\phi} \subseteq S \times \sem{\xsome{x}{S}{\phi}}$,
 and that $\sem{\xall{x}{S}{\phi}}$ is the largest subset of~$T$ such
-that $S \times \sem{\xall{X}{S}{\phi}} \subseteq \sem{\phi}$.
+that $S \times \sem{\xall{X}{S}{\phi}} \subseteq \sem{\phi}$. We shall
+use these characterizations of $\exists$ and $\forall$ in the setting
+of realizability.
 
 \subsection{Realizability predicates}
 \label{sec:realizability-predicates}
@@ -1762,7 +1764,7 @@ along the same lines, except that we use monos instead of subsets. For
 monos $u : \asm{U} \monoto \asm{S}$ and $t : \asm{T} \monoto \asm{S}$,
 write $u \leq t$, or somewhat less precisely $\asm{U} \leq \asm{T}$,
 if $u$ factors through $t$, i.e., there exists a realized $f : \asm{U}
-\to \asm{B}$ such that
+\to \asm{T}$ such that
 %
 \begin{equation*}
   \xymatrix{
@@ -1795,27 +1797,28 @@ While the powerset $\pow{S}$ is a complete Boolean algebra,
 $\Mono{\asm{S}}$ is neither complete nor Boolean. However, it is a
 \emph{Heyting prealgebra}, which is enough to interpret
 \emph{intuitionistic} propositional calculus, and as we shall see, the
-quantifiers may be interpreted too, without completeness.
+quantifiers may be interpreted too.
 
 We would like the interpretation of logic in $\AsmA$ to be in specific
 form, for which we first need to focus on a particular kind of monos.
 Let $\asm{S}$ be an assembly, $|p|$ a type, and $p : S \to
 \pow{\Atyp{|p|}}$ a function. We call $p$ a \emph{realizability
-  predicate} on $\asm{S}$. The map $p$ is equivalently given as a
-relation ${-} \rz p({-})$ between $\Atyp{|p|}$ and $S$. The
-correspondence between the map and the relation is
+  predicate} on $\asm{S}$ and $|p|$ its \emph{underlying type}. The
+map $p$ is equivalently given as a relation ${-} \rz p({-})$ between
+$\Atyp{|p|}$ and $S$. The correspondence between the map and the
+relation is
 %
 \begin{equation*}
   \R{r} \rz p(x) \iff \R{r} \in p(x).
 \end{equation*}
 %
-Read $\R{r} \rz p(x)$ as ``$\R{r}$ realizes (the fact) $p(x)$''. Now
-define the assembly $\asm{S}_p$ by
+Read $\R{r} \rz p(x)$ as ``$\R{r}$ realizes $p(x)$''. Now define the
+assembly $\asm{S}_p$ by
 %
 \begin{align*}
   S_p &= \set{x \in S \such \xsome{\R{r}}{\Atyp{|p|}}{\R{r} \in p(x)}}, \\
   |S_p| &= |S| \times |p|, \\
-  \combPair\;\R{x}\;\R{r} \rz_P x &\iff
+  \combPair\;\R{x}\;\R{r} \rz_{S_p} x &\iff
   \R{r} \in p(x) \land \R{x} \rz_S x.
 \end{align*}
 %
@@ -1870,9 +1873,9 @@ $\iota_p \leq \iota_q$.
 
 \begin{proof}
   Suppose first that $p \leq q$. Then $\iota_p \leq \iota_q$, which
-  means that the $S_p \subseteq S_q$ and that the subset inclusion $i
-  : S_p \to S_q$ is realized, say by $\R{i} \in \compAtyp{|S| \times
-    |p| \to |S| \times |q|}$. Let $\R{f} = \pcalam{\annot{x}{|S|}
+  means that $S_p \subseteq S_q$ and that the subset inclusion $i :
+  S_p \to S_q$ is realized, say by $\R{i} \in \compAtyp{|S| \times |p|
+    \to |S| \times |q|}$. Let $\R{f} = \pcalam{\annot{x}{|S|}
     \annot{r}{|p|}}{\combSnd\;(\R{i}\;(\combPair\;x\;r))}$. Suppose $x
   \in S$, $\R{x} \in \Atyp{|S|}$, $\R{r} \rz p(x)$, and $\R{x} \rz_S
   x$. Then $\combPair\;\R{x}\;\R{r} \rz_{S_p} x$, therefore
@@ -1994,7 +1997,6 @@ equivalent ones.
   respectively. If $p \leq r$ and $q \leq r$ are witnessed by $\R{f}$
   and $\R{g}$ then $p \lor q \leq r$ is witnessed by
   %
-  g
   \begin{equation*}
     \pcalam{\annot{x}{|S|} \annot{w}{|p|+|q|}}{
       \combCase\;w\;(\R{f}\;x)\;(\R{g}\;x)
@@ -2017,12 +2019,12 @@ equivalent ones.
   \end{equation*}
   %
   That is, $\R{f}$ maps realizers for $p(x)$ to realizers for $q(x)$.
-  Note that it need not be computable. Let us show that $p \imp q$ has
-  the desired properties. The inequality $(p \imp q) \land p \leq q$
-  is witnessed by $\pcalam{\annot{x}{|S|} \annot{w}{(|p| \to |q|)
-      \times |p|}}{(\combFst\;w)\; (\combSnd\;w)}$. If $r \land p \leq
-  q$ is witnessed by $\R{f}$ then $r \leq p \imp q$ is witnessed by
-  $\pcalam{\annot{x}{|S|} \annot{w}{|r|}
+  Note that $\R{f}$ need not be computable. Let us show that $p \imp
+  q$ has the desired properties. The inequality $(p \imp q) \land p
+  \leq q$ is witnessed by $\pcalam{\annot{x}{|S|} \annot{w}{(|p| \to
+      |q|) \times |p|}}{(\combFst\;w)\; (\combSnd\;w)}$. If $r \land p
+  \leq q$ is witnessed by $\R{f}$ then $r \leq p \imp q$ is witnessed
+  by $\pcalam{\annot{x}{|S|} \annot{w}{|r|}
     \annot{u}{|p|}}{\R{f}\;(\combPair\;w\;u)}$.
 \end{proof}
 
@@ -2112,16 +2114,52 @@ $\forall_{\asm{T}} q$.
 quantifiers and substitutions.)
 
 
-\subsection{The realizability interpretation of logic}
-\label{sec:realizability-interpretation}
+\subsection{Validity in the realizability interpretation}
+\label{sec:realizability-validity}
 
 Let us summarize the realizability interpretation of first-order
 intuitionistic logic. A typing context $x_1 : \asm{S}_1, \ldots, x_n :
 \asm{S}_n$ is a list of variables with assemblies that they range
 over. We abbreviate such a context as $\overline{x} :
-\overline{\asm{S}}$. A formula $\phi$ whose free variables are among
-$x_1, \ldots, x_n$.
-
+\overline{\asm{S}}$. For each formula $\phi$ we define its underlying
+type $|\phi|$ as follows:
+%
+\begin{align*}
+  |\bot| &= \unit \\
+  |\top| &= \unit \\
+  |t_1 = t_2| &= \unit \\
+  |\phi_1 \land \phi_2| &= |\phi_1| \times |\phi_2|\\
+  |\phi_1 \lor \phi_2| &= |\phi_1| + |\phi_2|\\
+  |\phi_1 \implies \phi_2| &= |\phi_1| \to |\phi_2|\\
+  |\xall{x}{\asm{T}}{\phi}| &= |T| \to |\phi| \\
+  |\xsome{x}{\asm{T}}{\phi}| &= |T| \times |\phi|.
+\end{align*}
+%
+The realizability relation $\R{r} \rz \phi$, where $\R{r} \in
+\Atyp{|\phi|}$ is defined inductively as follows:
+%
+\begin{align*}
+  \R{r} \rz \bot &\iff \bot\\
+  \R{r} \rz \top &\iff \top\\
+  \ttunit \rz t_1 = t_2 &\iff t_1 = t2\\
+  \combPair\;\R{r}_1\;\R{r}_2 \rz \phi_1 \land \phi_2 &\iff
+  \R{r}_1 \rz \phi_1 \land \R{r}_2 \rz \phi_2\\
+  \combLeft\;\R{r} \rz \phi_1 \lor \phi_2 &\iff \R{r} \rz \phi_1\\
+  \combRight\;\R{r} \rz \phi_1 \lor \phi_2 &\iff \R{r} \rz \phi_2\\
+  \R{r} \rz \phi_1 \implies \phi_2 &\iff
+  \all{\R{s}}{\Atyp{|\phi_1|}}{\R{s} \rz \phi_1 \implies
+    \defined{\R{r}\;\R{s}} \land \R{r}\;\R{s} \rz \phi_2
+  }\\
+  \combPair\;\R{u}\;\R{r} \rz \xsome{x}{\asm{T}}{\phi} &\iff
+  \some{u}{T}{\R{u} \rz_T u \land \R{r} \rz \subst{\phi}{x \subto u}}
+  \\
+  \R{r} \rz \xall{x}{\asm{T}}{\phi} &\iff
+  \xall{\R{u}}{\Atyp{|T|}}{
+    \all{u}{T}{
+      \R{u} \rz_T u \implies
+      \defined{\R{r}\;\R{u}} \land \R{r}\;\R{u} \rz \subst{\phi}{x \subto u}
+    }}.
+\end{align*}
 
 
 \subsection{Decidable predicates}
