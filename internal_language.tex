@@ -2125,16 +2125,86 @@ It is customary to write $\xsome{y}{T}{q(x,y)}$ and
 $\xall{y}{T}{q(x,y)}$ instead of $\exists_{\asm{T}} q$ and
 $\forall_{\asm{T}} q$.
 
-We must verify that the operations $\exists_{\asm{T}}$ and
-$\forall_{\asm{T}}$
+\begin{proposition}
+  The operations $\exists_{\asm{T}}$ and $\forall_{\asm{T}}$ give a
+  sound interpretation of the existential and universal quantifier
+  with respect to first-order intuitionistic logic.
+\end{proposition}
 
+\begin{proof}
+  We need to prove that the inference rules for $\exists$ and
+  $\forall$ are sound for the realizability interpretation of logic.
+  The inference rule for $\exists$ is
+  %
+  \begin{equation*}
+    \infer
+    {p \vdash q}
+    {\xsome{x}{\asm{S}}{p} \vdash q}
+  \end{equation*}
+
+
+\end{proof}
 
 \subsection{Substitution and the Beck-Chevalley condition}
 \label{sec:beck-chevalley}
 
+We have so far ignored the most basic logical operation of all, which
+is \emph{substitution}. There are two kinds of substitution in
+first-order logic: of terms into terms and of terms into formulas.
 
-(Missing: the Beck-Chevalley condition and interaction between
-quantifiers and substitutions.)
+Substitution of terms into terms is interpreted as composition.
+Suppose $s$ is a term of type $\asm{T}$ with a free variable $x$ of
+type $\asm{S}$, and $t$ is a term of type $\asm{U}$ with a free
+variable $y$ of type $\asm{U}$. The terms $s$ and $t$ determine
+realized maps
+%
+\begin{equation*}
+  \xymatrix{
+    {\asm{S}}
+    \ar[r]^{\sem{s}}
+    &
+    {\asm{T}}
+    \ar[r]^{\sem{t}}
+    &
+    {\asm{U}}
+  }
+\end{equation*}
+%
+A fairly routine induction on the structure of~$t$ shows that
+$\sem{\subst{t}{x \subto s}} = \sem{t} \circ \sem{s}$, i.e.
+substitution of terms into terms correponds to composition.
+Simultaneous substitution of several variables is treated similarly.
+
+Substition of terms into predicates is more interesting. Let $\phi$ be
+a formula with a free varaible $y$ of type $\asm{T}$ and $t$ a term of
+type $\asm{T}$ with a free variable $x$ of type $\asm{S}$. The formula
+$\phi$ determines a realizability predicate $\sem{\phi} \in
+\pred{\asm{T}}$. What does $\subst{\phi}{y \subto t}$ correspond to?
+According to categorical logic, it is the pullback $P$ in the diagram
+%
+\begin{equation*}
+  \xymatrix{
+    {P}
+    \pbcorner
+    \ar[r]
+    \ar@{ >->}[d]
+    &
+    {\sem{\phi}}
+    \ar@{ >->}[d]
+    \\
+    {\asm{S}}
+    \ar[r]_{f}
+    &
+    {\asm{T}}
+  }
+\end{equation*}
+
+
+ Suppose $p
+\in \Pred{\asm{T}}$ is a realizability predicate and $t : \asm{S} \to
+\asm{T}$ a realized map. 
+
+
 
 
 \subsection{Validity in the realizability interpretation}
