@@ -2028,7 +2028,7 @@ equivalent ones.
     \annot{u}{|p|}}{\R{f}\;(\combPair\;w\;u)}$.
 \end{proof}
 
-\subsection{Quantifiers and the Beck-Chevalley condition}
+\subsection{Quantifiers}
 \label{sec:quantifiers}
 
 To get an interpretation of the quantifiers we apply methods of
@@ -2084,7 +2084,15 @@ $\exists_{\asm{T}} q \in \Pred{\asm{S}}$ defined by
   }.
 \end{align*}
 %
-(Missing: verification that this really is a left adjoint.)
+Let us verify that we have a left adjoint to weakening. Suppose $p \in
+\Pred{\asm{S} \times \asm{T}}$ and $q \in \Pred{\asm{S}}$. If $p \leq
+q \times \asm{T}$ is witnessed by $\R{f}$ then $\exists_{\asm{T}} p
+\leq q$ is witnessed by $\pcalam{\annot{x}{|S|} \, \annot{e}{|T| \times
+    |p|}}{\R{f}\; (\combPair \; x \; (\combFst\; e)) \; (\combSnd \; e)}$.
+Conversely, if $\exists_{\asm{T}} p \leq q$ is witnessed by $\R{g}$
+then $p \leq q \times \asm{T}$ is witnessed by $\pcalam{\annot{r}{|S|
+    \times |T|} \, \annot{s}{|p|}}{\R{g} \;
+  (\combFst\;r)\; (\combPair \; (\combSnd \; r) \; s)}$.
 
 Similarly, the universal quantifier $\forall_{\asm{T}}$ maps $q \in
 \Pred{\asm{S} \times \asm{T}}$ to $\forall_{\asm{T}} q \in
@@ -2104,11 +2112,26 @@ Similarly, the universal quantifier $\forall_{\asm{T}}$ maps $q \in
   }.
 \end{align*}
 %
-(Missing: verification that this really is a right adjoint.)
+To verify that this is the right adjoint, suppose $p \in \Pred{\asm{S}
+  \times \asm{T}}$ and $q \in \Pred{\asm{S}}$. If $q \times \asm{T}
+\leq p$ is witnessed by $\R{f}$ then $q \leq \forall_{\asm{T}} p$ is
+witnessed by $\pcalam{\annot{x}{|S|} \, \annot{r}{|q|} \,
+  \annot{y}{|T|}}{\R{f} \; (\combPair \; x \; y) \; r}$. Conversely,
+if $q \leq \forall_{\asm{T}} p$ is witnessed by $\R{g}$ then $q \times
+\asm{T} \leq p$ is witnessed by $\pcalam{\annot{s}{|S| \times |T|} \,
+  \annot{r}{|q|}}{\R{g} \; (\combFst \; s) \; r \; (\combSnd \; s)}$.
 
 It is customary to write $\xsome{y}{T}{q(x,y)}$ and
 $\xall{y}{T}{q(x,y)}$ instead of $\exists_{\asm{T}} q$ and
 $\forall_{\asm{T}} q$.
+
+We must verify that the operations $\exists_{\asm{T}}$ and
+$\forall_{\asm{T}}$
+
+
+\subsection{Substitution and the Beck-Chevalley condition}
+\label{sec:beck-chevalley}
+
 
 (Missing: the Beck-Chevalley condition and interaction between
 quantifiers and substitutions.)
@@ -2141,7 +2164,7 @@ The realizability relation $\R{r} \rz \phi$, where $\R{r} \in
 \begin{align*}
   \R{r} \rz \bot &\iff \bot\\
   \R{r} \rz \top &\iff \top\\
-  \ttunit \rz t_1 = t_2 &\iff t_1 = t2\\
+  \ttunit \rz t_1 = t_2 &\iff t_1 = t_2\\
   \combPair\;\R{r}_1\;\R{r}_2 \rz \phi_1 \land \phi_2 &\iff
   \R{r}_1 \rz \phi_1 \land \R{r}_2 \rz \phi_2\\
   \combLeft\;\R{r} \rz \phi_1 \lor \phi_2 &\iff \R{r} \rz \phi_1\\
