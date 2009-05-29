@@ -1,0 +1,120 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage{a4wide}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[utf8]{inputenc}
+\usepackage{theorem}
+
+\input{../macros}
+
+\begin{document}
+
+\title{Izračunljivost v topologiji}
+\author{Homework 3}
+\date{}
+
+\maketitle
+
+
+\subsection*{Instructions}
+
+You are \emph{encouraged} to use the literature and research papers,
+but any mathematical text that your solution relies on must come from
+a peer-reviewed source (published book or journal article).
+%
+If you use information from Wikipedia or random PDF files on the
+internet, then the correctness of the source becomes \emph{your}
+responsibility, i.e., you should personally verify the proofs or write
+them if they are missing.
+%
+Thus you may solve a problem, or part of a problem, by finding the
+solution in a book or journal article. In this case you may simply
+refer to the text you found (there is no need to copy it). If a
+problem asks for a proof, you must refer to an actual proof (not a
+paper which claims that the proof is trivial or left as exercise).
+
+I prefer a hand-written solution to one written with Microsoft Word in
+which mathematics is messed up. You may but do not have to use
+{\LaTeX}.
+%
+If the problems are too hard, come to me and we will discuss them.
+
+
+\subsection*{Problem 1}
+
+Let $\asm{S}$ be an assembly and $p \in \Pred{\asm{S} \times \asm{S}}$
+a realizability predicate on $\asm{S} \times \asm{S}$. In your
+favorite programming language (a functional programming language such
+as Haskell or Ocaml might work well), write a realizer for the
+statement known as ``dependent choice'':
+%
+\begin{equation*}
+  (\xall{x}{\asm{S}}{\xsome{y}{\asm{S}}{p(x,y)}}) \implies
+  \xall{z}{\asm{S}}{
+    \some{f}{\asm{S}^{\asm{N}}}{
+      f(0) = z \land \xall{n}{\asm{N}}{p(f(n), f(n+1))}
+    }
+  }.
+\end{equation*}
+%
+Explain what your program does. How does the program simplify if we
+assume that $p$ is $\lnot\lnot$-stable?
+
+
+\subsection*{Problem 2}
+
+In this problem we work in $\Asm{K_1}$ where $K_1$ is the first Kleene
+algebra, i.e., we work with type 1 Turing machines. Recall the
+definitions of standard assemblies for booleans $\two$, natural
+numbers $\asm{N}$, integers $\asm{Z}$, and real numbers $\asm{R}$:
+%
+\begin{itemize}
+\item $\two = (\set{0,1}, {\rz_2})$ where $0 \rz_2 0$ and
+  $1 \rz_2 1$,
+\item $\asm{N} = (\NN, {\rz_{\NN}})$ where $n \rz_\NN n$ for every $n
+  \in \NN$,
+\item $\asm{Z} = (\ZZ, {\rz_\ZZ})$ where $\pair{m,n} \rz_\ZZ k$ if $k
+  = m - n$ for all $m, n \in \NN$ and $k \in \ZZ$,
+\item $\asm{R} = (R, {\rz_R})$ where, for $n \in \NN$ and $x \in \RR$,
+  $n \rz_R x$ if, and only if, for every $k \in \NN$ there are $a, b,
+  c \in \NN$ such that $\pr{n}{k} = \pair{\pair{a, b}, c}$ and $|x -
+  (a - b)/c| \leq 2^{-k}$. In other words, a real number~$x$ is
+  represented by a Turing machine which accepts a number~$k$ and
+  outputs a rational number $q = (a-b)/c$ such that $|x - q| \leq
+  2^{-k}$. The set $R = \set{x \in \RR \such \xsome{n}{\NN}{n \rz_R
+      x}}$ consists of those real numbers that have such a realizer.
+\end{itemize}
+%
+For each of the following statements determine whether it is realized
+in $\Asm{K_1}$:
+%
+\begin{enumerate}
+\item $\all{f}{\two^\NN}{(\xall{n}{\asm{N}}{f(n)=0}) \lor
+    (\xsome{n}{\asm{N}}{f(n) = 1})}$,
+\item $\all{x}{\asm{R}}{x \leq 0 \lor 0 < x}$,
+\item $\all{x}{\asm{R}}{x \neq 0 \implies x < 0 \lor 0 < x}$,
+\item $\xall{x}{\asm{R}}{\some{k}{\asm{Z}}{k \leq x \land x < k + 1}}$,
+\item $\xall{x}{\asm{R}}{\some{k}{\asm{Z}}{k \leq x \land x < k + 2}}$.
+\end{enumerate}
+%
+
+\subsection*{Problem 3}
+
+Prove the following statement in synthetic topology:
+%
+\begin{enumerate}
+\item If $\asm{X}$ is compact and $\asm{Y}$ discrete then
+  $\asm{Y}^\asm{X}$ is discrete.
+\item A compact subspace of a Hausdorff space is closed.
+\item Suppose $\asm{M}$ is an assembly and $d : \asm{M} \times \asm{M}
+  \to \asm{R}$ a realized map such that $(M, d)$ is a metric space.
+  Show that, for all $x \in M$ and $r \in R$, the ``open'' ball
+  $B(x,r) = \set{y \in M \such d(x,y) < r}$ is intrinsically open
+  in~$\asm{M}$. (You may use the fact that $<$ is an open relation on
+  $\asm{R}$.)
+\end{enumerate}
+
+
+
+\end{document}
