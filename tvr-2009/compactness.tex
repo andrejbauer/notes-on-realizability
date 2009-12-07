@@ -3,6 +3,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
+\usepackage{amssymb}
 \usepackage{theorem}
 \usepackage{listings}
 
@@ -34,6 +35,9 @@
 \newcommand{\two}{\mathsf{2}}
 \newcommand{\Bool}{\mathtt{Bool}}
 
+\newcommand{\R}[1]{\mathtt{#1}}
+\newcommand{\rz}{\Vdash}
+
 %%% Quantifiers
 
 %%% quantifiers
@@ -59,7 +63,7 @@
 
 \begin{document}
 
-\title{Compact spaces and quantifiers}
+\title{Computation over compact spaces}
 \author{Andrej Bauer}
 
 \maketitle
@@ -185,7 +189,7 @@ is $k \in I$ such that $S_i \subseteq S_k$ and $S_j \subseteq S_k$.
 
 \begin{exercise}
   Suppose $\mathcal{S} = \set{S_i \such i \in I}$ is a directed family
-  of sets. Show that given any finite number of members $S_{i_1},
+  of sets. Show that for any finite number of members $S_{i_1},
   \ldots, S_{i_n} \in \mathcal{S}$, there is some $S_j \in
   \mathcal{S}$ which contains them all.
 \end{exercise}
@@ -269,14 +273,13 @@ topological space we mean the Scott topology.
 \begin{exercise}
   Write down enough details of the proof of
   Proposition~\ref{proposition:compact-top-open} to convince yourself
-  that the proposition holds.
+  that it holds.
 \end{exercise}
 
 The last proposition allows us to rephrase compactness in terms of
-verifiable properties. A space is compact when the property ``holds
-for every element of~$X$'' is verifiable. Admittedly, is a bit
-confusing because we are talking about a verifiable property of
-verifiable properties on~$X$.
+verifiable properties: a space is compact when ``holds for all $x \in
+X$'' is a verifiable property of verifiable properties. Admittedly, is
+a bit confusing, so we seek another characterization.
 
 A third way to characterize compact spaces involves the
 \emph{Sierpinski space} $\Sigma = \set{\bot, \top}$ which has two
@@ -311,10 +314,9 @@ points and the open sets $\emptyset$, $\set{\top}$ and $\set{\bot,
 \end{proof}
 
 The previous proposition tells us that there is a bijection between
-$\tpl{X}$ and the set $\cont{X,\Sigma}$ of continuous maps $X \to
-\Sigma$. In one direction the bijection maps an open subset $U
-\subseteq X$ to its \emph{characteristic map} $\chi_U : X \to Sigma$,
-defined by
+$\tpl{X}$ and continuous maps $X \to \Sigma$. In one direction the
+bijection maps an open subset $U \subseteq X$ to its
+\emph{characteristic map} $\chi_U : X \to \Sigma$, defined by
 %
 \begin{equation*}
   \chi_U(x) =
@@ -350,33 +352,79 @@ to the open subset $f^{-1}(\set{\top})$.
   compact by Proposition~\ref{proposition:compact-top-open}.
 \end{proof}
 
-Proposition~\ref{proposition:compact-iff-forall-continuous} and the
-second slogan suggest that there must be ways of computing $\forall_X$
-when~$X$ is a compact space. More precisely, if $\mathtt{X}$ is the
-datatype that represents the space~$X$ and $\mathtt{S}$ is the
-datatype corresponding to $\Sigma$, we would expect that $\forall_X$
-may be implemented as a map
+If we turn around the second slogan for a moment,
+Proposition~\ref{proposition:compact-iff-forall-continuous} suggests
+that we should be able to compute the map $\forall_X$ when $X$ is
+compact. To explain what that means precisely, we need to say a few
+words about how topological spaces are represented in a programming
+language.
+
+\section{Representations of spaces}
+\label{sec:representations}
+
+A topological space $X$ is an abstract set. In a programming language
+it is represented by a suitable datatype $\mathtt{X}$ whose values
+represent points of $X$. This may be expressed by a
+\emph{realizability} relation $\rz_X$ which relates values of
+type~$\mathtt{X}$ to point of $X$. For $\R{r} : \mathtt{X}$ and $a \in
+X$ we read $\R{r} \rz_X a$ as ``the value $\R{r}$ realizes, or
+represents, the point $a$''. We require that each point have at least
+one realizer. The triple $(X, \mathtt{X}, {\rz_X})$ is called an
+\emph{assembly}. Note that some values of type $\mathtt{X}$ may
+represent nothing, and that a point of~$X$ may have many
+representations.
+
+A map $f : X \to Y$ is \emph{realized} or represented by a value
+$\R{f}$ of type $\mathtt{X} \to \mathtt{Y}$ which \emph{tracks}~$f$:
 %
 \begin{equation*}
-  \mathtt{forall} : (\mathtt{X} \to \mathtt{S}) \to \mathtt{S},
+  \text{if $\R{r} \rz_X a$ then $\R{f}\;\R{a} \rz_Y f(a)$.}
 \end{equation*}
 %
-provided~$X$ is compact. Indeed, we shall do this later on, but since
-the datatype $\mathtt{S}$ is not one that programmers know from
-everyday practice we shall first consider the simpler case
+In these notes we want to focus on topology and programming. Thus we
+shall keep assemblies and realized maps in the background as much as
+possible.
+
+
+\section{Searchable spaces}
+\label{sec:searchable-spaces}
+
+To sensibly talk about computability of the operator $\forall_X :
+\tpl{X} \to \Sigma$, we should represent $X$ by a datatype
+$\mathtt{X}$ (and a corresponding realizability relation $\rz_X$), and
+similarly represent $\Sigma$ by a suitably chosen datatype
+$\mathtt{S}$. The topology $\tpl{X}$ is represented by the type
+$\mathtt{X} \to \mathtt{S}$ because $\tpl{X}$ is in bijective
+correspondence with continuous maps $X \to \Sigma$. Hence, $\forall_X$
+is computable if there is a value
+%
+\begin{equation*}
+  \R{forall} : (\mathtt{X} \to \mathtt{S}) \to \mathtt{S},
+\end{equation*}
+%
+which tracks it, i.e., for all $\R{p}$ of type $\mathtt{X} \to
+\mathtt{S}$ and all continuous maps $p : X \to \Sigma$,
+%
+\begin{equation*}
+  \text{if $\R{p} \rz_{X \to \Sigma} p$ then $\R{forall}\;\R{p}
+    \rz_\Sigma \forall_X(p)$.}
+\end{equation*}
+%
+There are several ways of representing $\Sigma$ by a datatype
+$\mathtt{S}$. Because all of them are a bit unusual, we first focus on
+a related but simpler case
 %
 \begin{equation}
   \label{eq:forall-bool}
   \mathtt{forall} : (\mathtt{X} \to \Bool) \to \Bool.
 \end{equation}
 %
-The datatype $\Bool$ corresponds to the topological space
-$\two = \set{0, 1}$ with the discrete topology (every set is open).
-The computable maps $\mathtt{X} \to \Bool$ then correspond to
-the continuous maps $X \to \two$, i.e., to the \emph{decidable}
-properties. Because a map $f : X \to \two$ is continuous if, and only
-if, $f^{-1}(\set{1})$ is clopen (closed and open), the decidable
-properties correspond to clopen subsets.
+The datatype $\Bool$ does \emph{not} represent~$\Sigma$ but the
+discrete topological space $\two = \set{0, 1}$. Values of type
+$\mathtt{X} \to \Bool$ track continuous maps $X \to \two$. Because a
+map $f : X \to \two$ is continuous if, and only if, $f^{-1}(\set{1})$
+is clopen (closed and open), the decidable properties correspond to
+clopen subsets.
 
 \begin{exercise}
   Show that a map $f : X \to \two$ is continuous if, and only if,
@@ -386,17 +434,7 @@ properties correspond to clopen subsets.
 \begin{exercise}
   Which properties of $\RR$ are decidable?
 \end{exercise}
-
-\section{Searchable spaces}
-\label{sec:searchable-spaces}
-
-From now we shall casually confuse topological spaces and the
-datatypes which represent them. While this is not very mathematically
-correct,\footnote{One way to make everything precise is to use
-  \emph{domain theory}, and another \emph{realizability theory}. But
-  these are beyond the scope of the notes.} it gives the correct
-``feeling'' for how computing and topology are related.
-
+%
 How could we implement the universal quantifier $\mathtt{forall}$?
 When the underlying datatype $\mathtt{X}$ is finite, say $\mathtt{X} =
 \set{x_1, \ldots, x_n}$ we can simply define
@@ -503,7 +541,7 @@ The first line defines a datatype $\mathtt{Searchable}\;\alpha$, where
 $\alpha$ is a type parameter. An element of this datatype is of the
 form $\mathtt{Finder}\;\epsilon$, where $\epsilon$ is a search
 operator. We also define an auxiliary function $\mathtt{search}$, so
-that we can conveniently write $
+that we can conveniently write.
 
 
 \end{document}
