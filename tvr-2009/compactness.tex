@@ -1,0 +1,490 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{theorem}
+
+%%% Theorems
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+
+{\theorembodyfont{\rmfamily}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{definition}[theorem]{Definition}
+}
+
+\newenvironment{proof}{\par\noindent\textit{Proof.}}{\hfill$\Box$\par\medskip}
+
+%%% Macros
+
+\newcommand{\RR}{\mathbb{R}}
+
+\newcommand{\set}[1]{\{#1\}}
+\newcommand{\such}{\mid}
+\newcommand{\tpl}[1]{\mathcal{O}(#1)}
+\newcommand{\cont}[1]{\mathcal{C}(#1)}
+\newcommand{\scr}[1]{\mathcal{#1}}
+\newcommand{\two}{\mathsf{2}}
+\newcommand{\Bool}{\mathtt{Bool}}
+
+%%% Quantifiers
+
+%%% quantifiers
+\newcommand{\all}[3]{\forall\, #1 \,{\in}\, #2\,.\left(#3\right)}
+\newcommand{\some}[3]{\exists\, #1 \,{\in}\, #2\,.\left(#3\right)}
+\newcommand{\exactlyone}[3]{\exists!\, #1 \,{\in}\, #2\,.\left(#3\right)}
+\newcommand{\lam}[3]{\lambda #1 \,{\in}\, #2\,.\left(#3\right)}
+\newcommand{\uall}[2]{\forall\, #1\,.\left(#2\right)}
+\newcommand{\usome}[2]{\exists\, #1\,.\left(#2\right)}
+\newcommand{\uexactlyone}[3]{\exists!\, #1\,.\left(#2\right)}
+\newcommand{\ulam}[2]{\lambda #1 .\left(#2\right)}
+\newcommand{\xall}[3]{\forall\, #1 \,{\in}\, #2\,.\,#3}
+\newcommand{\xsome}[3]{\exists\, #1 \,{\in}\, #2\,.\,#3}
+\newcommand{\xexactlyone}[3]{\exists!\, #1 \,{\in}\, #2\,.\,#3}
+\newcommand{\xuall}[2]{\forall\, #1\,.\,#2}
+\newcommand{\xusome}[2]{\exists\, #1\,.\,#2}
+\newcommand{\xuexactlyone}[2]{\exists!\, #1,.\,#2}
+\newcommand{\xlam}[3]{\lambda #1 \,{\in}\, #2\,.\,#3}
+\newcommand{\xulam}[2]{\lambda #1 .\,#2}
+\newcommand{\tlam}[3]{\lambda #1 \,{:}\, #2\,.\,\left(#3\right)}
+\newcommand{\xtlam}[3]{\lambda #1 \,{:}\, #2\,.\,#3}
+
+
+\begin{document}
+
+\title{Compact spaces and quantifiers}
+\author{Andrej Bauer}
+
+\maketitle
+
+\begin{abstract}
+  These are lecture notes for the graduate course ``Topology in
+  computer science'' which I gave with Neža Mramor-Kosta in the Fall
+  of~2009 at the Faculty of computer science, University of Ljubljana.
+  We review the basic relationship between compactness and universal
+  quantifiers. We show how to implement the quantifiers, following
+  Martín Escardó's work.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:introduction}
+
+When students first see the definition of compact spaces it usually
+looks very mysterious to them. Where does the Heine-Borel property
+come from? Why would anyone consider finite subcovers of arbitrary
+open covers? In these notes we review the basic definitions and try to
+motivate them from the point of view of computation.
+
+We assume basic familiarity with topology and a certain degree of
+programming skill. The code examples are written in Haskell, but could
+be translated to any other programming language that supports
+higher-order functions.
+
+These notes do not contain any original material. All is ``standard''
+knowledge in topology and computation, although some parts are not
+well known. A good starting point for background reading are Martín
+Escardó's notes~\cite{escardo}.
+
+\section{Open sets as semidecidable properties}
+\label{sec:opens-semidecidable}
+
+An open subset of a topological space may be thought of as a property
+that can be verified in finite time. To illustrate this, suppose we a
+real number $a$ is given to us in a physically realistic way. That is,
+$a$ is not given with infinite precision all at once, but rather as a
+sequence of rational approximations with error bounds. The
+approximations and the error bounds might come from a sequence of ever
+more precise (and ever more expensive) measurements, or from a
+computer program that computes~$a$ to any desired precision.
+
+We may want to know whether $a$ has a given property, or equivalently
+whether it is an element of a given set $S \subseteq \RR$. We
+distinguish between
+%
+\begin{itemize}
+\item \emph{deciding} whether $a \in S$: we do not know whether $a \in
+  S$ or $a \not\in S$ and would like to know which is the case.
+\item \emph{verifying} that $a \in S$: we seek evidence that $a \in
+  S$ (and if $a \not\in S$ then we do not care what happens, and in
+  particular we do not have to provide evidence that $a \not\in S$).
+\end{itemize}
+%
+Deciding whether $a \in S$ provides one bit of information: we find
+out either $a \in S$ or $a \not\in S$. Verifying that $a \in S$
+provides \emph{less} than that: if $a \in S$ we eventually get the
+evidence, but if $a \not\in S$ we just wait forever hoping that
+perhaps the evidence of $a \in S$ will appear.
+
+Can we decide whether $a > 0$? No, not for all $a$. The problematic
+case is $a = 0$ because we will never be able to tell that $a > 0$
+does not hold just by looking at an approximation $a'$ with a positive
+error bound $\epsilon > 0$.
+
+Can we verify that $a > 0$? Yes. If it is the case that $a > 0$ then
+eventually we will see an approximation $a'$ with a good enough error
+bound $\epsilon > 0$ such that $0 < a' - \epsilon < a$. If $a < 0$
+then we do not care what happens. (If you are thinking that we can
+decide whether $a > 0$ in all cases but $a = 0$ then you are right. Of
+course, we are now talking about a different topological space $\RR
+\setminus \set{0}$.)
+
+A moment's thought shows that we can verify $a \in S$ when $S$ has the
+following property: if $b \in S$ then also all points close enough
+to~$b$ are in $S$. But that's precisely the definition of open sets.
+So we adopt the slogan
+%
+\begin{quote}
+  \emph{``Verifiable properties correspond to open sets.''}
+\end{quote}
+%
+The word ``verifiable'' should be understood either as ``evidence can
+be computed in finite time'' or ``an experiment confirming it can be
+performed''.
+
+Now suppose $f : X \to Y$ is a map between topological spaces and $U
+\subseteq Y$ is open (verifiable). Imagine we can implement $f$ on a
+computer or as a physical process. For every $x \in X$, $x \in
+f^{-1}(U)$ is equivalent to $f(x) \in U$. This means that $x \in
+f^{-1}(U)$ is verifiable: just verify $f(x) \in U$ instead. In other
+words, the inverse image $f^{-1}(U)$ is open if $U$ is open, which is
+the definition of continuity of~$f$. This is summarized by our second
+slogan
+%
+\begin{quote}
+  \emph{``Computable functions are continuous.''}
+\end{quote}
+
+\begin{exercise}
+  Show that verifiable properties are closed under finite
+  intersections. Are they closed under infinite unions?
+\end{exercise}
+
+\section{Compactness}
+\label{sec:compactness}
+
+The standard definition of compactness is as follows.
+
+\begin{definition}
+  A topological space~$X$ is \emph{compact} when every open cover
+  of~$X$ has a finite subcover.
+\end{definition}
+
+Our aim is to give the concept of compactness a computational
+interpretation, just like we did for open sets and continuous maps
+above. We first rephrase this definition in terms of directed open
+covers. A family $\mathcal{S} = \set{S_i \such i \in I}$ of sets is
+\emph{directed} when $I$ is non-empty and for all $i, j \in I$ there
+is $k \in I$ such that $S_i \subseteq S_k$ and $S_j \subseteq S_k$.
+
+\begin{exercise}
+  Suppose $\mathcal{S} = \set{S_i \such i \in I}$ is a directed family
+  of sets. Show that given any finite number of members $S_{i_1},
+  \ldots, S_{i_n} \in \mathcal{S}$, there is some $S_j \in
+  \mathcal{S}$ which contains them all.
+\end{exercise}
+
+\begin{exercise}
+  Suppose $\mathcal{S} = \set{S_i \such i \in I}$ is an arbitrary
+  family of sets. Show that the family formed by taking all finite
+  unions of the $S_i$'s, including the empty one,
+  %
+  \begin{equation*}
+    \mathcal{T} = \set{U_{i_1} \cup \cdots \cup U_{i_n} \such
+      n \geq 0 \land i_1, \ldots, i_n \in I}
+  \end{equation*}
+  %
+  is directed and that $\bigcup \mathcal{S} = \bigcup \mathcal{T}$.
+\end{exercise}
+
+
+\begin{proposition}
+  \label{proposition:compact-directed-cover}
+  A topological space~$X$ is \emph{compact} if, and only if, every
+  directed open cover of~$X$ contains $X$ as a member.
+\end{proposition}
+
+\begin{proof}
+  Suppose $X$ is compact and let $\set{U_i \such i \in I}$ is a
+  directed open cover. There exist $i_1, \ldots, i_n \in I$ such that
+  $\set{U_{i_1}, \ldots, U_{i_n}}$ already cover~$X$. By directedness
+  there exists $j \in I$ such that $U_j$ contains $U_{i_1}, \ldots,
+  U_{i_n}$, but then $U_j = X$.
+
+  Conversely, suppose every directed open cover of~$X$ contains $X$
+  as a member, and let $\set{U_i \such i \in U}$ be any open cover
+  of~$X$. We form a new cover which consists of all finite unions of
+  $U_i$'s, including the empty union:
+  %
+  \begin{equation*}
+    \set{U_{i_1} \cup \cdots \cup U_{i_n} \such
+      n \geq 0 \land i_1, \ldots, i_n \in I}.
+  \end{equation*}
+  %
+  This is a directed open cover of~$X$, hence it has a member $U_{i_1}
+  \cup \cdots \cup U_{i_n}$ which is equal to~$X$. Thus the original
+  open cover has the finite subcover $\set{U_{i_1}, \ldots, U_{i_n}}$.
+\end{proof}
+
+Let $X$ be a topological space and $\tpl{X} = \set{U \subseteq X \such
+  \text{$U$ is open}}$ its topology. The set $\tpl{X}$ can be
+considered as a topological space, too! Say that $\scr{U} \subseteq
+\tpl{X}$ is \emph{Scott open} when
+%
+\begin{enumerate}
+\item it is an \emph{upper set:} if $U \in \scr{U}$ and $U \subseteq V
+  \in \tpl{X}$ then $V \in \scr{U}$,
+\item it is \emph{inaccessible by directed families}: if $\set{U_i
+    \such i \in I}$ is a directed family of open sets in~$X$ and
+  $\bigcup_{i \in I} U_i \in \scr{U}$ then there is $i \in I$ such
+  that $U_i \in \scr{U}$.
+\end{enumerate}
+
+\begin{exercise}
+  Verify that the family of all Scott open sets forms a topology on
+  $\tpl{X}$.
+\end{exercise}
+
+We call the family of all Scott open subsets of~$\tpl{X}$ the
+\emph{Scott topology}. Henceforth, whenever $\tpl{X}$ is viewed as a
+topological space we mean the Scott topology.
+
+\begin{proposition}
+  \label{proposition:compact-top-open}
+  A topological space~$X$ is compact if, and only if, $\set{X}$ is
+  a Scott open subset of $\tpl{X}$.
+\end{proposition}
+
+\begin{proof}
+  This is just Proposition~\ref{proposition:compact-directed-cover}
+  rephrased in terms of Scott open sets.
+\end{proof}
+
+\begin{exercise}
+  Write down enough details of the proof of
+  Proposition~\ref{proposition:compact-top-open} to convince yourself
+  that the proposition holds.
+\end{exercise}
+
+The last proposition allows us to rephrase compactness in terms of
+verifiable properties. A space is compact when the property ``holds
+for every element of~$X$'' is verifiable. Admittedly, is a bit
+confusing because we are talking about a verifiable property of
+verifiable properties on~$X$.
+
+A third way to characterize compact spaces involves the
+\emph{Sierpinski space} $\Sigma = \set{\bot, \top}$ which has two
+points and the open sets $\emptyset$, $\set{\top}$ and $\set{\bot,
+  \top}$.
+
+\begin{exercise}
+  Find all the ways to equip the set $\set{\bot, \top}$ with a
+  topology. How many non-homeomorphic ones are there?
+\end{exercise}
+
+\begin{exercise}
+  Show that $\Sigma$ is homeomorphic to the topological space
+  $\tpl{\set{\star}}$, where $\set{\star}$ is a singleton space.
+\end{exercise}
+
+\begin{exercise}
+  How many maps $\Sigma \to \Sigma$ are there? How many are continuous?
+\end{exercise}
+
+\begin{proposition}
+  \label{proposition:map-sigma-continuous}
+  A map $f : X \to \Sigma$ is continuous if, and only if,
+  $f^{-1}(\set{\top})$ is open in~$X$.
+\end{proposition}
+
+\begin{proof}
+  $\Sigma$ only has three open sets. The inverse images
+  $f^{-1}(\emptyset) = \emptyset$ and $f^{-1}(\Sigma) = X$ of two of
+  them are always open, which leaves us with checking just the third
+  one, $f^{-1}(\set{\top})$.
+\end{proof}
+
+The previous proposition tells us that there is a bijection between
+$\tpl{X}$ and the set $\cont{X,\Sigma}$ of continuous maps $X \to
+\Sigma$. In one direction the bijection maps an open subset $U
+\subseteq X$ to its \emph{characteristic map} $\chi_U : X \to Sigma$,
+defined by
+%
+\begin{equation*}
+  \chi_U(x) =
+  \begin{cases}
+    \top & \text{if $x \in U$,}\\
+    \bot & \text{otherwise.}
+  \end{cases}  
+\end{equation*}
+%
+In the other direction a continuous map $f : X \to \Sigma$ corresponds
+to the open subset $f^{-1}(\set{\top})$.
+
+\begin{proposition}
+  \label{proposition:compact-iff-forall-continuous}
+  A topological space $X$ is compact if, and only if, the map
+  $\forall_X : \tpl{X} \to \Sigma$, defined by
+  %
+  \begin{equation*}
+    \forall_X(U) =
+    \begin{cases}
+      \top & \text{if $U = X$,}\\
+      \bot & \text{otherwise}
+    \end{cases}    
+  \end{equation*}
+  %
+  is continuous.
+\end{proposition}
+
+\begin{proof}
+  By Proposition~\ref{proposition:map-sigma-continuous} continuity
+  of~$\forall_X$ is equivalent to $\forall_X^{-1}(\set{\top}) =
+  \set{X}$ being open, which in turn is equivalent to~$X$ being
+  compact by Proposition~\ref{proposition:compact-top-open}.
+\end{proof}
+
+Proposition~\ref{proposition:compact-iff-forall-continuous} and the
+second slogan suggest that there must be ways of computing $\forall_X$
+when~$X$ is a compact space. More precisely, if $\mathtt{X}$ is the
+datatype that represents the space~$X$ and $\mathtt{S}$ is the
+datatype corresponding to $\Sigma$, we would expect that $\forall_X$
+may be implemented as a map
+%
+\begin{equation*}
+  \mathtt{forall} : (\mathtt{X} \to \mathtt{S}) \to \mathtt{S},
+\end{equation*}
+%
+provided~$X$ is compact. Indeed, we shall do this later on, but since
+the datatype $\mathtt{S}$ is not one that programmers know from
+everyday practice we shall first consider the simpler case
+%
+\begin{equation}
+  \label{eq:forall-bool}
+  \mathtt{forall} : (\mathtt{X} \to \Bool) \to \Bool.
+\end{equation}
+%
+The datatype $\Bool$ corresponds to the topological space
+$\two = \set{0, 1}$ with the discrete topology (every set is open).
+The computable maps $\mathtt{X} \to \Bool$ then correspond to
+the continuous maps $X \to \two$, i.e., to the \emph{decidable}
+properties. Because a map $f : X \to \two$ is continuous if, and only
+if, $f^{-1}(\set{1})$ is clopen (closed and open), the decidable
+properties correspond to clopen subsets.
+
+\begin{exercise}
+  Show that a map $f : X \to \two$ is continuous if, and only if,
+  $f^{-1}(\set{1})$ clopen.
+\end{exercise}
+
+\begin{exercise}
+  Which properties of $\RR$ are decidable?
+\end{exercise}
+
+\section{Searchable spaces}
+\label{sec:searchable-spaces}
+
+From now we shall casually confuse topological spaces and the
+datatypes which represent them. While this is not very mathematically
+correct,\footnote{One way to make everything precise is to use
+  \emph{domain theory}, and another \emph{realizability theory}. But
+  these are beyond the scope of the notes.} it gives the correct
+``feeling'' for how computing and topology are related.
+
+How could we implement the universal quantifier $\mathtt{forall}$?
+When the underlying datatype $\mathtt{X}$ is finite, say $\mathtt{X} =
+\set{x_1, \ldots, x_n}$ we can simply define
+%
+\begin{equation*}
+  \mathtt{forall}\; p = p(x_1) \land p(x_1) \land \cdots \land p(x_n).
+\end{equation*}
+%
+However, this would not work for infinite datatypes, where all the fun
+is. Instead, we are going to use the notion of a \emph{searchable} space.
+
+\begin{definition}
+  A datatype $\mathtt{X}$ is \emph{searchable} if there is a
+  computable map $\epsilon : (\mathtt{X} \to \Bool) \to \mathtt{X}$
+  such that, for all $p : \mathtt{X} \to \Bool$,
+  %
+  \begin{equation*}
+    p (\epsilon(p)) \iff \xsome{x}{\mathtt{X}}{p(x)}.
+  \end{equation*}
+\end{definition}
+
+The operator $\epsilon$ takes as input a decidable property $p$ and
+returns a candidate $\epsilon(p) \in \mathtt{X}$ such that
+$p(\epsilon(p))$ holds. If there is no $x \in \mathtt{X}$ for which
+$p(x)$ holds, then $\epsilon(p)$ may be any element of $\mathtt{X}$.
+We emphasize that $\epsilon(p)$ \emph{must} return a candidate and is
+not allowed to diverge. The operator $\epsilon$ is known as
+\emph{Hilbert's operator}.
+
+For a searchable space~$\mathtt{X}$ the universal
+quantifier~\eqref{eq:forall-bool} is easily implemented as
+%
+\begin{equation*}
+  \mathtt{forall} \; p = p (\epsilon(p)).
+\end{equation*}
+%
+As an added bonus, because $\xsome{x}{\mathtt{X}}{p(x)}$ is equivalent
+to $\lnot\xall{x}{\mathtt{X}}{\lnot p(x)}$, we also get the
+existential quantifier
+%
+\begin{equation*}
+  \mathtt{exists} \; p = \lnot p(\epsilon (\lnot p)).
+\end{equation*}
+%
+We should give a name to datatypes which have the existential
+quantifier.
+
+\section{Overt spaces}
+\label{sec:overt-spaces}
+
+By symmetry there should be a topological notion that is dual to
+compactness, as follows.
+
+\begin{definition}
+  A topological space $X$ is \emph{overt}\footnote{The term ``overt
+    space'' was coined by Paul Taylor who wanted to get even with the
+    French.} if the map $\exists_X : \tpl{X} \to \Sigma$, defined by
+  %
+  \begin{equation*}
+    \exists_X (U) =
+    \begin{cases}
+      \bot & \text{if $U = \emptyset$,}\\
+      \top & \text{otherwise.}
+    \end{cases}
+  \end{equation*}
+  %
+  is continuous.
+\end{definition}
+
+The following proposition is rather disappointing.
+
+\begin{proposition}
+  Every topological space is overt.
+\end{proposition}
+
+\begin{proof}
+  By Proposition~\ref{proposition:map-sigma-continuous} we only need
+  to check that $\exists_X^{-1}(\set{\top}) = \tpl{X} \setminus
+  \set{\emptyset}$ is Scott open, which is easy. Clearly $\tpl{X} \setminus
+  \set{\emptyset}$ is an upper set, and if $\bigcup_{i \in I} U_i$ is
+  non-empty then at least one member $U_i$ must be non-empty.
+\end{proof}
+
+It would be \emph{wrong} to dismiss the notion of overtness just
+because it is trivial in classical topology. As we shall see later,
+in computable topology overtness is not only interesting but just as
+fundamental as compactness. We now return to searchable spaces.
+
+
+\section{Implementation of searchable spaces}
+\label{sec:implementation-searchable}
+
+
+
+\end{document}
