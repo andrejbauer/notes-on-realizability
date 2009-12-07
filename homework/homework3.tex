@@ -44,10 +44,8 @@ If the problems are too hard, come to me and we will discuss them.
 \subsection*{Problem 1}
 
 Let $\asm{S}$ be an assembly and $p \in \Pred{\asm{S} \times \asm{S}}$
-a realizability predicate on $\asm{S} \times \asm{S}$. In your
-favorite programming language (a functional programming language such
-as Haskell or Ocaml might work well), write a realizer for the
-statement known as ``dependent choice'':
+a realizability predicate on $\asm{S} \times \asm{S}$. The following
+statement is known as \emph{dependent choice}:
 %
 \begin{equation*}
   (\xall{x}{\asm{S}}{\xsome{y}{\asm{S}}{p(x,y)}}) \implies
@@ -58,8 +56,10 @@ statement known as ``dependent choice'':
   }.
 \end{equation*}
 %
-Explain what your program does. How does the program simplify if we
-assume that $p$ is $\lnot\lnot$-stable?
+Write a realizer for this statement. You can either do it in a general
+N-TPCA, or in your favorite programming language. Explain what your
+program does. How does the program simplify if we assume that $p$ is
+$\lnot\lnot$-stable?
 
 
 \subsection*{Problem 2}
@@ -98,8 +98,27 @@ in $\Asm{K_1}$:
 \item $\xall{x}{\asm{R}}{\some{k}{\asm{Z}}{k \leq x \land x < k + 2}}$.
 \end{enumerate}
 %
+You may argue informally when you claim that a realizer exists, but
+you should provide a rigorous proof when you claim a realizer does not
+exist. Hint: if you show that $\phi$ does not have a realizer and
+intuitionistically prove $\psi \implies \phi$, then $\psi$ does not
+have a realizer either.
 
-\subsection*{Problem 3}
+\subsection*{Problem 2}
+
+A map $f : \RR \to \RR$ is a \emph{contraction} if there exists $0
+\leq \alpha < 1$ such that $|f(x) - f(y)| \leq \alpha \cdot |x - y|$
+for all $x, y \in \RR$. Banach fixed-point theorem says that every
+contraction has a (unique) fixed point, i.e., a point $x \in \RR$ such
+that $x = f(x)$.
+
+State Banach fixed-point theorem as a formula in first-order logic to
+make it precise. Prove the theorem intuitionistically and eplain how
+a realizer based on your proof works: what are the inputs, the
+outputs, and the underlying algorithm?
+
+
+\subsection*{Problem 4}
 
 Prove the following statement in synthetic topology:
 %
@@ -107,12 +126,8 @@ Prove the following statement in synthetic topology:
 \item If $\asm{X}$ is compact and $\asm{Y}$ discrete then
   $\asm{Y}^\asm{X}$ is discrete.
 \item A compact subspace of a Hausdorff space is closed.
-\item Suppose $\asm{M}$ is an assembly and $d : \asm{M} \times \asm{M}
-  \to \asm{R}$ a realized map such that $(M, d)$ is a metric space.
-  Show that, for all $x \in M$ and $r \in R$, the ``open'' ball
-  $B(x,r) = \set{y \in M \such d(x,y) < r}$ is intrinsically open
-  in~$\asm{M}$. (You may use the fact that $<$ is an open relation on
-  $\asm{R}$.)
+\item The image of a compact space is compact.
+\item If $\two^\asm{N}$ is compact then $[0,1]$ is compact.
 \end{enumerate}
 
 

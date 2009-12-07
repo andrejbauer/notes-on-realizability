@@ -1,9 +1,13 @@
-\documentclass[a4paper,11pt]{article}
+\documentclass[a4paper,10pt]{article}
 
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{theorem}
+\usepackage{listings}
+
+%%% Settings for listings
+\lstset{basicstyle=\ttfamily\small,xleftmargin=\parindent,numbers=left}
 
 %%% Theorems
 \newtheorem{theorem}{Theorem}[section]
@@ -448,8 +452,8 @@ compactness, as follows.
 
 \begin{definition}
   A topological space $X$ is \emph{overt}\footnote{The term ``overt
-    space'' was coined by Paul Taylor who wanted to get even with the
-    French.} if the map $\exists_X : \tpl{X} \to \Sigma$, defined by
+    space'' was coined by Paul Taylor.} if the map $\exists_X :
+  \tpl{X} \to \Sigma$, defined by
   %
   \begin{equation*}
     \exists_X (U) =
@@ -485,6 +489,21 @@ fundamental as compactness. We now return to searchable spaces.
 \section{Implementation of searchable spaces}
 \label{sec:implementation-searchable}
 
+A searchable space is represented by a datatype $\mathtt{X}$ and the
+$\epsilon$ operator, which we shall call $\mathtt{search}$ in code. In
+Haskell we would define it like this:
+%
+\begin{lstlisting}[language=Haskell]
+data Searchable a = Finder ((a -> Bool) -> a)
+search :: Searchable a -> (a -> Bool) -> a
+search (Finder epsilon) p = epsilon p
+\end{lstlisting}
+%
+The first line defines a datatype $\mathtt{Searchable}\;\alpha$, where
+$\alpha$ is a type parameter. An element of this datatype is of the
+form $\mathtt{Finder}\;\epsilon$, where $\epsilon$ is a search
+operator. We also define an auxiliary function $\mathtt{search}$, so
+that we can conveniently write $
 
 
 \end{document}
