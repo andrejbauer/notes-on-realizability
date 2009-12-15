@@ -378,12 +378,13 @@ A map $f : X \to Y$ is \emph{realized} or represented by a value
 $\R{f}$ of type $\mathtt{X} \to \mathtt{Y}$ which \emph{tracks}~$f$:
 %
 \begin{equation*}
-  \text{if $\R{r} \rz_X a$ then $\R{f}\;\R{a} \rz_Y f(a)$.}
+  \text{if $\R{a} \rz_X a$ then $\R{f}\;\R{a} \rz_Y f(a)$.}
 \end{equation*}
 %
-In these notes we want to focus on topology and programming. Thus we
-shall keep assemblies and realized maps in the background as much as
-possible.
+We adopt the notational convention that datatypes and realizers are written in typewritter font. For example, if $X$ is the underlying set of an assembly, $a \in X$, and $f : X \to Y$ a realized map, the corresponding datatype and realizers are $\mathtt{X}$, $\R{a}$, and $\R{f}$, respectively.
+
+In these notes we want to focus on topology and programming. Thus we shall keep assemblies and realized maps in
+the background as much as possible.
 
 
 \section{Searchable spaces}
@@ -436,51 +437,54 @@ clopen subsets.
 \end{exercise}
 %
 How could we implement the universal quantifier $\mathtt{forall}$?
-When the underlying datatype $\mathtt{X}$ is finite, say $\mathtt{X} =
-\set{x_1, \ldots, x_n}$ we can simply define
+When $X$ is finite, say $X =
+\set{a_1, \ldots, a_n}$ we can simply define
 %
 \begin{equation*}
-  \mathtt{forall}\; p = p(x_1) \land p(x_1) \land \cdots \land p(x_n).
+  \forall_X(p) = p(a_1) \land p(a_2) \land \cdots \land p(a_n),
 \end{equation*}
 %
-However, this would not work for infinite datatypes, where all the fun
-is. Instead, we are going to use the notion of a \emph{searchable} space.
+which is easily implemented.
+%
+However, this would not work for infinite sets, where all the fun is. Instead, we are going to use the notion of
+a \emph{searchable} space.
 
 \begin{definition}
-  A datatype $\mathtt{X}$ is \emph{searchable} if there is a
-  computable map $\epsilon : (\mathtt{X} \to \Bool) \to \mathtt{X}$
-  such that, for all $p : \mathtt{X} \to \Bool$,
-  %
-  \begin{equation*}
-    p (\epsilon(p)) \iff \xsome{x}{\mathtt{X}}{p(x)}.
-  \end{equation*}
+	A space $X$ is \emph{searchable} if there is a realized map $\epsilon : (X \to \two) \to \two$ such that, for all $p : X \to \two$,
+    %
+    \begin{equation*}
+    	p (\epsilon(p)) \iff \xsome{x}{X}{p(x)}.
+    \end{equation*}
 \end{definition}
 
-The operator $\epsilon$ takes as input a decidable property $p$ and
-returns a candidate $\epsilon(p) \in \mathtt{X}$ such that
-$p(\epsilon(p))$ holds. If there is no $x \in \mathtt{X}$ for which
-$p(x)$ holds, then $\epsilon(p)$ may be any element of $\mathtt{X}$.
-We emphasize that $\epsilon(p)$ \emph{must} return a candidate and is
-not allowed to diverge. The operator $\epsilon$ is known as
-\emph{Hilbert's operator}.
+The operator $\epsilon$ takes as input a decidable property $p$ and returns a candidate $\epsilon(p) \in X$ such
+that $p(\epsilon(p))$ holds. If there is no $x \in X$ for which $p(x)$ holds, then $\epsilon(p)$ may be any
+element of $X$. We emphasize that $\epsilon(p)$ \emph{must} return a candidate and is not allowed to diverge.
+The operator $\epsilon$ is known as \emph{Hilbert's operator}.
 
-For a searchable space~$\mathtt{X}$ the universal
-quantifier~\eqref{eq:forall-bool} is easily implemented as
+For a searchable space~$X$ not only the existential quantifier
 %
 \begin{equation*}
-  \mathtt{forall} \; p = p (\epsilon(p)).
+	\exists_X(p) = \begin{cases}
+		1, &\text{if $\xsome{x}{X}{p(x)}$,}\\
+		0, &\text{ otherwise.}
+	\end{cases}
 \end{equation*}
 %
-As an added bonus, because $\xsome{x}{\mathtt{X}}{p(x)}$ is equivalent
-to $\lnot\xall{x}{\mathtt{X}}{\lnot p(x)}$, we also get the
-existential quantifier
+is easily implemented as
+\begin{equation*}
+  \exists_X(p) = p (\epsilon(p)).
+\end{equation*}
+%
+As an added bonus, because $\xall{x}{X}{p(x)}$ is equivalent
+to $\lnot\xsome{x}{X}{\lnot p(x)}$, we also get the
+universal quantifier
 %
 \begin{equation*}
-  \mathtt{exists} \; p = \lnot p(\epsilon (\lnot p)).
+  \forall_X(p) = \lnot \xsome_X(\lnot p).
 \end{equation*}
 %
-We should give a name to datatypes which have the existential
-quantifier.
+We should give a name to datatypes which have the existential quantifier.
 
 \section{Overt spaces}
 \label{sec:overt-spaces}
@@ -518,30 +522,26 @@ The following proposition is rather disappointing.
   non-empty then at least one member $U_i$ must be non-empty.
 \end{proof}
 
-It would be \emph{wrong} to dismiss the notion of overtness just
-because it is trivial in classical topology. As we shall see later,
-in computable topology overtness is not only interesting but just as
-fundamental as compactness. We now return to searchable spaces.
-
+It would be \emph{wrong} to dismiss the notion of overtness just because it is trivial in classical topology. As we shall see later, in computable topology overtness is not only interesting but just as fundamental as compactness. We now return to searchable spaces and their implementation.
 
 \section{Implementation of searchable spaces}
 \label{sec:implementation-searchable}
 
 A searchable space is represented by a datatype $\mathtt{X}$ and the
-$\epsilon$ operator, which we shall call $\mathtt{search}$ in code. In
+$\epsilon$ operator, which we shall call $\R{epsilon}$ in code. In
 Haskell we would define it like this:
 %
 \begin{lstlisting}[language=Haskell]
 data Searchable a = Finder ((a -> Bool) -> a)
-search :: Searchable a -> (a -> Bool) -> a
-search (Finder epsilon) p = epsilon p
+find :: Searchable a -> (a -> Bool) -> a
+find (Finder epsilon) p = epsilon p
 \end{lstlisting}
 %
-The first line defines a datatype $\mathtt{Searchable}\;\alpha$, where
-$\alpha$ is a type parameter. An element of this datatype is of the
-form $\mathtt{Finder}\;\epsilon$, where $\epsilon$ is a search
-operator. We also define an auxiliary function $\mathtt{search}$, so
-that we can conveniently write.
+The first line defines a datatype $\mathtt{Searchable}\;\alpha$, where $\alpha$ is a type parameter. An element of this datatype is of the form $\mathtt{Finder}\;\epsilon$, where $\epsilon$ is a search operator. We also define an auxiliary function $\mathtt{find}$, so that we can conveniently write $\R{find}\;\R{a}\R{p}$ and read it "search in space $\R{a}$ for a candidate satisfying $\R{p}$".
+
+The rest of the implementation 
+
+
 
 
 \end{document}

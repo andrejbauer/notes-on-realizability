@@ -1,3 +1,5 @@
+-- searchable spaces, based on code by Martin Escardo
+
 module Searchable where
 
 data Searchable a = Finder ((a -> Bool) -> a)
@@ -35,7 +37,7 @@ finite_set lst = Finder (\p ->
 
 -- the sum of two searchable sets a and b is searchable
 sum a b = Finder (\p -> let x = Left (find a (p . Left))
-                        in if p x then x else Right (find b (p. Right)))
+                        in if p x then x else Right (find b (p . Right)))
 
 -- a union of a searchable family of searchable spaces as
 bigUnion :: Searchable (Searchable a) -> Searchable a
@@ -47,17 +49,17 @@ union a b = bigUnion (doubleton a b)
 -- the image of a searchable set a under a map f : a --> b
 image f a = Finder (\p -> f (find a (p . f)))
                               
--- monad structure
+-- monad structure for searchable spaces
 instance Monad Searchable where
     return = singleton
     xs >>= f = bigUnion (image f xs)
 
 -- product of a and b
-a `times` b = Finder (\p -> do x <- a
-                               y <- b
-                               return (x, y))
+a `times` b = do x <- a
+                 y <- b
+                 return (x, y)
 
--- a product of a list of spaces
+-- a product of a list of spaces, where the list may be infinite
 prod [] = return []
 prod (a:as) = do x <- a
                  xs <- prod as
