@@ -36,8 +36,9 @@ finite_set lst = Finder (\p ->
     in loop lst)
 
 -- the sum of two searchable sets a and b is searchable
-sum a b = Finder (\p -> let x = Left (find a (p . Left))
-                        in if p x then x else Right (find b (p . Right)))
+sum s t = Finder (\p -> let x = Left (find s (p . Left))
+                            y = Right (find t (p . Right))
+                        in if p x then x else y)
 
 -- a union of a searchable family of searchable spaces as
 bigUnion :: Searchable (Searchable a) -> Searchable a
