@@ -6,10 +6,10 @@ There are any number of introductions on monads written by Haskell bloggers arou
 
 Haskell is a purely functional language. In particular, it does not allow direct invocation of any operations that would allow us to detect the order of evaluation. This rules out mutable variables, exceptions, I/O, and many other useful programming concepts. All these can be put back into Haskell with a clever way of programming known as "monadic style".
 
-Our first example is a very simple kind of exception which is sometimes known as "abort". It is an operation which aborts whatever is being computed, and cannot be intercepted. To have something like that in Haskell, we need to be explicit about values which may trigger abort. So we define a datatype Abortable a which means "either an ordinary value of type a, or a special value Aborted indicating that abort happened":
+Our first example is a very simple kind of exception which is sometimes known as "abort". It is an operation which aborts whatever is being computed and cannot be intercepted. To have something like that in Haskell, we need to be explicit about values which may trigger abort. So we define a datatype Abortable t which means "either an ordinary value of type t, or a special value Aborted indicating that abort happened" (the deriving clause is of no concern right now, it means Haskell will automatically derive a way of showing abortable values on scren):
 
-> data Abortable a = Value a | Aborted
->                    deriving (Eq, Show)
+> data Abortable t = Value t | Aborted
+>                    deriving Show
 
 The constant Aborted signifies a value whose computation was aborted. The other possibility is a value of the form Value v, which signifies a successfully computed value v (abort did not happen). Haskell insists that we write Value v rather than just v. This way it can tell the difference between ordinary values and values that could have been aborted but were not.
 
@@ -38,7 +38,7 @@ In principle we can use return and >>= to compute with abortable values, but it 
 
 > divide :: Int -> Int -> Abortable Int
 > divide x 0 = Aborted
-> divide x y = return (x `div` y)
+> divide x y = Value (x `div` y)
 
 In order to compute the function which maps x and y to (x/y + y/x) we have to write
 
@@ -67,11 +67,11 @@ The Abortable monad is already built into Haskell, except it is called the Maybe
 
 and would like to find the value corresponding to "orange". We can do this by writing
 
-> y = lookup "orange" lst -- y equals Just 10
+> y = lookup "orange" lst             -- y equals Just 10
 
 The answer is Just 10 because lookup returns "Maybe" values (it may find something, or not). So if we lookup something that is not in the list we get Nothing:
 
-> z = lookup "cow" lst -- z equals Nothing
+> z = lookup "cow" lst                -- z equals Nothing
 
 The monad and do notation come in handy if we have a piece of code that does several lookups and we want it to fail as soon as one of the lookups fails, e.g.
 
@@ -88,7 +88,126 @@ The value of sum is Nothing because the third lookup fails. Had it succeeded, we
 
 You may judge for yourself which one is more readable.
 
-> data Choosable a = Choices [a] deriving Show
-> instance Monad Choosable where
+The next example of a monad is non-deterministic choice operator. Suppose in a computation we have  choice points, at which we can choose any value from a given list. Such a situation occurs when we perform a search over a tree, and at each node we can choose one of the branches. We would like a convenient way of programming choice points so that when we evaluate an expression with choice points all possible combinations of choices are taken, and the possible results are stored in a list.
+
+First we define a dataype Chooose t which holds possible results of a computation that has choice points:
+
+> data Choose t = Choices [t]
+>                 deriving Show
+
+For example, the value Choices [1,2,3] means that the possible outcomes are 1, 2, and 3. To get a monad,
+
+> instance Monad Choose where
+
+we must define return, which converts an ordinary value v of type t to one of type Choose t. This part is more or less obvious:
+
 >     return v = Choices [v]
->     (Choices vs) >>= f = Choices (foldl (\us v -> let Choices ws = f v in us ++ ws) [] vs)
+
+To define >>= we have to think about how to combine a value
+
+    Choices [v1, ..., vn]
+
+with a function f which accepts an ordinary value v and returns some choices. It is not hard to see that we should loop over v1, ..., vn, get all the different choices produced by f and combine them into a single choice, like this:
+
+>     (Choices lst) >>= f = Choices (combine f lst [])
+>         where combine f [] ws     = ws
+>               combine f (v:vs) ws = let Choices us = f v
+>                                     in combine f vs (ws ++ us)
+
+Now we can use the do notation to write programs like this:
+
+> -- all sums of the form x+y where x is 1,...,10 and y is 1,...,x.
+> c = do x <- [1..10]
+>        y <- [1..x]
+>        return (x + y)
+> -- c is Choices [2,3,4,4,5, ..., 18,19,20] (55 elements)
+
+Without the do notation we would have to have a double loop of some kind. The monad we just considered is also built into Haskell, and is known as the "list monad". Possible choices are represented as a list, so we can write [x1,...,xn] rather than Choices [x1,...,xn]:
+
+> -- all sums of the form x+y where x is 1,...,10 and y is 1,...,x.
+> d = do x <- [1..10]
+>        y <- [1..x]
+>        return (x + y)
+> -- d is [2,3,4,4,5, ..., 18,19,20] (55 elements)
+
+Our last example is the state monad. In procedural programming languages we have variables that can be updated, i.e., their values change as computation progresses. We say that the computation is "stateful" because it depends on the state of the variables, and it may change the state of the variable.
+
+In general, stateful computation is a function which accepts the current state and returns a result together with the new state. That is, in Haskell a stateful computation computing a result of type t and having access to state of type s is a function
+
+    v :: s -> (t, s)
+
+which accepts the current state m, and returns a pair (x, m') representing the computed value x and the new state m'. (If you've never heard of this before, you should pause to digest what has just been said.)
+
+We define a Haskell type of such stateful computations:
+
+> data State s t = Stateful (s -> (t, s))
+
+Here is an example of a stateful computation:
+
+> incr = Stateful $ \m -> (m, m+1)
+
+By the way, the mysterious $ does nothing, except it allows us to write fewer parenthesis. The meaning of f $ x is the same as f x, except that $ is an infix operator with low precedence. If we wrote incr without $, we would have to write Stateful (\m -> (m, m+1)).
+
+The definition of incr is read as follows: incr is a stateful computation which takes a memory location m and returns the current value of m. It also increases the memory location by 1. In other words, this would be written as m++ in C.
+
+But how do we actually execute incr? We give it the initial value of the memory location and out comes the result together with updated memory:
+
+> (r1,m1) = let Stateful v = incr in v 42       -- r1 is 42, m1 is 44
+
+This is quite ugly, so we define an auxiliary function
+
+> run m (Stateful v) = v m
+
+Now we can write
+
+> (r2, m2) = run 42 incr                        -- r2 is 42, m2 is 44
+
+and read it as "run incr with initial state 42". Let us also define the state monad:
+
+> instance Monad (State s) where
+
+Return converts a pure (non-stateful) value to a stateful one that doesn't change the state:
+
+>     return x = Stateful $ \m -> (x, m)
+
+The operation >>= chains together stateful computations:
+
+>     v >>= f  = Stateful $ \m -> let (x, m') = run m v in run m' (f x)
+
+To compute v >>= f in state m we first run v in state m to obtain a result x and the new state m'. We then compute f x in state m'.
+
+This is all good and well, but the do notation does not allow us to manipulate the state, so we also need basic operations that do:
+
+> get = Stateful $ \m -> (m, m)        -- get the current value of state
+> update n = Stateful $ \m -> ((), n)  -- update state to n, give () as result
+
+The Haskell value () is the empty tuple, the equivalent of void in C++ and Java.
+
+With this we may write procedural program:
+
+> a = run 42 (do x <- get        -- let x be current value of memory (42)
+>                update (x+1)    -- update memory to x+1 (43)
+>                y <- get        -- let y be current value of memory (43)
+>                update 7        -- update memory to 7
+>                return (x + y)) -- return x+y (42+43 = 85)
+> -- a is (85, 7)
+
+Let us conclude this short introduction by giving the official equations that return and >>= must satisfy in order to deserve the name "monad":
+
+    return a >>= k            =   k a
+    m >>= return              =   m
+    m >>= (\x -> k x >>= h)   =   (m >>= k) >>= h
+
+Further reading:
+
+1. http://www.haskell.org/tutorial/monads.html
+   "A Gentle Introduction to Haskell"
+   Chapter 9: About Moands
+ 
+2. http://www.haskell.org/all_about_monads/html/index.html
+   "All about Monads"
+   A comprehensive guide to the theory and practice of monadic programming in Haskell
+
+3. http://blog.sigfpe.com/
+   "A neighborhood of infinity"
+   Dan Piponi's blog has many clever and mind boggling examples of monads
