@@ -17,11 +17,11 @@ An ordinary value v of type t may always be converted to an abortable value Valu
 
 The second half of a monad is an operation >>= (called "bind") which combines an abortable value
 
-    x :: Abortable a
+    x :: Abortable t
 
 and a function
 
-    f :: a -> Abortable b
+    f :: t -> Abortable t
 
 which expects an ordinary value and outputs an abortable one. This is written as
 
@@ -117,12 +117,21 @@ with a function f which accepts an ordinary value v and returns some choices. It
 Now we can use the do notation to write programs like this:
 
 > -- all sums of the form x+y where x is 1,...,10 and y is 1,...,x.
-> c = do x <- [1..10]
->        y <- [1..x]
+> c = do x <- Choices [1..10]
+>        y <- Choices [1..x]
 >        return (x + y)
 > -- c is Choices [2,3,4,4,5, ..., 18,19,20] (55 elements)
 
-Without the do notation we would have to have a double loop of some kind. The monad we just considered is also built into Haskell, and is known as the "list monad". Possible choices are represented as a list, so we can write [x1,...,xn] rather than Choices [x1,...,xn]:
+Without the do notation we would have to have a double loop of some kind. Here is a more complicated example:
+
+> -- binary k computes all binary lists of length k
+> binary :: Int -> Choose [Int]
+> binary 0 = return []
+> binary (k+1) = do b <- Choices [0,1]
+>                   bs <- binary k
+>                   return (b:bs)
+
+The monad we just considered is also built into Haskell, and is known as the "list monad". Possible choices are represented as a list, so we can write [x1,...,xn] rather than Choices [x1,...,xn]:
 
 > -- all sums of the form x+y where x is 1,...,10 and y is 1,...,x.
 > d = do x <- [1..10]
@@ -152,7 +161,7 @@ The definition of incr is read as follows: incr is a stateful computation which 
 
 But how do we actually execute incr? We give it the initial value of the memory location and out comes the result together with updated memory:
 
-> (r1,m1) = let Stateful v = incr in v 42       -- r1 is 42, m1 is 44
+> (r1,m1) = let Stateful v = incr in v 42       -- r1 is 42, m1 is 43
 
 This is quite ugly, so we define an auxiliary function
 
@@ -160,7 +169,7 @@ This is quite ugly, so we define an auxiliary function
 
 Now we can write
 
-> (r2, m2) = run 42 incr                        -- r2 is 42, m2 is 44
+> (r2, m2) = run 42 incr                        -- r2 is 42, m2 is 43
 
 and read it as "run incr with initial state 42". Let us also define the state monad:
 
@@ -194,9 +203,9 @@ With this we may write procedural program:
 
 Let us conclude this short introduction by giving the official equations that return and >>= must satisfy in order to deserve the name "monad":
 
-    return a >>= k            =   k a
+    return x >>= f            =   f x
     m >>= return              =   m
-    m >>= (\x -> k x >>= h)   =   (m >>= k) >>= h
+    m >>= (\x -> f x >>= g)   =   (m >>= f) >>= g
 
 Further reading:
 

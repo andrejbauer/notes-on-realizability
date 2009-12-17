@@ -40,20 +40,20 @@ sum s t = Finder (\p -> let x = Left (find s (p . Left))
                             y = Right (find t (p . Right))
                         in if p x then x else y)
 
--- a union of a searchable family of searchable spaces as
+-- a union of a searchable family of searchable spaces ss
 bigUnion :: Searchable (Searchable a) -> Searchable a
-bigUnion as = Finder (\p -> find (find as (\s -> exists s p)) p)
+bigUnion ss = Finder (\p -> find (find ss (\s -> exists s p)) p)
 
 -- a union of two sets is a special case
-union a b = bigUnion (doubleton a b)
+union s t = bigUnion (doubleton s t)
 
--- the image of a searchable set a under a map f : a --> b
-image f a = Finder (\p -> f (find a (p . f)))
+-- the image of a searchable set s under a map f
+image f s = Finder (\p -> f (find s (p . f)))
                               
 -- monad structure for searchable spaces
 instance Monad Searchable where
-    return = singleton
-    xs >>= f = bigUnion (image f xs)
+    return   = singleton
+    s >>= f = bigUnion (image f s)
 
 -- product of a and b
 a `times` b = do x <- a
