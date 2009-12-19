@@ -30,12 +30,12 @@ zeroCmp Dyadic {mant=m, expo=e} = compare 0 m
 instance Eq Dyadic where
   PositiveInfinity == PositiveInfinity = True
   NegativeInfinity == NegativeInfinity = True
-  a@(Dyadic _)     == b@(Dyadic _)     = withMantissas (==) a b
+  a@(Dyadic _ _)   == b@(Dyadic _ _)   = withMantissas (==) a b
   _                == _                = False
 
   PositiveInfinity /= PositiveInfinity = False
   NegativeInfinity /= NegativeInfinity = False
-  a@(Dyadic _)     /= b@(Dyadic _)     = withMantissas (/=) a b
+  a@(Dyadic _ _)   /= b@(Dyadic _ _)   = withMantissas (/=) a b
   _                /= _                = True
 
 instance Ord Dyadic where
@@ -45,7 +45,7 @@ instance Ord Dyadic where
   compare PositiveInfinity PositiveInfinity = EQ
   compare PositiveInfinity _                = GT
   compare _                PositiveInfinity = LT
-  compare a@(Dyadic _)     b@(Dyadic _)     = withMantissas compare a b
+  compare a@(Dyadic _ _)   b@(Dyadic _ _)   = withMantissas compare a b
 
 instance Num Dyadic where
   -- addition
@@ -79,8 +79,8 @@ instance Num Dyadic where
                            LT -> PositiveInfinity -- 0 < q
                            EQ -> fromInteger 0    -- 0 == q
                            GT -> NegativeInfinity -- q < 0
-  q@(Dyadic _) * NegativeInfinity = NegativeInfinity * q
-  q@(Dyadic _) * PositiveInfinity = PositiveInfinity * q
+  q@(Dyadic _ _) * NegativeInfinity = NegativeInfinity * q
+  q@(Dyadic _ _) * PositiveInfinity = PositiveInfinity * q
   Dyadic {mant=m1, expo=e1} * Dyadic {mant=m2, expo=e2} = Dyadic {mant = m1 * m2, expo = e1 + e2}
 
   -- absolute value
@@ -106,11 +106,34 @@ data RoundingMode = RoundUp | RoundDown
 
 type Size = Int -- measure of space consumption
 
-class ApproximateField q where
+class (Show q, Ord q) => ApproximateField q where
   add :: RoundingMode -> Size -> q -> q -> q
   sub :: RoundingMode -> Size -> q -> q -> q
   mul :: RoundingMode -> Size -> q -> q -> q
   div :: RoundingMode -> Size -> q -> q -> q
+  int :: RoundingMode -> Size -> Integer -> q
+  normalize :: RoundingMode -> Size -> q -> q
+
+
+instance ApproximateField Dyadic where
+  -- We take the easy route: first we perform an exact operation then we normalize the result.
+  -- A better implementation would directly compute the approximation, but it's probably not
+  -- worth doing this with Dyadics. If you want speed, use hmpfr.
+  add r k a b = normalize r k (a + b)
+  sub r k a b = normalize r k (a - b)
+  mul r k a b = normalize r k (a * b)
+  int r k i   = normalize r k (fromInteger i)
+
+  div r k a = error "div is not implemented"
+
+  normalize r k PositiveInfinity = PositiveInfinity
+  normalize r k NegativeInfinity = NegativeInfinity
+  normalize r k a@(Dyadic {mant=m, expo=e}) =
+      let j = ilogb 2 m
+      in  if j <= k
+          then a
+          else Dyadic {mant = shift_with_round r (j-k) m, expo = e + (j-k) }
+
 
 -- See http://www.haskell.org/pipermail/haskell-cafe/2008-February/039640.html
 ilogb :: Integer -> Integer -> Int
@@ -132,18 +155,3 @@ shift_with_round r k x =
     in case r of
         RoundDown -> if signum y > 0 then y else succ y
         RoundUp -> if signum y > 0 then succ y else y
-
-normalize :: Dyadic -> DyadicS
-normalize x =
-    let m = ilogb 2 (mant x)
-    in do n <- asks size
-          r <- asks roundingMode
-          return $  if m < n
-                    then x
-                    else Dyadic { mant = shift_with_round r (m-n) (mant x), expo = expo x + (m-n) }
-
--- we take the easy route: first we perform an exact operation then we normalize the result
--- a better implementation would directly compute the approximation, but it's probably not
--- worth doing this with Dyadics. If you want speed, use hmpfr.
-
-fromIntegerS = normalize . fromInteger
