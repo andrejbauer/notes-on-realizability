@@ -104,7 +104,10 @@ shift Dyadic {mant=m, expo=e} k = Dyadic {mant = m, expo = e + k}
 
 data RoundingMode = RoundUp | RoundDown
 
-type Size = Int -- measure of space consumption
+anti RoundUp   = RoundDown
+anti RoundDown = RoundUp
+
+type Size = Int -- measure of space consumption, e.g., approximate size of mantissa
 
 class (Show q, Ord q) => ApproximateField q where
   add :: RoundingMode -> Size -> q -> q -> q
