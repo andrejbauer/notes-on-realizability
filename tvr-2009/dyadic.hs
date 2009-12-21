@@ -7,6 +7,8 @@ module Dyadic where
 import Control.Monad.Reader
 import Data.Bits
 
+import Space
+
 -- There are implemented in Haskell with Integer. A faster implementation
 -- would use hmpfr.
 
@@ -102,37 +104,33 @@ shift Dyadic {mant=m, expo=e} k = Dyadic {mant = m, expo = e + k}
 -- dyadics with normalization and rounding form an "approximate" field in which
 -- operations can be performed up to a given precision
 
-data RoundingMode = RoundUp | RoundDown
-
-anti RoundUp   = RoundDown
-anti RoundDown = RoundUp
-
-type Size = Int -- measure of space consumption, e.g., approximate size of mantissa
 
 class (Show q, Ord q) => ApproximateField q where
-  add :: RoundingMode -> Size -> q -> q -> q
-  sub :: RoundingMode -> Size -> q -> q -> q
-  mul :: RoundingMode -> Size -> q -> q -> q
-  div :: RoundingMode -> Size -> q -> q -> q
-  int :: RoundingMode -> Size -> Integer -> q
-  normalize :: RoundingMode -> Size -> q -> q
+  add :: Stage -> q -> q -> q
+  sub :: Stage -> q -> q -> q
+  mul :: Stage -> q -> q -> q
+  quo :: Stage -> q -> q -> q
+  int :: Stage -> Integer -> q
+  normalize :: Stage -> q -> q
 
 
 instance ApproximateField Dyadic where
   -- We take the easy route: first we perform an exact operation then we normalize the result.
   -- A better implementation would directly compute the approximation, but it's probably not
   -- worth doing this with Dyadics. If you want speed, use hmpfr.
-  add r k a b = normalize r k (a + b)
-  sub r k a b = normalize r k (a - b)
-  mul r k a b = normalize r k (a * b)
-  int r k i   = normalize r k (fromInteger i)
+  add s a b = normalize s (a + b)
+  sub s a b = normalize s (a - b)
+  mul s a b = normalize s (a * b)
+  int s i   = normalize s (fromInteger i)
 
-  div r k a = error "div is not implemented"
+  quo s a b = error "quo is not implemented"
 
-  normalize r k PositiveInfinity = PositiveInfinity
-  normalize r k NegativeInfinity = NegativeInfinity
-  normalize r k a@(Dyadic {mant=m, expo=e}) =
+  normalize s PositiveInfinity = PositiveInfinity
+  normalize s NegativeInfinity = NegativeInfinity
+  normalize s a@(Dyadic {mant=m, expo=e}) =
       let j = ilogb 2 m
+          k = stage s
+          r = rounding s
       in  if j <= k
           then a
           else Dyadic {mant = shift_with_round r (j-k) m, expo = e + (j-k) }
