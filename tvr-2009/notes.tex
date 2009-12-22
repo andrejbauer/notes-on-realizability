@@ -501,21 +501,30 @@ code. In Haskell we would define it like this:
 % 
 \begin{lstlisting}
 data Searchable a = Finder ((a -> Bool) -> a)
-find :: Searchable a -> (a -> Bool) -> a
-find (Finder epsilon) p = epsilon p
 \end{lstlisting}
 % 
 The first line defines a datatype $\mathtt{Searchable}\;\alpha$, where
-$\alpha$ is a type parameter. An element of this datatype is of the form
-$\mathtt{Finder}\;\epsilon$, where $\epsilon$ is a search operator. We also
-define an auxiliary function $\mathtt{find}$, so that we can conveniently
-write $\R{find}\;\R{s}\R{p}$ and read it "search in space $\R{s}$ for a
-candidate satisfying $\R{p}$".
+$\alpha$ is a type parameter. An element of this datatype is of the
+form $\mathtt{Finder}\;\epsilon$, where $\epsilon$ is a search
+operator. Think of an element $\R{s}$ of type
+$\mathtt{Searachable}\;\alpha$ as a searchable subspace of the
+datatype~$\alpha$. The subspace is given in terms of its search
+operator.
 
-The function $\mathtt{find}$ always finds a candidate, which may or may not
-satisfy the given condition. It is better to have another function
-$\mathtt{search}$ which returns $\mathtt{Nothing}$ or $\mathtt{Just}\;x$
-depending on whether there is an $x$ satisfying the given condition:
+We define an auxiliary function $\mathtt{find}$, so that we can
+conveniently write $\R{find}\;\R{s}\R{p}$ and read it ``search in
+space $\R{s}$ for a candidate satisfying $\R{p}$'':
+%
+\begin{lstlisting}
+find :: Searchable a -> (a -> Bool) -> a
+find (Finder epsilon) p = epsilon p
+\end{lstlisting}
+%
+The function $\mathtt{find}$ always finds a candidate, which may or
+may not satisfy the given condition. It is convenient have another
+function $\mathtt{search}$ which returns $\mathtt{Nothing}$ or
+$\mathtt{Just}\;x$ depending on whether there is an $x$ satisfying the
+given condition:
 % 
 \begin{lstlisting}
 search :: Searchable a -> (a -> Bool) -> Maybe a
@@ -577,9 +586,20 @@ sum s t = Finder (\p -> let x = Left (find s (p . Left))
                         in if p x then x else y)
 \end{lstlisting}
 % 
-To get things organized, we shall define a \emph{search monad} which will
-significantly simplify the code we have to write. If you are not familiar with
-Haskell monads, you should now read Appendix~\ref{app:monads}.
+A more complicated operation is a union of a searchable family of
+searchable (sub)spaces. Suppose $I$ is a searchable space and
+${S_i}_{i \in I}$ a family of searchable subspaces, $S_i \subseteq X$.
+Then their union $S = \bigcup_{i \in I} S_i$ is also searchable, with
+the search operator defined as follows:
+%
+\begin{equation*}
+  \epsilon_S(p) = \text[not finished]
+\end{equation*}
+%
+To get things organized, we shall define a \emph{search monad} which
+will significantly simplify the code we have to write.\footnote{If you
+  are not familiar with Haskell monads, you should now read
+  Appendix~\ref{app:monads}.}
 
 
 % BIBLIOGRAPHY (fold)
