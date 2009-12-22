@@ -5,15 +5,25 @@ module Space where
 import Control.Monad.Reader
 
 data RoundingMode = RoundUp | RoundDown
+                  deriving Show
 
 anti_round RoundUp   = RoundDown
 anti_round RoundDown = RoundUp
 
-data Stage = Stage { stage :: Int, target :: Int, rounding :: RoundingMode }
+data Stage = Stage { stage :: Int, rounding :: RoundingMode }
+             deriving Show
 
-anti s = Stage {stage = stage s, target = target s, rounding = anti_round (rounding s)}
+anti s = Stage {stage = stage s, rounding = anti_round (rounding s)}
+down s = Stage {stage = stage s, rounding = RoundDown}
+up s   = Stage {stage = stage s, rounding = RoundUp}
+
+prec k = Stage {stage = k, rounding = RoundDown}
 
 type Staged t = Reader Stage t
+
+compute :: Int -> Staged t -> t
+compute k x = runReader x (prec k)
+
 
 -- Basic spaces
 
@@ -62,9 +72,9 @@ snot :: SBool -> SBool
 snot = fmap pnot
 
 toBool :: SBool -> Bool
-toBool p = loop (Stage {stage = 1, target = 1, rounding = RoundDown})
+toBool p = loop (prec 0)
            where loop s = case runReader p s of
-                              Nothing -> loop (Stage {stage = stage s + 1, target = target s, rounding = rounding s})
+                              Nothing -> loop (Stage {stage = stage s+1, rounding = rounding s})
                               Just b -> b
 
 -- Properties of spaces

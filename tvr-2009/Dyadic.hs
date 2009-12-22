@@ -15,7 +15,10 @@ import Space
 data Dyadic = Dyadic { mant :: Integer, expo :: Int }
             | PositiveInfinity
             | NegativeInfinity
-            deriving Show -- TODO: Write a better Show instance
+
+instance Show Dyadic where
+    show Dyadic {mant=m, expo=e} =
+        (show $ encodeFloat m e) ++ " [m=" ++ (show m) ++ ", e=" ++ (show e) ++ "]"
 
 withMantissas :: (Integer -> Integer -> a) -> Dyadic -> Dyadic -> a
 withMantissas f (Dyadic {mant=m1, expo=e1}) (Dyadic {mant=m2, expo=e2}) =
@@ -69,7 +72,7 @@ instance Num Dyadic where
   PositiveInfinity - _ = PositiveInfinity
   _ - PositiveInfinity = NegativeInfinity
   Dyadic {mant=m1, expo=e1} - Dyadic {mant=m2, expo=e2} = Dyadic {mant = m3, expo = e3}
-      where m3 = if e1 < e2 then m1 + shiftL m2 (e2 - e1) else shiftL m1 (e1 - e2) + m2
+      where m3 = if e1 < e2 then m1 - shiftL m2 (e2 - e1) else shiftL m1 (e1 - e2) - m2
             e3 = min e1 e2
 
   -- multiplication
@@ -104,15 +107,16 @@ shift Dyadic {mant=m, expo=e} k = Dyadic {mant = m, expo = e + k}
 -- dyadics with normalization and rounding form an "approximate" field in which
 -- operations can be performed up to a given precision
 
-
 class (Show q, Ord q) => ApproximateField q where
   add :: Stage -> q -> q -> q
   sub :: Stage -> q -> q -> q
   mul :: Stage -> q -> q -> q
   quo :: Stage -> q -> q -> q
+  neg :: q -> q
+  absolute :: Stage -> q -> q
+  sgn :: Stage -> q -> q
   int :: Stage -> Integer -> q
   normalize :: Stage -> q -> q
-
 
 instance ApproximateField Dyadic where
   -- We take the easy route: first we perform an exact operation then we normalize the result.
@@ -121,9 +125,19 @@ instance ApproximateField Dyadic where
   add s a b = normalize s (a + b)
   sub s a b = normalize s (a - b)
   mul s a b = normalize s (a * b)
+  neg   a   = negate a
+  absolute s a = normalize s (abs a)
+  sgn s a = normalize s (signum a)
+
   int s i   = normalize s (fromInteger i)
 
-  quo s a b = error "quo is not implemented"
+
+  quo s Dyadic{mant=m1,expo=e1} Dyadic{mant=m2,expo=e2} =
+      let e = stage s
+          r = case rounding s of
+                RoundDown -> 0
+                RoundUp -> 1
+      in Dyadic {mant = r + (shiftL 1 e * m1) `div` m2, expo = e1 - e2 - e}
 
   normalize s PositiveInfinity = PositiveInfinity
   normalize s NegativeInfinity = NegativeInfinity
