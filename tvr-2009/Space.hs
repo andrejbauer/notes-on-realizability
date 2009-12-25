@@ -2,28 +2,7 @@
 
 module Space where
 
-import Control.Monad.Reader
-
-data RoundingMode = RoundUp | RoundDown
-                  deriving Show
-
-anti_round RoundUp   = RoundDown
-anti_round RoundDown = RoundUp
-
-data Stage = Stage { stage :: Int, rounding :: RoundingMode }
-             deriving Show
-
-anti s = Stage {stage = stage s, rounding = anti_round (rounding s)}
-down s = Stage {stage = stage s, rounding = RoundDown}
-up s   = Stage {stage = stage s, rounding = RoundUp}
-
-prec k = Stage {stage = k, rounding = RoundDown}
-
-type Staged t = Reader Stage t
-
-compute :: Int -> Staged t -> t
-compute k x = runReader x (prec k)
-
+import Staged
 
 -- Basic spaces
 
@@ -48,11 +27,6 @@ Nothing       `pand` Nothing      = Nothing
 pnot :: PBool -> PBool
 pnot = fmap not
 
--- embedding of booleans as Sierpinski in partial booleans
-toSemi :: Bool -> PBool
-toSemi True = Just True
-toSemi False = Nothing
-
 -- Staged partial Booleans
 
 type SBool = Staged PBool
@@ -73,20 +47,20 @@ snot = fmap pnot
 
 toBool :: SBool -> Bool
 toBool p = loop (prec 0)
-           where loop s = case runReader p s of
+           where loop s = case approx p s of
                               Nothing -> loop (Stage {stage = stage s+1, rounding = rounding s})
                               Just b -> b
 
 -- Properties of spaces
 
 class Hausdorff s where
-  neq :: s -> s -> PBool
+  neq :: s -> s -> SBool
   
 class Discrete s where
-  eq :: s -> s -> PBool
+  eq :: s -> s -> SBool
 
 class Compact s where
-  forall :: (s -> PBool) -> PBool
+  forall :: (s -> SBool) -> SBool
   
 class Overt s where
-  exists :: (s -> PBool) -> PBool
+  exists :: (s -> SBool) -> SBool

@@ -4,10 +4,9 @@
 
 module Dyadic where
 
-import Control.Monad.Reader
 import Data.Bits
 
-import Space
+import Staged
 
 -- There are implemented in Haskell with Integer. A faster implementation
 -- would use hmpfr.
