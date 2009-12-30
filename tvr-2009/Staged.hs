@@ -19,31 +19,39 @@
 
 module Staged where
 
--- | The rounding mode tells us whether we should under- or over-approximate the exact result
+-- | The rounding mode tells us whether we should under- or over-approximate the exact result, in the sense 
+--   of domain-theoretic ordering.
 data RoundingMode = RoundUp | RoundDown
                   deriving (Eq, Show)
 
 -- | A stage of computation tells us how hard we should try to compute the result. The 'stage' component
 -- is a measure of precisions. As it goes to infinity, the approximation should converge to the exact
 -- value (in the sense of Scott topology on the underlying domain model).
-data Stage = Stage { stage :: Int, rounding :: RoundingMode }
+data Stage = Stage { precision :: Int, rounding :: RoundingMode }
              deriving Show
 
 -- | 'anti' reverses the rounding mode
 anti :: Stage -> Stage
-anti s = Stage {stage = stage s, rounding = case rounding s of { RoundUp -> RoundDown ; RoundDown -> RoundUp}}
+anti s = Stage {precision = precision s, rounding = case rounding s of { RoundUp -> RoundDown ; RoundDown -> RoundUp}}
 
 -- | 'down' sets the rounding mode to 'RoundDown'
 down :: Stage -> Stage
-down s = Stage {stage = stage s, rounding = RoundDown}
+down s = Stage {precision = precision s, rounding = RoundDown}
 
 -- | 'up' sets the rounding mode to 'RoundUp'
 up :: Stage -> Stage
-up s   = Stage {stage = stage s, rounding = RoundUp}
+up s   = Stage {precision = precision s, rounding = RoundUp}
 
 -- | @prec k@ returns the @k@-th stage with rounding mode 'RoundDown'
 prec :: Int -> Stage
-prec k = Stage {stage = k, rounding = RoundDown}
+prec k = Stage {precision = k, rounding = RoundDown}
+
+class (Functor m, Monad m) => Completion m where
+    get_stage :: m Stage
+    get_rounding :: m RoundingMode
+    get_prec :: m Int
+    approximate :: m t -> (Stage -> t)
+    chain :: (Stage -> t) -> m t
 
 -- | If @t@ represents the elements of a base for a domain, @Staged t@ represents the elements of
 -- the completion of the base.
@@ -62,16 +70,15 @@ instance Show t => Show (Staged t) where
 -- | The monad structure of 'Staged' is the same as that of the @Reader@ monad.
 instance Monad Staged where
   return x = Staged $ \s -> x
-  x >>= f  = Staged $ \s -> approx (f $ approx x s) s
+  x >>= f  = Staged $ \s -> approx (f (approx x s)) s
 
 -- | The functor structure of 'Staged' is the same as that of the @Reader@ monad.
 instance Functor Staged where
   fmap f x = Staged $ \s -> f (approx x s)
-    
--- | In a monadic computation, return the current 'stage' 
-get_stage :: Staged Int
-get_stage = Staged stage
 
--- | In a monadic computation, return the current 'rounding' mode
-get_rounding :: Staged RoundingMode
-get_rounding = Staged rounding
+instance Completion Staged where
+    get_stage = Staged $ \s -> s
+    get_rounding = Staged $ rounding
+    get_prec = Staged $ precision
+    approximate = approx
+    chain = Staged

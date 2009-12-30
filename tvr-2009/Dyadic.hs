@@ -132,7 +132,7 @@ instance ApproximateField Dyadic where
 
 
   quo s Dyadic{mant=m1,expo=e1} Dyadic{mant=m2,expo=e2} =
-      let e = stage s
+      let e = precision s
           r = case rounding s of
                 RoundDown -> 0
                 RoundUp -> 1
@@ -142,7 +142,7 @@ instance ApproximateField Dyadic where
   normalize s NegativeInfinity = NegativeInfinity
   normalize s a@(Dyadic {mant=m, expo=e}) =
       let j = ilogb 2 m
-          k = stage s
+          k = precision s
           r = rounding s
       in  if j <= k
           then a

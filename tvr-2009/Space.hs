@@ -47,8 +47,8 @@ snot = fmap pnot
 
 toBool :: SBool -> Bool
 toBool p = loop (prec 0)
-           where loop s = case approx p s of
-                              Nothing -> loop (Stage {stage = stage s+1, rounding = rounding s})
+           where loop s = case approximate p s of
+                              Nothing -> loop (Stage {precision = precision s+1, rounding = rounding s})
                               Just b -> b
 
 -- Properties of spaces
