@@ -51,16 +51,13 @@ toBool p = loop (prec 0)
                               Nothing -> loop (Stage {precision = precision s+1, rounding = rounding s})
                               Just b -> b
 
--- Properties of spaces
+-- Properties of subspaces
 
-class Hausdorff s where
-  neq :: s -> s -> SBool
-  
-class Discrete s where
-  eq :: s -> s -> SBool
+newtype Hausdorff s = Hausdorff { apart :: s -> s -> SBool }
 
-class Compact s where
-  forall :: (s -> SBool) -> SBool
-  
-class Overt s where
-  exists :: (s -> SBool) -> SBool
+newtype Discrete s = Discrete { equal :: s -> s -> SBool }
+
+newtype Compact s = Compact { forall :: (s -> SBool) -> SBool }
+
+newtype Overt s = Overt { exists :: (s -> SBool) -> SBool }
+

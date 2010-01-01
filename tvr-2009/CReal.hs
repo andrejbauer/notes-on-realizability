@@ -8,6 +8,7 @@ import Staged
 import Space
 import Dyadic
 import Interval
+import Field
 
 type RealNum q = Staged (Interval q)
 
@@ -38,28 +39,21 @@ instance (ApproximateField q, IntervalDomain q) => Num (RealNum q) where
 
     signum x = do i <- x
                   s <- get_stage
-                  return $ Interval { lower = sgn s (lower i),
-                                      upper = sgn (anti s) (upper i) }
+                  return $ Interval { lower = app_signum s (lower i),
+                                      upper = app_signum (anti s) (upper i) }
 
     fromInteger k = do s <- get_stage
-                       return $ Interval { lower = int s k,
-                                           upper = int (anti s) k }
+                       return $ Interval { lower = app_fromInteger s k,
+                                           upper = app_fromInteger (anti s) k }
 
 instance (ApproximateField q, IntervalDomain q) => Fractional (RealNum q) where
     x / y = withIntervals idiv x y
 
-    recip x = error "recip not implemented"
+    recip x = withInterval iinv x
 
     fromRational r = fromInteger (numerator r) / fromInteger (denominator r)
 
-
-
 instance IntervalDomain Dyadic
 
-fromFloat :: Float -> RealNum Dyadic
-fromFloat x = let (m,e) = decodeFloat x
-              in  do s <- get_stage
-                     return $ Interval { lower = Dyadic {mant = m, expo = e},
-                                         upper = Dyadic {mant = m, expo = e} }
-creal :: RealNum Dyadic -> RealNum Dyadic
-creal x = x
+exact :: RealNum Dyadic -> RealNum Dyadic
+exact x = x

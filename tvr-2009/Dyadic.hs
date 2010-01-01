@@ -1,21 +1,33 @@
-{-# LANGUAGE FlexibleInstances, UndecidableInstances #-}
+{- This module contains a purely Haskell implementation of dyadic rationals, suitable
+   for interval arithmetic. A faster implementation of dyadic rationals would use
+   a fast arbitrary-precision floating-point library, such as MPFR and the related
+   hmpfr Haskell bindings for it.
+   
+   A dyadic number is a rational whose denominator is a power of 2. We also include
+   positive and negative infinity, these are useful for representing infinite intervals.
+   The special value 'NaN' (not a number) is included as well in order to follow more closely
+   the usual floating-point format.
+-}
 
--- Dyadic rational numbers, appropriate for interval arithmetic
-
-module Dyadic where
+module Dyadic (
+  Dyadic,
+) where
 
 import Data.Bits
 
 import Staged
+import Field
 
--- There are implemented in Haskell with Integer. A faster implementation
--- would use hmpfr.
-
+-- A dyadic number is of the form @m * 2^e@ where @m@ is the /mantissa/ and @e@ is the /exponent/.
 data Dyadic = Dyadic { mant :: Integer, expo :: Int }
             | PositiveInfinity
             | NegativeInfinity
+            | NaN -- ^ not a number, result of undefined arithmetical operation
 
 instance Show Dyadic where
+    show PositiveInfinity = "+inf"
+    show NegativeInfinity = "-inf"
+    show NaN = "NaN"
     show Dyadic {mant=m, expo=e} =
         (show $ encodeFloat m e) ++ " [m=" ++ (show m) ++ ", e=" ++ (show e) ++ "]"
 
@@ -53,8 +65,10 @@ instance Ord Dyadic where
 
 instance Num Dyadic where
   -- addition
-  NegativeInfinity + PositiveInfinity = error "NegativeInfinity + PositiveInfinity"
-  PositiveInfinity + NegativeInfinity = error "PositiveInfinity + NegativeInfinity"
+  NaN + _ = NaN
+  _ + NaN = NaN
+  NegativeInfinity + PositiveInfinity = NaN
+  PositiveInfinity + NegativeInfinity = NaN
   NegativeInfinity + _ = NegativeInfinity
   _ + NegativeInfinity = NegativeInfinity
   PositiveInfinity + _ = PositiveInfinity
@@ -64,8 +78,10 @@ instance Num Dyadic where
             e3 = min e1 e2
 
   -- subtraction
-  NegativeInfinity - NegativeInfinity = error "NegativeInfinity - NegativeInfinity"
-  PositiveInfinity - PositiveInfinity = error "PositiveInfinity - PositiveInfinity"
+  NaN - _ = NaN
+  _ - NaN = NaN
+  NegativeInfinity - NegativeInfinity = NaN
+  PositiveInfinity - PositiveInfinity = NaN
   NegativeInfinity - _ = NegativeInfinity
   _ - NegativeInfinity = PositiveInfinity
   PositiveInfinity - _ = PositiveInfinity
@@ -75,6 +91,8 @@ instance Num Dyadic where
             e3 = min e1 e2
 
   -- multiplication
+  NaN * _ = NaN
+  _ * NaN = NaN
   NegativeInfinity * q = case zeroCmp q of
                            LT -> NegativeInfinity -- 0 < q
                            EQ -> fromInteger 0    -- 0 == q
@@ -88,65 +106,19 @@ instance Num Dyadic where
   Dyadic {mant=m1, expo=e1} * Dyadic {mant=m2, expo=e2} = Dyadic {mant = m1 * m2, expo = e1 + e2}
 
   -- absolute value
+  abs NaN = NaN
   abs PositiveInfinity = PositiveInfinity
   abs NegativeInfinity = NegativeInfinity
   abs Dyadic {mant=m, expo=e} = Dyadic {mant = abs m, expo = e}
   
   -- signum
+  signum NaN = NaN
   signum PositiveInfinity = fromInteger 1
   signum NegativeInfinity = fromInteger (-1)
   signum Dyadic {mant=m, expo=e} = fromInteger (signum m)
 
   -- fromInteger
   fromInteger i = Dyadic {mant = i, expo = 0}
-    
-shift :: Dyadic -> Int -> Dyadic
-shift Dyadic {mant=m, expo=e} k = Dyadic {mant = m, expo = e + k}
-
--- dyadics with normalization and rounding form an "approximate" field in which
--- operations can be performed up to a given precision
-
-class (Show q, Ord q) => ApproximateField q where
-  add :: Stage -> q -> q -> q
-  sub :: Stage -> q -> q -> q
-  mul :: Stage -> q -> q -> q
-  quo :: Stage -> q -> q -> q
-  neg :: q -> q
-  absolute :: Stage -> q -> q
-  sgn :: Stage -> q -> q
-  int :: Stage -> Integer -> q
-  normalize :: Stage -> q -> q
-
-instance ApproximateField Dyadic where
-  -- We take the easy route: first we perform an exact operation then we normalize the result.
-  -- A better implementation would directly compute the approximation, but it's probably not
-  -- worth doing this with Dyadics. If you want speed, use hmpfr.
-  add s a b = normalize s (a + b)
-  sub s a b = normalize s (a - b)
-  mul s a b = normalize s (a * b)
-  neg   a   = negate a
-  absolute s a = normalize s (abs a)
-  sgn s a = normalize s (signum a)
-
-  int s i   = normalize s (fromInteger i)
-
-
-  quo s Dyadic{mant=m1,expo=e1} Dyadic{mant=m2,expo=e2} =
-      let e = precision s
-          r = case rounding s of
-                RoundDown -> 0
-                RoundUp -> 1
-      in Dyadic {mant = r + (shiftL 1 e * m1) `div` m2, expo = e1 - e2 - e}
-
-  normalize s PositiveInfinity = PositiveInfinity
-  normalize s NegativeInfinity = NegativeInfinity
-  normalize s a@(Dyadic {mant=m, expo=e}) =
-      let j = ilogb 2 m
-          k = precision s
-          r = rounding s
-      in  if j <= k
-          then a
-          else Dyadic {mant = shift_with_round r (j-k) m, expo = e + (j-k) }
 
 
 -- See http://www.haskell.org/pipermail/haskell-cafe/2008-February/039640.html
@@ -163,9 +135,73 @@ ilogb b n | n < 0      = ilogb b (- n)
                               in if n < (b ^ av)
                                     then bin b lo av
                                     else bin b av hi
+    
+-- dyadics with normalization and rounding form an "approximate" field in which
+-- operations can be performed up to a given precision
 
-shift_with_round r k x =
-    let y = shiftR x k
-    in case r of
-        RoundDown -> if signum y > 0 then y else succ y
-        RoundUp -> if signum y > 0 then succ y else y
+instance ApproximateField Dyadic where
+  normalize s NaN = case rounding s of
+                      RoundDown -> NegativeInfinity
+                      RoundUp -> PositiveInfinity
+  normalize s PositiveInfinity = PositiveInfinity
+  normalize s NegativeInfinity = NegativeInfinity
+  normalize s a@(Dyadic {mant=m, expo=e}) =
+      let j = ilogb 2 m
+          k = precision s
+          r = rounding s
+      in  if j <= k
+          then a
+          else Dyadic {mant = shift_with_round r (j-k) m, expo = e + (j-k) }
+      where shift_with_round r k x =
+                       let y = shiftR x k
+                       in case r of
+                         RoundDown -> if signum y > 0 then y else succ y
+                         RoundUp -> if signum y > 0 then succ y else y
+
+  size NaN = 0
+  size PositiveInfinity = 0
+  size NegativeInfinity = 0
+  size Dyadic{mant=m, expo=e} = ilogb 2 m
+
+  zero = Dyadic {mant=0, expo=1}
+  positive_inf = PositiveInfinity
+  negative_inf = NegativeInfinity
+
+  -- We take the easy route: first we perform an exact operation then we normalize the result.
+  -- A better implementation would directly compute the approximation, but it's probably not
+  -- worth doing this with Dyadics. If you want speed, use hmpfr.
+  app_add s a b = normalize s (a + b)
+  app_sub s a b = normalize s (a - b)
+  app_mul s a b = normalize s (a * b)
+  app_negate s a = negate a
+  app_abs s a = normalize s (abs a)
+  app_signum s a = normalize s (signum a)
+  app_fromInteger s i   = normalize s (fromInteger i)
+
+  app_inv s NaN = NaN
+  app_inv s PositiveInfinity = zero
+  app_inv s NegativeInfinity = zero
+  app_inv s Dyadic{mant=m, expo=e} =
+    let d = precision s
+        b = ilogb 2 m
+        r = case rounding s of
+              RoundDown -> 0
+              RoundUp -> 1        
+    in if signum m == 0
+       then normalize s NaN 
+       else Dyadic {mant = r + (shiftL 1 (d + b)) `div` m, expo = -(b + d + e)}
+
+  app_div s Dyadic{mant=m1,expo=e1} Dyadic{mant=m2,expo=e2} =
+      let e = precision s
+          r = case rounding s of
+                RoundDown -> 0
+                RoundUp -> 1
+      in if signum m2 == 0
+      then normalize s NaN
+      else Dyadic {mant = r + (shiftL 1 e * m1) `div` m2, expo = e1 - e2 - e}
+  app_div s _ _ = normalize s NaN -- can we do better than this in other cases?
+
+  app_shift s NaN k = normalize s NaN
+  app_shift s PositiveInfinity k = PositiveInfinity
+  app_shift s NegativeInfinity k = NegativeInfinity
+  app_shift s Dyadic {mant=m, expo=e} k = Dyadic {mant = m, expo = e + k}
