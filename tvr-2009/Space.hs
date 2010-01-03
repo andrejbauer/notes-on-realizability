@@ -1,3 +1,5 @@
+{-# LANGUAGE MultiParamTypeClasses, FunctionalDependencies #-}
+
 -- Basic definitions od spaces and their properties
 
 module Space where
@@ -27,6 +29,10 @@ Nothing       `pand` Nothing      = Nothing
 pnot :: PBool -> PBool
 pnot = fmap not
 
+semi :: Bool -> PBool
+semi False = Nothing
+semi True  = Just True
+
 -- Staged partial Booleans
 
 type SBool = Staged PBool
@@ -45,19 +51,16 @@ sand = fmap2 pand
 snot :: SBool -> SBool
 snot = fmap pnot
 
-toBool :: SBool -> Bool
-toBool p = loop (prec 0)
-           where loop s = case approximate p s of
-                              Nothing -> loop (Stage {precision = precision s+1, rounding = rounding s})
-                              Just b -> b
-
 -- Properties of subspaces
 
-newtype Hausdorff s = Hausdorff { apart :: s -> s -> SBool }
+class Hausdorff t where
+  apart :: t -> t -> SBool 
 
-newtype Discrete s = Discrete { equal :: s -> s -> SBool }
+class Discrete t where
+  equal :: t -> t -> SBool
+  
+class Compact s t | s -> t where
+  forall :: s -> (t -> SBool) -> SBool
 
-newtype Compact s = Compact { forall :: (s -> SBool) -> SBool }
-
-newtype Overt s = Overt { exists :: (s -> SBool) -> SBool }
-
+class Overt s t | s -> t where
+  exists :: s -> (t -> SBool) -> SBool

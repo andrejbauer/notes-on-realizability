@@ -20,7 +20,10 @@ linear ordering of the structure, and how precise the result should be.
 -}
 class (Show q, Ord q) => ApproximateField q where
   normalize :: Stage -> q -> q
-  size :: q -> Int
+  size :: q -> Int -- ^ the size of the number (memory usage)
+  log2 :: q -> Int -- ^ @log2 q@ is a number @k@ such that @2^k <= abs q <= 2^(k+1)@.
+
+  midpoint :: q -> q -> q -- ^ exact midpoint
 
   zero :: q
   positive_inf :: q
@@ -35,4 +38,4 @@ class (Show q, Ord q) => ApproximateField q where
   app_abs :: Stage -> q -> q
   app_signum :: Stage -> q -> q
   app_fromInteger :: Stage -> Integer -> q
-  app_shift :: Stage -> q -> Int -> q
+  app_shift :: Stage -> q -> Int -> q -- ^ shift by a power of 2

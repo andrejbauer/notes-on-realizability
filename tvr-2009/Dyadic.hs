@@ -25,11 +25,10 @@ data Dyadic = Dyadic { mant :: Integer, expo :: Int }
             | NaN -- ^ not a number, result of undefined arithmetical operation
 
 instance Show Dyadic where
-    show PositiveInfinity = "+inf"
-    show NegativeInfinity = "-inf"
-    show NaN = "NaN"
-    show Dyadic {mant=m, expo=e} =
-        (show $ encodeFloat m e) ++ " [m=" ++ (show m) ++ ", e=" ++ (show e) ++ "]"
+  show PositiveInfinity = "+inf"
+  show NegativeInfinity = "-inf"
+  show NaN = "NaN"
+  show Dyadic {mant=m, expo=e} = show m ++ "*2^" ++ show e
 
 withMantissas :: (Integer -> Integer -> a) -> Dyadic -> Dyadic -> a
 withMantissas f (Dyadic {mant=m1, expo=e1}) (Dyadic {mant=m2, expo=e2}) =
@@ -163,9 +162,28 @@ instance ApproximateField Dyadic where
   size NegativeInfinity = 0
   size Dyadic{mant=m, expo=e} = ilogb 2 m
 
+  log2 NaN = error "log2 of NaN"
+  log2 PositiveInfinity = error "log2 of +inf"
+  log2 NegativeInfinity = error "log2 of -inf"
+  log2 Dyadic{mant=m, expo=e} = e + ilogb 2 m 
+
   zero = Dyadic {mant=0, expo=1}
   positive_inf = PositiveInfinity
   negative_inf = NegativeInfinity
+
+  midpoint NaN _ = NaN
+  midpoint _ NaN = NaN
+  midpoint NegativeInfinity NegativeInfinity = NegativeInfinity
+  midpoint NegativeInfinity PositiveInfinity = zero
+  midpoint NegativeInfinity Dyadic{mant=m, expo=e} = Dyadic {mant = -1 - abs m, expo= 2 * max 1 e}
+  midpoint PositiveInfinity NegativeInfinity = zero
+  midpoint PositiveInfinity PositiveInfinity = PositiveInfinity
+  midpoint PositiveInfinity Dyadic{mant=m, expo=e} = Dyadic {mant = 1 + abs m, expo= 2 * max 1 e}
+  midpoint Dyadic{mant=m,expo=e} NegativeInfinity = Dyadic {mant = -1 - abs m, expo= 2 * max 1 e}
+  midpoint Dyadic{mant=m,expo=e} PositiveInfinity = Dyadic {mant = 1 + abs m, expo= 2 * max 1 e}
+  midpoint Dyadic{mant=m1,expo=e1} Dyadic{mant=m2,expo=e2} = Dyadic {mant = m3, expo = e3 - 1}
+    where m3 = if e1 < e2 then m1 + shiftL m2 (e2 - e1) else shiftL m1 (e1 - e2) + m2
+          e3 = min e1 e2
 
   -- We take the easy route: first we perform an exact operation then we normalize the result.
   -- A better implementation would directly compute the approximation, but it's probably not
@@ -178,7 +196,7 @@ instance ApproximateField Dyadic where
   app_signum s a = normalize s (signum a)
   app_fromInteger s i   = normalize s (fromInteger i)
 
-  app_inv s NaN = NaN
+  app_inv s NaN = normalize s NaN
   app_inv s PositiveInfinity = zero
   app_inv s NegativeInfinity = zero
   app_inv s Dyadic{mant=m, expo=e} =
@@ -204,4 +222,4 @@ instance ApproximateField Dyadic where
   app_shift s NaN k = normalize s NaN
   app_shift s PositiveInfinity k = PositiveInfinity
   app_shift s NegativeInfinity k = NegativeInfinity
-  app_shift s Dyadic {mant=m, expo=e} k = Dyadic {mant = m, expo = e + k}
+  app_shift s Dyadic {mant=m, expo=e} k = normalize s (Dyadic {mant = m, expo = e + k})

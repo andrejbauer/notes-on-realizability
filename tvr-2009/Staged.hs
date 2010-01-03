@@ -50,8 +50,14 @@ class (Functor m, Monad m) => Completion m where
     get_stage :: m Stage
     get_rounding :: m RoundingMode
     get_prec :: m Int
-    approximate :: m t -> (Stage -> t)
-    chain :: (Stage -> t) -> m t
+    approximate :: m t -> (Int -> t) -- ^ approximate from below
+    chain :: (Int -> t) -> m t -- ^ the supremum of a chain
+    force :: (t -> Maybe u) -> m t -> u
+
+    force f x = loop 0
+                where loop k = case f (approximate x k) of
+                                 Nothing -> loop (k+1)
+                                 Just y -> y
 
 -- | If @t@ represents the elements of a base for a domain, @Staged t@ represents the elements of
 -- the completion of the base.
@@ -80,5 +86,5 @@ instance Completion Staged where
     get_stage = Staged $ \s -> s
     get_rounding = Staged $ rounding
     get_prec = Staged $ precision
-    approximate = approx
-    chain = Staged
+    approximate x k = approx x (prec k)
+    chain c = Staged (\s -> c (precision s))

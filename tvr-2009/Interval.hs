@@ -19,7 +19,13 @@ can save up to 50% of space, but it is not clear how to treat back-to-front
 intervals then. Presumably with negative radii, except I have never worked out
 how to implement interval multiplication then. -}
 
-data Interval q = Interval { lower :: q, upper :: q } deriving Show
+data Interval q = Interval { lower :: q, upper :: q }
+
+instance ApproximateField q => Show (Interval q) where
+  show Interval{lower=a, upper=b} =
+    if a == b
+    then show a
+    else "[" ++ show a ++ "," ++ show b ++ "]"  
 
 class ApproximateField q => IntervalDomain q  where
   lt :: Interval q -> Interval q -> Bool
@@ -31,6 +37,7 @@ class ApproximateField q => IntervalDomain q  where
   iabs :: Stage -> Interval q -> Interval q
   inormalize :: Stage -> Interval q -> Interval q
   embed :: Stage -> q -> Interval q
+  split :: Interval q -> (Interval q, Interval q)
   -- width :: Interval q -> q
 
   lt i j = upper i < lower j
@@ -129,3 +136,7 @@ class ApproximateField q => IntervalDomain q  where
                         upper = let q = app_negate s (lower a)
                                     r = upper a
                                 in if q < r then r else q }
+
+  split Interval{lower=a, upper=b} =
+    let c = midpoint a b
+    in (Interval {lower=a, upper=c}, Interval {lower=c, upper=b})
