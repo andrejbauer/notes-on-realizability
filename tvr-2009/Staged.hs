@@ -34,30 +34,42 @@ data Stage = Stage { precision :: Int, rounding :: RoundingMode }
 anti :: Stage -> Stage
 anti s = Stage {precision = precision s, rounding = case rounding s of { RoundUp -> RoundDown ; RoundDown -> RoundUp}}
 
--- | 'down' sets the rounding mode to 'RoundDown'
-down :: Stage -> Stage
-down s = Stage {precision = precision s, rounding = RoundDown}
+-- | @prec_down k@ sets precision to @k@ and the rounding mode to 'RoundDown'
+prec_down :: Int -> Stage
+prec_down k = Stage {precision = k, rounding = RoundDown}
 
--- | 'up' sets the rounding mode to 'RoundUp'
-up :: Stage -> Stage
-up s   = Stage {precision = precision s, rounding = RoundUp}
+-- | @prec_up k@ sets precision to @k@ and the rounding mode to 'RoundUp'
+up :: Int -> Stage
+up k   = Stage {precision = k, rounding = RoundUp}
 
--- | @prec k@ returns the @k@-th stage with rounding mode 'RoundDown'
+-- | @prec k@ is a synonym for 'prec_down'
 prec :: Int -> Stage
-prec k = Stage {precision = k, rounding = RoundDown}
+prec = prec_down
 
 class (Functor m, Monad m) => Completion m where
     get_stage :: m Stage
     get_rounding :: m RoundingMode
     get_prec :: m Int
-    approximate :: m t -> (Int -> t) -- ^ approximate from below
-    chain :: (Int -> t) -> m t -- ^ the supremum of a chain
-    force :: (t -> Maybe u) -> m t -> u
+    approximate :: RoundingMode -> m t -> (Int -> t) -- ^ approximate by a chain (from above or from below, depending on rounding mode)
+    chain :: (Stage -> t) -> m t -- ^ the element represented by a given chain
+    lift1 :: (Stage -> t -> u) -> m t -> m u
+    lift2 :: (Stage -> t -> u -> v) -> m t -> m u -> m v
 
-    force f x = loop 0
-                where loop k = case f (approximate x k) of
-                                 Nothing -> loop (k+1)
-                                 Just y -> y
+    lift1 f x = do a <- x
+                   s <- get_stage
+                   return $ f s a
+
+    lift2 f x y = do a <- x
+                     b <- y
+                     s <- get_stage
+                     return $ f s a b
+
+    force :: RoundingMode -> (t -> Maybe u) -> m t -> u
+    
+    force r f x = loop 0
+                  where loop k = case f (approximate r x k) of
+                                   Nothing -> loop (k+1)
+                                   Just y -> y
 
 -- | If @t@ represents the elements of a base for a domain, @Staged t@ represents the elements of
 -- the completion of the base.
@@ -86,5 +98,5 @@ instance Completion Staged where
     get_stage = Staged $ \s -> s
     get_rounding = Staged $ rounding
     get_prec = Staged $ precision
-    approximate x k = approx x (prec k)
-    chain c = Staged (\s -> c (precision s))
+    approximate r x k = approx x (Stage {precision=k, rounding=r})
+    chain = Staged

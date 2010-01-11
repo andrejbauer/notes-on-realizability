@@ -28,7 +28,8 @@ instance ApproximateField q => Show (Interval q) where
     else "[" ++ show a ++ "," ++ show b ++ "]"  
 
 class ApproximateField q => IntervalDomain q  where
-  lt :: Interval q -> Interval q -> Bool
+  iless :: Interval q -> Interval q -> Bool
+  imore :: Interval q -> Interval q -> Bool
   iadd :: Stage -> Interval q -> Interval q -> Interval q
   isub :: Stage -> Interval q -> Interval q -> Interval q
   imul :: Stage -> Interval q -> Interval q -> Interval q
@@ -40,7 +41,9 @@ class ApproximateField q => IntervalDomain q  where
   split :: Interval q -> (Interval q, Interval q)
   -- width :: Interval q -> q
 
-  lt i j = upper i < lower j
+  iless i j = upper i < lower j
+
+  imore i j = upper j < lower i
 
   iadd s a b = Interval { lower = app_add s (lower a) (lower b),
                           upper = app_add (anti s) (upper a) (upper b)}
