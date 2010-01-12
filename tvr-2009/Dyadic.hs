@@ -1,4 +1,4 @@
-{- This module contains a purely Haskell implementation of dyadic rationals, suitable
+{- | This module contains a purely Haskell implementation of dyadic rationals, suitable
    for interval arithmetic. A faster implementation of dyadic rationals would use
    a fast arbitrary-precision floating-point library, such as MPFR and the related
    hmpfr Haskell bindings for it.

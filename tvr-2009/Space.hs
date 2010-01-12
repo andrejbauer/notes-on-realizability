@@ -18,7 +18,7 @@ sand :: Sigma -> Sigma -> Sigma
 sand = lift2 (\s p q -> p && q)
 
 -- | Force a value in the Sierpinski space into Booleans. This may diverge as bottom cannot be
--- realiably detected.
+-- reliably detected.
 force :: Sigma -> Bool
 force p = loop 0
           where loop k = case approximate p (prec RoundDown k) of
