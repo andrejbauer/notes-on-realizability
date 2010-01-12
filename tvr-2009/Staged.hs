@@ -39,18 +39,18 @@ prec_down :: Int -> Stage
 prec_down k = Stage {precision = k, rounding = RoundDown}
 
 -- | @prec_up k@ sets precision to @k@ and the rounding mode to 'RoundUp'
-up :: Int -> Stage
-up k   = Stage {precision = k, rounding = RoundUp}
+prec_up :: Int -> Stage
+prec_up k = Stage {precision = k, rounding = RoundUp}
 
--- | @prec k@ is a synonym for 'prec_down'
-prec :: Int -> Stage
-prec = prec_down
+-- | @prec r k@ is the stage with given rounding @r@ and precision @k@
+prec :: RoundingMode -> Int -> Stage
+prec r k = Stage {precision = k, rounding = r}
 
 class (Functor m, Monad m) => Completion m where
     get_stage :: m Stage
     get_rounding :: m RoundingMode
     get_prec :: m Int
-    approximate :: RoundingMode -> m t -> (Int -> t) -- ^ approximate by a chain (from above or from below, depending on rounding mode)
+    approximate :: m t -> (Stage -> t) -- ^ approximate by a chain (from above or from below, depending on rounding mode)
     chain :: (Stage -> t) -> m t -- ^ the element represented by a given chain
     lift1 :: (Stage -> t -> u) -> m t -> m u
     lift2 :: (Stage -> t -> u -> v) -> m t -> m u -> m v
@@ -64,20 +64,13 @@ class (Functor m, Monad m) => Completion m where
                      s <- get_stage
                      return $ f s a b
 
-    force :: RoundingMode -> (t -> Maybe u) -> m t -> u
-    
-    force r f x = loop 0
-                  where loop k = case f (approximate r x k) of
-                                   Nothing -> loop (k+1)
-                                   Just y -> y
-
 -- | If @t@ represents the elements of a base for a domain, @Staged t@ represents the elements of
 -- the completion of the base.
 newtype Staged t = Staged { approx :: Stage -> t }
 
 -- | The default stage to be used when outputting approximate results
 default_stage :: Stage
-default_stage = prec 10
+default_stage = prec RoundDown 10
 
 -- | As a convenience we define a 'Show' instance for the elements of the domain. This is not an ideal
 -- solution because it has a hard-coded 'default_stage' parameter which cannot be interactively changed
@@ -98,5 +91,5 @@ instance Completion Staged where
     get_stage = Staged $ \s -> s
     get_rounding = Staged $ rounding
     get_prec = Staged $ precision
-    approximate r x k = approx x (Stage {precision=k, rounding=r})
+    approximate = approx
     chain = Staged

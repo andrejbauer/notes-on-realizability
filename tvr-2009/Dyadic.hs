@@ -10,7 +10,7 @@
 -}
 
 module Dyadic (
-  Dyadic,
+  Dyadic(..),
 ) where
 
 import Data.Bits
@@ -32,9 +32,10 @@ instance Show Dyadic where
 
 withMantissas :: (Integer -> Integer -> a) -> Dyadic -> Dyadic -> a
 withMantissas f (Dyadic {mant=m1, expo=e1}) (Dyadic {mant=m2, expo=e2}) =
-  if e1 < e2
-  then f m1 (shiftR m2 (e2-e1))
-  else f (shiftR m1 (e2-e1)) m2
+  case compare e1 e2 of
+    LT -> f m1 (shiftL m2 (e2-e1))
+    EQ -> f m1 m2
+    GT -> f (shiftL m1 (e1-e2)) m2
 
 -- zeroCmp q returns the same thing as compare 0 q
 zeroCmp :: Dyadic -> Ordering

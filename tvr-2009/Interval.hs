@@ -43,7 +43,7 @@ class ApproximateField q => IntervalDomain q  where
 
   iless i j = upper i < lower j
 
-  imore i j = upper j < lower i
+  imore i j = iless j i
 
   iadd s a b = Interval { lower = app_add s (lower a) (lower b),
                           upper = app_add (anti s) (upper a) (upper b)}

@@ -14,14 +14,10 @@ type RealNum q = Staged (Interval q)
 
 -- Comparison
 
-less x y = do i <- x
-              j <- y
-              return $ case (i `iless` j, j `iless` i) of
-                         (False, False) -> Bottom
-                         (True,  False) -> Value True
-                         (False, True)  -> Value False
-                         (True, True)   -> Top
+less :: IntervalDomain q => RealNum q -> RealNum q -> SBool
+less = lift2 (\_ -> iless)
 
+more :: IntervalDomain q => RealNum q -> RealNum q -> SBool
 more x y = less y x
 
 -- Properties of equality
@@ -33,14 +29,14 @@ instance IntervalDomain q => Eq (RealNum q) where
   -- | It is a very bad idea to use equality on the real numbers, since
   -- all you can ever hope for is to get @False@ or non-termination. But
   -- Haskell wants equality on numerical types, so here it is.
-  x == y = force (\x -> case x of { Value x -> Just (not x) ; _ -> Nothing}) (x `apart` y)
-  x /= y = force (\x -> case x of { Value x -> Just x ; _ -> Nothing}) (x `apart` y)
+  x == y = not $ force $ x `apart` y
+  x /= y = force $ x `apart` y
   
 instance IntervalDomain q => Ord (RealNum q) where
   -- Comparison never return @EQ@, but can return @LT@ and @GT@
-  compare x y = force
-                (\p -> case p of { Value False -> Just GT ; Value True -> Just LT ; _ -> Nothing})
-                (x `less` y)
+  compare x y = case force (x `less` y) of
+                  True  -> LT
+                  False -> GT
     
 instance (ApproximateField q, IntervalDomain q) => Num (RealNum q) where
     x + y = lift2 iadd x y
@@ -76,12 +72,20 @@ newtype ClosedInterval q = ClosedInterval (q, q)
 
 instance IntervalDomain q => Compact (ClosedInterval q) (RealNum q) where
   forall (ClosedInterval(a,b)) p =
-    chain (\n -> sweep n (Just True) [(0,Interval{lower=a,upper=b})])
-    where sweep n b [] = b
-          sweep n b ((k,j):lst) =
-            case approximate (p (chain $ const j)) k of
-              Just False -> Just False -- short-circuit, we found a counter-example
-              Just True -> sweep n b lst
-              Nothing -> if k < n
-                         then let (j1,j2) = split j in sweep n b (lst ++ [(k+1,j1), (k+1,j2)])
-                         else sweep n Nothing lst
+    chain (\s ->
+      let r = rounding s
+          n = precision s
+          test_interval u v = case r of
+                                RoundDown -> Interval {lower = u, upper = v}
+                                RoundUp   -> let w = midpoint u v in Interval {lower = w, upper = w}
+          sweep [] = True
+          sweep ((k,a,b):lst) = let x = chain $ const (test_interval a b)
+                                   in case (r, approximate (p x) (prec r k)) of
+                                     (RoundDown, False) -> (k < n) &&
+                                                           (let c = midpoint a b in sweep (lst ++ [(k+1,a,c), (k+1,c,b)]))
+                                     (RoundDown, True)  -> sweep lst
+                                     (RoundUp,   False) -> False
+                                     (RoundUp,   True)  -> (k >= n) ||
+                                                           (let c = midpoint a b in sweep (lst ++ [(k+1,a,c), (k+1,c,b)]))                                     
+      in sweep [(0,a,b)]
+    )
