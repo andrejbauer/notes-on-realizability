@@ -6,7 +6,8 @@
    A dyadic number is a rational whose denominator is a power of 2. We also include
    positive and negative infinity, these are useful for representing infinite intervals.
    The special value 'NaN' (not a number) is included as well in order to follow more closely
-   the usual floating-point format.
+   the usual floating-point format, but is not used in the interval computations because
+   there we use [-inf, +inf] to represent the completely undefined value.
 -}
 
 module Dyadic (
@@ -18,26 +19,35 @@ import Data.Bits
 import Staged
 import Field
 
--- A dyadic number is of the form @m * 2^e@ where @m@ is the /mantissa/ and @e@ is the /exponent/.
+-- | A dyadic number is of the form @m * 2^e@ where @m@ is the /mantissa/ and @e@ is the /exponent/.
 data Dyadic = Dyadic { mant :: Integer, expo :: Int }
             | PositiveInfinity
             | NegativeInfinity
             | NaN -- ^ not a number, result of undefined arithmetical operation
 
+-- | This should be improved so that dyadics are shown in the usual
+-- decimal notation. The trouble is: how many digits should we show?
+-- MPFR does something reasonable, maybe we can do the same thing
+-- here.
 instance Show Dyadic where
   show PositiveInfinity = "+inf"
   show NegativeInfinity = "-inf"
   show NaN = "NaN"
   show Dyadic {mant=m, expo=e} = show m ++ "*2^" ++ show e
 
-withMantissas :: (Integer -> Integer -> a) -> Dyadic -> Dyadic -> a
-withMantissas f (Dyadic {mant=m1, expo=e1}) (Dyadic {mant=m2, expo=e2}) =
+-- | Suppose @g@ is a map of two dyadic arguments which is invariant
+-- under multiplication by a power of two, i.e., @g x y = g (x * 2^e)
+-- (y * 2^e)@. Then @g@ is already determined by its action on
+-- integers. The map 'shifted2' takes such a @g@ restricted to the
+-- integers and extends it to dyadics.
+shifted2 :: (Integer -> Integer -> a) -> Dyadic -> Dyadic -> a
+shifted2 f (Dyadic {mant=m1, expo=e1}) (Dyadic {mant=m2, expo=e2}) =
   case compare e1 e2 of
     LT -> f m1 (shiftL m2 (e2-e1))
     EQ -> f m1 m2
     GT -> f (shiftL m1 (e1-e2)) m2
 
--- zeroCmp q returns the same thing as compare 0 q
+-- | zeroCmp q returns the same thing as compare 0 q
 zeroCmp :: Dyadic -> Ordering
 zeroCmp NegativeInfinity = GT
 zeroCmp PositiveInfinity = LT
@@ -46,12 +56,12 @@ zeroCmp Dyadic {mant=m, expo=e} = compare 0 m
 instance Eq Dyadic where
   PositiveInfinity == PositiveInfinity = True
   NegativeInfinity == NegativeInfinity = True
-  a@(Dyadic _ _)   == b@(Dyadic _ _)   = withMantissas (==) a b
+  a@(Dyadic _ _)   == b@(Dyadic _ _)   = shifted2 (==) a b
   _                == _                = False
 
   PositiveInfinity /= PositiveInfinity = False
   NegativeInfinity /= NegativeInfinity = False
-  a@(Dyadic _ _)   /= b@(Dyadic _ _)   = withMantissas (/=) a b
+  a@(Dyadic _ _)   /= b@(Dyadic _ _)   = shifted2 (/=) a b
   _                /= _                = True
 
 instance Ord Dyadic where
@@ -61,7 +71,7 @@ instance Ord Dyadic where
   compare PositiveInfinity PositiveInfinity = EQ
   compare PositiveInfinity _                = GT
   compare _                PositiveInfinity = LT
-  compare a@(Dyadic _ _)   b@(Dyadic _ _)   = withMantissas compare a b
+  compare a@(Dyadic _ _)   b@(Dyadic _ _)   = shifted2 compare a b
 
 instance Num Dyadic where
   -- addition
@@ -121,7 +131,9 @@ instance Num Dyadic where
   fromInteger i = Dyadic {mant = i, expo = 0}
 
 
--- See http://www.haskell.org/pipermail/haskell-cafe/2008-February/039640.html
+-- | This was taken from
+-- | <http://www.haskell.org/pipermail/haskell-cafe/2008-February/039640.html>
+-- | and it computes the integral logarithm in given base.
 ilogb :: Integer -> Integer -> Int
 ilogb b n | n < 0      = ilogb b (- n)
           | n < b      = 0
@@ -136,8 +148,15 @@ ilogb b n | n < 0      = ilogb b (- n)
                                     then bin b lo av
                                     else bin b av hi
     
--- dyadics with normalization and rounding form an "approximate" field in which
--- operations can be performed up to a given precision
+{- | Dyadics with normalization and rounding form an "approximate"
+  field in which operations can be performed up to a given precision.
+
+  We take the easy route: first we perform an exact operation then we
+  normalize the result. A better implementation would directly compute
+  the approximation, but it's probably not worth doing this with
+  Dyadics. If you want speed, use hmpfr, see
+  <http://hackage.haskell.org/package/hmpfr>.
+-}
 
 instance ApproximateField Dyadic where
   normalize s NaN = case rounding s of
@@ -186,9 +205,6 @@ instance ApproximateField Dyadic where
     where m3 = if e1 < e2 then m1 + shiftL m2 (e2 - e1) else shiftL m1 (e1 - e2) + m2
           e3 = min e1 e2
 
-  -- We take the easy route: first we perform an exact operation then we normalize the result.
-  -- A better implementation would directly compute the approximation, but it's probably not
-  -- worth doing this with Dyadics. If you want speed, use hmpfr.
   app_add s a b = normalize s (a + b)
   app_sub s a b = normalize s (a - b)
   app_mul s a b = normalize s (a * b)

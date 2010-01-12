@@ -1,39 +1,57 @@
-{-# LANGUAGE MultiParamTypeClasses, FunctionalDependencies #-}
+{-# LANGUAGE MultiParamTypeClasses, FunctionalDependencies, TypeSynonymInstances #-}
 
--- Basic definitions od spaces and their properties
+-- | Basic definitions od spaces and their properties
 
 module Space where
 
 import Staged
 
--- Staged Booleans give semidecidable values
+-- | The Sierpinski space @Sigma@ is represented by staged booleans
+type Sigma = Staged Bool
 
-type SBool = Staged Bool
-
-sor :: SBool -> SBool -> SBool
+-- | Disjunction for Sierpinski space
+sor :: Sigma -> Sigma -> Sigma
 sor = lift2 (\s p q -> p || q)
 
-sand :: SBool -> SBool -> SBool
+-- | Conjunction for Sierpinski space
+sand :: Sigma -> Sigma -> Sigma
 sand = lift2 (\s p q -> p && q)
 
-force :: SBool -> Bool
+-- | Force a value in the Sierpinski space into Booleans. This may diverge as bottom cannot be
+-- realiably detected.
+force :: Sigma -> Bool
 force p = loop 0
           where loop k = case approximate p (prec RoundDown k) of
-                           True  -> True
+                           True  -> True -- lower approximation is True, the value is top
                            False -> case approximate p (prec RoundUp k) of
-                                      False -> False
+                                      False -> False -- upper approximation is False, the value is bottom
                                       True  -> loop (k+1)
-   
--- Properties of subspaces
 
+-- | The Show instance may cause divergence because 'force' could diverge. An alternative
+-- implementation would give up after a while, and the user would have to use 'force' explicitly to
+-- get the exact results (or divergence).
+
+instance Show Sigma where
+    show p = show $ force p
+
+-- | A space is Hausdorff if inequality, here called 'apart', is an open relation.
 class Hausdorff t where
-  apart :: t -> t -> SBool 
+  apart :: t -> t -> Sigma 
 
+-- | A space is Discrete if equality, here called 'equal', is an open relation.
 class Discrete t where
-  equal :: t -> t -> SBool
+  equal :: t -> t -> Sigma
   
+-- | Suppose the type 's' represents a family of subspaces of 't'. The typical example is
+-- that 't' is the type of reals and 's' is the type of closed intervals. Then the subspaces
+-- represented by 's' are compact subspaces of 't' if the universal quantifier is a continuous
+-- map from @t -> 'Sigma'@ to 'Sigma'.
 class Compact s t | s -> t where
-  forall :: s -> (t -> SBool) -> SBool
+  forall :: s -> (t -> Sigma) -> Sigma
 
+-- | Suppose the type 's' represents a family of subspaces of 't'. The typical example is
+-- that 't' is the type of reals and 's' is the type of closed intervals. Then the subspaces
+-- represented by 's' are overt subspaces of 't' if the existential quantifier is a continuous
+-- map from @t -> 'Sigma'@ to 'Sigma'.
 class Overt s t | s -> t where
-  exists :: s -> (t -> SBool) -> SBool
+  exists :: s -> (t -> Sigma) -> Sigma

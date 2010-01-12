@@ -1,4 +1,4 @@
-{- | This module contains class defintions related to the real numbers.
+{- | This module contains class defintions related to the notion of real numbers.
 -}
 module Field where
 

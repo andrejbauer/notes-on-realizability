@@ -1,7 +1,10 @@
 {-# LANGUAGE TypeSynonymInstances, MultiParamTypeClasses #-}
--- real numbers as staged intervals
 
-module CReal where
+{- | We implement real numbers as the completion of dyadic intervals. The whole construction is
+   parametrized by an approximate field, an example of which is "Dyadic".
+-}
+
+module Reals where
 
 import Ratio
 import Staged
@@ -10,14 +13,23 @@ import Dyadic
 import Interval
 import Field
 
+-- | First we define a class which expresses what the structure of real numbers over a
+-- a given approximate field is.
+class (ApproximateField q, IntervalDomain q,
+       Eq r, Ord r, Num r, Fractional r) => RealNumbers q r | r -> q where
+    
+-- | A real number is implemented as a staged dyadic interval @'Interval' q@ where @q@ is the
+-- underlying approximate field (in practiec these are dyadic rationals). @'RealNum' q@ can be used
+-- to represent not only real numbers but also the elements of the interval domain, including the
+-- back-to-front intervals.
 type RealNum q = Staged (Interval q)
 
 -- Comparison
 
-less :: IntervalDomain q => RealNum q -> RealNum q -> SBool
+less :: IntervalDomain q => RealNum q -> RealNum q -> Sigma
 less = lift2 (\_ -> iless)
 
-more :: IntervalDomain q => RealNum q -> RealNum q -> SBool
+more :: IntervalDomain q => RealNum q -> RealNum q -> Sigma
 more x y = less y x
 
 -- Properties of equality
@@ -72,14 +84,14 @@ newtype ClosedInterval q = ClosedInterval (q, q)
 
 instance IntervalDomain q => Compact (ClosedInterval q) (RealNum q) where
   forall (ClosedInterval(a,b)) p =
-    chain (\s ->
+    limit (\s ->
       let r = rounding s
           n = precision s
           test_interval u v = case r of
                                 RoundDown -> Interval {lower = u, upper = v}
                                 RoundUp   -> let w = midpoint u v in Interval {lower = w, upper = w}
           sweep [] = True
-          sweep ((k,a,b):lst) = let x = chain $ const (test_interval a b)
+          sweep ((k,a,b):lst) = let x = return $ test_interval a b
                                    in case (r, approximate (p x) (prec r k)) of
                                      (RoundDown, False) -> (k < n) &&
                                                            (let c = midpoint a b in sweep (lst ++ [(k+1,a,c), (k+1,c,b)]))

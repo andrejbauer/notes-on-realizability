@@ -1,23 +1,27 @@
-{- | This module defines the interval domain, i.e., the space of intervals.
-Actually, what we define as a /base/ for such a domain because our intervals
-have rational endpoints (to be exact, the endpoints are elements of an
-approximate field).
+{- | This module defines the interval domain, i.e., the space of
+  intervals. Actually, what we define as a /base/ for such a domain
+  because our intervals have rational endpoints (to be exact, the
+  endpoints are elements of an approximate field). The actual interval
+  domains is defined in the module "Reals".
 -}
+
 module Interval where
 
 import Staged
 import Field
 
-{- | An interval is represented by a lower and upper endpoint. We do /not/
-require that the lower endpoint be smaller or equal to the upper one. In other
-words, we allow the usual as well as back-to-front intervals. This is useful
-in certain kinds of computations.
+{- | An interval is represented by a lower and upper endpoint. We do
+  /not/ require that the lower endpoint be smaller or equal to the
+  upper one. In other words, we allow the usual as well as
+  back-to-front intervals. This is useful in certain kinds of
+  computations.
 
-A possible optimization: represent an interval with its center point and
-radius, where the radius is not a precise number (has a small mantissa). This
-can save up to 50% of space, but it is not clear how to treat back-to-front
-intervals then. Presumably with negative radii, except I have never worked out
-how to implement interval multiplication then. -}
+  A possible optimization: represent an interval with its center point
+  and radius, where the radius is not a precise number (has a small
+  mantissa). This can save up to 50% of space, but it is not clear how
+  to treat back-to-front intervals then. Presumably with negative
+  radii, except I have never worked out how to implement interval
+  multiplication then. -}
 
 data Interval q = Interval { lower :: q, upper :: q }
 
