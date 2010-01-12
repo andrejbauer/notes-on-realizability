@@ -91,7 +91,7 @@ instance IntervalDomain q => Compact (ClosedInterval q) (RealNum q) where
                                       (RoundDown, True)  -> sweep lst
                                       (RoundUp,   False) -> False
                                       (RoundUp,   True)  -> (k >= n) ||
-                                                            (let c = midpoint a b in sweep (lst ++ [(k+1,a,c), (k+1,c,b)]))                                     
+                                                            (let c = midpoint a b in sweep (lst ++ [(k+1,a,c), (k+1,c,b)]))
        in sweep [(0,a,b)]
      )
 
@@ -99,8 +99,8 @@ instance IntervalDomain q => Compact (ClosedInterval q) (RealNum q) where
 instance IntervalDomain q => Overt (ClosedInterval q) (RealNum q) where
      exists (ClosedInterval (a,b)) p = error "Not implemented"
 
- -- | We define the a particular implementation of reals in terms of Dyadic numbers. Because 'IntervalDomain' has
- -- a default implementation for all of its components we don't have to implement anything.
+-- | We define the a particular implementation of reals in terms of Dyadic numbers. Because 'IntervalDomain' has
+-- a default implementation for all of its components we don't have to implement anything.
 instance IntervalDomain Dyadic
 
 -- | This is a convenience function which allows us to write @exact 1.3@ as a conversion from floating points to

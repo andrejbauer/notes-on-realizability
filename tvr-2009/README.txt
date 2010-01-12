@@ -1,3 +1,7 @@
+To create HTML documentation in the doc subdirectory run
+
+   haddock -o doc -h *.hs
+
 To run the package for real number computation, load Reals.hs in Haskell shell.
 Here is an example session.
 
