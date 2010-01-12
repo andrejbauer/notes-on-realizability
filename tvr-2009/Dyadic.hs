@@ -42,6 +42,8 @@ class (Show q, Ord q) => ApproximateField q where
   positive_inf :: q
   negative_inf :: q
 
+  toFloat :: q -> Double
+
   -- approximate operations
   app_add :: Stage -> q -> q -> q
   app_sub :: Stage -> q -> q -> q
@@ -226,6 +228,11 @@ instance ApproximateField Dyadic where
   zero = Dyadic {mant=0, expo=1}
   positive_inf = PositiveInfinity
   negative_inf = NegativeInfinity
+
+  toFloat NaN = 0.0 / 0.0
+  toFloat PositiveInfinity = 1.0 / 0.0
+  toFloat NegativeInfinity = - 1.0 / 0.0
+  toFloat Dyadic{mant=m, expo=e} = encodeFloat m e
 
   midpoint NaN _ = NaN
   midpoint _ NaN = NaN

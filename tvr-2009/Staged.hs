@@ -96,16 +96,6 @@ class (Functor m, Monad m) => Completion m where
 -- represented as sequences of approximations.
 newtype Staged t = Staged { approx :: Stage -> t }
 
--- | The default stage to be used when outputting approximate results
-default_stage :: Stage
-default_stage = prec RoundDown 10
-
--- | As a convenience we define a 'Show' instance for the elements of the domain. This is not an ideal
--- solution because it has a hard-coded 'default_stage' parameter which cannot be interactively changed
--- (what would be a better solution?)
-instance Show t => Show (Staged t) where
-  show x = show (approx x default_stage)
-
 -- | The monad structure of 'Staged' is the same as that of the @Reader@ monad.
 instance Monad Staged where
   return x = Staged $ \s -> x
