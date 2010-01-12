@@ -55,3 +55,12 @@ class Compact s t | s -> t where
 -- map from @t -> 'Sigma'@ to 'Sigma'.
 class Overt s t | s -> t where
   exists :: s -> (t -> Sigma) -> Sigma
+
+-- | The real numbers are strictly linearly ordered by open relation <, we define
+-- a class that expresses that fact.
+class LinearOrder t where
+  less :: t -> t -> Sigma
+  more :: t -> t -> Sigma
+
+  -- default implemetnation of 'more' in terms of 'less'
+  more x y = less y x

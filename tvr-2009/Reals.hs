@@ -11,45 +11,32 @@ import Staged
 import Space
 import Dyadic
 import Interval
-import Field
 
--- | First we define a class which expresses what the structure of real numbers over a
--- a given approximate field is.
-class (ApproximateField q, IntervalDomain q,
-       Eq r, Ord r, Num r, Fractional r) => RealNumbers q r | r -> q where
-    
+
 -- | A real number is implemented as a staged dyadic interval @'Interval' q@ where @q@ is the
 -- underlying approximate field (in practiec these are dyadic rationals). @'RealNum' q@ can be used
 -- to represent not only real numbers but also the elements of the interval domain, including the
 -- back-to-front intervals.
 type RealNum q = Staged (Interval q)
 
--- Comparison
+-- | Linear order on real numbers
+instance IntervalDomain q => LinearOrder (RealNum q) where
+    less = lift2 (\_ -> iless)
 
-less :: IntervalDomain q => RealNum q -> RealNum q -> Sigma
-less = lift2 (\_ -> iless)
-
-more :: IntervalDomain q => RealNum q -> RealNum q -> Sigma
-more x y = less y x
-
--- Properties of equality
-
-instance IntervalDomain q => Hausdorff (RealNum q) where
-  apart x y = less x y `sor` less y x
-
+-- | It is a bad idea to use Haskell-style inequality @/=@ on reals because it either returns @True@
+-- or it diverges. Similarly, using Haskell equality @==@ is bad. Nevertheless, we define @==@ and @/=@
+-- because Haskell wants them for numeric types.
 instance IntervalDomain q => Eq (RealNum q) where
-  -- | It is a very bad idea to use equality on the real numbers, since
-  -- all you can ever hope for is to get @False@ or non-termination. But
-  -- Haskell wants equality on numerical types, so here it is.
-  x == y = not $ force $ x `apart` y
-  x /= y = force $ x `apart` y
-  
+    x /= y = force $ x `apart` y
+
+-- | Real numbers are an ordered type in the sense of Haskells 'Ord', although a comparison never
+-- returns @EQ@ (instead it diverges). This is a fact of life, comparison of reals is not decidable.
 instance IntervalDomain q => Ord (RealNum q) where
-  -- Comparison never return @EQ@, but can return @LT@ and @GT@
   compare x y = case force (x `less` y) of
                   True  -> LT
                   False -> GT
-    
+
+-- | The ring structure fo the reals.
 instance (ApproximateField q, IntervalDomain q) => Num (RealNum q) where
     x + y = lift2 iadd x y
     x - y = lift2 isub x y
@@ -66,6 +53,7 @@ instance (ApproximateField q, IntervalDomain q) => Num (RealNum q) where
                        return $ Interval { lower = app_fromInteger s k,
                                            upper = app_fromInteger (anti s) k }
 
+-- | Division and reciprocals.
 instance (ApproximateField q, IntervalDomain q) => Fractional (RealNum q) where
     x / y = lift2 idiv x y
 
@@ -73,15 +61,14 @@ instance (ApproximateField q, IntervalDomain q) => Fractional (RealNum q) where
 
     fromRational r = fromInteger (numerator r) / fromInteger (denominator r)
 
-instance IntervalDomain Dyadic
+-- | The Hausdorff property
+instance IntervalDomain q => Hausdorff (RealNum q) where
+    x `apart` y = (x `less` y) `sor` (y `less` x)
 
-exact :: RealNum Dyadic -> RealNum Dyadic
-exact x = x
-
--- Compactness of closed intervals
-
+-- | The value @ClosedInterval(a,b)@ represents the closed interval [a,b] as a subspace of the reals.
 newtype ClosedInterval q = ClosedInterval (q, q)
 
+-- | Compactness of the closed interval
 instance IntervalDomain q => Compact (ClosedInterval q) (RealNum q) where
   forall (ClosedInterval(a,b)) p =
     limit (\s ->
@@ -101,3 +88,16 @@ instance IntervalDomain q => Compact (ClosedInterval q) (RealNum q) where
                                                            (let c = midpoint a b in sweep (lst ++ [(k+1,a,c), (k+1,c,b)]))                                     
       in sweep [(0,a,b)]
     )
+
+-- | We define the a particular implementation of reals in terms of Dyadic numbers. Because 'IntervalDomain' has
+-- a default implementation for all of its components we don't have to implement anything.
+instance IntervalDomain Dyadic
+
+-- | This is a convenience function which allows us to write @exact 1.3@ as a conversion from floating points to
+-- real numbers. There probably is a better way of doing this.
+exact :: RealNum Dyadic -> RealNum Dyadic
+exact x = x
+
+-- | Missing: overtness of reals, open interval (a,b) and closed interval [a,b]
+instance IntervalDomain q => Overt (ClosedInterval q) (RealNum q) where
+    exists (ClosedInterval (a,b)) p = error "Not implemented"
