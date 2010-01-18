@@ -344,29 +344,39 @@ spaces are represented in a programming language.
 \section{Representations of spaces}
 \label{sec:representations}
 
-A topological space $X$ is an abstract set. In a programming language it is
-represented by a suitable datatype $\mathtt{X}$ whose values represent points
-of $X$. This may be expressed by a \emph{realizability} relation $\rz_X$ which
-relates values of type~$\mathtt{X}$ to point of $X$. For $\R{r} : \mathtt{X}$
-and $a \in X$ we read $\R{r} \rz_X a$ as ``the value $\R{r}$ realizes, or
-represents, the point $a$''. We require that each point have at least one
-realizer. The triple $(X, \mathtt{X}, {\rz_X})$ is called an \emph{assembly}.
-Note that some values of type $\mathtt{X}$ may represent nothing, and that a
-point of~$X$ may have many representations.
+A topological space $X$ is an abstract set. In a programming language
+it is represented by a suitable datatype $\mathtt{X}$ whose values
+represent points of $X$. The relationship between $X$ and $\mathtt{X}$
+is expressed as a \emph{realizability} relation $\rz_X$ which relates
+values of type~$\mathtt{X}$ to point of $X$. For $\R{r} : \mathtt{X}$
+and $a \in X$ we read $\R{r} \rz_X a$ as ``the value $\R{r}$ realizes,
+or represents, the point $a$''. We require that each point have at
+least one realizer. The triple $(X, \mathtt{X}, {\rz_X})$ is called an
+\emph{assembly}. Note that some values of type $\mathtt{X}$ may
+represent nothing, and that a point of~$X$ may have many
+representations.
 
 A map $f : X \to Y$ is \emph{realized} or represented by a value $\R{f}$ of
 type $\mathtt{X} \to \mathtt{Y}$ which \emph{tracks}~$f$:
 % 
-\begin{equation*} \text{if $\R{a} \rz_X a$ then $\R{f}\;\R{a} \rz_Y f(a)$.}
+\begin{equation*}
+  \text{if $\R{a} \rz_X a$ then $\R{f}\;\R{a} \rz_Y f(a)$.}
 \end{equation*}
-% 
+%
+This is just a formal definition of the informal idea of what it means
+to ``implement'' an abstract function between two sets.
+ 
 We adopt the notational convention that datatypes and realizers are written in
 typewriter font. For example, if $X$ is the underlying set of an assembly, $a
 \in X$, and $f : X \to Y$ a realized map, the corresponding datatype and
 realizers are $\mathtt{X}$, $\R{a}$, and $\R{f}$, respectively.
 
-In these notes we want to focus on topology and programming. Thus we shall
-keep assemblies and realized maps in the background as much as possible.
+In these notes we want to focus on topology and programming, so we
+shall keep assemblies and realized maps in the background as much as
+possible. However, it is useful to know that there is a precise
+mathematical connection bewtween topology and programming.\footnote{To
+  be honest we should point out that realizability is not the only one
+  way of relating topology with programming.}
 
 
 \section{Searchable spaces}
@@ -437,7 +447,7 @@ $X$. We emphasize that $\epsilon(p)$ \emph{must} return a candidate and is not
 allowed to diverge. The operator $\epsilon$ is known as \emph{Hilbert's
 operator}.
 
-For a searchable space~$X$ not only the existential quantifier
+For a searchable space~$X$ the existential quantifer
 % 
 \begin{equation*} \exists_X(p) = \begin{cases} 1, &\text{if
 $\xsome{x}{X}{p(x)}$,}\\ 0, &\text{ otherwise.}
