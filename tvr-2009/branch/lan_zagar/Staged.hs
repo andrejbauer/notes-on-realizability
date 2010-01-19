@@ -1,7 +1,7 @@
 {- | A staged computation is a sequence of approximations which represents its limit. Specifically,
   we think of modeling a topological space as a subspace of a continuous domain with a countable
-  base, for theoretical background see the paper http://dx.doi.org/10.1016/j.apal.2008.09.025 (also
-  available at http://math.andrej.com/)
+  base, for theoretical background see the paper <http://dx.doi.org/10.1016/j.apal.2008.09.025> (also
+  available at <http://math.andrej.com/>)
 
   Suppose we would like to represent a space X, where X is some sort of a complete space (either
   metrically or domain-theoretically complete). We think of the points of X as limits of sequences
