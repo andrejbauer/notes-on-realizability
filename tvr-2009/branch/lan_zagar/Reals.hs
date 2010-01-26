@@ -23,7 +23,7 @@ type RealNum q = Staged (Interval q)
 -- and shows it as an interval, together with a floating point approximation.
 instance ApproximateField q => Show (RealNum q) where
    show x = let i = approximate x (prec RoundDown 20)
-            in show i ++ " " ++ show (toFloat (midpoint (lower i) (upper i)))
+            in show i
 
 -- | Linear order on real numbers
 instance IntervalDomain q => LinearOrder (RealNum q) where

@@ -29,7 +29,7 @@ instance ApproximateField q => Show (Interval q) where
   show Interval{lower=a, upper=b} =
     if a == b
     then show a
-    else "[" ++ show a ++ "," ++ show b ++ "]"  
+    else "[" ++ show a ++ "," ++ show b ++ "]" ++ " " ++ show (toFloat (midpoint a b))
 
 class ApproximateField q => IntervalDomain q  where
   iless :: Interval q -> Interval q -> Bool
