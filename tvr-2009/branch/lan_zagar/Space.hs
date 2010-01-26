@@ -1,6 +1,6 @@
 {-# LANGUAGE MultiParamTypeClasses, FunctionalDependencies, TypeSynonymInstances #-}
 
--- | Basic definitions od spaces and their properties
+-- | Basic definitions of spaces and their properties
 
 module Space where
 

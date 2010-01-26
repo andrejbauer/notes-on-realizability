@@ -12,19 +12,19 @@
   order by how well they approximate the values (for intervals this is reverse inclusion) and they form
   a /base/ for a continuous domain, see the cited paper above.
 
-  If @b@ ("b" for the "base") is the datatype which represents the approximations, then the elements
+  If @b@ (/b/ for the /base/) is the datatype which represents the approximations, then the elements
   of the space could be represented by the datatype @Int -> b@. However, in practice we need to
   control the direction of approximation: a real number may be rounded up or down, a set may be
   approximated from inside or from outside, etc. Thus we include rounding information in the
   sequence, so that an element of the space is represented by the datatype @'Stage' -> b@ where
   'Stage' carries rounding information and the index.
 
-  We empahsize that the rounding mode is /not/ that of floating point arithmetic. Rather, it tells
+  We emphasize that the rounding mode is /not/ that of floating point arithmetic. Rather, it tells
   us whether the exact results should be approximated from below or above in the natural order of
   approximations. Typically, computations based on domain-theoretic models always approximate from
   below, but there are uses for over-approximations as well, for example when we estimate the truth
   value of a quantifier. Therefore we allow approximating sequences which approach their limit from
-  above in the domai-theoretic order.
+  above in the domain-theoretic order.
 
   It is cumbersome to work with the datatype @Stage -> b@ explicitly because we need to manually pass
   around the @Stage@ parameter. Haskell comes in handy here, as we define a monad which is very much

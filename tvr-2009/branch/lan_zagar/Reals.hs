@@ -14,7 +14,7 @@ import Interval
 
 
 -- | A real number is implemented as a staged dyadic interval @'Interval' q@ where @q@ is the
--- underlying approximate field (in practiec these are dyadic rationals). @'RealNum' q@ can be used
+-- underlying approximate field (in practice these are dyadic rationals). @'RealNum' q@ can be used
 -- to represent not only real numbers but also the elements of the interval domain, including the
 -- back-to-front intervals.
 type RealNum q = Staged (Interval q)
@@ -42,7 +42,7 @@ instance IntervalDomain q => Ord (RealNum q) where
                   True  -> LT
                   False -> GT
 
--- | The ring structure fo the reals.
+-- | The ring structure for the reals.
 instance (ApproximateField q, IntervalDomain q) => Num (RealNum q) where
     x + y = lift2 iadd x y
     x - y = lift2 isub x y
@@ -99,7 +99,7 @@ instance IntervalDomain q => Compact (ClosedInterval q) (RealNum q) where
 instance IntervalDomain q => Overt (ClosedInterval q) (RealNum q) where
      exists (ClosedInterval (a,b)) p = error "Not implemented"
 
--- | We define the a particular implementation of reals in terms of Dyadic numbers. Because 'IntervalDomain' has
+-- | We define a particular implementation of reals in terms of Dyadic numbers. Because 'IntervalDomain' has
 -- a default implementation for all of its components we don't have to implement anything.
 instance IntervalDomain Dyadic
 

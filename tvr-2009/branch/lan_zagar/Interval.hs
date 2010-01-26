@@ -1,8 +1,8 @@
 {- | This module defines the interval domain, i.e., the space of
-  intervals. Actually, what we define as a /base/ for such a domain
+  intervals. Actually, what we define is a /base/ for such a domain
   because our intervals have rational endpoints (to be exact, the
   endpoints are elements of an approximate field). The actual interval
-  domains is defined in the module "Reals".
+  domain is defined in the module "Reals".
 -}
 
 module Interval where
