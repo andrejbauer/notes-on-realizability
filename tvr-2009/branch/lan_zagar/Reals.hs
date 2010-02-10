@@ -111,3 +111,38 @@ exact x = x
 -- MISSING STRUCTURE:
 -- Metric completeness: an operator lim which takes a Cauchy sequence and its convergence rate, and computes the limit
 -- Density of rationals: given a real x and integer k, compute a dyadic approximation of a real x which is within 2^(-k)a
+
+
+
+lim :: [RealNum Dyadic] -> [RealNum Dyadic] -> RealNum Dyadic
+lim seq err = 
+    let prepare (a:as) (e:es) k = 
+            let Interval l u = iapprox_to a k
+                app_e = upper $ iapprox_to e k
+                (as2,es2,k2) = if app_e < Dyadic {mant=1, expo=1-k}
+                   then (a:as,e:es,k+1) -- same term, increase precision
+                   else (as,es,k)       -- next term, same precision
+            in (l - app_e, u + app_e) : prepare as2 es2 k2
+        stored = scanl1 (\(a,b) (x,y) -> (max a x, min b y)) $ prepare seq err 0
+    in limit (\s -> 
+           let k = precision s
+               (l, u) = stored !! k
+           in case rounding s of
+               RoundDown -> Interval {lower=l, upper=u}
+               RoundUp   -> Interval {lower=u, upper=l})
+
+
+iapprox_to_dyadic x = 
+    let stages = map (approximate x . prec_down) [1..]
+    in (\d -> head $ filter (\(Interval l u) -> (u-l) < d) stages)
+
+iapprox_to x = iapprox_to_dyadic x . Dyadic 1 . (1-)
+
+approx_to x k = let i = iapprox_to x k in midpoint (lower i) (upper i)
+
+std_stages x = limit (\s -> 
+    let a@Interval {lower=l, upper=u} = iapprox_to x (precision s)
+    in case rounding s of
+           RoundDown -> a
+           RoundUp   -> Interval u l)
+
