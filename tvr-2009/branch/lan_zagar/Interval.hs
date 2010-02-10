@@ -139,10 +139,11 @@ class ApproximateField q => IntervalDomain q  where
 
   embed s q = Interval { lower = q, upper = q }
 
-  iabs s a = Interval { lower = app_fromInteger s (fromInteger 0),
-                        upper = let q = app_negate s (lower a)
-                                    r = upper a
-                                in if q < r then r else q }
+  iabs s Interval {lower=l, upper=u} 
+      | l >= zero && u >= zero  = Interval (normalize s l) (normalize (anti s) u)
+      | l <= zero && u <= zero  = Interval (app_negate s u) (app_negate (anti s) l)
+      | l < zero                = Interval zero $ max (app_negate (anti s) l) u
+      | l > zero                = Interval (max (app_negate s u) l) zero
 
   split Interval{lower=a, upper=b} =
     let c = midpoint a b
