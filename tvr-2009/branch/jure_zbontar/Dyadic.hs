@@ -71,7 +71,8 @@ instance Show Dyadic where
   show PositiveInfinity = "+inf"
   show NegativeInfinity = "-inf"
   show NaN = "NaN"
-  show Dyadic {mant=m, expo=e} = show m ++ "*2^" ++ show e
+  show d = show (toFloat d)
+  -- show Dyadic {mant=m, expo=e} = show m ++ "*2^" ++ show e
 
 -- | Suppose @g@ is a map of two dyadic arguments which is invariant
 -- under multiplication by a power of two, i.e., @g x y = g (x * 2^e)
