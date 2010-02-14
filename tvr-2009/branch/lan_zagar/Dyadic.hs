@@ -210,10 +210,9 @@ instance ApproximateField Dyadic where
           then a
           else Dyadic {mant = shift_with_round r (j-k) m, expo = e + (j-k) }
       where shift_with_round r k x =
-                       let y = shiftR x k
-                       in case r of
-                         RoundDown -> if signum y > 0 then y else succ y
-                         RoundUp -> if signum y > 0 then succ y else y
+                let y = shiftR x k
+                in case r of RoundDown -> y
+                             RoundUp   -> succ y
 
   size NaN = 0
   size PositiveInfinity = 0
