@@ -9,6 +9,7 @@ module Interval where
 
 import Staged
 import Dyadic
+import ApproximateField
 
 {- | An interval is represented by a lower and upper endpoint. We do
   /not/ require that the lower endpoint be smaller or equal to the

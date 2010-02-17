@@ -11,6 +11,7 @@ import Staged
 import Space
 import Dyadic
 import Interval
+import ApproximateField
 
 
 -- | A real number is implemented as a staged dyadic interval @'Interval' q@ where @q@ is the
