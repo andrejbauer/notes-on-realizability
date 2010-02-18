@@ -45,6 +45,7 @@ class (Show q, Ord q) => ApproximateField q where
   toFloat :: q -> Double
 
   -- approximate operations
+  app_pi :: Stage -> q
   app_add :: Stage -> q -> q -> q
   app_sub :: Stage -> q -> q -> q
   app_mul :: Stage -> q -> q -> q
@@ -213,8 +214,8 @@ instance ApproximateField Dyadic where
       where shift_with_round r k x =
                        let y = shiftR x k
                        in case r of
-                         RoundDown -> if signum y > 0 then y else succ y
-                         RoundUp -> if signum y > 0 then succ y else y
+                         RoundDown -> y
+                         RoundUp -> succ y
 
   size NaN = 0
   size PositiveInfinity = 0
@@ -249,6 +250,7 @@ instance ApproximateField Dyadic where
     where m3 = if e1 < e2 then m1 + shiftL m2 (e2 - e1) else shiftL m1 (e1 - e2) + m2
           e3 = min e1 e2
 
+  app_pi s = app_div s (fromInteger 314159) (fromInteger 100000)
   app_add s a b = normalize s (a + b)
   app_sub s a b = normalize s (a - b)
   app_mul s a b = normalize s (a * b)
