@@ -118,7 +118,7 @@ instance Num Dyadic where
   -- absolute value
   abs NaN = NaN
   abs PositiveInfinity = PositiveInfinity
-  abs NegativeInfinity = NegativeInfinity
+  abs NegativeInfinity = PositiveInfinity
   abs Dyadic {mant=m, expo=e} = Dyadic {mant = abs m, expo = e}
   
   -- signum
@@ -177,10 +177,10 @@ instance ApproximateField Dyadic where
                          RoundDown -> if signum y > 0 then y else succ y
                          RoundUp -> if signum y > 0 then succ y else y
 
-  size NaN = 0
-  size PositiveInfinity = 0
-  size NegativeInfinity = 0
-  size Dyadic{mant=m, expo=e} = ilogb 2 m
+  --size NaN = 0
+  --size PositiveInfinity = 0
+  --size NegativeInfinity = 0
+  --size Dyadic{mant=m, expo=e} = ilogb 2 m
 
   log2 NaN = error "log2 of NaN"
   log2 PositiveInfinity = error "log2 of +inf"

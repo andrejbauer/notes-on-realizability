@@ -10,8 +10,10 @@ import Ratio
 import Staged
 import Space
 import Dyadic
+import Mpfr
 import Interval
 import ApproximateField
+import ApproximateFloating
 
 
 -- | A real number is implemented as a staged dyadic interval @'Interval' q@ where @q@ is the
@@ -68,6 +70,17 @@ instance (ApproximateField q, IntervalDomain q) => Fractional (RealNum q) where
                       
     fromRational r = fromInteger (numerator r) / fromInteger (denominator r)
 
+
+instance (ApproximateFloating q, IntervalDomain q) => Floating (RealNum q) where
+--	exp x = do i <- x
+--                  s <- get_stage
+--                  return $ Interval { lower = app_exp s (lower i), upper = app_exp (anti s) (upper i) }
+    exp x = do i <- x
+                  s <- get_stage
+                  return $ Interval { lower = app_exp s (lower i),
+                                      upper = app_exp (anti s) (upper i) }
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 -- | The Hausdorff property
 instance IntervalDomain q => Hausdorff (RealNum q) where
      x `apart` y = (x `less` y) `sor` (y `less` x)
@@ -108,6 +121,13 @@ instance IntervalDomain Dyadic
 -- real numbers. There probably is a better way of doing this.
 exact :: RealNum Dyadic -> RealNum Dyadic
 exact x = x
+
+instance IntervalDomain Mpfr
+
+exac :: RealNum Mpfr -> RealNum Mpfr
+exac x = x
+
+
 
 -- MISSING STRUCTURE:
 -- Metric completeness: an operator lim which takes a Cauchy sequence and its convergence rate, and computes the limit
