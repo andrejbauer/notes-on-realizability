@@ -87,13 +87,111 @@ instance (ApproximateFloating q, IntervalDomain q) => Floating (RealNum q) where
             return $ Interval { lower = if (lower i) > 0 then app_log s (lower i) else negative_inf, 
                                 upper = if (upper i) > 0 then app_log (anti s) (upper i) else negative_inf }
     
+	-- TODO sin cos
+    sin x = do
+            i <- x
+            s <- get_stage
+            let d = app_abs s (app_sub s (upper i) (lower i))
+            return $ (if d < 2 * (app_pi s)
+						then Interval { lower = -1, upper = 1 }
+						else Interval { lower = -1, upper = 1 })
+	
     sqrt x = do 
             i <- x
             s <- get_stage
             return $ Interval { lower = if (lower i) > 0 then app_sqrt s (lower i) else 0, 
                                 upper = if (upper i) > 0 then app_sqrt (anti s) (upper i) else 0 }
+										
+    asin x = do
+            i <- x
+            s <- get_stage
+            return $ Interval { lower = if (lower i) > (-1)
+											then if (lower i) < 1 
+												then app_asin s (lower i)
+												else (app_pi s) / 2
+										else (app_pi (anti s)) / (-2),
+								upper = if (upper i) > (-1)
+											then if (upper i) < 1 
+												then app_asin (anti s) (upper i)
+												else (app_pi (anti s)) / 2
+										else (app_pi s) / (-2) }
+										
+    acos x = do
+            i <- x
+            s <- get_stage
+            return $ Interval { lower = if (lower i) > (-1)
+											then if (lower i) < 1 
+												then app_acos s (upper i)
+												else 0
+										else (app_pi (anti s)) * (-1),
+								upper = if (upper i) > (-1)
+											then if (upper i) < 1 
+												then app_acos (anti s) (lower i)
+												else 0
+										else (app_pi s) * (-1) }
+										
+    atan x = do 
+            i <- x
+            s <- get_stage
+            return $ Interval { lower = app_atan s (lower i), 
+                                upper = app_atan (anti s) (upper i) }
 
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    sinh x = do 
+            i <- x
+            s <- get_stage
+            return $ Interval { lower = app_sinh s (lower i), 
+                                upper = app_sinh (anti s) (upper i) }
+
+    cosh x = do 
+			i <- x
+			s <- get_stage
+			let sgn_l = (app_signum s (lower i))
+			let sgn = sgn_l * (app_signum s (upper i))
+			let m = max (app_cosh (anti s) (lower i)) (app_cosh (anti s) (upper i))
+			return $ Interval { lower = if sgn > 0 
+										then if sgn_l > 0
+											then app_cosh s (lower i)
+											else app_cosh s (upper i)
+										else 1,
+								upper = if sgn > 0
+										then if sgn_l > 0
+											then app_cosh (anti s) (upper i)
+											else app_cosh (anti s) (lower i)
+										else m }
+
+    tanh x = do 
+            i <- x
+            s <- get_stage
+            return $ Interval { lower = app_tanh s (lower i), 
+                                upper = app_tanh (anti s) (upper i) }
+
+    asinh x = do 
+            i <- x
+            s <- get_stage
+            return $ Interval { lower = app_asinh s (lower i), 
+                                upper = app_asinh (anti s) (upper i) }
+
+    acosh x = do 
+            i <- x
+            s <- get_stage
+            return $ Interval { lower = if (lower i) > 1 then app_acosh s (lower i) else 0, 
+                                upper = if (upper i) > 1 then app_acosh (anti s) (upper i) else 0 }
+
+
+    atanh x = do
+            i <- x
+            s <- get_stage
+            return $ Interval { lower = if (lower i) > (-1)
+											then if (lower i) < 1 
+												then app_atanh s (lower i)
+												else positive_inf
+										else negative_inf,
+								upper = if (upper i) > (-1)
+											then if (upper i) < 1 
+												then app_atanh (anti s) (upper i)
+												else positive_inf
+										else negative_inf }
+----------------------------------------------------------------------------------------------------------------------------------------
 
 -- | The Hausdorff property
 instance IntervalDomain q => Hausdorff (RealNum q) where
