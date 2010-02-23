@@ -72,13 +72,27 @@ instance (ApproximateField q, IntervalDomain q) => Fractional (RealNum q) where
 
 
 instance (ApproximateFloating q, IntervalDomain q) => Floating (RealNum q) where
---	exp x = do i <- x
---                  s <- get_stage
---                  return $ Interval { lower = app_exp s (lower i), upper = app_exp (anti s) (upper i) }
-    exp x = do i <- x
-                  s <- get_stage
-                  return $ Interval { lower = app_exp s (lower i),
-                                      upper = app_exp (anti s) (upper i) }
+    pi = do 
+            s <- get_stage
+            return $ Interval { lower = app_pi s, upper = app_pi (anti s) }     
+    
+    exp x = do 
+            i <- x
+            s <- get_stage
+            return $ Interval { lower = app_exp s (lower i), upper = app_exp (anti s) (upper i) }
+    
+    log x = do 
+            i <- x
+            s <- get_stage
+            return $ Interval { lower = if (lower i) > 0 then app_log s (lower i) else negative_inf, 
+                                upper = if (upper i) > 0 then app_log (anti s) (upper i) else negative_inf }
+    
+    sqrt x = do 
+            i <- x
+            s <- get_stage
+            return $ Interval { lower = if (lower i) > 0 then app_sqrt s (lower i) else 0, 
+                                upper = if (upper i) > 0 then app_sqrt (anti s) (upper i) else 0 }
+
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 -- | The Hausdorff property
