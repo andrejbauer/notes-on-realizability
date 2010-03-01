@@ -139,10 +139,32 @@ class ApproximateField q => IntervalDomain q  where
 
   embed s q = Interval { lower = q, upper = q }
 
-  iabs s a = Interval { lower = app_fromInteger s (fromInteger 0),
-                        upper = let q = app_negate s (lower a)
-                                    r = upper a
-                                in if q < r then r else q }
+-- ~   iabs s a = Interval { lower = app_fromInteger s (fromInteger 0),
+-- ~                         upper = let q = app_negate s (lower a)
+-- ~                                     r = upper a
+-- ~                                 in if q < r then r else q }
+
+  iabs s Interval{lower=a, upper=b} =
+    let sgn p = compare p zero
+        q = app_negate s a
+        r = app_negate s b
+    in Interval { lower = (case (sgn a, sgn b) of
+                               (LT, LT) -> if q < r then q else r
+                               (GT, GT) -> if a < b then a else b
+                               (GT, LT) -> if a < r then a else r
+                               (LT, GT) -> if q < b then q else b
+                               (EQ, _)  -> a
+                               (_, EQ)  -> b),
+                  upper = (case (sgn a, sgn b) of
+                               (EQ, LT) -> r
+                               (LT, EQ) -> q
+                               (EQ, _) -> b
+                               (_, EQ) -> a
+                               (LT, LT) -> if q < r then r else q
+                               (GT, GT) -> if a < b then b else a
+                               (GT, LT) -> if a < r then r else a
+                               (LT, GT) -> if q < b then b else q)}
+
 
   split Interval{lower=a, upper=b} =
     let c = midpoint a b

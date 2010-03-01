@@ -143,7 +143,7 @@ instance Num Dyadic where
   _ * NaN = NaN
   NegativeInfinity * q = case zeroCmp q of
                            LT -> NegativeInfinity -- 0 < q
-                           EQ -> fromInteger 0    -- 0 == q
+                           EQ -> fromInteger 0    -- 0 == q   (TODO: Inf*0 == NaN ?)
                            GT -> PositiveInfinity -- q < 0
   PositiveInfinity * q = case zeroCmp q of
                            LT -> PositiveInfinity -- 0 < q
@@ -156,7 +156,7 @@ instance Num Dyadic where
   -- absolute value
   abs NaN = NaN
   abs PositiveInfinity = PositiveInfinity
-  abs NegativeInfinity = NegativeInfinity
+  abs NegativeInfinity = NegativeInfinity -- (TODO: abs NegativeInfinity = PositiveInfinity ?)
   abs Dyadic {mant=m, expo=e} = Dyadic {mant = abs m, expo = e}
   
   -- signum
