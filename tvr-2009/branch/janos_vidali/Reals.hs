@@ -25,8 +25,8 @@ instance ApproximateField q => Show (RealNum q) where
    show x = let i = approximate x (prec RoundDown 20)
             in show i ++ " " ++ show (toFloat (midpoint (lower i) (upper i)))
 
--- | Linear order on real numbers
 instance IntervalDomain q => LinearOrder (RealNum q) where
+-- | Linear order on real numbers
     less = lift2 (\_ -> iless)
 
 -- | It is a bad idea to use Haskell-style inequality @/=@ on reals because it either returns @True@
@@ -37,10 +37,19 @@ instance IntervalDomain q => Eq (RealNum q) where
 
 -- | Real numbers are an ordered type in the sense of Haskells 'Ord', although a comparison never
 -- returns @EQ@ (instead it diverges). This is a fact of life, comparison of reals is not decidable.
+--
+-- Since it is possible to define "exact" numbers, i.e. intervals of form
+-- @[a, a]@, /sometimes/ equality can be established.
 instance IntervalDomain q => Ord (RealNum q) where
   compare x y = case force (x `less` y) of
                   True  -> LT
-                  False -> GT
+                  False -> case force (y `less` x) of
+                            True  -> GT
+                            False -> EQ
+    
+  x <= y = not $ force (y `less` x)
+  
+  x >= y = not $ force (x `less` y)
 
 -- | The ring structure for the reals.
 instance (ApproximateField q, IntervalDomain q) => Num (RealNum q) where

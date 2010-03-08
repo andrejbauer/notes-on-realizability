@@ -3,6 +3,7 @@
 module Zeros where
 
 import Staged
+import Space
 import Dyadic
 import Interval
 import Reals
@@ -11,9 +12,9 @@ import Reals
 allReals :: Interval Dyadic
 allReals = Interval { lower = NegativeInfinity, upper = PositiveInfinity }
 
--- | Also for convenience, the same thing as function.
+-- | Also for convenience, the same thing as a constant function.
 unbounded :: RealNum Dyadic -> RealNum Dyadic
-unbounded x = Staged $ \s -> allReals
+unbounded _ = Staged $ \_ -> allReals
 
 -- | The zero finder. The first argument is the function which should have
 -- opposite signs at the edges of the interval and exactly one zero on it.
@@ -25,27 +26,41 @@ unbounded x = Staged $ \s -> allReals
 -- TODO: actually implement the Newton method:)
 findZero :: (RealNum Dyadic -> RealNum Dyadic) -> (RealNum Dyadic -> RealNum Dyadic) -> Interval Dyadic -> RealNum Dyadic
 findZero f d int = Staged (\stg ->
-                let fz s i = let r = rounding s
+                let lu x = lower x == 0 && lower x == upper x -- TODO: simplify,
+                    lucky l m u = let fl = approximate l stg  -- add precision
+                                      fm = approximate m stg
+                                      fu = approximate u stg
+                                  in case (lu fl, lu fm, lu fu) of
+                                          (True, _, _) -> Just $ lower fl
+                                          (_, True, _) -> Just $ lower fm
+                                          (_, _, True) -> Just $ lower fu
+                                          (_, _, _)    -> Nothing
+                    real x = Staged (\st -> Interval.embed st x)
+                    fz s i = let r = rounding s
                                  p = precision s
                                  np = prec r (p-1)
                                  l = lower i
                                  u = upper i
                                  m = midpoint l u
-                                 fl = f $ Staged (\st -> Interval.embed s l)
-                                 fm = f $ Staged (\st -> Interval.embed s m)
-                                 fu = f $ Staged (\st -> Interval.embed s u)
-                                 dn = d $ Staged (\st -> i)
+                                 fl = f $ real l
+                                 fm = f $ real m
+                                 fu = f $ real u
+                                 dn = d $ Staged (\_ -> i)
                                  sl = fl < 0
                                  sm = fm < 0
                                  su = fu < 0
                                  (li, ui) = split i
-                             in if l == u || p == 0
-                                    then i
-                                else if sl == su
-                                    then error "The function must have different signs on the edges of the interval!"
-                                else if sl == sm
-                                    then fz np ui
-                                    else fz np li
+                             in case lucky fl fm fu of
+                                Just x  ->  Interval.embed s x
+                                Nothing ->  if p == 0 || l == u
+                                                then case r of
+                                                    RoundDown -> i
+                                                    RoundUp   -> invert i
+                                            else if sl == su
+                                                then error "The function must have different signs on the edges of the interval!"
+                                            else if sl == sm
+                                                then fz np ui
+                                                else fz np li
                 in fz stg int
             )
 

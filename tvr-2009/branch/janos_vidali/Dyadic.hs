@@ -212,8 +212,8 @@ instance ApproximateField Dyadic where
       where shift_with_round r k x =
                        let y = shiftR x k
                        in case r of
-                         RoundDown -> if signum y > 0 then y else succ y
-                         RoundUp -> if signum y > 0 then succ y else y
+                         RoundDown -> y
+                         RoundUp -> succ y
 
   size NaN = 0
   size PositiveInfinity = 0

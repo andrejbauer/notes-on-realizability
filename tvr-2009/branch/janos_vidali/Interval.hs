@@ -43,12 +43,13 @@ class ApproximateField q => IntervalDomain q  where
   inormalize :: Stage -> Interval q -> Interval q
   embed :: Stage -> q -> Interval q
   split :: Interval q -> (Interval q, Interval q)
+  invert :: Interval q -> Interval q
   -- width :: Interval q -> q
 
   iless i j = upper i < lower j
 
   imore i j = iless j i
-
+  
   iadd s a b = Interval { lower = app_add s (lower a) (lower b),
                           upper = app_add (anti s) (upper a) (upper b)}
 
@@ -169,3 +170,5 @@ class ApproximateField q => IntervalDomain q  where
   split Interval{lower=a, upper=b} =
     let c = midpoint a b
     in (Interval {lower=a, upper=c}, Interval {lower=c, upper=b})
+    
+  invert Interval{lower=a, upper=b} = Interval{lower=b, upper=a}
