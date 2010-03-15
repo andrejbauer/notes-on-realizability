@@ -167,8 +167,9 @@ class ApproximateField q => IntervalDomain q  where
                                (LT, GT) -> if q < b then b else q)}
 
 
-  split Interval{lower=a, upper=b} =
+  split Interval {lower=a, upper=b} =
     let c = midpoint a b
     in (Interval {lower=a, upper=c}, Interval {lower=c, upper=b})
     
-  invert Interval{lower=a, upper=b} = Interval{lower=b, upper=a}
+  invert Interval {lower=a, upper=b} = Interval {lower=b, upper=a}
+  

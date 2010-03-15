@@ -19,11 +19,13 @@ import Interval
 -- back-to-front intervals.
 type RealNum q = Staged (Interval q)
 
+show_prec x p = let i = approximate x p
+                in show i ++ " " ++ show (toFloat (midpoint (lower i) (upper i)))
+
 -- | We implement a very simple show instance for reals which computes the 20th approximation
 -- and shows it as an interval, together with a floating point approximation.
 instance ApproximateField q => Show (RealNum q) where
-   show x = let i = approximate x (prec RoundDown 20)
-            in show i ++ " " ++ show (toFloat (midpoint (lower i) (upper i)))
+   show x = show_prec x (prec RoundDown 20)
 
 instance IntervalDomain q => LinearOrder (RealNum q) where
 -- | Linear order on real numbers
@@ -50,6 +52,22 @@ instance IntervalDomain q => Ord (RealNum q) where
   x <= y = not $ force (y `less` x)
   
   x >= y = not $ force (x `less` y)
+  
+  min x y = Staged $ (\s -> let ax = approximate x s
+                                ay = approximate y s
+                            in Interval {
+                                lower = min (lower ax) (lower ay),
+                                upper = min (upper ax) (upper ay)
+                            }
+            )
+  
+  max x y = Staged $ (\s -> let ax = approximate x s
+                                ay = approximate y s
+                            in Interval {
+                                lower = max (lower ax) (lower ay),
+                                upper = max (upper ax) (upper ay)
+                            }
+            )
 
 -- | The ring structure for the reals.
 instance (ApproximateField q, IntervalDomain q) => Num (RealNum q) where
@@ -116,6 +134,12 @@ instance IntervalDomain Dyadic
 -- real numbers. There probably is a better way of doing this.
 exact :: RealNum Dyadic -> RealNum Dyadic
 exact x = x
+
+interval :: RealNum Dyadic -> RealNum Dyadic -> Interval Dyadic
+interval x y = let s = prec_down 20
+                   a = lower $ approximate x s
+                   b = upper $ approximate y s
+               in Interval {lower=a, upper=b}
 
 -- MISSING STRUCTURE:
 -- Metric completeness: an operator lim which takes a Cauchy sequence and its convergence rate, and computes the limit

@@ -26,42 +26,73 @@ unbounded _ = Staged $ \_ -> allReals
 -- TODO: actually implement the Newton method:)
 findZero :: (RealNum Dyadic -> RealNum Dyadic) -> (RealNum Dyadic -> RealNum Dyadic) -> Interval Dyadic -> RealNum Dyadic
 findZero f d int = Staged (\stg ->
-                let lu x = lower x == 0 && lower x == upper x -- TODO: simplify,
-                    lucky l m u = let fl = approximate l stg  -- add precision
-                                      fm = approximate m stg
-                                      fu = approximate u stg
-                                  in case (lu fl, lu fm, lu fu) of
-                                          (True, _, _) -> Just $ lower fl
-                                          (_, True, _) -> Just $ lower fm
-                                          (_, _, True) -> Just $ lower fu
-                                          (_, _, _)    -> Nothing
+                let lucky x = let xi = approximate x stg
+                              in lower xi == 0 && lower xi == upper xi
                     real x = Staged (\st -> Interval.embed st x)
-                    fz s i = let r = rounding s
-                                 p = precision s
-                                 np = prec r (p-1)
-                                 l = lower i
-                                 u = upper i
-                                 m = midpoint l u
-                                 fl = f $ real l
-                                 fm = f $ real m
-                                 fu = f $ real u
-                                 dn = d $ Staged (\_ -> i)
-                                 sl = fl < 0
-                                 sm = fm < 0
-                                 su = fu < 0
-                                 (li, ui) = split i
-                             in case lucky fl fm fu of
-                                Just x  ->  Interval.embed s x
-                                Nothing ->  if p == 0 || l == u
-                                                then case r of
-                                                    RoundDown -> i
-                                                    RoundUp   -> invert i
-                                            else if sl == su
-                                                then error "The function must have different signs on the edges of the interval!"
-                                            else if sl == sm
-                                                then fz np ui
-                                                else fz np li
-                in fz stg int
+                    std = prec_down $ precision stg
+                    lmin x y = let lx = upper $ approximate x std
+                                   ly = upper $ approximate y std
+                               in min lx ly
+                    lmax x y = let lx = lower $ approximate x std
+                                   ly = lower $ approximate y std
+                               in max lx ly
+                    l0 = lower int
+                    u0 = upper int
+                    fl0 = f $ real l0
+                    fu0 = f $ real u0
+                    sl = fl0 < 0
+                    su = fu0 < 0
+                    ii = case l0 < u0 of
+                            True -> int
+                            False -> invert int
+                    mf = case sl of
+                            True  -> max
+                            False -> min
+                    db x = real $ mf x 0
+                    bisect s i = let r = rounding s
+                                     p = precision s
+                                     l = lower i
+                                     u = upper i
+                                     m = midpoint l u
+                                     fm = f $ real m
+                                     sm = fm < 0
+                                     (li, ui) = split i
+                                 in if p == 0 || l == u
+                                     then case r of
+                                         RoundDown -> i
+                                         RoundUp   -> invert i
+                                    else if lucky fm
+                                     then Interval.embed s m
+                                    else if sl == sm
+                                     then newton s ui
+                                     else newton s li
+                    newton s i = let r = rounding s
+                                     p = precision s
+                                     ns = prec r (p-1)
+                                     l = lower i
+                                     u = upper i
+                                     rl = real l
+                                     ru = real u
+                                     fl = f rl
+                                     fu = f ru
+                                     dn = approximate (d (Staged (\_ -> i))) std
+                                     ld = db $ lower dn
+                                     ud = db $ upper dn
+                                     ll = rl - fl/ld
+                                     lu = rl - fl/ud
+                                     ul = ru - fu/ud
+                                     uu = ru - fu/ld
+                                     ni = case sl of
+                                            True  -> Interval {lower = lmax lu uu,
+                                                               upper = lmin ul ll}
+                                            False -> Interval {lower = lmax ll ul,
+                                                               upper = lmin uu lu}
+                                 in bisect ns ni
+                in case (lucky fl0, lucky fu0, sl == su) of
+                   (True, _, _) -> Interval.embed stg l0
+                   (_, True, _) -> Interval.embed stg u0
+                   (_, _, True) -> error "The function must have different signs on the edges of the interval!"
+                   (_, _, _)    -> bisect stg ii
             )
 
 -- | Find zero with bisection. The derivative fed to the 'FindZero' function
