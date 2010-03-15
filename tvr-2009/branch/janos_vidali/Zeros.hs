@@ -22,20 +22,22 @@ unbounded _ = Staged $ \_ -> allReals
 -- a function that gives as the result the bounds for the slope in the chosen
 -- interval. This interval is given as the third and final argument.
 --
--- This function alternately performs bisection and the Newton method.
--- TODO: actually implement the Newton method:)
+-- This function first performs bisection until the interval on which the zero
+-- lies becomes bounded, and then alternates between the Newton method and bisection.
 findZero :: (RealNum Dyadic -> RealNum Dyadic) -> (RealNum Dyadic -> RealNum Dyadic) -> Interval Dyadic -> RealNum Dyadic
 findZero f d int = Staged (\stg ->
                 let lucky x = let xi = approximate x stg
                               in lower xi == 0 && lower xi == upper xi
                     real x = Staged (\st -> Interval.embed st x)
-                    std = prec_down $ precision stg
-                    lmin x y = let lx = upper $ approximate x std
-                                   ly = upper $ approximate y std
-                               in min lx ly
-                    lmax x y = let lx = lower $ approximate x std
-                                   ly = lower $ approximate y std
-                               in max lx ly
+                    p = precision stg
+                    r = rounding stg
+                    std = prec_down p
+                    lmin u x y = let lx = upper $ approximate x std
+                                     ly = upper $ approximate y std
+                                 in min u $ min lx ly
+                    lmax l x y = let lx = lower $ approximate x std
+                                     ly = lower $ approximate y std
+                                 in max l $ max lx ly
                     l0 = lower int
                     u0 = upper int
                     fl0 = f $ real l0
@@ -43,56 +45,55 @@ findZero f d int = Staged (\stg ->
                     sl = fl0 < 0
                     su = fu0 < 0
                     ii = case l0 < u0 of
-                            True -> int
+                            True  -> int
                             False -> invert int
                     mf = case sl of
                             True  -> max
                             False -> min
-                    db x = real $ mf x 0
-                    bisect s i = let r = rounding s
-                                     p = precision s
-                                     l = lower i
-                                     u = upper i
-                                     m = midpoint l u
-                                     fm = f $ real m
-                                     sm = fm < 0
-                                     (li, ui) = split i
-                                 in if p == 0 || l == u
-                                     then case r of
-                                         RoundDown -> i
-                                         RoundUp   -> invert i
-                                    else if lucky fm
-                                     then Interval.embed s m
-                                    else if sl == sm
-                                     then newton s ui
-                                     else newton s li
-                    newton s i = let r = rounding s
-                                     p = precision s
-                                     ns = prec r (p-1)
-                                     l = lower i
-                                     u = upper i
-                                     rl = real l
-                                     ru = real u
-                                     fl = f rl
-                                     fu = f ru
-                                     dn = approximate (d (Staged (\_ -> i))) std
-                                     ld = db $ lower dn
-                                     ud = db $ upper dn
-                                     ll = rl - fl/ld
-                                     lu = rl - fl/ud
-                                     ul = ru - fu/ud
-                                     uu = ru - fu/ld
-                                     ni = case sl of
-                                            True  -> Interval {lower = lmax lu uu,
-                                                               upper = lmin ul ll}
-                                            False -> Interval {lower = lmax ll ul,
-                                                               upper = lmin uu lu}
-                                 in bisect ns ni
+                    db x = real $ mf 0 x
+                    bisect i = let l = lower i
+                                   u = upper i
+                                   m = midpoint l u
+                                   fm = f $ real m
+                                   sm = fm < 0
+                                   (li, ui) = split i
+                                   ni = case sl == sm of
+                                          True  -> ui
+                                          False -> li
+                                   next = case (lower ni, upper ni) of
+                                            (Dyadic _ _, Dyadic _ _) -> newton
+                                            _                        -> bisect
+                               in if (width i) <= Dyadic {mant=1, expo= (-p)} || l == u
+                                   then case r of
+                                       RoundDown -> i
+                                       RoundUp   -> invert i
+                                  else if lucky fm
+                                   then Interval.embed stg m
+                                   else next ni
+                    newton i = let l = lower i
+                                   u = upper i
+                                   rl = real l
+                                   ru = real u
+                                   fl = f rl
+                                   fu = f ru
+                                   dn = approximate (d (Staged (\_ -> i))) std
+                                   ld = db $ lower dn
+                                   ud = db $ upper dn
+                                   ll = rl - fl/ld
+                                   lu = rl - fl/ud
+                                   ul = ru - fu/ud
+                                   uu = ru - fu/ld
+                                   ni = case sl of
+                                          True  -> Interval {lower = lmax l lu uu,
+                                                             upper = lmin u ul ll}
+                                          False -> Interval {lower = lmax l ll ul,
+                                                             upper = lmin u uu lu}
+                               in bisect ni
                 in case (lucky fl0, lucky fu0, sl == su) of
                    (True, _, _) -> Interval.embed stg l0
                    (_, True, _) -> Interval.embed stg u0
                    (_, _, True) -> error "The function must have different signs on the edges of the interval!"
-                   (_, _, _)    -> bisect stg ii
+                   (_, _, _)    -> bisect ii
             )
 
 -- | Find zero with bisection. The derivative fed to the 'FindZero' function

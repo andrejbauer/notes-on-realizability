@@ -44,7 +44,7 @@ class ApproximateField q => IntervalDomain q  where
   embed :: Stage -> q -> Interval q
   split :: Interval q -> (Interval q, Interval q)
   invert :: Interval q -> Interval q
-  -- width :: Interval q -> q
+  width :: Interval q -> q
 
   iless i j = upper i < lower j
 
@@ -149,22 +149,22 @@ class ApproximateField q => IntervalDomain q  where
     let sgn p = compare p zero
         q = app_negate s a
         r = app_negate s b
-    in Interval { lower = (case (sgn a, sgn b) of
-                               (LT, LT) -> if q < r then q else r
-                               (GT, GT) -> if a < b then a else b
-                               (GT, LT) -> if a < r then a else r
-                               (LT, GT) -> if q < b then q else b
-                               (EQ, _)  -> a
-                               (_, EQ)  -> b),
-                  upper = (case (sgn a, sgn b) of
-                               (EQ, LT) -> r
-                               (LT, EQ) -> q
-                               (EQ, _) -> b
-                               (_, EQ) -> a
-                               (LT, LT) -> if q < r then r else q
-                               (GT, GT) -> if a < b then b else a
-                               (GT, LT) -> if a < r then r else a
-                               (LT, GT) -> if q < b then b else q)}
+        i = Interval { lower = (case (sgn a, sgn b) of
+                                    (LT, LT) -> if q < r then q else r
+                                    (GT, GT) -> if a < b then a else b
+                                    (_, _)   -> zero),
+                       upper = (case (sgn a, sgn b) of
+                                    (EQ, LT) -> r
+                                    (LT, EQ) -> q
+                                    (EQ, _)  -> b
+                                    (_, EQ)  -> a
+                                    (LT, LT) -> if q < r then r else q
+                                    (GT, GT) -> if a < b then b else a
+                                    (GT, LT) -> if a < r then r else a
+                                    (LT, GT) -> if q < b then b else q)}
+    in case rounding s of
+        RoundDown -> i
+        RoundUp   -> invert i
 
 
   split Interval {lower=a, upper=b} =
@@ -172,4 +172,6 @@ class ApproximateField q => IntervalDomain q  where
     in (Interval {lower=a, upper=c}, Interval {lower=c, upper=b})
     
   invert Interval {lower=a, upper=b} = Interval {lower=b, upper=a}
+  
+  width Interval {lower=a, upper=b} = abs (b-a)
   

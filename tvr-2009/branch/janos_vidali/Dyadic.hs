@@ -31,7 +31,7 @@ linear ordering of the structure, and how precise the result should be.
 
 (Missing explanation of what exactly an approximate field is supposed to be.)
 -}
-class (Show q, Ord q) => ApproximateField q where
+class (Show q, Ord q, Num q) => ApproximateField q where
   normalize :: Stage -> q -> q
   size :: q -> Int -- ^ the size of the number (memory usage)
   log2 :: q -> Int -- ^ @log2 q@ is a number @k@ such that @2^k <= abs q <= 2^(k+1)@.
@@ -143,7 +143,7 @@ instance Num Dyadic where
   _ * NaN = NaN
   NegativeInfinity * q = case zeroCmp q of
                            LT -> NegativeInfinity -- 0 < q
-                           EQ -> fromInteger 0    -- 0 == q   (TODO: Inf*0 == NaN ?)
+                           EQ -> fromInteger 0    -- 0 == q
                            GT -> PositiveInfinity -- q < 0
   PositiveInfinity * q = case zeroCmp q of
                            LT -> PositiveInfinity -- 0 < q
@@ -156,7 +156,7 @@ instance Num Dyadic where
   -- absolute value
   abs NaN = NaN
   abs PositiveInfinity = PositiveInfinity
-  abs NegativeInfinity = NegativeInfinity -- (TODO: abs NegativeInfinity = PositiveInfinity ?)
+  abs NegativeInfinity = PositiveInfinity -- (TODO: abs NegativeInfinity = PositiveInfinity ?)
   abs Dyadic {mant=m, expo=e} = Dyadic {mant = abs m, expo = e}
   
   -- signum

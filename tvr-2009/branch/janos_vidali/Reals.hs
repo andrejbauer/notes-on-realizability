@@ -19,6 +19,8 @@ import Interval
 -- back-to-front intervals.
 type RealNum q = Staged (Interval q)
 
+-- | This function allows us to override the default @show@ method and specify an arbitrary
+-- precision.
 show_prec x p = let i = approximate x p
                 in show i ++ " " ++ show (toFloat (midpoint (lower i) (upper i)))
 
@@ -27,8 +29,8 @@ show_prec x p = let i = approximate x p
 instance ApproximateField q => Show (RealNum q) where
    show x = show_prec x (prec RoundDown 20)
 
-instance IntervalDomain q => LinearOrder (RealNum q) where
 -- | Linear order on real numbers
+instance IntervalDomain q => LinearOrder (RealNum q) where
     less = lift2 (\_ -> iless)
 
 -- | It is a bad idea to use Haskell-style inequality @/=@ on reals because it either returns @True@
@@ -135,6 +137,7 @@ instance IntervalDomain Dyadic
 exact :: RealNum Dyadic -> RealNum Dyadic
 exact x = x
 
+-- | An easy way to define intervals from real numbers.
 interval :: RealNum Dyadic -> RealNum Dyadic -> Interval Dyadic
 interval x y = let s = prec_down 20
                    a = lower $ approximate x s
