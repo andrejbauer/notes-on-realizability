@@ -1,8 +1,8 @@
 {- | This module defines the interval domain, i.e., the space of
-  intervals. Actually, what we define as a /base/ for such a domain
+  intervals. Actually, what we define is a /base/ for such a domain
   because our intervals have rational endpoints (to be exact, the
   endpoints are elements of an approximate field). The actual interval
-  domains is defined in the module "Reals".
+  domain is defined in the module "Reals".
 -}
 
 module Interval where
@@ -26,10 +26,7 @@ import Dyadic
 data Interval q = Interval { lower :: q, upper :: q }
 
 instance ApproximateField q => Show (Interval q) where
-  show Interval{lower=a, upper=b} =
-    if a == b
-    then show a
-    else "[" ++ show a ++ "," ++ show b ++ "]"  
+  show Interval{lower=a, upper=b} = "[" ++ show a ++ "," ++ show b ++ "]"
 
 class ApproximateField q => IntervalDomain q  where
   iless :: Interval q -> Interval q -> Bool
@@ -43,12 +40,13 @@ class ApproximateField q => IntervalDomain q  where
   inormalize :: Stage -> Interval q -> Interval q
   embed :: Stage -> q -> Interval q
   split :: Interval q -> (Interval q, Interval q)
-  -- width :: Interval q -> q
+  invert :: Interval q -> Interval q
+  width :: Interval q -> q
 
   iless i j = upper i < lower j
 
   imore i j = iless j i
-
+  
   iadd s a b = Interval { lower = app_add s (lower a) (lower b),
                           upper = app_add (anti s) (upper a) (upper b)}
 
@@ -139,11 +137,38 @@ class ApproximateField q => IntervalDomain q  where
 
   embed s q = Interval { lower = q, upper = q }
 
-  iabs s a = Interval { lower = app_fromInteger s (fromInteger 0),
-                        upper = let q = app_negate s (lower a)
-                                    r = upper a
-                                in if q < r then r else q }
+-- ~   iabs s a = Interval { lower = app_fromInteger s (fromInteger 0),
+-- ~                         upper = let q = app_negate s (lower a)
+-- ~                                     r = upper a
+-- ~                                 in if q < r then r else q }
 
-  split Interval{lower=a, upper=b} =
+  iabs s Interval{lower=a, upper=b} =
+    let sgn p = compare p zero
+        q = app_negate s a
+        r = app_negate s b
+        i = Interval { lower = (case (sgn a, sgn b) of
+                                    (LT, LT) -> if q < r then q else r
+                                    (GT, GT) -> if a < b then a else b
+                                    (_, _)   -> zero),
+                       upper = (case (sgn a, sgn b) of
+                                    (EQ, LT) -> r
+                                    (LT, EQ) -> q
+                                    (EQ, _)  -> b
+                                    (_, EQ)  -> a
+                                    (LT, LT) -> if q < r then r else q
+                                    (GT, GT) -> if a < b then b else a
+                                    (GT, LT) -> if a < r then r else a
+                                    (LT, GT) -> if q < b then b else q)}
+    in case rounding s of
+        RoundDown -> i
+        RoundUp   -> invert i
+
+
+  split Interval {lower=a, upper=b} =
     let c = midpoint a b
     in (Interval {lower=a, upper=c}, Interval {lower=c, upper=b})
+    
+  invert Interval {lower=a, upper=b} = Interval {lower=b, upper=a}
+  
+  width Interval {lower=a, upper=b} = abs (b-a)
+  

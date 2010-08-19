@@ -31,7 +31,7 @@ linear ordering of the structure, and how precise the result should be.
 
 (Missing explanation of what exactly an approximate field is supposed to be.)
 -}
-class (Show q, Ord q) => ApproximateField q where
+class (Show q, Ord q, Num q) => ApproximateField q where
   normalize :: Stage -> q -> q
   size :: q -> Int -- ^ the size of the number (memory usage)
   log2 :: q -> Int -- ^ @log2 q@ is a number @k@ such that @2^k <= abs q <= 2^(k+1)@.
@@ -45,6 +45,7 @@ class (Show q, Ord q) => ApproximateField q where
   toFloat :: q -> Double
 
   -- approximate operations
+  app_pi :: Stage -> q
   app_add :: Stage -> q -> q -> q
   app_sub :: Stage -> q -> q -> q
   app_mul :: Stage -> q -> q -> q
@@ -71,7 +72,8 @@ instance Show Dyadic where
   show PositiveInfinity = "+inf"
   show NegativeInfinity = "-inf"
   show NaN = "NaN"
-  show Dyadic {mant=m, expo=e} = show m ++ "*2^" ++ show e
+  show d = show (toFloat d)
+  -- show Dyadic {mant=m, expo=e} = show m ++ "*2^" ++ show e
 
 -- | Suppose @g@ is a map of two dyadic arguments which is invariant
 -- under multiplication by a power of two, i.e., @g x y = g (x * 2^e)
@@ -156,7 +158,7 @@ instance Num Dyadic where
   -- absolute value
   abs NaN = NaN
   abs PositiveInfinity = PositiveInfinity
-  abs NegativeInfinity = NegativeInfinity
+  abs NegativeInfinity = PositiveInfinity -- (TODO: abs NegativeInfinity = PositiveInfinity ?)
   abs Dyadic {mant=m, expo=e} = Dyadic {mant = abs m, expo = e}
   
   -- signum
@@ -210,10 +212,9 @@ instance ApproximateField Dyadic where
           then a
           else Dyadic {mant = shift_with_round r (j-k) m, expo = e + (j-k) }
       where shift_with_round r k x =
-                       let y = shiftR x k
-                       in case r of
-                         RoundDown -> if signum y > 0 then y else succ y
-                         RoundUp -> if signum y > 0 then succ y else y
+                let y = shiftR x k
+                in case r of RoundDown -> y
+                             RoundUp   -> succ y
 
   size NaN = 0
   size PositiveInfinity = 0
@@ -248,6 +249,7 @@ instance ApproximateField Dyadic where
     where m3 = if e1 < e2 then m1 + shiftL m2 (e2 - e1) else shiftL m1 (e1 - e2) + m2
           e3 = min e1 e2
 
+  app_pi s = app_div s (fromInteger 314159) (fromInteger 100000)
   app_add s a b = normalize s (a + b)
   app_sub s a b = normalize s (a - b)
   app_mul s a b = normalize s (a * b)

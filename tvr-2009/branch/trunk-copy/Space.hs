@@ -1,6 +1,6 @@
 {-# LANGUAGE MultiParamTypeClasses, FunctionalDependencies, TypeSynonymInstances #-}
 
--- | Basic definitions od spaces and their properties
+-- | Basic definitions of spaces and their properties
 
 module Space where
 
@@ -17,15 +17,21 @@ sor = lift2 (\s p q -> p || q)
 sand :: Sigma -> Sigma -> Sigma
 sand = lift2 (\s p q -> p && q)
 
+-- | Try to map a value in the Sierpinski space to a Boolean.
+app_sigma :: Sigma -> Int -> Maybe Bool
+app_sigma p k = case approximate p (prec RoundDown k) of
+                   True  -> Just True -- lower approximation is True, the value is top
+                   False -> case approximate p (prec RoundUp k) of
+                              False -> Just False -- upper approximation is False, the value is bottom
+                              True  -> Nothing
+
 -- | Force a value in the Sierpinski space into Booleans. This may diverge as bottom cannot be
 -- reliably detected.
 force :: Sigma -> Bool
 force p = loop 0
-          where loop k = case approximate p (prec RoundDown k) of
-                           True  -> True -- lower approximation is True, the value is top
-                           False -> case approximate p (prec RoundUp k) of
-                                      False -> False -- upper approximation is False, the value is bottom
-                                      True  -> loop (k+1)
+          where loop k = case app_sigma p k of
+                           Just x  -> x
+                           Nothing -> loop (k+1)
 
 -- | The Show instance may cause divergence because 'force' could diverge. An alternative
 -- implementation would give up after a while, and the user would have to use 'force' explicitly to
