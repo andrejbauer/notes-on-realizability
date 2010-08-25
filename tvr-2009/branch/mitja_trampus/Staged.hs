@@ -43,9 +43,13 @@ data RoundingMode = RoundUp | RoundDown
 data Stage = Stage { precision :: Int, rounding :: RoundingMode }
              deriving Show
 
--- | 'anti' reverses the rounding mode
+-- | 'anti_mode' gives the inverse rounding mode
+anti_mode :: RoundingMode -> RoundingMode
+anti_mode r = case r of { RoundUp -> RoundDown ; RoundDown -> RoundUp }
+
+-- | 'anti' reverses the rounding mode for a given Stage
 anti :: Stage -> Stage
-anti s = Stage {precision = precision s, rounding = case rounding s of { RoundUp -> RoundDown ; RoundDown -> RoundUp}}
+anti s = Stage {precision = precision s, rounding = anti_mode $ rounding s}
 
 -- | @prec_down k@ sets precision to @k@ and the rounding mode to 'RoundDown'
 prec_down :: Int -> Stage
@@ -99,7 +103,7 @@ newtype Staged t = Staged { approx :: Stage -> t }
 -- | The monad structure of 'Staged' is the same as that of the @Reader@ monad.
 instance Monad Staged where
   return x = Staged $ \s -> x
-  x >>= f  = Staged $ \s -> approx (f (approx x s)) s
+  x >>= f  = Staged $ \s -> approx (f (approx x s)) s  
 
 -- | The functor structure of 'Staged' is the same as that of the @Reader@ monad.
 instance Functor Staged where

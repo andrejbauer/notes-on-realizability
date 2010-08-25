@@ -11,10 +11,11 @@
 -}
 
 module Dyadic (
-  ApproximateField(..), Dyadic(..),
+  ApproximateField(..), Dyadic(..), fromFloat
 ) where
 
 import Data.Bits
+import Ratio
 
 import Staged
 
@@ -71,7 +72,7 @@ instance Show Dyadic where
   show PositiveInfinity = "+inf"
   show NegativeInfinity = "-inf"
   show NaN = "NaN"
-  show Dyadic {mant=m, expo=e} = show m ++ "*2^" ++ show e
+  show Dyadic {mant=m, expo=e} = show m ++ "*2^" ++ show e ++ "(~" ++ show ((fromIntegral  m)*2.0**((fromIntegral :: Int->Float) e)) ++ ")"
 
 -- | Suppose @g@ is a map of two dyadic arguments which is invariant
 -- under multiplication by a power of two, i.e., @g x y = g (x * 2^e)
@@ -168,7 +169,10 @@ instance Num Dyadic where
   -- fromInteger
   fromInteger i = Dyadic {mant = i, expo = 0}
 
-
+fromFloat r 
+  | isInfinite r = if r>0 then PositiveInfinity else NegativeInfinity
+  | otherwise    = let (m,e) = decodeFloat r in Dyadic {mant = m, expo = e}
+  
 -- | This was taken from
 -- | <http://www.haskell.org/pipermail/haskell-cafe/2008-February/039640.html>
 -- | and it computes the integral logarithm in given base.

@@ -7,8 +7,10 @@
 
 module Interval where
 
+import Space
 import Staged
 import Dyadic
+import Debug.Trace
 
 {- | An interval is represented by a lower and upper endpoint. We do
   /not/ require that the lower endpoint be smaller or equal to the
@@ -28,12 +30,12 @@ data Interval q = Interval { lower :: q, upper :: q }
 instance ApproximateField q => Show (Interval q) where
   show Interval{lower=a, upper=b} =
     if a == b
-    then show a
+    then "[" ++ show a ++ ",==]"
     else "[" ++ show a ++ "," ++ show b ++ "]"  
 
 class ApproximateField q => IntervalDomain q  where
-  iless :: Interval q -> Interval q -> Bool
-  imore :: Interval q -> Interval q -> Bool
+  iless :: Interval q -> Interval q -> PartialBool'
+  imore :: Interval q -> Interval q -> PartialBool'
   iadd :: Stage -> Interval q -> Interval q -> Interval q
   isub :: Stage -> Interval q -> Interval q -> Interval q
   imul :: Stage -> Interval q -> Interval q -> Interval q
@@ -43,9 +45,31 @@ class ApproximateField q => IntervalDomain q  where
   inormalize :: Stage -> Interval q -> Interval q
   embed :: Stage -> q -> Interval q
   split :: Interval q -> (Interval q, Interval q)
-  -- width :: Interval q -> q
+  invert :: Interval q -> Interval q
+  width :: Stage -> Interval q -> q
 
-  iless i j = upper i < lower j
+  iless i@Interval{lower=i1,upper=i2} j@Interval{lower=j1,upper=j2} = 
+    --Staged $ \s -> 
+    --trace ("           iless called with "++(show i)++"  "++(show j)) $ 
+    case (i1<=i2, j1<=j2) of
+      (True, True)  
+        | i2<j1 -> PTrue
+        | i1>=j2 -> PFalse
+        | otherwise -> PBottom
+      (False, False)
+        | i1<j2 -> PTrue
+        | i2>=j1 -> PFalse
+        | otherwise -> PTop
+      (True, False)
+        | i2<j1  && i1>=j2 -> PTop
+        | i2>=j1 && i1<j2  -> PBottom
+        | i2<j1            -> PTrue
+        | i2>=j1           -> PFalse
+      (False, True)
+        | j2>i1  && j1<=i2 -> PBottom
+        | j2<=i1 && j1>i2  -> PTop
+        | j2>i1            -> PTrue
+        | j2<=i1           -> PFalse
 
   imore i j = iless j i
 
@@ -139,11 +163,32 @@ class ApproximateField q => IntervalDomain q  where
 
   embed s q = Interval { lower = q, upper = q }
 
-  iabs s a = Interval { lower = app_fromInteger s (fromInteger 0),
-                        upper = let q = app_negate s (lower a)
-                                    r = upper a
-                                in if q < r then r else q }
+  iabs s Interval{lower=a, upper=b} =
+    let sgn p = compare p zero
+        q = app_negate s a
+        r = app_negate s b
+        i = Interval { lower = (case (sgn a, sgn b) of
+                                    (LT, LT) -> if q < r then q else r
+                                    (GT, GT) -> if a < b then a else b
+                                    (_, _)   -> zero),
+                       upper = (case (sgn a, sgn b) of
+                                    (EQ, LT) -> r
+                                    (LT, EQ) -> q
+                                    (EQ, _)  -> b
+                                    (_, EQ)  -> a
+                                    (LT, LT) -> if q < r then r else q
+                                    (GT, GT) -> if a < b then b else a
+                                    (GT, LT) -> if a < r then r else a
+                                    (LT, GT) -> if q < b then b else q)}
+    in case rounding s of
+        RoundDown -> i
+        RoundUp   -> invert i
 
-  split Interval{lower=a, upper=b} =
+
+  split Interval {lower=a, upper=b} =
     let c = midpoint a b
     in (Interval {lower=a, upper=c}, Interval {lower=c, upper=b})
+    
+  invert Interval {lower=a, upper=b} = Interval {lower=b, upper=a}
+  
+  width s Interval {lower=a, upper=b} = app_sub s b a
