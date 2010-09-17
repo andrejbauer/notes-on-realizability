@@ -14,9 +14,9 @@ import Dyadic
 import Interval
 import Text.Printf
 
-import Debug.Trace
--- trace :: String -> a -> a
--- trace _ todo = todo
+trace = Interval.trace'
+
+bp do_it = do_it
 
 -- | A real number is implemented as a staged dyadic interval @'Interval' q@ where @q@ is the
 -- underlying approximate field (in practiec these are dyadic rationals). @'RealNum' q@ can be used
@@ -27,12 +27,14 @@ type RealNum q = Staged (Interval q)
 -- | We implement a very simple show instance for reals which computes the 20th approximation
 -- and shows it as an interval, together with a floating point approximation.
 instance ApproximateField q => Show (RealNum q) where
-   show x = let i = approximate x (prec RoundDown 20)
-            in show i ++ " " ++ show (toFloat (midpoint (lower i) (upper i)))
+   show x = let cca p = approximate x (prec RoundDown p)
+                i = cca 20
+            in (show $ cca 0) ++ "--" ++ (show $ cca 1) ++ "---" ++ (show i) ++ " " ++ show (toFloat (midpoint (lower i) (upper i))) ++ "(real number)"
 
 -- | Linear order on real numbers
 instance IntervalDomain q => LinearOrder (RealNum q) where
-    less = lift2 (\_ -> iless) 
+    -- less = lift2 (\_ -> iless) 
+    less = lift2 iless
     -- XXX (OK) - kaj zares naredi lift2? Liftne funkcijo, ki dela nad Stageom in dvema spremenljivkama. Vemo
     --   lift2 :: (Completion m) => (Stage -> t -> u -> v) -> m t -> m u -> m v
     -- pri cemer je za nas vedno m=Staged. Implementacija:
@@ -45,12 +47,12 @@ instance IntervalDomain q => LinearOrder (RealNum q) where
 -- or it diverges. Similarly, using Haskell equality @==@ is bad. Nevertheless, we define @==@ and @/=@
 -- because Haskell wants them for numeric types.
 instance IntervalDomain q => Eq (RealNum q) where
-    x /= y = forceBool $ x `apart` y
+    x /= y = force $ x `apart` y
 
 -- | Real numbers are an ordered type in the sense of Haskells 'Ord', although a comparison never
 -- returns @EQ@ (instead it diverges). This is a fact of life, comparison of reals is not decidable.
 instance IntervalDomain q => Ord (RealNum q) where
-  compare x y = case forceBool (x `less` y) of
+  compare x y = case force (x `less` y) of
                   True  -> LT
                   False -> GT
 
@@ -81,89 +83,50 @@ instance (ApproximateField q, IntervalDomain q) => Fractional (RealNum q) where
 
 -- | The Hausdorff property
 instance IntervalDomain q => Hausdorff (RealNum q) where
-     x `apart` y = (x `less` y) `por` (y `less` x)
+     x `apart` y = (x `less` y) `sor` (y `less` x)
 
 -- | The value @ClosedInterval(a,b)@ represents the closed interval [a,b] as a subspace of the reals.
 newtype ClosedInterval q = ClosedInterval (q, q) 
                          deriving Show
+-- | The value @OpenInterval(a,b)@ represents the open interval (a,b) as a subspace of the reals.
+newtype OpenInterval q = OpenInterval (q, q) 
+                         deriving Show
 
--- convenience -- ClosedInterval on Dyadics
+-- convenience -- construction of intervals on Dyadics
 cid a b = (ClosedInterval(a,b) :: ClosedInterval Dyadic)
-reals = ClosedInterval(Dyadic.NegativeInfinity, Dyadic.PositiveInfinity)
+oid a b = (OpenInterval(a,b) :: OpenInterval Dyadic)
+reals = OpenInterval(Dyadic.NegativeInfinity, Dyadic.PositiveInfinity)
 
 -- | Compactness of the closed interval
--- instance IntervalDomain q => Compact (ClosedInterval q) (RealNum q) where
-forall' (ClosedInterval(a,b)) p = 
-     -- limit = Staged  -- Staged :: (Completion m) => (Stage -> t) -> m t
-           limit (\s ->
-                   let r = rounding s
-                       n = precision s
-                       test_interval u v = case r of
-                                             RoundDown -> Interval {lower = u, upper = v}
-                                             -- ce zaokrozujemo navzgor (radi recemo True), potem bomo namesto celega intervala preverili samo sredinsko tocko
-                                             RoundUp   -> let w = midpoint u v in Interval {lower = w, upper = w}
-                       test_interval' u v = Interval {lower = u, upper = v}
-                       subdivide ((k,a,b):lst) = 
-                         let c = midpoint a b in sweep (lst ++ [(k+1,a,c), (k+1,c,b)])
-                       sweep [] = PTrue
-                       -- k je precision Stagea, s katerim racunamo, ali p velja za interval [a,b].
-                       -- Malo neucinkovito je, da n, do katerega povecujemo k, povecujemo postopoma (recimo iz forceBool) in za vsak n od zacetka racunamo vseh O(2^n) intervalov, namesto da bi uporabili delne rezultate od n-1.
-                       -- Ni pa ta neucinkovitost prevec grozna; teh delnih rezultatov (od n-1) je samo pol toliko, kolikor jih rabimo pri n, tako da razred zahtevnosti ostane isti.
-                       sweep intervals@((k,a,b):lst) = 
-                         -- XXX - bi morali tukaj a, b normaliziati? Najbrz ne. Smo zelo nesrecni, ker ne moremo preveriti lastnosti p za interval [0, sqrt(3)]?
-                         let x = return $ test_interval a b -- trace (show $ test_interval a b) return $ test_interval a b
-                             -- approximate :: Staged (Stage -> a) -> Stage a -- samo "slece" Staged wrapper
-                         in trace (printf "%20s - %-20s  --%-9s %d-->  %s" (show a) (show b) (show r) k (show $ approximate (p x) (prec r k))) $ case (r, approximate (p x) (prec r k)) of                 
-                           (RoundUp,   PTop)      -> if (k>=n) then PTop else subdivide intervals
-                           (RoundUp,   PBottom)   -> if (k>=n) then PTop else subdivide intervals -- PBottom je narobe. Recimo, [6,7] `less` [6.5,6.5] se z natancnostjo 2 ali vec roundupa v PBottom. Tudi PFalse je narobe; rezultat PBottom nam sicer garantira, da vsaj za eno tocko levega intervala in eno tocko desnega intervala relacija `less` (ali `more`) ne drzi, ampak pri vecjih natancnostih bodo intervali morda manjsi, CEPRAV delamo RoundUp. Recimo, [3,4] `less` [4,5] je PBottom, ampak ce preverjamo x `less` (x+1), je smiselno it v vecjo natancnost.
-                           (RoundUp,   PTrue)     -> if (k >= n) 
-                                                     then sweep lst -- sweep lst je narobe. Recimo [3,7] `less` [6,6] == True pri natancnosti 1 ali 0 in RoundUp-anju
-                                                     else subdivide intervals
-                           (RoundUp,   PFalse)    -> if (k >= n) 
-                                                     then PFalse -- PFalse je narobe iz istega razloga kot zgoraj sweep lst.
-                                                     else subdivide intervals                                                          
-                           (RoundDown,   PTop)    -> if (k>=n) then PBottom else subdivide intervals
-                           (RoundDown,   PBottom) -> if (k>=n) then PBottom else subdivide intervals 
-                           (_,         PFalse)    -> if (k >= n) 
-                                                      then PFalse
-                                                      else subdivide intervals
-                           (RoundDown,   PTrue)  -> if (k >= n) 
-                                                     then sweep lst
-                                                     else subdivide intervals
-                       result = sweep [(0,a,b)]
-                   in trace (printf "forall %s - %s v nacinu %s %d vraca %s" (show a) (show b) (show r) n (show result)) result
-                 )
-
-
 instance IntervalDomain q => Compact (ClosedInterval q) (RealNum q) where
-   forall (ClosedInterval(a,b)) p = 
-     -- limit = Staged  -- Staged :: (Completion m) => (Stage -> t) -> m t
-           limit (\s ->
-                   let r = rounding s
-                       n = precision s
-                       test_interval u v = Interval {lower = u, upper = v}
-                       subdivide ((k,a,b):lst) = 
-                         let c = midpoint a b in sweep (lst ++ [(k+1,a,c), (k+1,c,b)])
-                       sweep [] = PTrue
-                       sweep intervals@((k,a,b):lst) = 
-                         let x = return $ test_interval a b in 
---                         trace (printf "%20s - %-20s  --%-9s %d-->  %s" (show a) (show b) (show r) k (show $ approximate (p x) (prec r k))) $ 
-                         case (r, approximate (p x) (prec r k), approximate (p x) (prec (anti_mode r) k)) of
-                           (_,         PTrue,   PTrue)   -> sweep lst
-                           (_,         PFalse,  PFalse)  -> PFalse
---                           (_,         PTop,    PTop)    -> PTop
---                           (_,         PBottom, PBottom) -> PBottom
-                           (RoundUp,   PTop,    _)       -> if (k>=n) then PTop else subdivide intervals
-                           (RoundUp,   PBottom, _)       -> if (k>=n) then PTop else subdivide intervals -- PBottom je narobe. Recimo, [6,7] `less` [6.5,6.5] se z natancnostjo 2 ali vec roundupa v PBottom. Tudi PFalse je narobe; rezultat PBottom nam sicer garantira, da vsaj za eno tocko levega intervala in eno tocko desnega intervala relacija `less` (ali `more`) ne drzi, ampak pri vecjih natancnostih bodo intervali morda manjsi, CEPRAV delamo RoundUp. Recimo, [3,4] `less` [4,5] je PBottom, ampak ce preverjamo x `less` (x+1), je smiselno it v vecjo natancnost.
-                           (RoundUp,   PTrue,   _)       -> if (k>=n) then PTop else subdivide intervals
-                           (RoundUp,   PFalse,  _)       -> if (k>=n) then PTop else subdivide intervals
-                           (RoundDown, _,       _)       -> if (k>=n) then PBottom else subdivide intervals
-                       result = sweep [(0,a,b)]
-                   in 
---                    trace (printf "forall %s - %s v nacinu %s %d vraca %s" (show a) (show b) (show r) n (show result)) $
-                    result
-                 )
-
+  forall (ClosedInterval(a,b)) p = 
+  -- limit = Staged  -- Staged :: (Completion m) => (Stage -> t) -> m t
+    limit (\s ->
+       let r = rounding s
+           n = precision s
+           test_interval u v = case r of
+                                 RoundDown -> Interval {lower = u, upper = v}
+                                 -- ce zaokrozujemo navzgor (radi recemo True), potem bomo namesto celega intervala preverili samo sredinsko tocko
+                                 RoundUp   -> let w = midpoint u v in Interval {lower = w, upper = w}
+           sweep [] = trace "they're all true! it's so intense!" True
+           -- k je precision Stagea, s katerim racunamo, ali p velja za interval [a,b].
+           -- Malo neucinkovito je, da n, do katerega povecujemo k, povecujemo postopoma (recimo iz force) in za vsak n od zacetka racunamo vseh O(2^n) intervalov, namesto da bi uporabili delne rezultate od n-1.
+           -- Ni pa ta neucinkovitost prevec grozna; teh delnih rezultatov (od n-1) je samo pol toliko, kolikor jih rabimo pri n, tako da razred zahtevnosti ostane isti.
+           sweep ((k,a,b):lst) = let x = return $ test_interval a b -- trace (show $ test_interval a b) return $ test_interval a b
+                                     info = (show a)++"  --  "++(show b)++"  z  "++(show x)++"    @ precision="++(show k)++"/"++(show n)
+                                     -- approximate :: Staged (Stage -> a) -> Stage a -- samo "slece" Staged wrapper
+                                    in trace ("testiram "++info) $ case (r, approximate (p x) (prec r k)) of
+                                      (RoundDown, False) -> if (k >= n) 
+                                                            then trace ("approximately false "++info) False -- smo ze precej natancni, verjemimo aproksimaciji
+                                                            else (let c = midpoint a b in sweep (lst ++ [(k+1,a,c), (k+1,c,b)])) -- gremo bolj natancno
+                                      (RoundDown, True)  -> trace ("approximately true "++(show x)) sweep lst
+                                      (RoundUp,   False) -> trace ("fail  "++info) False
+                                      (RoundUp,   True)  -> if (k >= n) 
+                                                            then trace ("approximately true "++info) True -- nima smisla natancneje ocenjevati ostalih, ce ze tukaj zaokrozujemo
+                                                            else trace ("splitting "++(show a)++"  --  "++(show b)) (let c = midpoint a b in sweep (lst ++ [(k+1,a,c), (k+1,c,b)]))
+       in sweep [(0,a,b)]
+    )   
+     
 
 -- Increasing the precision grows the dyadic interval which is the upper approximation (=subinterval) of [6,7] and shrinks 
 -- the negative interval which is the upper approximation (=negative superinterval) of [6.9, 6.9]. Correspondingly, the precision of the result
@@ -176,55 +139,65 @@ instance IntervalDomain q => Compact (ClosedInterval q) (RealNum q) where
 -- forall (cid 3 7) (\x -> x `less` (x+1)) -- True
 -- forall (cid 3 7) (\x -> x `less` 6.9) -- False
 -- forall (cid 3 7) (\x -> x `less` 7) -- se zacikla
--- forall (cid (-100) 100) (\x -> (x `less` 7.1) `por` (x `more` 6.9)) -- True
--- let eps=0.9 in forall (cid 0 10) (\x -> (forall (cid 0 10) (\y -> (x `less` (y+eps)) `por` (y `less` (x+eps))))) -- True
--- XXX -- trikotniska neenakost -- vrne False -- zakaj? Zaradi cudaskosti v abs?   
+-- forall (cid (-100) 100) (\x -> (x `less` 7.1) `sor` (x `more` 6.9)) -- True
+-- let eps=1 in forall (cid (-100) 100) (\x -> (forall (cid (-100) 100) (\y -> (x `less` (y+eps)) `sor` (y `less` (x+eps))))) -- True
 -- let eps=0.9 in forall (cid (-10) 10) (\x -> (forall (cid (-10) 10) (\y -> (((abs x)+(abs y)) `more` ((abs (x+y)) - eps)))))
    
 -- | Overtness of the closed interval [a,b]
 instance IntervalDomain q => Overt (ClosedInterval q) (RealNum q) where
-   exists (ClosedInterval(a,b)) p = 
-     -- limit = Staged  -- Staged :: (Completion m) => (Stage -> t) -> m t
-           limit (\s ->
-                   let r = rounding s
-                       n = precision s
-                       test_interval u v = Interval {lower = u, upper = v}
-                       subdivide ((k,a,b):lst) = 
-                         let c = midpoint a b in sweep (lst ++ [(k+1,a,c), (k+1,c,b)])
-                       sweep [] = PTrue
-                       sweep intervals@((k,a,b):lst) = 
-                         let x = return $ test_interval a b in 
---                         trace (printf "%20s - %-20s  --%-9s %d-->  %s" (show a) (show b) (show r) k (show $ approximate (p x) (prec r k))) $ 
-                         case (r, approximate (p x) (prec r k), approximate (p x) (prec (anti_mode r) k)) of
-                           (_,         PTrue,   PTrue)   -> sweep lst
-                           (_,         PFalse,  PFalse)  -> PFalse
---                           (_,         PTop,    PTop)    -> PTop
---                           (_,         PBottom, PBottom) -> PBottom
-                           (RoundUp,   PTop,    _)       -> if (k>=n) then PTop else subdivide intervals
-                           (RoundUp,   PBottom, _)       -> if (k>=n) then PTop else subdivide intervals -- PBottom je narobe. Recimo, [6,7] `less` [6.5,6.5] se z natancnostjo 2 ali vec roundupa v PBottom. Tudi PFalse je narobe; rezultat PBottom nam sicer garantira, da vsaj za eno tocko levega intervala in eno tocko desnega intervala relacija `less` (ali `more`) ne drzi, ampak pri vecjih natancnostih bodo intervali morda manjsi, CEPRAV delamo RoundUp. Recimo, [3,4] `less` [4,5] je PBottom, ampak ce preverjamo x `less` (x+1), je smiselno it v vecjo natancnost.
-                           (RoundUp,   PTrue,   _)       -> if (k>=n) then PTop else subdivide intervals
-                           (RoundUp,   PFalse,  _)       -> if (k>=n) then PTop else subdivide intervals
-                           (RoundDown, _,       _)       -> if (k>=n) then PBottom else subdivide intervals
-                       result = sweep [(0,a,b)]
-                   in 
---                    trace (printf "forall %s - %s v nacinu %s %d vraca %s" (show a) (show b) (show r) n (show result)) $
-                    result
-                 )
+  -- verifiable properties correspond to open sets, so if e.g. the endpoint a has the property p, then so will some other point from its neighborhood
+  exists (ClosedInterval(a,b)) p = exists(OpenInterval(a,b)) p 
 
-f x = -x*x+3*x
-p x = (f x) `more` 2
-r a b = Staged $ \s -> Interval {lower=fromFloat a, upper=fromFloat b}
--- let x=(r 3 3.3) in (f x)
+-- | Overtness of the open interval (a,b)
+instance IntervalDomain q => Overt (OpenInterval q) (RealNum q) where
+  exists (OpenInterval(a,b)) p = 
+  -- limit = Staged  -- Staged :: (Completion m) => (Stage -> t) -> m t
+    limit (\s ->
+       let r = rounding s
+           n = precision s
+           test_interval u v = case r of
+                                 RoundDown -> let w = midpoint u v in Interval {lower = w, upper = w}
+                                 -- ce zaokrozujemo navzgor (radi recemo True), potem bomo namesto celega intervala preverili samo sredinsko tocko
+                                 RoundUp   -> Interval {lower = v, upper = u}
+           sweep [] = trace "they all fail!" False
+           sweep ((k,a,b):lst) = let x = return $ test_interval a b -- trace (show $ test_interval a b) return $ test_interval a b
+                                     info = (show a)++"  --  "++(show b)++"  z  "++(show x)++"    @ precision="++(show k)++"/"++(show n)
+                                     -- approximate :: Staged (Stage -> a) -> Stage a -- samo "slece" Staged wrapper
+                                    in trace ("testiram "++info) $ case (r, approximate (p x) (prec r k)) of
+                                      (RoundDown, False) -> if (k >= n) 
+                                                            then trace ("approximately false "++info) sweep lst -- smo ze precej natancni, verjemimo aproksimaciji
+                                                            else (let c = midpoint a b in sweep (lst ++ [(k+1,a,c), (k+1,c,b)])) -- gremo bolj natancno
+                                      (RoundDown, True)  -> trace ("got it! "++(show x)) True
+                                      (RoundUp,   False) -> trace ("fail  "++info) sweep lst
+                                      (RoundUp,   True)  -> if (k >= n)
+                                                            then trace ("approximately true "++info) True -- nima smisla natancneje ocenjevati ostalih, ce ze tukaj zaokrozujemo
+                                                            else trace ("splitting "++(show a)++"  --  "++(show b)) (let c = midpoint a b in sweep (lst ++ [(k+1,a,c), (k+1,c,b)]))
+       in sweep [(0,a,b)]
+    )   
+
 -- Funkcija -x*x+3*x doseze max=2.25 pri x=1.5
---   exists (cid 0 10) (\x -> ((-x*x+3*x) `more` 2.24)) -- True
+--   exists (cid 0 10) (\x -> ((-x*x+3*x) `more` 2.2))  -- True
 --   exists (cid 0 10) (\x -> ((-x*x+3*x) `more` 2.25)) -- se zacikla
+--   exists (cid 0 10) (\x -> ((-x*x+3*x) `more` 2.3))  -- False
+--   exists reals (\x -> ((-x*x+3*x) `more` 2.24))      -- True
 -- let x = return (Interval {lower = 0, upper = 10}); p=(\x -> ((-x*x+3*x) `more` exact 2)) in approximate (p x) (prec RoundUp 190)
 
+-- Primer semiodlocljivosti - se zacikla. Razlog: testni intervali nikoli ne vkljucujejo nicle, torej so tipa (-,-), (+,+) ali (-,+) oz (+,-) pri RoundUp. Prva dva takoj odpadeta kot kandidata, tretji pa se bo drobil v neskoncnost, ker je kvadrat intervala (-,+) spet (-,+). 
+-- exists (cid (-1) 2) (\x -> ((x*x) `less` 0)) -- neskoncno cakamo False
+-- Se en primer na isto finto
+-- exists (cid (-1) 2) (\x -> (x `less` 0) `sand` (0 `less` x)) -- neskoncno cakamo False
 
--- XXX - lahko v haskellu naredim inline teste? Recimo, da hocem "na tem mestu" pognati zgornji klic exists in izpisati rezultat.
+-- | Compactness of product spaces
+instance (Compact s1 r1, Compact s2 r2) => Compact (ProductSpace s1 s2) (ProductSpace r1 r2) where
+  forall (ProductSpace (s1,s2)) p = forall s1 (\x1 -> forall s2 (\x2 -> p (ProductSpace (x1,x2))))
+
+-- | Overtness of product spaces
+instance (Overt s1 r1, Overt s2 r2) => Overt (ProductSpace s1 s2) (ProductSpace r1 r2) where
+  exists (ProductSpace (s1,s2)) p = exists s1 (\x1 -> exists s2 (\x2 -> p (ProductSpace (x1,x2))))
 
 
--- | Missing: overtness of reals, open interval (a,b) and closed interval [a,b]
+-- trikotniska neenakost se enkrat, tokrat s produktnimi prostori
+-- forall (ProductSpace ((cid (-10) 10), (cid (-10) 10))) (\(ProductSpace(x,y)) -> (((abs x)+(abs y)) `more` ((abs (x+y)) - 1)))
 
 
 -- | We define the a particular implementation of reals in terms of Dyadic numbers. Because 'IntervalDomain' has
@@ -239,7 +212,6 @@ exact x = x
 -- MISSING STRUCTURE:
 -- Metric completeness: an operator lim which takes a Cauchy sequence and its convergence rate, and computes the limit
 -- Density of rationals: given a real x and integer k, compute a dyadic approximation of a real x which is within 2^(-k)a
-
 
 
 -- Cudastvo

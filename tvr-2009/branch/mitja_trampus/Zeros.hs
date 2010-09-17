@@ -121,3 +121,6 @@ findZero f d int = Staged (\stg ->
 -- the work.
 findZeroBisection :: (RealNum Dyadic -> RealNum Dyadic) -> Interval Dyadic -> RealNum Dyadic
 findZeroBisection f i = findZero f unbounded i
+
+-- findZero (\x -> (x+5)*(x-10)) (\x -> 2*x-5) Interval{lower=(-3)::Dyadic, upper=20} -- 10, OK
+-- findZeroBisection (\x -> (x+5)*(x-10)) Interval{lower=(-30)::Dyadic, upper=8} -- -5, OK

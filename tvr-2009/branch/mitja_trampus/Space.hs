@@ -8,7 +8,6 @@ import Staged
 import Debug.Trace
 
 -- | The Sierpinski space @Sigma@ is represented by staged booleans.
--- This is more or less obsolete; Sierpinski space was replaced by partial booleans, see below.
 type Sigma = Staged Bool
 
 -- | Disjunction for Sierpinski space
@@ -22,16 +21,25 @@ sand = lift2 (\s p q -> p && q)
 -- | Force a value in the Sierpinski space into Booleans. This may diverge as bottom cannot be
 -- reliably detected.
 force :: Sigma -> Bool
-force p = let (b,prec) = forceVerbose(p) in b
+force p = let (b,prec) = forceVerbose p in b
 
 -- | Like force, but also returns the required precision to get the Bool
 forceVerbose :: Sigma -> (Bool, Int)
 forceVerbose p = loop 0
-          where loop k = case approximate p (prec RoundDown k) of
+          where loop k = case trace "Rounding down" approximate p (prec RoundDown k) of
                            True  -> (True, k) -- lower approximation is True, the value is top
-                           False -> case approximate p (prec RoundUp k) of
+                           False -> case trace "Rounding up" approximate p (prec RoundUp k) of
                                       False -> (False, k) -- upper approximation is False, the value is bottom
                                       True  -> trace ("RoundUp/Down results disagree at precision "++(show k)) loop (k+1)
+
+-- | *Try* to map a value in the Sierpinski space to a Boolean.
+app_sigma :: Sigma -> Int -> Maybe Bool
+app_sigma p k = case approximate p (prec RoundDown k) of
+                   True  -> Just True -- lower approximation is True, the value is top
+                   False -> case approximate p (prec RoundUp k) of
+                              False -> Just False -- upper approximation is False, the value is bottom
+                              True  -> Nothing
+
 
 -- | The Show instance may cause divergence because 'force' could diverge. An alternative
 -- implementation would give up after a while, and the user would have to use 'force' explicitly to
@@ -40,7 +48,7 @@ forceVerbose p = loop 0
 instance Show Sigma where
   show p = 
     let (b, k) = forceVerbose p in
-    (show b) ++ " (needed precision" ++ (show k) ++ ")"
+    (show b) ++ " (needed precision " ++ (show k) ++ ")"
 
 -- XXX - should the code above be in Sigma.hs, similar to Reals.hs? Ideally yes, but then Sigma and Space would need to refer to each other circularly.
 
@@ -144,34 +152,37 @@ pnot = lift1 (\s p -> case p of
 
 
 -- | A space is Hausdorff if inequality, here called 'apart', is an open relation. 
--- XXX what is an "open relation"? How do we enforce openness of `apart`? (NB: open set == verifiable property)
+-- XXX (OK) what is an "open relation"? An open relation between sets A, B corresponds to an open set in space AxB. How do we enforce openness of `apart`? By implementing it. (open set == verifiable property)
 class Hausdorff t where
-  apart :: t -> t -> PartialBool 
+  apart :: t -> t -> Sigma 
 
 -- | A space is Discrete if equality, here called 'equal', is an open relation.
 class Discrete t where
-  equal :: t -> t -> PartialBool
+  equal :: t -> t -> Sigma
   
 -- | Suppose the type 's' represents a family of subspaces of 't'. The typical example is
 -- that 't' is the type of reals and 's' is the type of closed intervals. Then the subspaces
 -- represented by 's' are compact subspaces of 't' if the universal quantifier is a continuous
--- map from @t -> 'PartialBool'@ to 'PartialBool'. 
+-- map from @t -> 'Sigma'@ to 'Sigma'. 
 -- XXX (OK) - how do we enforce continuity of forall? It comes implicitly; computable functions == continuous functions
 class Compact s t | s -> t where
-  forall :: s -> (t -> PartialBool) -> PartialBool
+  forall :: s -> (t -> Sigma) -> Sigma
 
 -- | Suppose the type 's' represents a family of subspaces of 't'. The typical example is
 -- that 't' is the type of reals and 's' is the type of closed intervals. Then the subspaces
 -- represented by 's' are overt subspaces of 't' if the existential quantifier is a continuous
--- map from @t -> 'PartialBool'@ to 'PartialBool'.
+-- map from @t -> 'Sigma'@ to 'Sigma'.
 class Overt s t | s -> t where
-  exists :: s -> (t -> PartialBool) -> PartialBool
+  exists :: s -> (t -> Sigma) -> Sigma
 
 -- | The real numbers are strictly linearly ordered by open relation <, we define
 -- a class that expresses that fact.
 class LinearOrder t where
-  less :: t -> t -> PartialBool
-  more :: t -> t -> PartialBool
+  less :: t -> t -> Sigma
+  more :: t -> t -> Sigma
 
   -- default implemetnation of 'more' in terms of 'less'
   more x y = less y x
+
+-- | Cartesian product of spaces.
+data (ProductSpace a b) = ProductSpace (a, b)

@@ -12,6 +12,11 @@ import Staged
 import Dyadic
 import Debug.Trace
 
+trace' :: String -> a -> a
+-- trace' = trace
+trace' _ todo = todo
+
+
 {- | An interval is represented by a lower and upper endpoint. We do
   /not/ require that the lower endpoint be smaller or equal to the
   upper one. In other words, we allow the usual as well as
@@ -34,8 +39,8 @@ instance ApproximateField q => Show (Interval q) where
     else "[" ++ show a ++ "," ++ show b ++ "]"  
 
 class ApproximateField q => IntervalDomain q  where
-  iless :: Interval q -> Interval q -> PartialBool'
-  imore :: Interval q -> Interval q -> PartialBool'
+  iless :: Stage -> Interval q -> Interval q -> Bool
+  imore :: Stage -> Interval q -> Interval q -> Bool
   iadd :: Stage -> Interval q -> Interval q -> Interval q
   isub :: Stage -> Interval q -> Interval q -> Interval q
   imul :: Stage -> Interval q -> Interval q -> Interval q
@@ -48,9 +53,11 @@ class ApproximateField q => IntervalDomain q  where
   invert :: Interval q -> Interval q
   width :: Stage -> Interval q -> q
 
+{-
+  |- The relation `less` for two reals approximated by the two given intervals.
   iless i@Interval{lower=i1,upper=i2} j@Interval{lower=j1,upper=j2} = 
     --Staged $ \s -> 
-    --trace ("           iless called with "++(show i)++"  "++(show j)) $ 
+    --trace' ("           iless called with "++(show i)++"  "++(show j)) $ 
     case (i1<=i2, j1<=j2) of
       (True, True)  
         | i2<j1 -> PTrue
@@ -70,8 +77,16 @@ class ApproximateField q => IntervalDomain q  where
         | j2<=i1 && j1>i2  -> PTop
         | j2>i1            -> PTrue
         | j2<=i1           -> PFalse
+-}
 
-  imore i j = iless j i
+  -- XXX (OK) - Za input [1,3]<[2,4] bi moral RoundUp vrniti true, ker lahko pri vecji natancnosti iz tega nastane [1,1]<[2,2] -- NAROBE! to je RoundUp, tako da bojo v prihodnjosti intervali samo bolj posploseni)      
+  iless s Interval{lower=a,upper=b} Interval{lower=c,upper=d} = let 
+    i = Interval{lower=normalize s a, upper=normalize (anti s) b}
+    j = Interval{lower=normalize s c, upper=normalize (anti s) d}
+    in
+     trace' ((show i)++"  <  "++(show j)++"   -->   "++(show (upper i < lower j))) $ upper i < lower j
+  
+  imore s i j = iless s j i  
 
   iadd s a b = Interval { lower = app_add s (lower a) (lower b),
                           upper = app_add (anti s) (upper a) (upper b)}
