@@ -1,6 +1,5 @@
 import Reals
 
-
 ------------
 -- Functions
 ------------
@@ -78,32 +77,28 @@ pi_machin = 16 * limatan 0.2 - 4 * limatan (1/239)
 -- Old versions
 ---------------
 
-{-
+-- lim0 :: (Ord q, Num q) => [RealNum q] -> [RealNum q] -> RealNum q
+-- lim0 seq err = limit (\s ->
+--     let r = rounding s
+--         k = precision s
+--         approximations = map (\x -> approximate x (prec_down k)) $ take (k+1) seq
+--         errors = map (upper. \x -> approximate x (prec_down k)) $ take (k+1) err
+--         low = maximum $ zipWith (-) (map lower approximations) errors
+--         up = minimum $ zipWith (+) (map upper approximations) errors
+--     in if low > up then error "not convergent"
+--                    else if r == RoundDown then Interval {lower=low, upper=up}
+--                                           else Interval {lower=up, upper=low})
 
-lim0 :: (Ord q, Num q) => [RealNum q] -> [RealNum q] -> RealNum q
-lim0 seq err = limit (\s ->
-    let r = rounding s
-        k = precision s
-        approximations = map (\x -> approximate x (prec_down k)) $ take (k+1) seq
-        errors = map (upper. \x -> approximate x (prec_down k)) $ take (k+1) err
-        low = maximum $ zipWith (-) (map lower approximations) errors
-        up = minimum $ zipWith (+) (map upper approximations) errors
-    in if low > up then error "not convergent"
-                   else if r == RoundDown then Interval {lower=low, upper=up}
-                                          else Interval {lower=up, upper=low})
-
-lim1 :: [RealNum Dyadic] -> [RealNum Dyadic] -> RealNum Dyadic
-lim1 seq err = 
-    let approximations = map (\(x,k) -> iapprox_to x k) $ zip seq [0..]
-        errors = map (upper. \(x,k) -> iapprox_to x k) $ zip err [0..]
-        lows = scanl1 max $ zipWith (-) (map lower approximations) errors
-        ups = scanl1 min $ zipWith (+) (map upper approximations) errors
-    in limit (\s -> 
-           let k = precision s
-               l = lows !! k
-               u = ups !! k
-           in case rounding s of
-               RoundDown -> Interval {lower=l, upper=u}
-               RoundUp   -> Interval {lower=u, upper=l})
-
--}
+-- lim1 :: [RealNum Dyadic] -> [RealNum Dyadic] -> RealNum Dyadic
+-- lim1 seq err = 
+--     let approximations = map (\(x,k) -> iapprox_to x k) $ zip seq [0..]
+--         errors = map (upper. \(x,k) -> iapprox_to x k) $ zip err [0..]
+--         lows = scanl1 max $ zipWith (-) (map lower approximations) errors
+--         ups = scanl1 min $ zipWith (+) (map upper approximations) errors
+--     in limit (\s -> 
+--            let k = precision s
+--                l = lows !! k
+--                u = ups !! k
+--            in case rounding s of
+--                RoundDown -> Interval {lower=l, upper=u}
+--                RoundUp   -> Interval {lower=u, upper=l})

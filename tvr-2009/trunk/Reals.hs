@@ -140,10 +140,10 @@ approx_to x k =
 
        There are several possibilities for optimization. Here we describe one. Let
        @a_n@ be the midpoint of the interval @approximate x (prec RoundDown n)@ and
-       let @r_n@ be its width. We are looking for @n@ such that @r_n < 2^{-n-1}@.
+       let @r_n@ be its width. We are looking for @n@ such that @r_n < 2^{ -n-1}@.
        One heuristic is to assume that @r_n@'s form a geometric series. From this we
        can look at three terms of the sequence, say @r_10@, @r_20@, and @r_30@ and
-       estimate an @n@ which should give @r_n < 2^{-n-1}@. If the estimate fails,
+       estimate an @n@ which should give @r_n < 2^{ -n-1}@. If the estimate fails,
        we try something else. The drawback is that we might end up over-estimating
        the needed precision @n@. -}
 
