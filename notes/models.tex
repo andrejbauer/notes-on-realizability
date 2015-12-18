@@ -1948,7 +1948,9 @@ inductively define \emph{expressions over $A$}:
 \end{enumerate}
 %
 Note that we explicitly annotate variables with their types. We also
-assume that the type of a primitive constant is uniquely given.
+assume that the type of a primitive constant is uniquely given (an
+assumption which may easily be violated, in which case we have to tag
+constants with their types).
 Consequently, every expression has a uniquely determined type. A
 closed expression $e$ of type~$t$ is defined, written $\defined{e}$,
 when all applications appearing in it are defined. Such an expression
