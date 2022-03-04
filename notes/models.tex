@@ -4,7 +4,7 @@
 
 A \emph{model of computation} describes what computation is and how it
 is done. The best known is Alan Turing's
-model~\cite{turing37:_comput_number_with_applic_to_entsc} in which a
+model~\sidecite{turing37:_comput_number_with_applic_to_entsc} in which a
 machine manipulates the contents of a tape according to a finite set
 of instructions. It has become the yardstick with which we measure
 other models of computation. Turing's notion of computability is very
@@ -33,7 +33,7 @@ We recall informally how a Turing machine operates. There is little
 point in giving a formal definition because we do not intend to
 actually write programs for Turing machines. If you are not familiar
 with Turing machines we recommend one of standard textbooks on the
-subject~\cite{odifreddi89:_class_recur_theor,h.r.92:_theor_recur_funct_effec_comput,davis58:_comput_unsol}.
+subject~\sidecite{odifreddi89:_class_recur_theor,h.r.92:_theor_recur_funct_effec_comput,davis58:_comput_unsol}.
 
 \begin{figure}[htbp]
   \centering
@@ -97,13 +97,13 @@ The answer was given by Turing.
 \begin{proof}
   A traditional proof may be found in any book on computability
   theory, and there is nothing wrong with reading the original
-  proof~\cite{turing37:_comput_number_with_applic_to_entsc} either.
+  proof~\sidecite{turing37:_comput_number_with_applic_to_entsc} either.
   For me a much more convincing proof is the fact that a universal
   machine is sitting right here on my desk.\sidenote{You have to
     ignore the fact that several hundred gigabytes of storage are not
     quite the same thing as an infinite tape. Also, modern computers
     are really \emph{Von Neumann}
-    machines~\cite{goldstein47:_repor_mathem_and_logic_aspec} because
+    machines~\sidecite{goldstein47:_repor_mathem_and_logic_aspec} because
     they have a central processing unit and random access memory
     instead of a tape.}
 \end{proof}
@@ -195,7 +195,7 @@ Because we defined $\code{(m,n)}$ so that it is never zero, the
 elements of a sequence may be uniquely reconstructed from its code. By
 continuing in this manner we may encode with a single number a finite
 sequence of computation steps, including the contents of the tapes
-and positions of the heads at each step. Stephen Kleene~\cite{kleene43:_recur_predic_and_quant}
+and positions of the heads at each step. Stephen Kleene~\sidecite{kleene43:_recur_predic_and_quant}
 worked out the details of all this and defined the predicate
 $T(x,y,z)$ whose meaning is
 %
@@ -213,7 +213,7 @@ computation encoded by $z$''. The function $U$ allows us to extract
 the result of a computation. If $z$ does not encode a terminating
 computation then $U(z)$ is undefined.
 
-Kleene's normal form theorem~\cite{kleene43:_recur_predic_and_quant}
+Kleene's normal form theorem~\sidecite{kleene43:_recur_predic_and_quant}
 says that every partial computable function $f : \NN \parto \NN$ may
 be written in the form
 %
@@ -437,22 +437,22 @@ changes are inessential because an infinite sequence $n_0, n_1, n_2,
 $1^{n_0}01^{n_1}01^{n_2}0\cdots$, where $1^k$ means that the symbol
 $1$ is repeated $k$-times.
 
-A type 2 machine computes a partial function $f : \NN^\NN \parto
-\NN^\NN$, where $\NN^\NN$ is the \emph{Baire space} of infinite
-sequences of numbers. We run the machine with $\alpha \in \NN^\NN$
+A type 2 machine computes a partial function $f : \NNNN \parto
+\NNNN$, where $\NNNN$ is the \emph{Baire space} of infinite
+sequences of numbers. We run the machine with $\alpha \in \NNNN$
 written on the input tape. If every output cell is eventually written
 to, then the output tape represents the result $f(\alpha)$. If there is
 at least one output cell to which the machine does not write a number,
 then $f(\alpha)$ is undefined.
 
 We may similarly define what it means for a machine to compute a
-multivariate partial function $f : (\NN^\NN)^k \parto \NN^\NN$. The
+multivariate partial function $f : (\NNNN)^k \parto \NNNN$. The
 input $(\alpha_0, \ldots, \alpha_{k-1})$ is written onto the input tape in
 an interleaving manner, so that $\alpha_i(j)$ is found in the cell at
 position $k \cdot j + i$.
 
 Before proceeding with type 2 computability, we recall a few basic
-facts about the Baire space~$\Baire = \NN^\NN$. Let $\NN^{*}$ be the
+facts about the Baire space~$\Baire = \NNNN$. Let $\NN^{*}$ be the
 set of all finite sequences of natural numbers. If $a, b \in \NN^{*}$
 we write $a \sqsubseteq b$ when $a$ is a prefix of~$b$. The length of
 a finite sequence $a$ is denoted by~$|a|$. Similarly, we write $a
@@ -836,7 +836,7 @@ innocuous looking idea that the input be stored on a tape gives a type
 2 machine the ability to take into account the \emph{order} in which
 data appear. In this section we consider a different model of infinite
 computation, the \emph{graph model}, introduced by Dana
-Scott~\cite{ScottD:dattl}, in which we use sets of numbers rather than
+Scott~\sidecite{ScottD:dattl}, in which we use sets of numbers rather than
 sequences.
 
 How is computation of a map $f : \pow{\NN} \to \pow{\NN}$, where
@@ -858,7 +858,7 @@ will then follow naturally.
 
 The set $\pow{\NN}$ may be equipped with a topology in two natural
 ways. One is the product topology arising from the observation that
-$\pow{\NN}$ is isomorphic to the countable product $\two^\NN$. This
+$\pow{\NN}$ is isomorphic to the countable product $\two^{\NN}$. This
 topology encodes positive and negative information. The other is the
 \emph{Scott} topology, which arises from the lattice structure of
 $\pow{\NN}$, ordered by $\subseteq$. A subbasic open set for the Scott
@@ -906,10 +906,10 @@ space equipped with the Scott topology.
 
 Another way to get the Scott topology of $\Scott$ is to observe that
 $\pow{\NN}$ is in bijective correspondence with the set of all
-functions $\set{\bot, \top}^\NN$. If we equip the two-element set
-$\Sigma = \set{\bot, \top}$ with the \emph{Sierpinski topology} in
-which the open sets are $\emptyset$, $\set{\top}$, and $\Sigma$, then
-$\Scott$ turns out to be homeomorphic to $\Sigma^\NN$ equipped with
+functions $\set{\bot, \top}^{\NN}$. If we equip the two-element set
+$\Sierpinski = \set{\bot, \top}$ with the \emph{Sierpinski topology} in
+which the open sets are $\emptyset$, $\set{\top}$, and $\Sierpinski$, then
+$\Scott$ turns out to be homeomorphic to $\Sierpinski^{\NN}$ equipped with
 the product topology.
 
 
@@ -1204,7 +1204,7 @@ of $\beta$-reduction to a redex in~$e$. For example, we could reduce
   ((\xulam{x}{x})\; a)\; b.
 \end{equation*}
 %
-The \href{http://en.wikipedia.org/wiki/Church%E2%80%93Rosser_theorem}{Church-Rosser theorem}~\cite{church36:_some_proper_of_conver} says that
+The \href{http://en.wikipedia.org/wiki/Church%E2%80%93Rosser_theorem}{Church-Rosser theorem}~\sidecite{church36:_some_proper_of_conver} says that
 $\lambda$-calculus is \emph{confluent}, which means that the order of
 reductions is not important in the sense that two different ways of
 reducing and expression may always be reduced further so that they
@@ -1232,7 +1232,7 @@ language, see Section~\ref{sec:typed-lambda-calculus} for a
 further investigation of these issues.
 
 It may seem a bit surprising, but $\lambda$-calculus is as powerful as
-Turing machines, and was proposed by Alonzo Church~\cite{church32:_set_of_postul_for_found_of_logic} as a
+Turing machines, and was proposed by Alonzo Church~\sidecite{church32:_set_of_postul_for_found_of_logic} as a
 notion of computability before Turing invented his machines. In
 $\lambda$-calculus we may write seemingly non-sensical expressions,
 such as $e\; e$. It is a bit puzzling how $e$ could be both a function
@@ -1371,7 +1371,7 @@ elements of a set~$D$. We expect abstractions to represent functions,
 which means that $D \to D$ can be embedded into~$D$. But the only set
 with this property is the singleton!
 
-The solution was discovered by Dana Scott~\cite{scott72:_contin_lattic} who
+The solution was discovered by Dana Scott~\sidecite{scott72:_contin_lattic} who
 constructed a non-trivial topological space $D_\infty$ such that the
 space of continuous functions $\mathcal{C}(D_\infty, D_\infty)$,
 equipped with the compact-open topology, is homeomorphic
@@ -1579,7 +1579,7 @@ a_n \in A$,
   \end{enumerate}
   %
   We omit the verification that $e' = \xpcalam{x}{e}$ has the required
-  properties. See~\cite{LongleyJ:reatls} for details.
+  properties. See~\sidecite{LongleyJ:reatls} for details.
 \end{proof}
 
 The meta-notation $\xpcalam{x}{e}$ plays a role similar to that of
@@ -1587,7 +1587,7 @@ $\lambda$-abstraction in the untyped $\lambda$-calculus. We abbreviate
 $\xpcalam{x}{\xpcalam{y}{e}}$ as $\xpcalam{x y}{e}$, and similarly for
 more variables. We need to be careful with the ``$\beta$-rule''
 because it is only valid in a restricted sense,
-see~\cite{LongleyJ:reatls}.
+see~\sidecite{LongleyJ:reatls}.
 
 Just like in the case of untyped $\lambda$-calculus, we can build up
 the identity function, pairs, conditionals, natural numbers, and
@@ -1836,7 +1836,7 @@ restrictions on how programs may be formed. In contrast to PCAs, in a
 typical programming language we cannot meaningfully apply \emph{any}
 expression to any other expression. In this section we look at a
 version of PCAs with types, which were defined by John
-Longley~\cite{longley99:_unify_typed_and_untyp_realiz}.
+Longley~\sidecite{longley99:_unify_typed_and_untyp_realiz}.
 
 The definition of a PCA with types is not as short as that of an
 ordinary PCA because the types prevent us from cooking up everything
@@ -2103,7 +2103,7 @@ the equivalence relation generated by the rules of type
 $\lambda$-calculus and primitive recursion, as given above.
 
 This N-TPCA goes by the name \emph{G\"odel's
-  $T$}~\cite{GoedelK:ubeefs}. It was defined by Kurt G\"odel to give a
+  $T$}~\sidecite{GoedelK:ubeefs}. It was defined by Kurt G\"odel to give a
 proof of consistency of Peano arithmetic. It is not as powerful as a
 general PCA or type~1 machines because only the primitive recursive
 functions are expressible in this system.
@@ -2112,7 +2112,7 @@ functions are expressible in this system.
 \label{sec:pcf}
 
 The programming language PCF was introduced by Gordon
-Plotkin~\cite{plotkin77:_lcf_consid_as_progr_languag}. It has since
+Plotkin~\sidecite{plotkin77:_lcf_consid_as_progr_languag}. It has since
 served as the ``laboratory mouse'' of the theory of programming
 languages. The design of real-world functional languages, such as SML,
 Ocaml, and Haskell, was inspired by PCF. In fact, PCF is a fragment of
@@ -2345,7 +2345,7 @@ of $\PCFinf$.
 Real-world programming languages, such as C/C++, Fortran, Java, and
 Python, are not mathematical objects because they do not have precise
 mathematical definitions. An exception to this rule is SML which has a
-formal mathematical definition, see~\cite{MilnerR:defsml}. Ocaml and
+formal mathematical definition, see~\sidecite{MilnerR:defsml}. Ocaml and
 Haskell also come close having formal specifications. Nevertheless,
 when it comes to actual implementation of computable structures, we
 shall use real-world programming languages as if they were NR-TPCAs

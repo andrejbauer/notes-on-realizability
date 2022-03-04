@@ -25,9 +25,6 @@
 \usepackage{makeidx}
 \usepackage[all]{xypic}
 
-%%% Settings for listings
-\lstset{basicstyle=\ttfamily,xleftmargin=\parindent}
-
 \usepackage[english]{babel} % Load characters and hyphenation
 \usepackage[english=american]{csquotes}  % English quotes
 
@@ -37,7 +34,7 @@
 %\usepackage{showlabels} % Uncomment to output the content of \label commands to the document where they are used
 
 % Load the bibliography package
-\usepackage{kaobiblio}
+\usepackage[backend=bibtex,style=alphabetic,sorting=nyt]{kaobiblio}
 \addbibresource{notes.bib} % Bibliography file
 
 % Load mathematical packages for theorems and related environments
@@ -59,7 +56,8 @@
 %\counterwithin*{sidenote}{chapter}
 
 %%% Settings for listings
-\lstset{basicstyle=\ttfamily,xleftmargin=\parindent}
+\lstset{style=kaolstplain}
+\lstset{xleftmargin=2em}
 
 \input{macros}
 
@@ -312,36 +310,6 @@
 
 % \printnomenclature % Output the nomenclature
 
-%----------------------------------------------------------------------------------------
-%       GREEK ALPHABET
-%       Originally from https://gitlab.com/jim.hefferon/linear-algebra
-%----------------------------------------------------------------------------------------
-
-% \vspace{1cm}
-
-% {\usekomafont{chapter}Greek Letters with Pronunciations} \\[2ex]
-% \begin{center}
-%         \newcommand{\pronounced}[1]{\hspace*{.2em}\small\textit{#1}}
-%         \begin{tabular}{l l @{\hspace*{3em}} l l}
-%                 \toprule
-%                 Character & Name & Character & Name \\ 
-%                 \midrule
-%                 $\alpha$ & alpha \pronounced{AL-fuh} & $\nu$ & nu \pronounced{NEW} \\
-%                 $\beta$ & beta \pronounced{BAY-tuh} & $\xi$, $\Xi$ & xi \pronounced{KSIGH} \\ 
-%                 $\gamma$, $\Gamma$ & gamma \pronounced{GAM-muh} & o & omicron \pronounced{OM-uh-CRON} \\
-%                 $\delta$, $\Delta$ & delta \pronounced{DEL-tuh} & $\pi$, $\Pi$ & pi \pronounced{PIE} \\
-%                 $\epsilon$ & epsilon \pronounced{EP-suh-lon} & $\rho$ & rho \pronounced{ROW} \\
-%                 $\zeta$ & zeta \pronounced{ZAY-tuh} & $\sigma$, $\Sigma$ & sigma \pronounced{SIG-muh} \\
-%                 $\eta$ & eta \pronounced{AY-tuh} & $\tau$ & tau \pronounced{TOW (as in cow)} \\
-%                 $\theta$, $\Theta$ & theta \pronounced{THAY-tuh} & $\upsilon$, $\Upsilon$ & upsilon \pronounced{OOP-suh-LON} \\
-%                 $\iota$ & iota \pronounced{eye-OH-tuh} & $\phi$, $\Phi$ & phi \pronounced{FEE, or FI (as in hi)} \\
-%                 $\kappa$ & kappa \pronounced{KAP-uh} & $\chi$ & chi \pronounced{KI (as in hi)} \\
-%                 $\lambda$, $\Lambda$ & lambda \pronounced{LAM-duh} & $\psi$, $\Psi$ & psi \pronounced{SIGH, or PSIGH} \\
-%                 $\mu$ & mu \pronounced{MEW} & $\omega$, $\Omega$ & omega \pronounced{oh-MAY-guh} \\
-%                 \bottomrule
-%         \end{tabular} \\[1.5ex]
-%         Capitals shown are the ones that differ from Roman capitals.
-% \end{center}
 
 %----------------------------------------------------------------------------------------
 %       GLOSSARY
