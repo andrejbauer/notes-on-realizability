@@ -2119,9 +2119,11 @@ Ocaml, and Haskell, was inspired by PCF. In fact, PCF is a fragment of
 Haskell. We consider PCF because it is an example of a (total)
 NR-TPCA.
 
-PCF is an extension of typed $\lambda$-calculus. There are two ground
-types, $\ttnat$ for natural numbers and~$\ttbool$ for Booleans. The
-primitive constants of PCF with their types are:
+PCF is an extension of typed $\lambda$-calculus. In the original version
+of PCF there are two ground types, $\ttnat$ for natural numbers
+and~$\ttbool$ for Booleans. For convenience we shall add a third one,
+the type $\unit$ which has an element~$\ttunit$. The primitive constants
+of PCF with their types are:
 %
 \begin{align*}
   \overline{n} &: \ttnat \quad \text{(for each $n \in \NN$),} \\
@@ -2319,14 +2321,14 @@ for studying computability over topological spaces and other
 uncountable structures. To achieve the same effect in PCF we extend it
 with all set-theoretic functions.
 
-For every function $f : \NN \to \NN$ we add a constant
-$\mathtt{func}_f$ of type $\ttnat \to \ttnat$ to PCF and extend the
-reduction operation with the rules
+For every function $f : \NN \to \NN$ we add a constant $\mathtt{func}_f$
+of type $\ttnat \to \ttnat$ to PCF, consider $\mathtt{func}_f$ to be a
+value, and extend the reduction operation with the rules
 %
 \begin{equation*}
   \infer
   {e \oneto e'}
-  {\mathtt{func}_f\;e \oneto \mathtt{func}_f\;e}
+  {\mathtt{func}_f\;e \oneto \mathtt{func}_f\;e'}
   \qquad\qquad
   \axiom
   {\mathtt{func}_f\;\numeral{n} \oneto \numeral{f(n)}}
