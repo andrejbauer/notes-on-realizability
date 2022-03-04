@@ -56,7 +56,7 @@ heads, see Figure~\ref{fig:turing-machine}:
   to it are ignored.
 \end{itemize}
 %
-The tapes are infinite\footnote{If you are worried about having actual
+The tapes are infinite\sidenote{If you are worried about having actual
   infinite tapes in your room, note that at each step of the
   computation only a finite portion of tapes has been inspected. In
   this sense the tapes are \emph{potentially} infinite.} and contain
@@ -99,7 +99,7 @@ The answer was given by Turing.
   theory, and there is nothing wrong with reading the original
   proof~\cite{turing37:_comput_number_with_applic_to_entsc} either.
   For me a much more convincing proof is the fact that a universal
-  machine is sitting right here on my desk.\footnote{You have to
+  machine is sitting right here on my desk.\sidenote{You have to
     ignore the fact that several hundred gigabytes of storage are not
     quite the same thing as an infinite tape. Also, modern computers
     are really \emph{Von Neumann}
@@ -286,7 +286,7 @@ data, the universal function $u$ from the utm theorem is
 u (f, y) = f y
 \end{lstlisting}
 %
-and the function $s$ is the currying operation\footnote{In Haskell the
+and the function $s$ is the currying operation\sidenote{In Haskell the
   notation \texttt{{\char92}x -> e} stands for $\lambda$-abstraction
   $\xulam{x}{e}$, which in turn means ``the function which maps $x$ to
   $e$'', see Section~\ref{sec:lambda-calculus}.}
@@ -478,7 +478,7 @@ base for $\Baire$ consists of the basic open sets, for $a \in
 \end{equation*}
 %
 Because the basic open sets are both closed and open (clopen),
-$\Baire$ is in fact a countably based $0$-dimensional\footnote{Recall
+$\Baire$ is in fact a countably based $0$-dimensional\sidenote{Recall
   that a space is \emph{$0$-dimensional} when its clopen subsets form
   a base for its topology.} Hausdorff space. It is also a complete
 separable metric space for the \emph{comparison metric} $d : \Baire
@@ -894,12 +894,12 @@ $T_0$-space, i.e., for all $A, B \in \pow{\NN}$,
 %
 This is \emph{not} a Hausdorff space, not even a $T_1$-space. If you
 were taught in school by geometrically minded topologists to ignore
-non-Hausdorff spaces\footnote{I surely was as an undergraduate student
+non-Hausdorff spaces\sidenote{I surely was as an undergraduate student
   in mathematics.}, you might be pleased to discover a non-geometric
 intuition for topology. In information processing the open sets
 correspond to (positively) observable properties. The natural
 separation axiom in this setting is~$T_0$, which is a form of
-Leibniz's principle of identity.\footnote{The principle states that
+Leibniz's principle of identity.\sidenote{The principle states that
   two things are equal if they have exactly the same properties.} We
 denote $\pow{\NN}$ by $\Scott$ when we think of it as a topological
 space equipped with the Scott topology.
@@ -1169,7 +1169,7 @@ $\subst{e}{x_1 \subto e_1, \ldots, x_n \subto e_n}$ for a
 simultaneous substitution of expressions $e_1, \ldots, e_n$ for
 variables $x_1, \ldots, x_n$ in $e$, respectively. The usual rules for
 bound variables must be observed when we perform
-substitutions.\footnote{It is notoriously easy to commit errors when
+substitutions.\sidenote{It is notoriously easy to commit errors when
   defining the details of substitution. The best way to understand all
   the intricacies is to write a program that performs substitutions.}
 
@@ -1305,7 +1305,7 @@ Successor, addition and multiplication are, respectively,
 \end{align*}
 %
 We leave it as exercise to figure out how the following work and what
-they do:\footnote{A legend says that Alonzo Church was at the
+they do:\sidenote{A legend says that Alonzo Church was at the
   dentists' when he figured out how to compute predecessors. Is
   programming the untyped $\lambda$-calculus like pulling one's teeth
   out?}
@@ -1403,7 +1403,7 @@ because in the untyped $\lambda$-calculus
 $\xulam{y}{(\xulam{x}{e\;x})\; y} = \xulam{y}{e\;y}$, provided $x$ and
 $y$ do not occur freely in~$e$. We have already seen the above
 diagram: the graph model~$\Scott$ from Section~\ref{sec:graph-model}
-is an example. In general, a non-trivial\footnote{By non-trivial we
+is an example. In general, a non-trivial\sidenote{By non-trivial we
   mean that it contains more than just a single point.} topological
 space $D$ which contains its own function space $\mathcal{C}(D,D)$ as
 a retract is called a \emph{reflexive domain}.
@@ -1518,7 +1518,7 @@ is the Baire space.
   A \emph{sub-PCA} of~$(A, {\cdot})$ is a subset $A' \subseteq A$
   which is closed under application, and there exist $\combK, \combS
   \in A'$ such that~\eqref{eq:pca} is satisfied for all $x, y, z \in
-  A$.\footnote{Read that carefully: the combinators $\combK$ and
+  A$.\sidenote{Read that carefully: the combinators $\combK$ and
     $\combS$ must come from the subaglebra~$A'$ but they must have the
     defining property with respect to~$A$, and so consequently also
     with respect to $A'$.}
@@ -1866,7 +1866,7 @@ such that for any types $s, t, u \in \mathcal{T}$ there exist elements
   \combSnd_{s,t} &\in A_{s \times t \to t}.
 \end{align*}
 %
-For all elements $x, y, z$ of appropriate types we require:\footnote{We
+For all elements $x, y, z$ of appropriate types we require:\sidenote{We
   usually omit the types in subscripts and write $x \; y$ for $x
   \cdot_{s,t} y$.}
 %
@@ -2354,5 +2354,5 @@ since they mostly are, anyway.
 
 %%% Local Variables: 
 %%% mode: latex
-%%% TeX-master: "notes"
+%%% TeX-master: "notes-on-realizability"
 %%% End: 

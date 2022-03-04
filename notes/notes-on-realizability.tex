@@ -18,7 +18,6 @@
 \usepackage{amsfonts}
 \usepackage{stmaryrd}
 \usepackage{theorem}
-\usepackage{fancyheadings}
 \usepackage{array}
 \usepackage{graphicx}
 \usepackage{hyperref}
@@ -29,17 +28,11 @@
 %%% Settings for listings
 \lstset{basicstyle=\ttfamily,xleftmargin=\parindent}
 
-% Choose the language
-\ifxetexorluatex
-        \usepackage{polyglossia}
-        \setmainlanguage{english}
-\else
-        \usepackage[english]{babel} % Load characters and hyphenation
-\fi
+\usepackage[english]{babel} % Load characters and hyphenation
 \usepackage[english=american]{csquotes}  % English quotes
 
 % Load packages for testing
-\usepackage{blindtext}
+%\usepackage{blindtext}
 %\usepackage{showframe} % Uncomment to show boxes around the text area, margin, header and footer
 %\usepackage{showlabels} % Uncomment to output the content of \label commands to the document where they are used
 
@@ -53,7 +46,7 @@
 % Load the package for hyperreferences
 \usepackage{kaorefs}
 
-\graphicspath{{images/}} % Paths in which to look for images
+%\graphicspath{{images/}} % Paths in which to look for images
 
 %\makeindex[columns=3, title=Alphabetical Index, intoc] % Make LaTeX produce the files required to compile the index
 
@@ -137,7 +130,7 @@
 \subject{}
 
 \title[Notes on realizability]{Notes on realizability}
-\subtitle{}
+\subtitle{\draftnote}
 
 \author{Andrej Bauer}
 

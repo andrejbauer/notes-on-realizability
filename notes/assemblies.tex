@@ -28,7 +28,7 @@ questions~\cite{Wei00,TZ98,Bla97}.
 To explain the basic idea behind realizability we consider a small
 real-world programming example. Suppose we are asked to design a data
 structure for the set $\mathsf{Graphs}$ of all finite
-simple\footnote{Simple means at most one arrow between any two
+simple\sidenote{Simple means at most one arrow between any two
   vertices.} directed graphs with vertices labeled by distinct
 integers. A typical graph~$G$ is shown in Figure~\ref{fig:digraph}.
 %
@@ -46,7 +46,7 @@ pairing the labels of each source and target. For the above graph $G$,
 $\ell_V = [1, 2, 3, 4]$ and $\ell_A = [(1,2), (2,2), (2,3), (3,2),
 (3,1)]$.
 %
-Thus we define the datatype of graphs as\footnote{We use Haskell
+Thus we define the datatype of graphs as\sidenote{We use Haskell
   notation in which $[t]$ is the type of lists of elements of
   type~$t$, and $(t_1, t_2)$ is the cartesian product of types~$t_1$
   and~$t_2$.}
@@ -334,7 +334,7 @@ and the representation $\delta_S$ is
 
 This formulation only works for modest sets, not for general
 assemblies. With each modest set~$S$ we may associate a partial
-equivalence relation (per)\footnote{A partial equivalence relation is
+equivalence relation (per)\sidenote{A partial equivalence relation is
   a relation which is transitive and antisymmetric.} $\per_S$ on
 $\xAtyp{S}$ which relates~$q$ and~$r$ when they realize the same
 element:
@@ -1107,7 +1107,7 @@ Type~2 representations, or more precisely $\Asm{\Baire,
   \comp{\Baire}}$ are embedded in $\Asm{\Scott, \comp{\Scott}}$ by a
 full and faithful embedding. The embedding has a right adjoint. We
 outline the relationship here and refer to~\cite{Bauer:equ-tte} for
-details.\footnote{The general topic of comparing realizability models
+details.\sidenote{The general topic of comparing realizability models
   is important but excluded from these lecture notes, for the time
   being.}
 
@@ -1239,5 +1239,5 @@ our framework. We only mention two:
 
 %%% Local Variables: 
 %%% mode: latex
-%%% TeX-master: "notes"
+%%% TeX-master: "notes-on-realizability"
 %%% End: 

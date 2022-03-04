@@ -167,7 +167,7 @@ exists a unique morphism $i : K \to E$ such that $k = e \circ i$:
 \end{equation*}
 %
 Think of $E$ as the solution-set of equation $f(x) =
-g(x)$.\footnote{If we have a system of equations $f_i(x) = g_i(x)$, $i
+g(x)$.\sidenote{If we have a system of equations $f_i(x) = g_i(x)$, $i
   = 1, \ldots, n$, then we may express them as a single vector
   equation $f(x) = g(x)$ where $f(x) = (f_1(x), \ldots, f_n(x))$ and
   $g(x) = (g_1(x), \ldots, g_n(x))$. Equalizers are thus an abstract
@@ -240,7 +240,7 @@ where $\combPair\;\R{x}\;\R{y} \rz_P (x,y)$ if, and only if, $\R{x}
 Finite products, the terminal object, equalizers, and pullbacks are
 special cases of \emph{finite limits}. A category which has all finite
 limits is called \emph{cartesian} or \emph{finitely
-  complete}.\footnote{We do not like much the still older terminology
+  complete}.\sidenote{We do not like much the still older terminology
   \emph{left exact} or just \emph{lex}.}
 
 \begin{proposition}
@@ -311,7 +311,7 @@ and $(1,y)$. Instead, we simply take the injections $\iota_1$ and
 $\iota_2$ as \emph{labels} that indicate which part of a disjoint sum
 we are referring to. Thus, every element of $S + T$ is either of the
 form $\iota_1(x)$ for a unique $x \in S$, or $\iota_2(y)$ for a unique
-$y \in T$.\footnote{If you feel the urge to really encode everything
+$y \in T$.\sidenote{If you feel the urge to really encode everything
   with sets, you can still define $\iota_1(x) = (0, x)$ and
   $\iota_2(y) = (1, y)$ but then forget the definition.} In a specific
 case we may choose different, descriptive names for the injections.
@@ -637,7 +637,7 @@ object is the \emph{empty assembly}
   \zero = (\emptyset, o, \rz_\zero)
 \end{equation*}
 %
-where $o$ is any type.\footnote{If you are wondering what $\rz_\zero$
+where $o$ is any type.\sidenote{If you are wondering what $\rz_\zero$
   is, ask yourself how many relations there are between $\Atyp{o}$ and
   $\emptyset$.} Its universal property is that there is exactly one
 morphism $\zero \to \asm{S}$ for every assembly~$\asm{S}$. The
@@ -694,7 +694,7 @@ explicit description of pushouts as exercise.
 
 \begin{proposition}
   \label{prop:asm-cocartesian}%
-  $\AsmA$ is cocartesian\footnote{A category is \emph{cocartesian} or
+  $\AsmA$ is cocartesian\sidenote{A category is \emph{cocartesian} or
     \emph{finitely cocomplete} if it has finite colimits.} if, and
   only if, $\AA$ is a TPCA with sums and $\compAA$ a sub-TPCA with
   sums.
@@ -869,7 +869,7 @@ the \emph{quotient assembly} $\asm{T}/{\equiv} = (T/{\equiv}, |T|,
 \rz_{T/{\equiv}} [y]$ if, and only if, $\R{x} \rz_T x$ and $x \equiv
 y$ for some $x \in T$. The quotient map $q : T \to T/{\equiv}$ is
 realized by $\xpcalam{\annot{x}{|T|}}{x}$, and is a coequalizer of $g,
-h : \asm{V} \to \asm{T}$ where\footnote{You should convince yourself
+h : \asm{V} \to \asm{T}$ where\sidenote{You should convince yourself
   that $\asm{V}$ is the \emph{kernel pair} of~$q$, i.e., the pullback
   of $q$ with itself.}
 %
@@ -1047,7 +1047,7 @@ feature of assemblies.
 
 \begin{proposition}
   \label{prop:asm-regular}%
-  The category $\AsmA$ is \emph{regular},\footnote{Note that there are
+  The category $\AsmA$ is \emph{regular},\sidenote{Note that there are
     several definitions of ``regular category'', but they all agree
     once we assume the existence of finite limits.} which means that
   %
@@ -1268,7 +1268,7 @@ S_n$:
     \sem{\overline{x} : \overline{\asm{S}} \ctx b : \asm{T}}(a) = b,
   \end{equation*}
   %
-  which is realized\footnote{Had we allowed as primitive constants
+  which is realized\sidenote{Had we allowed as primitive constants
     \emph{all} elements of~$\asm{T}$, we would face a difficulty here,
     because we could not exhibit a computable realizer for the
     constant map.} by $\xpcalam{\annot{x}{|S_1| \times \cdots \times
@@ -1782,12 +1782,12 @@ if $u$ factors through $t$, i.e., there exists a realized $f : \asm{U}
   }
 \end{equation*}
 %
-commutes. If~$f$ exists then it is unique and is a mono.\footnote{Such
+commutes. If~$f$ exists then it is unique and is a mono.\sidenote{Such
   basic category-theoretic observations are excellent exercises. You
   should prove them yourself.} If $u \leq t$ and $t \leq u$ we say
 that $u$ and $t$ are \emph{isomorphic} and write $u \equiv t$. The
 collection $\Mono{\asm{S}}$ of all monos with codomain~$\asm{S}$ is a
-preorder because $\leq$ is reflexive and transitive.\footnote{By
+preorder because $\leq$ is reflexive and transitive.\sidenote{By
   quotienting $\Mono{\asm{S}}$ by $\equiv$ we get the partial order
   $\Sub{\asm{S}} = \Mono{\asm{S}}/{\cong}$ of \emph{subobjects}
   of~$\asm{S}$, but we shall not do that because it is cumbersome to
@@ -2335,5 +2335,5 @@ The realizability relation $\R{r} \rz \phi$, where $\R{r} \in
 
 %%% Local Variables: 
 %%% mode: latex
-%%% TeX-master: "notes"
+%%% TeX-master: "notes-on-realizability"
 %%% End: 
