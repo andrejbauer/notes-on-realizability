@@ -35,12 +35,13 @@ actually write programs for Turing machines. If you are not familiar
 with Turing machines we recommend one of standard textbooks on the
 subject~\sidecite{odifreddi89:_class_recur_theor,h.r.92:_theor_recur_funct_effec_comput,davis58:_comput_unsol}.
 
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.5\textwidth]{turing_machine}
-  \caption{A Turing machine operates with tapes}
-  \label{fig:turing-machine}
-\end{figure}
+MISSING PICTURE OF TURING MACHINE
+% \begin{figure}[htbp]
+%   \centering
+%   \includegraphics[width=0.5\textwidth]{turing_machine}
+%   \caption{A Turing machine operates with tapes}
+%   \label{fig:turing-machine}
+% \end{figure}
 
 A Turing machine is a device which operates on a number of tapes and
 heads, see Figure~\ref{fig:turing-machine}:
@@ -99,13 +100,13 @@ The answer was given by Turing.
   theory, and there is nothing wrong with reading the original
   proof~\sidecite{turing37:_comput_number_with_applic_to_entsc} either.
   For me a much more convincing proof is the fact that a universal
-  machine is sitting right here on my desk.\sidenote{You have to
+  machine is sitting right here on my desk. (You have to
     ignore the fact that several hundred gigabytes of storage are not
     quite the same thing as an infinite tape. Also, modern computers
     are really \emph{Von Neumann}
     machines~\sidecite{goldstein47:_repor_mathem_and_logic_aspec} because
     they have a central processing unit and random access memory
-    instead of a tape.}
+    instead of a tape.)
 \end{proof}
 
 Once we have a universal machine, we can make it behave like any other
@@ -576,7 +577,7 @@ by~$\beta$. We would like to know which maps are realizable.
 \end{proof}
 
 
-\begin{theorem}[Extension Theorem for $\Baire$]
+\begin{theorem}[Extension Theorem for $\Baire$]%
   \label{th:extension_BB}%
   Every partial continuous map $f: \Baire \parto \Baire$ can be extended
   to a realized one.
@@ -2159,7 +2160,7 @@ above the line are. For example, the first rules says that in an
 application $e_1\;e_2$ we should evaluate $e_1$ if we can. The second
 rule is essentially a directed version of $\beta$-reduction.
 
-\begin{figure}[htpb]
+\begin{figure*}[htpb]
   \centering
 \begin{gather*}
   \infer
@@ -2223,7 +2224,7 @@ rule is essentially a directed version of $\beta$-reduction.
 \end{gather*}
   \caption{Small-step semantics of PCF}
   \label{fig:pcf}
-\end{figure}
+\end{figure*}
 
 The transitive reflexive closure of $\oneto$ is denoted by $\manyto$.
 We define \emph{evaluation} $\mathsf{eval}$ as the partial map which

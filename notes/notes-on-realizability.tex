@@ -17,7 +17,7 @@
 \usepackage{amssymb}
 \usepackage{amsfonts}
 \usepackage{stmaryrd}
-\usepackage{theorem}
+%\usepackage{theorem}
 \usepackage{array}
 \usepackage{graphicx}
 \usepackage{hyperref}
@@ -38,7 +38,12 @@
 \addbibresource{notes.bib} % Bibliography file
 
 % Load mathematical packages for theorems and related environments
-% \usepackage[framed=true]{kaotheorems}
+\usepackage[
+  definitionbackground=green!10!white,
+  theorembackground=Goldenrod!20!white,
+  propositionbackground=Goldenrod!20!white,
+  lemmabackground=Goldenrod!20!white,
+  framed=true]{kaotheorems}
 
 % Load the package for hyperreferences
 \usepackage{kaorefs}
@@ -99,16 +104,16 @@
 \newcommand{\indexfoot}[1]{\index{#1|footstyle}}%
 \newcommand{\indexsee}[2]{\index{#1|see{#2}}}%
 
-%%% Theorems
-\newtheorem{theorem}{Theorem}[chapter]
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{corollary}[theorem]{Corollary}
+% %%% Theorems
+% \newtheorem{theorem}{Theorem}[chapter]
+% \newtheorem{proposition}[theorem]{Proposition}
+% \newtheorem{lemma}[theorem]{Lemma}
+% \newtheorem{corollary}[theorem]{Corollary}
 
-{\theorembodyfont{\rmfamily}
-\newtheorem{exercise}[theorem]{Exercise}
-\newtheorem{definition}[theorem]{Definition}
-}
+% {\theorembodyfont{\rmfamily}
+% \newtheorem{exercise}[theorem]{Exercise}
+% \newtheorem{definition}[theorem]{Definition}
+% }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% For Draft versions uncomment this:
