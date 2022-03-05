@@ -34,15 +34,18 @@
 %\usepackage{showlabels} % Uncomment to output the content of \label commands to the document where they are used
 
 % Load the bibliography package
-\usepackage[backend=bibtex,style=alphabetic,sorting=nyt]{kaobiblio}
+\usepackage[backend=bibtex,sorting=nyt]{kaobiblio}
 \addbibresource{notes.bib} % Bibliography file
+\addbibresource{cca.bib} % Bibliography file
+\addbibresource{realizability.bib} % Bibliography file
 
 % Load mathematical packages for theorems and related environments
 \usepackage[
   definitionbackground=green!10!white,
-  theorembackground=Goldenrod!20!white,
+  theorembackground=blue!10!white,
   propositionbackground=Goldenrod!20!white,
   lemmabackground=Goldenrod!20!white,
+  corollarybackground=Goldenrod!20!white,
   framed=true]{kaotheorems}
 
 % Load the package for hyperreferences
@@ -50,7 +53,7 @@
 
 %\graphicspath{{images/}} % Paths in which to look for images
 
-%\makeindex[columns=3, title=Alphabetical Index, intoc] % Make LaTeX produce the files required to compile the index
+\makeindex[columns=3, title=Alphabetical Index, intoc] % Make LaTeX produce the files required to compile the index
 
 %\makeglossaries % Make LaTeX produce the files required to compile the glossary
 %\input{glossary.tex} % Include the glossary definitions
@@ -254,11 +257,12 @@
 \setchapterstyle{kao} % Choose the default chapter heading style
 
 \input{introduction.tex}
-\input{models.tex}            % Week 1, 2
-\input{assemblies.tex}        % Week 3, 4, 5
-\input{internal_language.tex} % Week 6, 7
-\input{computable_spaces.tex} % Week 8, 9, 10, 11, 12, 13
-\input{implementation.tex}    % Week 14, 15
+\input{models.tex}
+\input{assemblies.tex}
+\input{categories-of-assemblies.tex}
+\input{realizability-logic.tex}
+\input{type-theory.tex}
+\input{principles.tex}
 
 
 %\input{chapters/introduction.tex}
@@ -331,7 +335,7 @@
 
 % The index needs to be compiled on the command line with 'makeindex main' from the template directory
 
-% \printindex % Output the index
+\printindex % Output the index
 
 %----------------------------------------------------------------------------------------
 %       BACK COVER

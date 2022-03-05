@@ -1,5 +1,6 @@
-\chapter{The Internal Language}
-\label{chap:internal-language}
+\chapter{The category-theoretic structure}
+\label{cha:categ-structure}
+
 
 In Chapter~\ref{chap:realizability} we defined assemblies as our basic
 structures of interest. To learn more about them we study which
@@ -8,8 +9,6 @@ turns out that there is not only a rich collection of constructions
 available, but also an interpretation of first-order logic that
 assigns to a logical formula its computational meaning.
 
-\section{Constructions of assemblies}
-\label{sec:constructions}
 
 In their everyday lives mathematicians use a limited set of
 constructions on sets: products, disjoint sums, subsets, quotient
@@ -20,7 +19,7 @@ Therefore, if we need a computable version of a given mathematical
 structure, may just mimic its set-theoretic definition in the
 category of assemblies.
 
-\subsection{The cartesian structure}
+\section{The cartesian structure}
 \label{sec:cartesian-structure}
 
 A construction which makes a new set, space, or an algebraic structure
@@ -29,7 +28,7 @@ which determines it up to isomorphism. The universal property is
 shared among versions of the same construction in different
 categories. We start slowly with an easy one, the binary product.
 
-Recall the definition of a \emph{(binary) product} in a category: the
+Recall the definition of a \defemph{(binary) product} in a category: the
 product of objects $S$ and $T$ is an object $P$ with morphisms $p_1 :
 P \to S$ and $p_2 : P \to T$, satisfying the following universal
 property: for all morphisms $f : U \to S$ and $g : U \to T$ there is a
@@ -72,7 +71,7 @@ Since $\id_P$ also satisfies $p_1 \circ \id_P = p_1$ and $p_2 \circ
 property that $h \circ k = \id_P$. A similar argument shows that $k
 \circ h = \id_Q$, hence $P$ and $Q$ are isomorphic.
 
-A category \emph{has binary products} if every pair of objects has a
+A category \defemph{has binary products} if every pair of objects has a
 binary product. In most cases we can actually provide an operation
 $\times$ which maps a pair of objects $S$, $T$ to a specifically given
 product $S \times T$ with corresponding projections. The unique map
@@ -126,7 +125,7 @@ job:
 
 Once we have binary products we may form $n$-ary products $S_1 \times
 \cdots \times S_n$ for $n \geq 1$ by repeatedly forming binary
-products. The case $n = 0$ corresponds to the \emph{terminal object},
+products. The case $n = 0$ corresponds to the \defemph{terminal object},
 which is an object $\one$ such that for every object~$S$ there is
 exactly one morphism $S \to \one$. In the category of sets the
 terminal object is (any) singleton set, say $\one = \set{\star}$. Then
@@ -141,7 +140,7 @@ proof that $\Asm{\Scott, \comp{\Scott}}$ and $\Asm{\Baire,
 not.
 
 Products are a special case of categorical limits. Two other common
-kinds of limits are equalizers and pullbacks. An \emph{equalizer} of a
+kinds of limits are equalizers and pullbacks. An \defemph{equalizer} of a
 pair of morphisms $f, g : S \to T$ is an object $E$ with a morphism $e
 : E \to S$ such that $e$ equalizes $f$ and $g$, which means that $f
 \circ e = g \circ e$, and the following universal property is
@@ -191,7 +190,7 @@ where $\R{x} \rz_E x$ if, and only if, $\R{x} \rz_S x$. The map $e : E
 $\xpcalam{\annot{x}{|S|}}{x}$. Clearly, $e$ equalizes~$f$ and~$g$. We
 leave the verification of the universal property as exercise.
 
-A \emph{pullback}, sometimes called \emph{fibered product}, is a
+A \defemph{pullback}, sometimes called \defemph{fibered product}, is a
 combination of product and equalizer. Given morphisms $f : S \to U$
 and $g : T \to U$, the pullback of $f$ and $g$ is an object $P$ with
 morphisms $p_1 : P \to S$ and $p_2 : P \to T$ such that $f \circ p_1 =
@@ -238,8 +237,8 @@ where $\combPair\;\R{x}\;\R{y} \rz_P (x,y)$ if, and only if, $\R{x}
 \rz_S x$ and $\R{y} \rz_T y$.
 
 Finite products, the terminal object, equalizers, and pullbacks are
-special cases of \emph{finite limits}. A category which has all finite
-limits is called \emph{cartesian} or \emph{finitely
+special cases of \defemph{finite limits}. A category which has all finite
+limits is called \defemph{cartesian} or \defemph{finitely
   complete}.\sidenote{We do not like much the still older terminology
   \emph{left exact} or just \emph{lex}.}
 
@@ -258,7 +257,7 @@ limits is called \emph{cartesian} or \emph{finitely
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Cocartesian structure}
+\section{Cocartesian structure}
 \label{sec:cocartesian-structure}
 
 
@@ -343,7 +342,7 @@ We shall use this notation. Let us mention that in Haskell $\iota_1$
 and $\iota_2$ are called $\mathtt{Left}$ and $\mathtt{Right}$,
 respectively.
 
-In a general category a \emph{(binary) coproduct} of objects~$S$
+In a general category a \defemph{(binary) coproduct} of objects~$S$
 and~$T$ is an object $C$ with morphisms $\iota_1 : S \to C$ and
 $\iota_2 : T \to C$ such that, for all morphisms $f : S \to U$ and $g
 : T \to U$ there exists a unique $h : C \to U$ such that the following
@@ -378,7 +377,7 @@ question. The answer seems to depend on the structure of the
 underlying TPCAs.
 
 \begin{definition}
-  A TPCA~$\AA$ with \emph{sums} is a TPCA with a binary operation $+$
+  A TPCA~$\AA$ with \defemph{sums} is a TPCA with a binary operation $+$
   on the types such that, for all types $s$, $t$, and $u$ there exist
   constants
   %
@@ -400,7 +399,7 @@ underlying TPCAs.
   We say that the elements $\combLeft$, $\combRight$, and $\combCase$
   are \emph{suitable} for sums when they satisfy these properties.
 
-  A \emph{sub-TPCA with sums} is a sub-TPCA $\compAA$ of~$\AA$ such
+  A \defemph{sub-TPCA with sums} is a sub-TPCA $\compAA$ of~$\AA$ such
   that there exists $\combLeft$, $\combRight$, $\combCase$
   in~$\compAA$ suitable for sums in $\AA$.
 \end{definition}
@@ -523,7 +522,7 @@ that covers the instances we care about.
 
 \begin{definition}
   \label{def:tpca-booleans}%
-  A TPCA $\AA$ has \emph{booleans} when there is a type $\ttbool$, and
+  A TPCA $\AA$ has \defemph{booleans} when there is a type $\ttbool$, and
   for each type~$t$ elements
   %
   \begin{equation*}
@@ -631,7 +630,7 @@ Finally, let us put all these together.
 \end{proof}
 
 The other finite colimits are more easily dealt with. The initial
-object is the \emph{empty assembly}
+object is the \defemph{empty assembly}
 %
 \begin{equation*}
   \zero = (\emptyset, o, \rz_\zero)
@@ -644,7 +643,7 @@ morphism $\zero \to \asm{S}$ for every assembly~$\asm{S}$. The
 property holds because there is a unique map $\emptyset \to S$, which
 is realized by $\combK_{|S|,o}\;a$, where $a \in \compAtyp{o}$.
 
-A \emph{coequalizer} of morphisms $f, g : S \to T$ is an object $Q$
+A \defemph{coequalizer} of morphisms $f, g : S \to T$ is an object $Q$
 with a morphism $q : T \to Q$ that equalizes~$f$ and $g$, which means
 $q \circ f = q \circ g$, and has the following universal property: if
 $k : T \to K$ equalizes~$f$ and~$g$ then there is a unique morphism $i
@@ -694,8 +693,8 @@ explicit description of pushouts as exercise.
 
 \begin{proposition}
   \label{prop:asm-cocartesian}%
-  $\AsmA$ is cocartesian\sidenote{A category is \emph{cocartesian} or
-    \emph{finitely cocomplete} if it has finite colimits.} if, and
+  $\AsmA$ is cocartesian\sidenote{A category is \defemph{cocartesian} or
+    \defemph{finitely cocomplete} if it has finite colimits.} if, and
   only if, $\AA$ is a TPCA with sums and $\compAA$ a sub-TPCA with
   sums.
 \end{proposition}
@@ -709,12 +708,12 @@ explicit description of pushouts as exercise.
 \end{proof}
 
 
-\subsection{Monos and epis}
+\section{Monos and epis}
 \label{sec:monos-epis}
 
-Recall that $f$ is a \emph{monomorphism (mono)} when it can be
+Recall that $f$ is a \defemph{monomorphism (mono)} when it can be
 canceled on the left: if $f \circ g = f \circ h$ then $g = h$. The
-dual notion is \emph{epimorphism (epi)}, which is a morphism that can
+dual notion is \defemph{epimorphism (epi)}, which is a morphism that can
 be canceled on the right. In the category of sets the monos and epis
 are precisely the injective and surjective maps, respectively.
 
@@ -751,7 +750,7 @@ are precisely the injective and surjective maps, respectively.
   it and obtain $g = h$. This shows that $f$ is epi in~$\Set$.
 \end{proof}
 
-A \emph{mono-epi} is a morphism $f : S \to T$ which is both mono and
+A \defemph{mono-epi} is a morphism $f : S \to T$ which is both mono and
 epi. In general such a morphism need not be an isomorphism. For
 example, a continuous bijection between topological spaces need not be
 a homeomorphism.
@@ -774,7 +773,7 @@ elements, then $\id_S : S \to S$ is realized as a morphism $\id_S :
 every morphism $\nabla S \to \asm{S}$ is a constant map, therefore
 $\asm{S}$ is not isomorphic to~$\nabla{S}$.
 
-Recall that $f : \asm{S} \to \asm{T}$ is a \emph{regular mono} if
+Recall that $f : \asm{S} \to \asm{T}$ is a \defemph{regular mono} if
 there are $g, h : \asm{T} \to \asm{U}$ such that~$f$ is their
 equalizer. Regular monos are well behaved, and we can think of them as
 subspace embeddings. Given an assembly $\asm{T}$ and a subset $T'
@@ -855,22 +854,22 @@ The following characterization of regular monos is often useful.
 \end{proof}
 
 
-We repeat the story for \emph{regular epis}, which are those morphisms
+We repeat the story for \defemph{regular epis}, which are those morphisms
 that are coequalizers. They are the well behaved epis which can be
 thought of as quotient maps. In fact, if $f : \asm{S} \to \asm{T}$ is
-a regular epi, we say that $\asm{T}$ is a \emph{quotient} of~$\asm{S}$.
+a regular epi, we say that $\asm{T}$ is a \defemph{quotient} of~$\asm{S}$.
 
 The match between regular epis and quotients is precise in $\AsmA$.
 Note that that in the construction of coequalizers, as described
 above, we may start with an arbitrary equivalence relation: given an
 assembly $\asm{T}$ and an equivalence relation $\equiv$ on~$T$, define
-the \emph{quotient assembly} $\asm{T}/{\equiv} = (T/{\equiv}, |T|,
+the \defemph{quotient assembly} $\asm{T}/{\equiv} = (T/{\equiv}, |T|,
 \rz_{T/{\equiv}})$ whose realizability relation satisfies $\R{x}
 \rz_{T/{\equiv}} [y]$ if, and only if, $\R{x} \rz_T x$ and $x \equiv
 y$ for some $x \in T$. The quotient map $q : T \to T/{\equiv}$ is
 realized by $\xpcalam{\annot{x}{|T|}}{x}$, and is a coequalizer of $g,
 h : \asm{V} \to \asm{T}$ where\sidenote{You should convince yourself
-  that $\asm{V}$ is the \emph{kernel pair} of~$q$, i.e., the pullback
+  that $\asm{V}$ is the \defemph{kernel pair} of~$q$, i.e., the pullback
   of $q$ with itself.}
 %
 \begin{align*}
@@ -941,10 +940,8 @@ There is another characterization of regular epis which is used often.
   each other and that $q = i \circ f$ holds.
 \end{proof}
 
-% When is a numbered set total
-
-\subsection{Factorization of morphisms and regular structure}
-\label{sec:factorization}
+\section{The regular structure}
+\label{sec:regular-structure}
 
 In the category of sets every function $f : S \to T$ may be factored
 as $f = e \circ m$ where $e$ is epi and $m$ is mono. Similarly, a
@@ -983,8 +980,8 @@ for all $y \in V$. The map $i : V \to T$ is the subset inclusion.
 Finally, $b : U \to V$ is characterized by $b([x]_{\equiv}) = f(x)$.
 It is realized by the same realizers as~$f$.
 
-In the above factorization we call $\asm{U}$ the \emph{image} of~$f$
-and $\asm{V}$ the \emph{stable image} of~$f$. The reason for the
+In the above factorization we call $\asm{U}$ the \defemph{image} of~$f$
+and $\asm{V}$ the \defemph{stable image} of~$f$. The reason for the
 terminology is revealed in Section~\ref{internal-epi-reg-epi}, where
 the stable image is related to stable propositions.
 
@@ -1047,7 +1044,7 @@ feature of assemblies.
 
 \begin{proposition}
   \label{prop:asm-regular}%
-  The category $\AsmA$ is \emph{regular},\sidenote{Note that there are
+  The category $\AsmA$ is \defemph{regular},\sidenote{Note that there are
     several definitions of ``regular category'', but they all agree
     once we assume the existence of finite limits.} which means that
   %
@@ -1110,7 +1107,7 @@ and it provides an interpretation of existential quantifiers, cf.\
 Section~\ref{sec:realizability-interpretation}.
 
 
-\subsection{Cartesian closed structure}
+\section{Cartesian closed structure}
 \label{sec:ccc}
 
 
@@ -1124,7 +1121,7 @@ $(P, {\leq_P})$ and $(Q, {\leq_Q})$ is partially ordered by $f \leq g
 what it means for an object to correspond to the the set of morphisms.
 
 \begin{definition}
-  An \emph{exponential} of objects $S$ and $T$ is an object $E$ with a
+  An \defemph{exponential} of objects $S$ and $T$ is an object $E$ with a
   morphism $e : E \times S \to T$, such that for every $f : U \times S
   \to T$ there exists a \emph{unique} $\curry{f} : U \to E$ such that
   the following diagram commutes:
@@ -1144,7 +1141,7 @@ what it means for an object to correspond to the the set of morphisms.
   \end{equation*}
   %
   A category with finite products in which all exponentials exist is a
-  \emph{cartesian closed category (ccc)}.
+  \defemph{cartesian closed category (ccc)}.
 \end{definition}
 
 \noindent
@@ -1152,8 +1149,8 @@ what it means for an object to correspond to the the set of morphisms.
 The exponential is determined uniquely up to isomorphism. When given
 as an operation, we denote the exponential of $S$ and $T$ by $T^S$,
 and sometimes by $S \to T$. The map $e : T^S \times S \to T$ is called
-the \emph{evaluation morphism}. The map $\curry{f} : U \to T^S$ is
-called the \emph{transpose} of $f : U \times S \to T$.
+the \defemph{evaluation morphism}. The map $\curry{f} : U \to T^S$ is
+called the \defemph{transpose} of $f : U \times S \to T$.
 
 Let us explain how exponentials work in the category of sets. The
 exponential of sets $S$ and $T$ is the set
@@ -1226,8 +1223,8 @@ $\uncurry{g}(z,x) = g(z)(x)$. If $g$ is realized by $\R{g}$ then
 $\uncurry{g}$ is realized by $\uncurry{\R{g}} = \pcalam{\annot{p}{|U|
     \times |S|}}{\R{g}\;(\combFst\;p)\;(\combSnd\;p)}$. It is easy to
 check that $\uncurry{\curry{f}} = f$ and $\curry{\uncurry{g}} = g$.
-The operation $f \mapsto \curry{f}$ is also known as \emph{currying}
-and its inverse $g \mapsto \uncurry{g}$ as \emph{uncurrying}.
+The operation $f \mapsto \curry{f}$ is also known as \defemph{currying}
+and its inverse $g \mapsto \uncurry{g}$ as \defemph{uncurrying}.
 
 Currying and uncurrying are useful operations, but the above notation
 with ``hats and checks'' is not very practical. We may take better
@@ -1246,7 +1243,7 @@ Suppose $e$ is an expression of type~$\asm{T}$ and the freely
 occurring variables of~$e$ are among $\annot{x_1}{\asm{S}_1}, \ldots,
 \annot{x_n}{\asm{S}_n}$. We prefer to write the list of variables as
 $x_1 : \asm{S}_1, \ldots, x_n : \asm{S}_n$, which we abbreviate as
-$\overline{x} : \overline{\asm{S}}$, and call it a \emph{typing
+$\overline{x} : \overline{\asm{S}}$, and call it a \defemph{typing
   context} for~$e$. The expression with the typing context determines
 a realized map
 %
@@ -1546,794 +1543,56 @@ You are invited to redo the proof by drawing the relevant commutative
 diagrams and using the universal properties of products, coproducts,
 and exponentials.
 
+\section{The natural numbers object}
+\label{sec:natur-numb-object}
 
-\subsection{Families of assemblies}
-\label{sec:families-assemblies}
 
-In everyday mathematics \emph{parametrized} sets are commonplace. For
-example, when a mathematical text says ``consider a continuous map $f
-: [a,b] \to \RR$ where $a < b$ are real numbers'', there is an
-implicit use of the parametrized set $[a,b] = \set{x \in \RR \such a
-  \leq x \leq b}$, where $a$ and $b$ are the parameters. In general, a
-parametrized set $(T_i)_{i \in I}$ is given by an \emph{index set~$I$}
-and a correspondence which assigns a set $T_i$ to each $i \in I$. This
-is also known as a \emph{family} of sets.
+% When is a numbered set total
 
-We would like a corresponding notion of parametrized assemblies. One
-possibility is to take a family $(\asm{S}_i)_{i \in I}$ of assemblies
-$\asm{S}_i$ indexed by a \emph{set}~$I$. This is known as an
-\emph{external} family of assemblies, because the index set~$I$ is not
-an assembly. We would prefer the index $i$ to range over an assembly.
-This works out well if we also impose a uniformity condition on the
-assemblies $\asm{S}_i$.
+
+
+
+
+\section{Projective assemblies}
+\label{sec:projective-assemblies}
+
+% Presentation axiom
 
 \begin{definition}
-  A \emph{uniform family} of assemblies $(\asm{S}_i)_{i \in \asm{I}}$
-  is given by an \emph{index assembly~$\asm{I}$}, and for each $i \in
-  I$ an assembly $\asm{S}_i = \xasm{S_i}$, such that $|S_i| = |S_j|$
-  for all $i, j \in I$.
+  An assembly is \defemph{canonically projective} if each element has
+  precisely one realizer.
 \end{definition}
 
-We only consider uniform families $(\asm{S}_i)_{i \in \asm{I}}$, and
-write the underlying type of $\asm{S}_i$'s as $|S|$. From an
-implementation point of view uniformity is a reasonable condition.
-
-Given a uniform family $(\asm{S}_i)_{i \in \asm{I}}$, we may form the
-\emph{dependent sum}
+\noindent
+In symbols, an assembly $S$ is canonically projective when, for all
+$x, y \in S$, $r \in A_{|S|}$,
 %
 \begin{equation*}
-  \dsum_{i \in \asm{I}} \asm{S}_i =
-  (\dsum_{i \in I} S_i, |I| \times |S|, \rz_{\dsum_{i \in I} S_i})
+  r \rz_S x \land r \rz_S y \implies x = y.
 \end{equation*}
 %
-where $\dsum_{i \in I} S_i = \set{(i,x) \such i \in I \land x \in
-  S_i}$ is the disjoint sum of the sets $S_i$ and
-%
-\begin{equation*}
-  \combPair\;\R{i}\;\R{x} \rz_{\dsum_{i \in I} S_i} (i, x)
-  \iff
-  \R{i} \rz_I i
-  \land
-  x \in S_i
-  \land
-  \R{x} \rz_{S_i} x.  
-\end{equation*}
-%
-Similarly, we may form the \emph{dependent product} of a uniform
-family $(\asm{S}_i)_{i \in \asm{I}}$. First recall that the
-set-theoretic product of the family of \emph{sets} $(S_i)_{i \in I}$
-is
-%
-\begin{equation*}
-  \dprod_{i \in I} S_i =
-  \set{f : I \to \tbigcup_{i \in I} S_i \such
-    \xall{i}{I}{f(i) \in S_i}
-  }.
-\end{equation*}
-%
-Let $\rz_{\dprod_{i \in I} S_i}$ be the relation between $\Atyp{|I|
-  \to |S|}$ and $\dprod_{i \in I} S_i$, defined by
-%
-\begin{equation*}
-  \R{f} \rz_{\dprod_{i \in I} S_i} f
-  \iff
-  \xall{\R{i}}{\Atyp{|I|}}{
-    \all{i}{I}{
-      \R{i} \rz_I i
-      \implies
-      \defined{\R{f}\;\R{i}} \land
-      \R{f}\;\R{i} \rz_{S_i} f(i)
-    }
-  }.
-\end{equation*}
-%
-Finally, define the dependent product of the family to be the assembly
-%
-\begin{equation*}
-  \dprod_{i \in \asm{I}} \asm{S}_i =
-  (\set{f \in \dprod_{i \in I} S_i \such
-    \xsome{\R{f}}{\Atyp{|I| \to |S|}}{\R{f} \rz_{\dprod_{i \in I} S_i}
-      f}},
-  |I| \to |S|, {\rz_{\dprod_{i \in I} S_i}}).
-\end{equation*}
-%
-Notice how at the level of underlying types the dependency on the
-parameter~$i$ disappears because we required the families to be
-uniform. This is fortunate, as most programming languages are not
-equipped with dependent types.
-
-The dependent sums and products have their universal properties which
-are somewhat complicated to state. Suffice it to say that they are the
-constructions needed to show that $\AsmA$ is \emph{locally
-  cartesian-closed (lccc)}, cf.\ \sidecite{background-lccc}.
-
-
-%\subsection{Projective assemblies}
-%\label{sec:projective-assemblies}
-%
-% % Presentation axiom
-
-% \begin{definition}
-%   An assembly is \emph{canonically projective} if each element has
-%   precisely one realizer.
-% \end{definition}
-
-% \noindent
-% In symbols, an assembly $S$ is canonically projective when, for all
-% $x, y \in S$, $r \in A_{|S|}$,
-% %
-% \begin{equation*}
-%   r \rz_S x \land r \rz_S y \implies x = y.
-% \end{equation*}
-% %
-% The canonically projective assemblies are, up to isomorphism,
-% precisely the projective objects of the category of assemblies.
-
-% A canonically projective modest set $(S, |S|, {\rz_S})$ is determined,
-% up to isomorphism, by the set of the total realizers~$\|S\|$. This
-% follows from Lemma~\ref{lemma:iso-assembly} and the fact that
-% projectivity ensures that $S$ and $\|S\|$ are in bijective
-% correspondence. This combined with the fact that every modest set is a
-% quotient of a canonically projective one leads to the following
-% definition.
-
-% Let $\subcat{A, \comp{A}}$ be the category whose objects are pairs
-% $(S, |S|)$ where $|S|$ is a type and $S \subseteq A_{|S|}$. A morphism
-% $f : (S, |S|) \to (T, |T|)$ is a map $f : S \to T$ which is tracked by
-% some $p \in \comp{A}_{|S| \to |T|}$, i.e., for all $p \in S$,
-% $\defined{p\;r}$ and $p\;r \in T$. This category is equivalent to the
-% full subcategory of $\Mod{A, \comp{A}}$ on the canonically projective
-% modest sets.
-
-
-
-\section{The realizability interpretation of logic}
-\label{sec:realizability-interpretation}
-
-
-The idea that the elements of a set are represented by values of a
-datatype is familiar to programmers. In the previous section we
-expressed the idea mathematically in terms of realizability relations
-and assemblies. What is perhaps less obvious is that realizability
-carries over to logic as well. To every statement $\phi$ in
-first-order logic we may assign its realizers, which are computable
-witnesses showing why $\phi$ holds.
-
-Let us first recall how the usual interpretation of classical
-first-order logic works. A \emph{predicate} on a set~$S$ is a function
-$\phi : S \to \two$, where $\two = \set{0, 1}$ is the set of truth
-values. Such a predicate determines the subset $\set{x \in S \such
-  \phi(x) = 1} \subseteq S$, called the \emph{extension} of~$\phi$,
-and conversely, every $T \subseteq S$ determines the predicate
-$\chi_T(x) = (\cond{x \in T}{1}{0})$, called the \emph{characteristic
-  map} of~$T$. This correspondence is a bijection between $\two^S$ and
-$\pow{S}$. Either can be used to interpret logic, but $\pow{S}$ is the
-more suitable option in our case. Thus we view predicates on a set
-$S$ as elements of the powerset $\pow{S}$.
-
-The poset $\pow{S}$, ordered by $\subseteq$, is a Boolean algebra. The
-least element is $\emptyset$, the largest $S$, the infimum of $A \in
-\pow{S}$ and $B \in \pow{S}$ is their intersection $A \cap B$, the
-supremum is the union $A \cup B$, and the complement of~$A$ is the
-set-theoretic complement $S \setminus A$. This structure is used in
-the interpretation of classical propositional calculus. Suppose $\phi$
-is a proposition built from $\bot$, $\top$, $\land$, $\lor$,
-$\implies$, $\lnot$, and \emph{atomic propositions} $p_1, \ldots,
-p_n$. As soon as we assign subsets $P_i \subseteq S$ to the atomic
-propositions $p_i$, the meaning of $\phi$ as a subset $\sem{\phi}
-\subseteq S$ is defined inductively as follows:
-%
-\begin{align*}
-  \sem{\bot} &= \emptyset,\\
-  \sem{\top} &= S,\\
-  \sem{\phi_1 \land \phi_2} &= \sem{\phi_1} \cap \sem{\phi_2},\\
-  \sem{\phi_1 \lor \phi_2} &= \sem{\phi_1} \cup \sem{\phi_2},\\
-  \sem{\phi_1 \implies \phi_2} &= (S \setminus \sem{\phi_1}) \cup \sem{\phi_2},\\
-  \sem{\lnot \phi} &= S \setminus \sem{\phi},\\
-  \sem{p_i} &= P_i.
-\end{align*}
-%
-The interpretation can be further extended to the classical predicate
-calculus, which involves the quantifiers $\exists$ and $\forall$.
-Suppose $\phi$ is a predicate with free variables $x$ and $y$ ranging
-over sets $S$ and $T$, respectively. Then the interpretation of $\phi$
-is a subset $\sem{\phi} \subseteq S \times T$. From it we define the
-interpretation of $\xsome{x}{S}{\phi}$ and $\xall{x}{S}{\phi}$ to be
-the subsets of~$T$ given by
-%
-\begin{align*}
-  \sem{\xsome{x}{S}{\phi}} &=
-  \sem{b \in T \such \xsome{a}{S}{(a,b) \in \sem{\phi}}}, \\
-  \sem{\xall{x}{S}{\phi}} &=
-  \sem{b \in T \such \xall{a}{S}{(a,b) \in \sem{\phi}}}.
-\end{align*}
-%
-Observe that $\sem{\xsome{x}{S}{\phi}}$ is the least subset of~$T$
-such that $\sem{\phi} \subseteq S \times \sem{\xsome{x}{S}{\phi}}$,
-and that $\sem{\xall{x}{S}{\phi}}$ is the largest subset of~$T$ such
-that $S \times \sem{\xall{X}{S}{\phi}} \subseteq \sem{\phi}$. We shall
-use these characterizations of $\exists$ and $\forall$ in the setting
-of realizability.
-
-\subsection{Realizability predicates}
-\label{sec:realizability-predicates}
-
-
-The interpretation of logic in the category of assemblies goes much
-along the same lines, except that we use monos instead of subsets. For
-monos $u : \asm{U} \monoto \asm{S}$ and $t : \asm{T} \monoto \asm{S}$,
-write $u \leq t$, or somewhat less precisely $\asm{U} \leq \asm{T}$,
-if $u$ factors through $t$, i.e., there exists a realized $f : \asm{U}
-\to \asm{T}$ such that
-%
-\begin{equation*}
-  \xymatrix{
-    &
-    {\asm{S}}
-    &
-    \\
-    {\asm{U}}
-    \ar@{ >->}[ur]^{u}
-    \ar[rr]_{f}
-    &
-    &
-    {\asm{T}}
-    \ar[ul]_{t}
-  }
-\end{equation*}
-%
-commutes. If~$f$ exists then it is unique and is a mono.\sidenote{Such
-  basic category-theoretic observations are excellent exercises. You
-  should prove them yourself.} If $u \leq t$ and $t \leq u$ we say
-that $u$ and $t$ are \emph{isomorphic} and write $u \equiv t$. The
-collection $\Mono{\asm{S}}$ of all monos with codomain~$\asm{S}$ is a
-preorder because $\leq$ is reflexive and transitive.\sidenote{By
-  quotienting $\Mono{\asm{S}}$ by $\equiv$ we get the partial order
-  $\Sub{\asm{S}} = \Mono{\asm{S}}/{\cong}$ of \emph{subobjects}
-  of~$\asm{S}$, but we shall not do that because it is cumbersome to
-  work with equivalence classes.}
-
-While the powerset $\pow{S}$ is a complete Boolean algebra,
-$\Mono{\asm{S}}$ is neither complete nor Boolean. However, it is a
-\emph{Heyting prealgebra}, which is enough to interpret
-\emph{intuitionistic} propositional calculus, and as we shall see, the
-quantifiers may be interpreted too.
-
-We would like the interpretation of logic in $\AsmA$ to be in specific
-form, for which we first need to focus on a particular kind of monos.
-Let $\asm{S}$ be an assembly, $|p|$ a type, and $p : S \to
-\pow{\Atyp{|p|}}$ a function. We call $p$ a \emph{realizability
-  predicate} on $\asm{S}$ and $|p|$ its \emph{underlying type}. The
-map $p$ is equivalently given as a relation ${-} \rz p({-})$ between
-$\Atyp{|p|}$ and $S$. The correspondence between the map and the
-relation is
-%
-\begin{equation*}
-  \R{r} \rz p(x) \iff \R{r} \in p(x).
-\end{equation*}
-%
-Read $\R{r} \rz p(x)$ as ``$\R{r}$ realizes $p(x)$''. Now define the
-assembly $\asm{S}_p$ by
-%
-\begin{align*}
-  S_p &= \set{x \in S \such \xsome{\R{r}}{\Atyp{|p|}}{\R{r} \in p(x)}}, \\
-  |S_p| &= |S| \times |p|, \\
-  \combPair\;\R{x}\;\R{r} \rz_{S_p} x &\iff
-  \R{r} \in p(x) \land \R{x} \rz_S x.
-\end{align*}
-%
-The subset inclusion $\iota_p : S_p \to S$ is realized by $\combFst$.
-The mono $\iota_p : \asm{S}_p \to \asm{S}$ is called a \emph{standard
-  mono}.
-
-\begin{proposition}
-  In $\AsmA$ every mono is equivalent to a standard one.
-\end{proposition}
-
-\begin{proof}
-  Let $u : \asm{U} \monoto \asm{S}$ be a mono, realized by $\R{u}$.
-  Let $|p| = |U|$ and
-  %
-  \begin{equation*}
-    p(x) = \tbigcup_{y \in \inv{u}(x)} \Ex_U(y) =
-    \set{\R{y} \in \Atyp{|p|} \such \xsome{y}{U}{u(y) = x \land \R{y} \rz_U y}}.
-  \end{equation*}
-  %
-  We claim that the standard mono $\iota_p : \asm{S}_p \to \asm{S}$ is
-  isomorphic to~$u$. The function $u : U \to S$ restricts to a
-  bijection $u : U \to S_p$, which is realized as a map from $\asm{U}$
-  to $\asm{S}_p$ by
-  $\xpcalam{\annot{y}{|U|}}{\combPair\;(\R{u}\;y)\;y}$. The inverse
-  $\inv{u} : S_p \to U$ is realized as a map from $\asm{S}_p$ to
-  $\asm{U}$ by $\combSnd$.
-\end{proof}
-
-For the purposes of logic we may limit attention to standard monos,
-because the interpretation of a predicate is determined only up to
-isomorphism of monos. Furthermore, since a standard mono $\asm{S}_p
-\to \asm{S}$ is uniquely determined by the corresponding realizability
-predicate $p : S \to \pow{\Atyp{|p|}}$, we may express the
-realizability intepretation of logic directly in terms of
-realizability predicates.
-
-Let $p$ and $q$ be realizability predicates on $\asm{S}$, with the
-corresponding monos $\iota_p : \asm{S}_p \monoto \asm{S}$ and $\iota_q
-: \asm{S}_q \monoto \asm{S}$. We define $p \leq q$ to mean that
-$\iota_p \leq \iota_q$.
-
-\begin{lemma}
-  \label{lemma:realizability-predicate-leq}%
-  For realizability predicates $p$ and $q$ on an assembly $\asm{S}$,
-  $p \leq q$ if, and only if, there exists $\R{f} \in \compAtyp{|S|
-    \to |p| \to |q|}$ such that, for all $x \in S$, whenever $\R{x}
-  \rz_S x$ and $\R{r} \rz p(x)$ then $\defined{\R{f}\;\R{x}\;\R{r}}$
-  and $\R{f}\;\R{x}\;\R{r} \rz q(x)$. We say that $\R{f}$
-  \emph{witnesses} $p \leq q$.
-\end{lemma}
-
-\begin{proof}
-  Suppose first that $p \leq q$. Then $\iota_p \leq \iota_q$, which
-  means that $S_p \subseteq S_q$ and that the subset inclusion $i :
-  S_p \to S_q$ is realized, say by $\R{i} \in \compAtyp{|S| \times |p|
-    \to |S| \times |q|}$. Let $\R{f} = \pcalam{\annot{x}{|S|}
-    \annot{r}{|p|}}{\combSnd\;(\R{i}\;(\combPair\;x\;r))}$. Suppose $x
-  \in S$, $\R{x} \in \Atyp{|S|}$, $\R{r} \rz p(x)$, and $\R{x} \rz_S
-  x$. Then $\combPair\;\R{x}\;\R{r} \rz_{S_p} x$, therefore
-  $\R{i}\;(\combPair\;\R{x}\;\R{r}) \rz_{S_q} x$, which implies
-  $\R{f}\;\R{x}\;\R{r} \rz q(x)$ because $\R{f}\;\R{x}\;\R{r} =
-  \combSnd\;(\R{i}\;(\combPair\;\R{x}\;\R{r}))$.
-
-  Conversely, let $\R{f}$ be a realizer as in the statement of the
-  lemma, and suppose $\R{x} \rz_S x$ and $\R{r} \rz p(x)$. Because
-  $\R{f}\;\R{x}\;\R{r} \rz q(x)$, we see that $x \in S_q$. Hence $S_p
-  \subseteq S_q$. A realizer for the inclusion map $i : S_p \to S_q$
-  is $\R{i} = \pcalam{\annot{u}{|S| \times
-      |p|}}{\combPair\;(\combFst\;u)\;(\R{f}\;(\combFst\;u)\;(\combSnd\;u))}$,
-  as is easily verified.
-\end{proof}
-
-The lemma is our main tool for analyzing the preorder $\leq$. For
-example, let us show that it is reflexive and transitive, i.e., that
-the family $\Pred{\asm{S}}$ of all realizability predicates on
-$\asm{S}$ is a \emph{preorder}. Reflexivity $p \leq p$ is witnessed by
-the realizer $\pcalam{\annot{x}{|S|} \annot{u}{|p|}}{u}$. For
-transitivity, suppose $p \leq q$ and $q \leq r$ are witnessed by
-$\R{f}$ and $\R{g}$. Then $p \leq r$ is witnessed by
-$\pcalam{\annot{x}{|S|} \annot{u}{|p|}}{\R{g}\;x\;(\R{f}\;x\;u))}$.
-
-
-\subsection{The Heyting prealgebra of realizability predicates}
-\label{sec:heyting-prealgebra}
-
-We would like to give an interpretation of the intuitionistic
-propositional calculus in the preorder $\Pred{\asm{S}}$. Such an
-interpretation is sound only if $\Pred{\asm{S}}$ is a Heyting
-prealgebra. Let us recall the definition.
-
-\begin{definition}
-  A \emph{Heyting prealgebra} $(H, {\leq})$ is a preorder (reflexive
-  and transitive) with elements $\bot$, $\top$ and binary operations
-  meet $\land$, join $\lor$, and implication $\imp$ such that, for all
-  $p, q, r \in H$:
-  %
-  \begin{enumerate}
-  \item $\bot$ is a smallest and $\top$ a largest element: $\bot \leq
-    p \leq \top$,
-  \item $p \land q$ is an infimum of $p$ and $q$: $p \land q \leq p$,
-    $p \land q \leq q$, and whenever $r \leq p$ and $r \leq q$ then $r
-    \leq p \land q$,
-  \item $p \lor q$ is a supremum of $p$ and $q$: $p \leq p \lor q$, $q
-    \leq p \lor q$, and whenever $p \leq r$ and $q \leq r$ then $p
-    \lor q \leq r$,
-  \item $p \imp {-}$ is right adjoint to $p \land {-}$: $(p \imp q)
-    \land p \leq q$ and whenever $r \land p \leq q$ then $r \leq p
-    \imp q$.
-  \end{enumerate}
-  %
-  A \emph{Heyting algebra} is a Heyting prealgebra which is partially
-  ordered.
-\end{definition}
-
-We say that elements $p, q \in H$ are \emph{isomorphic}, written $p
-\equiv q$, if $p \leq q$ and $q \leq p$. The operations of a Heyting
-prealgebra are determined only up to isomorphism. For example, there
-may be many smallest elements, but they are all isomorphic to each
-other. We are not bothered by this. On the contrary, as programmers we
-actually worry about choosing the most efficient realizer among many
-equivalent ones.
-
-\begin{proposition}
-  The preorder $\Pred{\asm{S}}$ of realizability predicates on an
-  assembly $\asm{S}$ is a Heyting prealgebra.
-\end{proposition}
-
-\begin{proof}
-  Let $\asm{S}$ be an assembly and $\unit$ any type with an element
-  $\ttunit \in \compAtyp{\unit}$. Define the predicates $\bot, \top :
-  \asm{S} \to \pow{\Atyp{\unit}}$ by
-  % 
-  \begin{equation*}
-    \bot(x) = \emptyset
-    \qquad\text{and}\qquad
-    \top(x) = \Atyp{\unit}.
-  \end{equation*}
-  % 
-  That is, $\bot$ is realized by nothing and $\top$ by everything. It is
-  easy to check that $\bot \leq p \leq \top$ for all $p \in
-  \Pred{\asm{S}}$.
-
-  For predicates $p$ and $q$ on $\asm{S}$, let $p \land q$ be the
-  predicate whose realizers have the type $|p \land q| = |p| \times
-  |q|$ and
-  %
-  \begin{equation*}
-    p(x) \land q(x) = \set{\combPair\;\R{u}\;\R{v} \such
-    \text{$\R{u} \rz p(x)$ and $\R{v} \rz q(x)$}}.
-  \end{equation*}
-  % 
-  Here we wrote $p(x) \land q(x)$ instead of $(p \land q)(x)$. Let us
-  verify that $p \land q$ is the infimum of $p$ and $q$. The
-  inequalities $p \land q \leq p$ and $p \land q \leq q$ are witnessed
-  by $\pcalam{\annot{x}{|S|} \annot{u}{|p| \times |q|}}{\combFst\;u}$
-  and $\pcalam{\annot{x}{|S|} \annot{u}{|p| \times
-      |q|}}{\combSnd\;u}$, respectively. Suppose $r \leq p$ and $r
-  \leq q$ are witnessed by $\R{f}$ and $\R{g}$, respectively. Then $r
-  \leq p \land q$ is witnessed by $\pcalam{\annot{x}{|S|}
-    \annot{u}{|r|}}{\combPair\; (\R{f}\;x\;u)\; (\R{g}\;x\;u)}$.
-
-  Next we consider suprema. Define $p \lor q$ to be the predicate
-  whose realizers have the type $|p \land q| = |p| + |q|$. There are
-  two ways to realize $p(x) \lor q(x)$:
-  %
-  \begin{equation*}
-    p(x) \lor q(x) =
-    \set{\combLeft\;\R{u} \such \R{u} \rz p(x)} \cup
-    \set{\combRight\;\R{v} \such \R{v} \rz q(x)}.
-  \end{equation*}
-  %
-  The inequalities $p \leq p \lor q$ and $q \leq p \lor q$ are
-  witnessed by $\pcalam{\annot{x}{|S|} \annot{u}{|p|}}{\combLeft\;u}$
-  and $\pcalam{\annot{x}{|S|} \annot{v}{|q|}}{\combRight\;v}$,
-  respectively. If $p \leq r$ and $q \leq r$ are witnessed by $\R{f}$
-  and $\R{g}$ then $p \lor q \leq r$ is witnessed by
-  %
-  \begin{equation*}
-    \pcalam{\annot{x}{|S|} \annot{w}{|p|+|q|}}{
-      \combCase\;w\;(\R{f}\;x)\;(\R{g}\;x)
-    }.
-  \end{equation*}
-  
-  Finally, define $p \imp q$ to be the predicate whose realizers have
-  the type $|p \imp q| = |p| \to |q|$ and
-  %
-  \begin{equation*}
-    p(x) \imp q(x) = \set{
-      \R{f} \in \Atyp{|p| \to |q|} \such
-      \all{\R{u}}{\Atyp{|p|}}{
-        \R{u} \rz p(x)
-        \implies
-        \defined{\R{f}\;\R{u}} \land
-        \R{f}\;\R{u} \rz q(x)
-      }
-    }.
-  \end{equation*}
-  %
-  That is, $\R{f}$ maps realizers for $p(x)$ to realizers for $q(x)$.
-  Note that $\R{f}$ need not be computable. Let us show that $p \imp
-  q$ has the desired properties. The inequality $(p \imp q) \land p
-  \leq q$ is witnessed by $\pcalam{\annot{x}{|S|} \annot{w}{(|p| \to
-      |q|) \times |p|}}{(\combFst\;w)\; (\combSnd\;w)}$. If $r \land p
-  \leq q$ is witnessed by $\R{f}$ then $r \leq p \imp q$ is witnessed
-  by $\pcalam{\annot{x}{|S|} \annot{w}{|r|}
-    \annot{u}{|p|}}{\R{f}\;(\combPair\;w\;u)}$.
-\end{proof}
-
-\subsection{Quantifiers}
-\label{sec:quantifiers}
-
-To get an interpretation of the quantifiers we apply methods of
-categorical logic. In general the existential and universal
-quantifiers are defined as left and right adjoints to weakening. Let
-us explain what this means.
-
-Weakening along the projection $\pi_1 : \asm{S} \times \asm{T} \to
-\asm{S}$ is an operation which maps a mono $\asm{V} \monoto \asm{S}$
-to the mono $\asm{V} \times \asm{T} \monoto \asm{S} \times \asm{T}$.
-This is a monotone map from $\Mono{\asm{S}}$ to $\Mono{\asm{S} \times
-  \asm{T}}$. Existential quantification is its left adjoint, i.e., a
-monotone map $\exists_{\asm{T}} : \Mono{\asm{S} \times \asm{T}} \to
-\Mono{\asm{S}}$ such that, for all monos $\asm{U} \monoto \asm{S}
-\times \asm{T}$ and $\asm{V} \monoto \asm{S}$,
-%
-\begin{equation*}
-  \asm{U} \leq \asm{V} \times \asm{T}
-  \iff
-  \exists_{\asm{T}} \asm{U} \leq \asm{V}.
-\end{equation*}
-%
-Similarly, universal quantification is the right adjoint:
-%
-\begin{equation*}
-  \asm{V} \times \asm{T} \leq \asm{U}
-  \iff
-  \asm{V} \leq \forall_{\asm{T}} \asm{U}.
-\end{equation*}
-%
-We verify that such adjoints really exist in $\AsmA$ but work with
-realizability predicates instead of monos.
-
-Weakening along $\pi_1 : \asm{S} \times \asm{T} \to \asm{S}$ takes $p
-\in \Pred{\asm{S}}$ to the predicate $p \times \asm{T} \in
-\Pred{\asm{S} \times \asm{T}}$ defined by
-%
-\begin{equation*}
-  |p \times \asm{T}| = |p|
-  \qquad\text{and}\qquad
-  (p \times \asm{T})(x,y) = p(x),
-\end{equation*}
-%
-where $x \in S$ and $y \in T$. We claim that the left adjoint
-$\exists_{\asm{T}}$ maps $q \in \Pred{\asm{S} \times \asm{T}}$ to
-$\exists_{\asm{T}} q \in \Pred{\asm{S}}$ defined by
-%
-\begin{align*}
-  |\exists_{\asm{T}} q| &= |T| \times |q| \\
-  (\exists_{\asm{T}} q)(x) &=
-  \set{ \combPair\;\R{y}\;\R{r} \in \Atyp{|T| \times |q|} \such
-    \xsome{y}{T}{\R{y} \rz_T y \land \R{r} \rz q(x,y)}
-  }.
-\end{align*}
-%
-Let us verify that we have a left adjoint to weakening. Suppose $p \in
-\Pred{\asm{S} \times \asm{T}}$ and $q \in \Pred{\asm{S}}$. If $p \leq
-q \times \asm{T}$ is witnessed by $\R{f}$ then $\exists_{\asm{T}} p
-\leq q$ is witnessed by $\pcalam{\annot{x}{|S|} \, \annot{e}{|T| \times
-    |p|}}{\R{f}\; (\combPair \; x \; (\combFst\; e)) \; (\combSnd \; e)}$.
-Conversely, if $\exists_{\asm{T}} p \leq q$ is witnessed by $\R{g}$
-then $p \leq q \times \asm{T}$ is witnessed by $\pcalam{\annot{r}{|S|
-    \times |T|} \, \annot{s}{|p|}}{\R{g} \;
-  (\combFst\;r)\; (\combPair \; (\combSnd \; r) \; s)}$.
-
-Similarly, the universal quantifier $\forall_{\asm{T}}$ maps $q \in
-\Pred{\asm{S} \times \asm{T}}$ to $\forall_{\asm{T}} q \in
-\Pred{\asm{S}}$ defined by
-%
-\begin{align*}
-  |\forall_{\asm{T}} q| &= |T| \to |q| \\
-  (\forall_{\asm{T}} q)(x) &=
-  \set{ \R{r} \in \Atyp{|T| \to |q|} \such
-    \xall{\R{y}}{\Atyp{|T|}}{
-      \all{y}{T}{
-        \R{y} \rz_T y \implies
-        \defined{\R{r}\;\R{y}} \land
-        \R{r}\;\R{y} \rz q(x,y)
-      }
-    }
-  }.
-\end{align*}
-%
-To verify that this is the right adjoint, suppose $p \in \Pred{\asm{S}
-  \times \asm{T}}$ and $q \in \Pred{\asm{S}}$. If $q \times \asm{T}
-\leq p$ is witnessed by $\R{f}$ then $q \leq \forall_{\asm{T}} p$ is
-witnessed by $\pcalam{\annot{x}{|S|} \, \annot{r}{|q|} \,
-  \annot{y}{|T|}}{\R{f} \; (\combPair \; x \; y) \; r}$. Conversely,
-if $q \leq \forall_{\asm{T}} p$ is witnessed by $\R{g}$ then $q \times
-\asm{T} \leq p$ is witnessed by $\pcalam{\annot{s}{|S| \times |T|} \,
-  \annot{r}{|q|}}{\R{g} \; (\combFst \; s) \; r \; (\combSnd \; s)}$.
-
-It is customary to write $\xsome{y}{T}{q(x,y)}$ and
-$\xall{y}{T}{q(x,y)}$ instead of $\exists_{\asm{T}} q$ and
-$\forall_{\asm{T}} q$.
-
-\begin{proposition}
-  The operations $\exists_{\asm{T}}$ and $\forall_{\asm{T}}$
-  respectively give a sound interpretation of the existential and
-  universal quantifier with respect to first-order intuitionistic
-  logic.
-\end{proposition}
-
-\begin{proof}
-  This follows from the fact that $\exists_{\asm{T}}$ and
-  $\forall_{\asm{T}}$ are the left and the right adjoint to weakening.
-\end{proof}
-
-\subsection{Substitution and the Beck-Chevalley condition}
-\label{sec:beck-chevalley}
-
-We have so far ignored the most basic logical operation of all, which
-is \emph{substitution}. There are two kinds of substitution in
-first-order logic: of terms into terms and of terms into formulas.
-
-Substitution of terms into terms is interpreted as composition.
-Suppose $s$ is a term of type $\asm{T}$ with a free variable $x$ of
-type $\asm{S}$, and $t$ is a term of type $\asm{U}$ with a free
-varaible $y$ of type $\asm{U}$. The terms $s$ and $t$ determine
-realized maps
-%
-\begin{equation*}
-  \xymatrix{
-    {\asm{S}}
-    \ar[r]^{\sem{s}}
-    &
-    {\asm{T}}
-    \ar[r]^{\sem{t}}
-    &
-    {\asm{U}}
-  }
-\end{equation*}
-%
-A fairly routine induction on the structure of~$t$ shows that
-$\sem{\subst{t}{x \subto s}} = \sem{t} \circ \sem{s}$, i.e.,
-substitution of terms into terms correponds to composition.
-Simultaneous substitution of several variables is treated similarly.
-
-Substition of terms into predicates is more interesting. To see what
-operation it corresponds to, we first look at predicates in $\Set$.
-Suppose $P \subseteq T$ is a subset of a set~$S$ and $t : S \to T$ is
-a function. If we think of $P$ as a predicate $P(y)$ in variable $y
-\in T$ and $t$ as a term $t(x)$ with a free variable $x \in S$ then
-$P(t(x))$ should be a subset of $S$. A moment's thought shows that it
-is the inverse image $\invim{t}(P) = \set{x \in S \such t(x) \in P}$.
-The category-theoretic equivalent of inverse image is pullback.
-
-Now let $p \in \Pred{\asm{T}}$ be a realizability predicate, $\iota_p
-: \asm{T}_p \monoto \asm{T}$ the corresponding mono, and $t : \asm{S}
-\to \asm{T}$ a realized map. If we think of~$p$ as a formula $p(y)$
-with variable $y : \asm{T}$ and $t(x)$ as a term with a variable $x :
-\asm{S}$ then the substitution of $t(x)$ for $y$ gives us a formula
-$p(t(x))$ with variable $x : \asm{S}$. As in the case of sets,
-$p(t(x))$ corresponds the pullback $\invim{t}(\asm{T}_p) \monoto
-\asm{S}$, as in the diagram
-%
-\begin{equation*}
-  \xymatrix{
-    {\invim{t}(\asm{T}_p)}
-    \pbcorner
-    \ar[r]
-    \ar@{ >->}[d]
-    &
-    {\asm{T}_p}
-    \ar@{ >->}[d]
-    \\
-    {\asm{S}}
-    \ar[r]_{t}
-    &
-    {\asm{T}}
-  }
-\end{equation*}
-%
-The realizability predicate $\invim{t}(p) \in \Pred{\asm{S}}$ which
-determined the mono $\invim{t}(\asm{T}_p) \monoto \asm{S}$ is given by
-%
-\begin{equation*}
-  |\invim{t}(p)| = |p|
-  \qquad\text{and}\qquad
-  \invim{t}(p)(x) = p(t(x)).
-\end{equation*}
-%
-\newcommand{\xtot}{\overline{x} \to \overline{t}}%
-This defines substitution as an operation on realizability predicates.
-However, substitution is also a syntactic transformation and we need
-to check that the two notions fit together. Let $\xtot$ stand for a
-simultaneous substitution $x_1 \subto t_1, \ldots, x_n \subto t_n$.
-Substitution into first-order formulas is defined inductively on the
-structure of the formula:
-%
-\begin{align*}
-  \subst{\top}{\xtot} &= \top,\\
-  \subst{\bot}{\xtot} &= \bot,\\
-  \subst{(a = b)}{\xtot} &= \subst{a}{\xtot} = \subst{b}{\xtot},\\
-  \subst{(\phi \land \psi)}{\xtot} &= 
-  (\subst{\phi}{\xtot}) \land (\subst{\psi}{\xtot}), \\
-  \subst{(\phi \lor \psi)}{\xtot} &= 
-  (\subst{\phi}{\xtot}) \lor (\subst{\psi}{\xtot}), \\
-  \subst{(\phi \implies \psi)}{\xtot} &= 
-  (\subst{\phi}{\xtot}) \implies (\subst{\psi}{\xtot}), \\
-  \subst{(\xsome{y}{\asm{T}}{\phi})}{\xtot} &= 
-  \some{y}{\asm{T}}{\subst{\phi}{\xtot}},\\
-  \subst{(\xall{y}{\asm{T}}{\phi})}{\xtot} &= 
-  \all{y}{\asm{T}}{\subst{\phi}{\xtot}}.
-\end{align*}
-%
-In the last two cases we assume that $x_1, \ldots, x_n$ and the free
-variables appearing in $t_1, \ldots, t_n$ are distinct from~$y$. The
-above rules are sound for the realizability interpretation only if the
-corresponding equations hold for realizability predicates and
-substitution along a realized map $t$:
-%
-\begin{align*}
-  \invim{t}(\top) &\equiv \top,\\
-  \invim{t}(\bot) &\equiv \bot,\\
-  \invim{t}(a = b) &\equiv (a \circ t = b \circ t),\\
-  \invim{t}(p \land q) &\equiv \invim{t}(p) \land \invim{t}(q),\\
-  \invim{t}(p \lor q) &\equiv \invim{t}(p) \lor \invim{t}(q),\\
-  \invim{t}(p \implies q) &\equiv \invim{t}(p) \implies \invim{t}(q),\\
-  \invim{t}(\exists_{\asm{T}} p) &\equiv \exists_{\asm{T}} \invim{t}(p),\\
-  \invim{t}(\forall_{\asm{T}} p) &\equiv \forall_{\asm{T}} \invim{t}(p).
-\end{align*}
-%
-Pullback is a finite limit, hence it commutes with those operations
-that are given as finite limits, namely $\top$, $=$ and $\land$. The
-remaining equations must be checked by hand. [NOT FINISHED.]
-
-
-\subsection{Validity in the realizability interpretation}
-\label{sec:realizability-validity}
-
-Let us summarize the realizability interpretation of first-order
-intuitionistic logic. For each formula $\phi$ we define its underlying
-type $|\phi|$ as follows:
-%
-\begin{align*}
-  |\bot| &= \unit \\
-  |\top| &= \unit \\
-  |t_1 = t_2| &= \unit \\
-  |\phi_1 \land \phi_2| &= |\phi_1| \times |\phi_2|\\
-  |\phi_1 \lor \phi_2| &= |\phi_1| + |\phi_2|\\
-  |\phi_1 \implies \phi_2| &= |\phi_1| \to |\phi_2|\\
-  |\xall{x}{\asm{T}}{\phi}| &= |T| \to |\phi| \\
-  |\xsome{x}{\asm{T}}{\phi}| &= |T| \times |\phi|.
-\end{align*}
-%
-The realizability relation $\R{r} \rz \phi$, where $\R{r} \in
-\Atyp{|\phi|}$ is defined inductively as follows:
-%
-\begin{align*}
-  \R{r} \rz \bot &\iff \bot\\
-  \R{r} \rz \top &\iff \top\\
-  \ttunit \rz t_1 = t_2 &\iff t_1 = t_2\\
-  \combPair\;\R{r}_1\;\R{r}_2 \rz \phi_1 \land \phi_2 &\iff
-  \R{r}_1 \rz \phi_1 \land \R{r}_2 \rz \phi_2\\
-  \combLeft\;\R{r} \rz \phi_1 \lor \phi_2 &\iff \R{r} \rz \phi_1\\
-  \combRight\;\R{r} \rz \phi_1 \lor \phi_2 &\iff \R{r} \rz \phi_2\\
-  \R{r} \rz \phi_1 \implies \phi_2 &\iff
-  \all{\R{s}}{\Atyp{|\phi_1|}}{\R{s} \rz \phi_1 \implies
-    \defined{\R{r}\;\R{s}} \land \R{r}\;\R{s} \rz \phi_2
-  }\\
-  \combPair\;\R{u}\;\R{r} \rz \xsome{x}{\asm{T}}{\phi} &\iff
-  \some{u}{T}{\R{u} \rz_T u \land \R{r} \rz \subst{\phi}{x \subto u}}
-  \\
-  \R{r} \rz \xall{x}{\asm{T}}{\phi} &\iff
-  \xall{\R{u}}{\Atyp{|T|}}{
-    \all{u}{T}{
-      \R{u} \rz_T u \implies
-      \defined{\R{r}\;\R{u}} \land \R{r}\;\R{u} \rz \subst{\phi}{x \subto u}
-    }}.
-\end{align*}
-%
-
-\subsection{Decidable predicates}
-\label{sec:decidable-predicates}
-
-
-\subsection{Stable predicates}
-\label{sec:stable-predicates}
-
-% stability of equality
-
-% Markov principle
-
-% negative and almost negative formulae
-
-
-\subsection{The axiom of choice}
-\label{sec:ac}
-
-
-\section{Realizability toposes}
-\label{sec:realizability-toposes}
-
-\section{From constructive to computable mathematics}
-\label{sec:constructive-math}
-
-% monos and regular monos
-
-% epis and regular epis
-
-% computability for free
-
-
-%%% Local Variables: 
+The canonically projective assemblies are, up to isomorphism,
+precisely the projective objects of the category of assemblies.
+
+A canonically projective modest set $(S, |S|, {\rz_S})$ is determined,
+up to isomorphism, by the set of the total realizers~$\|S\|$. This
+follows from Lemma~\ref{lemma:iso-assembly} and the fact that
+projectivity ensures that $S$ and $\|S\|$ are in bijective
+correspondence. This combined with the fact that every modest set is a
+quotient of a canonically projective one leads to the following
+definition.
+
+Let $\subcat{A, \comp{A}}$ be the category whose objects are pairs
+$(S, |S|)$ where $|S|$ is a type and $S \subseteq A_{|S|}$. A morphism
+$f : (S, |S|) \to (T, |T|)$ is a map $f : S \to T$ which is tracked by
+some $p \in \comp{A}_{|S| \to |T|}$, i.e., for all $p \in S$,
+$\defined{p\;r}$ and $p\;r \in T$. This category is equivalent to the
+full subcategory of $\Mod{A, \comp{A}}$ on the canonically projective
+modest sets.
+
+
+
+%%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "notes-on-realizability"
-%%% End: 
+%%% End:

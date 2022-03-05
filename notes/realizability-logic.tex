@@ -1,0 +1,642 @@
+\chapter{Realizability and logic}
+\label{sec:realizability-interpretation}
+
+The idea that the elements of a set are represented by values of a
+datatype is familiar to programmers. In the previous section we
+expressed the idea mathematically in terms of realizability relations
+and assemblies. What is perhaps less obvious is that realizability
+carries over to logic as well. To every statement $\phi$ in
+first-order logic we may assign its realizers, which are computable
+witnesses showing why $\phi$ holds.
+
+Let us first recall how the usual interpretation of classical
+first-order logic works. A \emph{predicate} on a set~$S$ is a function
+$\phi : S \to \two$, where $\two = \set{0, 1}$ is the set of truth
+values. Such a predicate determines the subset $\set{x \in S \such
+  \phi(x) = 1} \subseteq S$, called the \emph{extension} of~$\phi$,
+and conversely, every $T \subseteq S$ determines the predicate
+$\chi_T(x) = (\cond{x \in T}{1}{0})$, called the \emph{characteristic
+  map} of~$T$. This correspondence is a bijection between $\two^S$ and
+$\pow{S}$. Either can be used to interpret logic, but $\pow{S}$ is the
+more suitable option in our case. Thus we view predicates on a set
+$S$ as elements of the powerset $\pow{S}$.
+
+The poset $\pow{S}$, ordered by $\subseteq$, is a Boolean algebra. The
+least element is $\emptyset$, the largest $S$, the infimum of $A \in
+\pow{S}$ and $B \in \pow{S}$ is their intersection $A \cap B$, the
+supremum is the union $A \cup B$, and the complement of~$A$ is the
+set-theoretic complement $S \setminus A$. This structure is used in
+the interpretation of classical propositional calculus. Suppose $\phi$
+is a proposition built from $\bot$, $\top$, $\land$, $\lor$,
+$\implies$, $\lnot$, and \emph{atomic propositions} $p_1, \ldots,
+p_n$. As soon as we assign subsets $P_i \subseteq S$ to the atomic
+propositions $p_i$, the meaning of $\phi$ as a subset $\sem{\phi}
+\subseteq S$ is defined inductively as follows:
+%
+\begin{align*}
+  \sem{\bot} &= \emptyset,\\
+  \sem{\top} &= S,\\
+  \sem{\phi_1 \land \phi_2} &= \sem{\phi_1} \cap \sem{\phi_2},\\
+  \sem{\phi_1 \lor \phi_2} &= \sem{\phi_1} \cup \sem{\phi_2},\\
+  \sem{\phi_1 \implies \phi_2} &= (S \setminus \sem{\phi_1}) \cup \sem{\phi_2},\\
+  \sem{\lnot \phi} &= S \setminus \sem{\phi},\\
+  \sem{p_i} &= P_i.
+\end{align*}
+%
+The interpretation can be further extended to the classical predicate
+calculus, which involves the quantifiers $\exists$ and $\forall$.
+Suppose $\phi$ is a predicate with free variables $x$ and $y$ ranging
+over sets $S$ and $T$, respectively. Then the interpretation of $\phi$
+is a subset $\sem{\phi} \subseteq S \times T$. From it we define the
+interpretation of $\xsome{x}{S}{\phi}$ and $\xall{x}{S}{\phi}$ to be
+the subsets of~$T$ given by
+%
+\begin{align*}
+  \sem{\xsome{x}{S}{\phi}} &=
+  \sem{b \in T \such \xsome{a}{S}{(a,b) \in \sem{\phi}}}, \\
+  \sem{\xall{x}{S}{\phi}} &=
+  \sem{b \in T \such \xall{a}{S}{(a,b) \in \sem{\phi}}}.
+\end{align*}
+%
+Observe that $\sem{\xsome{x}{S}{\phi}}$ is the least subset of~$T$
+such that $\sem{\phi} \subseteq S \times \sem{\xsome{x}{S}{\phi}}$,
+and that $\sem{\xall{x}{S}{\phi}}$ is the largest subset of~$T$ such
+that $S \times \sem{\xall{X}{S}{\phi}} \subseteq \sem{\phi}$. We shall
+use these characterizations of $\exists$ and $\forall$ in the setting
+of realizability.
+
+\section{Realizability predicates}
+\label{sec:realizability-predicates}
+
+
+The interpretation of logic in the category of assemblies goes much
+along the same lines, except that we use monos instead of subsets. For
+monos $u : \asm{U} \monoto \asm{S}$ and $t : \asm{T} \monoto \asm{S}$,
+write $u \leq t$, or somewhat less precisely $\asm{U} \leq \asm{T}$,
+if $u$ factors through $t$, i.e., there exists a realized $f : \asm{U}
+\to \asm{T}$ such that
+%
+\begin{equation*}
+  \xymatrix{
+    &
+    {\asm{S}}
+    &
+    \\
+    {\asm{U}}
+    \ar@{ >->}[ur]^{u}
+    \ar[rr]_{f}
+    &
+    &
+    {\asm{T}}
+    \ar[ul]_{t}
+  }
+\end{equation*}
+%
+commutes. If~$f$ exists then it is unique and is a mono.\sidenote{Such
+  basic category-theoretic observations are excellent exercises. You
+  should prove them yourself.} If $u \leq t$ and $t \leq u$ we say
+that $u$ and $t$ are \emph{isomorphic} and write $u \equiv t$. The
+collection $\Mono{\asm{S}}$ of all monos with codomain~$\asm{S}$ is a
+preorder because $\leq$ is reflexive and transitive.\sidenote{By
+  quotienting $\Mono{\asm{S}}$ by $\equiv$ we get the partial order
+  $\Sub{\asm{S}} = \Mono{\asm{S}}/{\cong}$ of \emph{subobjects}
+  of~$\asm{S}$, but we shall not do that because it is cumbersome to
+  work with equivalence classes.}
+
+While the powerset $\pow{S}$ is a complete Boolean algebra,
+$\Mono{\asm{S}}$ is neither complete nor Boolean. However, it is a
+\emph{Heyting prealgebra}, which is enough to interpret
+\emph{intuitionistic} propositional calculus, and as we shall see, the
+quantifiers may be interpreted too.
+
+We would like the interpretation of logic in $\AsmA$ to be in specific
+form, for which we first need to focus on a particular kind of monos.
+Let $\asm{S}$ be an assembly, $|p|$ a type, and $p : S \to
+\pow{\Atyp{|p|}}$ a function. We call $p$ a \defemph{realizability
+  predicate} on $\asm{S}$ and $|p|$ its \defemph{underlying type}. The
+map $p$ is equivalently given as a relation ${-} \rz p({-})$ between
+$\Atyp{|p|}$ and $S$. The correspondence between the map and the
+relation is
+%
+\begin{equation*}
+  \R{r} \rz p(x) \iff \R{r} \in p(x).
+\end{equation*}
+%
+Read $\R{r} \rz p(x)$ as ``$\R{r}$ realizes $p(x)$''. Now define the
+assembly $\asm{S}_p$ by
+%
+\begin{align*}
+  S_p &= \set{x \in S \such \xsome{\R{r}}{\Atyp{|p|}}{\R{r} \in p(x)}}, \\
+  |S_p| &= |S| \times |p|, \\
+  \combPair\;\R{x}\;\R{r} \rz_{S_p} x &\iff
+  \R{r} \in p(x) \land \R{x} \rz_S x.
+\end{align*}
+%
+The subset inclusion $\iota_p : S_p \to S$ is realized by $\combFst$.
+The mono $\iota_p : \asm{S}_p \to \asm{S}$ is called a \defemph{standard
+  mono}.
+
+\begin{proposition}
+  In $\AsmA$ every mono is equivalent to a standard one.
+\end{proposition}
+
+\begin{proof}
+  Let $u : \asm{U} \monoto \asm{S}$ be a mono, realized by $\R{u}$.
+  Let $|p| = |U|$ and
+  %
+  \begin{equation*}
+    p(x) = \tbigcup_{y \in \inv{u}(x)} \Ex_U(y) =
+    \set{\R{y} \in \Atyp{|p|} \such \xsome{y}{U}{u(y) = x \land \R{y} \rz_U y}}.
+  \end{equation*}
+  %
+  We claim that the standard mono $\iota_p : \asm{S}_p \to \asm{S}$ is
+  isomorphic to~$u$. The function $u : U \to S$ restricts to a
+  bijection $u : U \to S_p$, which is realized as a map from $\asm{U}$
+  to $\asm{S}_p$ by
+  $\xpcalam{\annot{y}{|U|}}{\combPair\;(\R{u}\;y)\;y}$. The inverse
+  $\inv{u} : S_p \to U$ is realized as a map from $\asm{S}_p$ to
+  $\asm{U}$ by $\combSnd$.
+\end{proof}
+
+For the purposes of logic we may limit attention to standard monos,
+because the interpretation of a predicate is determined only up to
+isomorphism of monos. Furthermore, since a standard mono $\asm{S}_p
+\to \asm{S}$ is uniquely determined by the corresponding realizability
+predicate $p : S \to \pow{\Atyp{|p|}}$, we may express the
+realizability intepretation of logic directly in terms of
+realizability predicates.
+
+Let $p$ and $q$ be realizability predicates on $\asm{S}$, with the
+corresponding monos $\iota_p : \asm{S}_p \monoto \asm{S}$ and $\iota_q
+: \asm{S}_q \monoto \asm{S}$. We define $p \leq q$ to mean that
+$\iota_p \leq \iota_q$.
+
+\begin{lemma}
+  \label{lemma:realizability-predicate-leq}%
+  For realizability predicates $p$ and $q$ on an assembly $\asm{S}$,
+  $p \leq q$ if, and only if, there exists $\R{f} \in \compAtyp{|S|
+    \to |p| \to |q|}$ such that, for all $x \in S$, whenever $\R{x}
+  \rz_S x$ and $\R{r} \rz p(x)$ then $\defined{\R{f}\;\R{x}\;\R{r}}$
+  and $\R{f}\;\R{x}\;\R{r} \rz q(x)$. We say that $\R{f}$
+  \defemph{witnesses} $p \leq q$.
+\end{lemma}
+
+\begin{proof}
+  Suppose first that $p \leq q$. Then $\iota_p \leq \iota_q$, which
+  means that $S_p \subseteq S_q$ and that the subset inclusion $i :
+  S_p \to S_q$ is realized, say by $\R{i} \in \compAtyp{|S| \times |p|
+    \to |S| \times |q|}$. Let $\R{f} = \pcalam{\annot{x}{|S|}
+    \annot{r}{|p|}}{\combSnd\;(\R{i}\;(\combPair\;x\;r))}$. Suppose $x
+  \in S$, $\R{x} \in \Atyp{|S|}$, $\R{r} \rz p(x)$, and $\R{x} \rz_S
+  x$. Then $\combPair\;\R{x}\;\R{r} \rz_{S_p} x$, therefore
+  $\R{i}\;(\combPair\;\R{x}\;\R{r}) \rz_{S_q} x$, which implies
+  $\R{f}\;\R{x}\;\R{r} \rz q(x)$ because $\R{f}\;\R{x}\;\R{r} =
+  \combSnd\;(\R{i}\;(\combPair\;\R{x}\;\R{r}))$.
+
+  Conversely, let $\R{f}$ be a realizer as in the statement of the
+  lemma, and suppose $\R{x} \rz_S x$ and $\R{r} \rz p(x)$. Because
+  $\R{f}\;\R{x}\;\R{r} \rz q(x)$, we see that $x \in S_q$. Hence $S_p
+  \subseteq S_q$. A realizer for the inclusion map $i : S_p \to S_q$
+  is $\R{i} = \pcalam{\annot{u}{|S| \times
+      |p|}}{\combPair\;(\combFst\;u)\;(\R{f}\;(\combFst\;u)\;(\combSnd\;u))}$,
+  as is easily verified.
+\end{proof}
+
+The lemma is our main tool for analyzing the preorder $\leq$. For
+example, let us show that it is reflexive and transitive, i.e., that
+the family $\Pred{\asm{S}}$ of all realizability predicates on
+$\asm{S}$ is a \emph{preorder}. Reflexivity $p \leq p$ is witnessed by
+the realizer $\pcalam{\annot{x}{|S|} \annot{u}{|p|}}{u}$. For
+transitivity, suppose $p \leq q$ and $q \leq r$ are witnessed by
+$\R{f}$ and $\R{g}$. Then $p \leq r$ is witnessed by
+$\pcalam{\annot{x}{|S|} \annot{u}{|p|}}{\R{g}\;x\;(\R{f}\;x\;u))}$.
+
+
+\section{The Heyting prealgebra of realizability predicates}
+\label{sec:heyting-prealgebra}
+
+We would like to give an interpretation of the intuitionistic
+propositional calculus in the preorder $\Pred{\asm{S}}$. Such an
+interpretation is sound only if $\Pred{\asm{S}}$ is a Heyting
+prealgebra. Let us recall the definition.
+
+\begin{definition}
+  A \defemph{Heyting prealgebra} $(H, {\leq})$ is a preorder (reflexive
+  and transitive) with elements $\bot$, $\top$ and binary operations
+  meet $\land$, join $\lor$, and implication $\imp$ such that, for all
+  $p, q, r \in H$:
+  %
+  \begin{enumerate}
+  \item $\bot$ is a smallest and $\top$ a largest element: $\bot \leq
+    p \leq \top$,
+  \item $p \land q$ is an infimum of $p$ and $q$: $p \land q \leq p$,
+    $p \land q \leq q$, and whenever $r \leq p$ and $r \leq q$ then $r
+    \leq p \land q$,
+  \item $p \lor q$ is a supremum of $p$ and $q$: $p \leq p \lor q$, $q
+    \leq p \lor q$, and whenever $p \leq r$ and $q \leq r$ then $p
+    \lor q \leq r$,
+  \item $p \imp {-}$ is right adjoint to $p \land {-}$: $(p \imp q)
+    \land p \leq q$ and whenever $r \land p \leq q$ then $r \leq p
+    \imp q$.
+  \end{enumerate}
+  %
+  A \defemph{Heyting algebra} is a Heyting prealgebra which is partially
+  ordered.
+\end{definition}
+
+We say that elements $p, q \in H$ are \defemph{isomorphic}, written $p
+\equiv q$, if $p \leq q$ and $q \leq p$. The operations of a Heyting
+prealgebra are determined only up to isomorphism. For example, there
+may be many smallest elements, but they are all isomorphic to each
+other. We are not bothered by this. On the contrary, as programmers we
+actually worry about choosing the most efficient realizer among many
+equivalent ones.
+
+\begin{proposition}
+  The preorder $\Pred{\asm{S}}$ of realizability predicates on an
+  assembly $\asm{S}$ is a Heyting prealgebra.
+\end{proposition}
+
+\begin{proof}
+  Let $\asm{S}$ be an assembly and $\unit$ any type with an element
+  $\ttunit \in \compAtyp{\unit}$. Define the predicates $\bot, \top :
+  \asm{S} \to \pow{\Atyp{\unit}}$ by
+  % 
+  \begin{equation*}
+    \bot(x) = \emptyset
+    \qquad\text{and}\qquad
+    \top(x) = \Atyp{\unit}.
+  \end{equation*}
+  % 
+  That is, $\bot$ is realized by nothing and $\top$ by everything. It is
+  easy to check that $\bot \leq p \leq \top$ for all $p \in
+  \Pred{\asm{S}}$.
+
+  For predicates $p$ and $q$ on $\asm{S}$, let $p \land q$ be the
+  predicate whose realizers have the type $|p \land q| = |p| \times
+  |q|$ and
+  %
+  \begin{equation*}
+    p(x) \land q(x) = \set{\combPair\;\R{u}\;\R{v} \such
+    \text{$\R{u} \rz p(x)$ and $\R{v} \rz q(x)$}}.
+  \end{equation*}
+  % 
+  Here we wrote $p(x) \land q(x)$ instead of $(p \land q)(x)$. Let us
+  verify that $p \land q$ is the infimum of $p$ and $q$. The
+  inequalities $p \land q \leq p$ and $p \land q \leq q$ are witnessed
+  by $\pcalam{\annot{x}{|S|} \annot{u}{|p| \times |q|}}{\combFst\;u}$
+  and $\pcalam{\annot{x}{|S|} \annot{u}{|p| \times
+      |q|}}{\combSnd\;u}$, respectively. Suppose $r \leq p$ and $r
+  \leq q$ are witnessed by $\R{f}$ and $\R{g}$, respectively. Then $r
+  \leq p \land q$ is witnessed by $\pcalam{\annot{x}{|S|}
+    \annot{u}{|r|}}{\combPair\; (\R{f}\;x\;u)\; (\R{g}\;x\;u)}$.
+
+  Next we consider suprema. Define $p \lor q$ to be the predicate
+  whose realizers have the type $|p \land q| = |p| + |q|$. There are
+  two ways to realize $p(x) \lor q(x)$:
+  %
+  \begin{equation*}
+    p(x) \lor q(x) =
+    \set{\combLeft\;\R{u} \such \R{u} \rz p(x)} \cup
+    \set{\combRight\;\R{v} \such \R{v} \rz q(x)}.
+  \end{equation*}
+  %
+  The inequalities $p \leq p \lor q$ and $q \leq p \lor q$ are
+  witnessed by $\pcalam{\annot{x}{|S|} \annot{u}{|p|}}{\combLeft\;u}$
+  and $\pcalam{\annot{x}{|S|} \annot{v}{|q|}}{\combRight\;v}$,
+  respectively. If $p \leq r$ and $q \leq r$ are witnessed by $\R{f}$
+  and $\R{g}$ then $p \lor q \leq r$ is witnessed by
+  %
+  \begin{equation*}
+    \pcalam{\annot{x}{|S|} \annot{w}{|p|+|q|}}{
+      \combCase\;w\;(\R{f}\;x)\;(\R{g}\;x)
+    }.
+  \end{equation*}
+  
+  Finally, define $p \imp q$ to be the predicate whose realizers have
+  the type $|p \imp q| = |p| \to |q|$ and
+  %
+  \begin{equation*}
+    p(x) \imp q(x) = \set{
+      \R{f} \in \Atyp{|p| \to |q|} \such
+      \all{\R{u}}{\Atyp{|p|}}{
+        \R{u} \rz p(x)
+        \implies
+        \defined{\R{f}\;\R{u}} \land
+        \R{f}\;\R{u} \rz q(x)
+      }
+    }.
+  \end{equation*}
+  %
+  That is, $\R{f}$ maps realizers for $p(x)$ to realizers for $q(x)$.
+  Note that $\R{f}$ need not be computable. Let us show that $p \imp
+  q$ has the desired properties. The inequality $(p \imp q) \land p
+  \leq q$ is witnessed by $\pcalam{\annot{x}{|S|} \annot{w}{(|p| \to
+      |q|) \times |p|}}{(\combFst\;w)\; (\combSnd\;w)}$. If $r \land p
+  \leq q$ is witnessed by $\R{f}$ then $r \leq p \imp q$ is witnessed
+  by $\pcalam{\annot{x}{|S|} \annot{w}{|r|}
+    \annot{u}{|p|}}{\R{f}\;(\combPair\;w\;u)}$.
+\end{proof}
+
+\section{Quantifiers}
+\label{sec:quantifiers}
+
+To get an interpretation of the quantifiers we apply methods of
+categorical logic. In general the existential and universal
+quantifiers are defined as left and right adjoints to weakening. Let
+us explain what this means.
+
+Weakening along the projection $\pi_1 : \asm{S} \times \asm{T} \to
+\asm{S}$ is an operation which maps a mono $\asm{V} \monoto \asm{S}$
+to the mono $\asm{V} \times \asm{T} \monoto \asm{S} \times \asm{T}$.
+This is a monotone map from $\Mono{\asm{S}}$ to $\Mono{\asm{S} \times
+  \asm{T}}$. Existential quantification is its left adjoint, i.e., a
+monotone map $\exists_{\asm{T}} : \Mono{\asm{S} \times \asm{T}} \to
+\Mono{\asm{S}}$ such that, for all monos $\asm{U} \monoto \asm{S}
+\times \asm{T}$ and $\asm{V} \monoto \asm{S}$,
+%
+\begin{equation*}
+  \asm{U} \leq \asm{V} \times \asm{T}
+  \iff
+  \exists_{\asm{T}} \asm{U} \leq \asm{V}.
+\end{equation*}
+%
+Similarly, universal quantification is the right adjoint:
+%
+\begin{equation*}
+  \asm{V} \times \asm{T} \leq \asm{U}
+  \iff
+  \asm{V} \leq \forall_{\asm{T}} \asm{U}.
+\end{equation*}
+%
+We verify that such adjoints really exist in $\AsmA$ but work with
+realizability predicates instead of monos.
+
+Weakening along $\pi_1 : \asm{S} \times \asm{T} \to \asm{S}$ takes $p
+\in \Pred{\asm{S}}$ to the predicate $p \times \asm{T} \in
+\Pred{\asm{S} \times \asm{T}}$ defined by
+%
+\begin{equation*}
+  |p \times \asm{T}| = |p|
+  \qquad\text{and}\qquad
+  (p \times \asm{T})(x,y) = p(x),
+\end{equation*}
+%
+where $x \in S$ and $y \in T$. We claim that the left adjoint
+$\exists_{\asm{T}}$ maps $q \in \Pred{\asm{S} \times \asm{T}}$ to
+$\exists_{\asm{T}} q \in \Pred{\asm{S}}$ defined by
+%
+\begin{align*}
+  |\exists_{\asm{T}} q| &= |T| \times |q| \\
+  (\exists_{\asm{T}} q)(x) &=
+  \set{ \combPair\;\R{y}\;\R{r} \in \Atyp{|T| \times |q|} \such
+    \xsome{y}{T}{\R{y} \rz_T y \land \R{r} \rz q(x,y)}
+  }.
+\end{align*}
+%
+Let us verify that we have a left adjoint to weakening. Suppose $p \in
+\Pred{\asm{S} \times \asm{T}}$ and $q \in \Pred{\asm{S}}$. If $p \leq
+q \times \asm{T}$ is witnessed by $\R{f}$ then $\exists_{\asm{T}} p
+\leq q$ is witnessed by $\pcalam{\annot{x}{|S|} \, \annot{e}{|T| \times
+    |p|}}{\R{f}\; (\combPair \; x \; (\combFst\; e)) \; (\combSnd \; e)}$.
+Conversely, if $\exists_{\asm{T}} p \leq q$ is witnessed by $\R{g}$
+then $p \leq q \times \asm{T}$ is witnessed by $\pcalam{\annot{r}{|S|
+    \times |T|} \, \annot{s}{|p|}}{\R{g} \;
+  (\combFst\;r)\; (\combPair \; (\combSnd \; r) \; s)}$.
+
+Similarly, the universal quantifier $\forall_{\asm{T}}$ maps $q \in
+\Pred{\asm{S} \times \asm{T}}$ to $\forall_{\asm{T}} q \in
+\Pred{\asm{S}}$ defined by
+%
+\begin{align*}
+  |\forall_{\asm{T}} q| &= |T| \to |q| \\
+  (\forall_{\asm{T}} q)(x) &=
+  \set{ \R{r} \in \Atyp{|T| \to |q|} \such
+    \xall{\R{y}}{\Atyp{|T|}}{
+      \all{y}{T}{
+        \R{y} \rz_T y \implies
+        \defined{\R{r}\;\R{y}} \land
+        \R{r}\;\R{y} \rz q(x,y)
+      }
+    }
+  }.
+\end{align*}
+%
+To verify that this is the right adjoint, suppose $p \in \Pred{\asm{S}
+  \times \asm{T}}$ and $q \in \Pred{\asm{S}}$. If $q \times \asm{T}
+\leq p$ is witnessed by $\R{f}$ then $q \leq \forall_{\asm{T}} p$ is
+witnessed by $\pcalam{\annot{x}{|S|} \, \annot{r}{|q|} \,
+  \annot{y}{|T|}}{\R{f} \; (\combPair \; x \; y) \; r}$. Conversely,
+if $q \leq \forall_{\asm{T}} p$ is witnessed by $\R{g}$ then $q \times
+\asm{T} \leq p$ is witnessed by $\pcalam{\annot{s}{|S| \times |T|} \,
+  \annot{r}{|q|}}{\R{g} \; (\combFst \; s) \; r \; (\combSnd \; s)}$.
+
+It is customary to write $\xsome{y}{T}{q(x,y)}$ and
+$\xall{y}{T}{q(x,y)}$ instead of $\exists_{\asm{T}} q$ and
+$\forall_{\asm{T}} q$.
+
+\begin{proposition}
+  The operations $\exists_{\asm{T}}$ and $\forall_{\asm{T}}$
+  respectively give a sound interpretation of the existential and
+  universal quantifier with respect to first-order intuitionistic
+  logic.
+\end{proposition}
+
+\begin{proof}
+  This follows from the fact that $\exists_{\asm{T}}$ and
+  $\forall_{\asm{T}}$ are the left and the right adjoint to weakening.
+\end{proof}
+
+\section{Substitution and the Beck-Chevalley condition}
+\label{sec:beck-chevalley}
+
+We have so far ignored the most basic logical operation of all, which
+is \emph{substitution}. There are two kinds of substitution in
+first-order logic: of terms into terms and of terms into formulas.
+
+Substitution of terms into terms is interpreted as composition.
+Suppose $s$ is a term of type $\asm{T}$ with a free variable $x$ of
+type $\asm{S}$, and $t$ is a term of type $\asm{U}$ with a free
+varaible $y$ of type $\asm{U}$. The terms $s$ and $t$ determine
+realized maps
+%
+\begin{equation*}
+  \xymatrix{
+    {\asm{S}}
+    \ar[r]^{\sem{s}}
+    &
+    {\asm{T}}
+    \ar[r]^{\sem{t}}
+    &
+    {\asm{U}}
+  }
+\end{equation*}
+%
+A fairly routine induction on the structure of~$t$ shows that
+$\sem{\subst{t}{x \subto s}} = \sem{t} \circ \sem{s}$, i.e.,
+substitution of terms into terms correponds to composition.
+Simultaneous substitution of several variables is treated similarly.
+
+Substition of terms into predicates is more interesting. To see what
+operation it corresponds to, we first look at predicates in $\Set$.
+Suppose $P \subseteq T$ is a subset of a set~$S$ and $t : S \to T$ is
+a function. If we think of $P$ as a predicate $P(y)$ in variable $y
+\in T$ and $t$ as a term $t(x)$ with a free variable $x \in S$ then
+$P(t(x))$ should be a subset of $S$. A moment's thought shows that it
+is the inverse image $\invim{t}(P) = \set{x \in S \such t(x) \in P}$.
+The category-theoretic equivalent of inverse image is pullback.
+
+Now let $p \in \Pred{\asm{T}}$ be a realizability predicate, $\iota_p
+: \asm{T}_p \monoto \asm{T}$ the corresponding mono, and $t : \asm{S}
+\to \asm{T}$ a realized map. If we think of~$p$ as a formula $p(y)$
+with variable $y : \asm{T}$ and $t(x)$ as a term with a variable $x :
+\asm{S}$ then the substitution of $t(x)$ for $y$ gives us a formula
+$p(t(x))$ with variable $x : \asm{S}$. As in the case of sets,
+$p(t(x))$ corresponds the pullback $\invim{t}(\asm{T}_p) \monoto
+\asm{S}$, as in the diagram
+%
+\begin{equation*}
+  \xymatrix{
+    {\invim{t}(\asm{T}_p)}
+    \pbcorner
+    \ar[r]
+    \ar@{ >->}[d]
+    &
+    {\asm{T}_p}
+    \ar@{ >->}[d]
+    \\
+    {\asm{S}}
+    \ar[r]_{t}
+    &
+    {\asm{T}}
+  }
+\end{equation*}
+%
+The realizability predicate $\invim{t}(p) \in \Pred{\asm{S}}$ which
+determined the mono $\invim{t}(\asm{T}_p) \monoto \asm{S}$ is given by
+%
+\begin{equation*}
+  |\invim{t}(p)| = |p|
+  \qquad\text{and}\qquad
+  \invim{t}(p)(x) = p(t(x)).
+\end{equation*}
+%
+\newcommand{\xtot}{\overline{x} \to \overline{t}}%
+This defines substitution as an operation on realizability predicates.
+However, substitution is also a syntactic transformation and we need
+to check that the two notions fit together. Let $\xtot$ stand for a
+simultaneous substitution $x_1 \subto t_1, \ldots, x_n \subto t_n$.
+Substitution into first-order formulas is defined inductively on the
+structure of the formula:
+%
+\begin{align*}
+  \subst{\top}{\xtot} &= \top,\\
+  \subst{\bot}{\xtot} &= \bot,\\
+  \subst{(a = b)}{\xtot} &= \subst{a}{\xtot} = \subst{b}{\xtot},\\
+  \subst{(\phi \land \psi)}{\xtot} &= 
+  (\subst{\phi}{\xtot}) \land (\subst{\psi}{\xtot}), \\
+  \subst{(\phi \lor \psi)}{\xtot} &= 
+  (\subst{\phi}{\xtot}) \lor (\subst{\psi}{\xtot}), \\
+  \subst{(\phi \implies \psi)}{\xtot} &= 
+  (\subst{\phi}{\xtot}) \implies (\subst{\psi}{\xtot}), \\
+  \subst{(\xsome{y}{\asm{T}}{\phi})}{\xtot} &= 
+  \some{y}{\asm{T}}{\subst{\phi}{\xtot}},\\
+  \subst{(\xall{y}{\asm{T}}{\phi})}{\xtot} &= 
+  \all{y}{\asm{T}}{\subst{\phi}{\xtot}}.
+\end{align*}
+%
+In the last two cases we assume that $x_1, \ldots, x_n$ and the free
+variables appearing in $t_1, \ldots, t_n$ are distinct from~$y$. The
+above rules are sound for the realizability interpretation only if the
+corresponding equations hold for realizability predicates and
+substitution along a realized map $t$:
+%
+\begin{align*}
+  \invim{t}(\top) &\equiv \top,\\
+  \invim{t}(\bot) &\equiv \bot,\\
+  \invim{t}(a = b) &\equiv (a \circ t = b \circ t),\\
+  \invim{t}(p \land q) &\equiv \invim{t}(p) \land \invim{t}(q),\\
+  \invim{t}(p \lor q) &\equiv \invim{t}(p) \lor \invim{t}(q),\\
+  \invim{t}(p \implies q) &\equiv \invim{t}(p) \implies \invim{t}(q),\\
+  \invim{t}(\exists_{\asm{T}} p) &\equiv \exists_{\asm{T}} \invim{t}(p),\\
+  \invim{t}(\forall_{\asm{T}} p) &\equiv \forall_{\asm{T}} \invim{t}(p).
+\end{align*}
+%
+Pullback is a finite limit, hence it commutes with those operations
+that are given as finite limits, namely $\top$, $=$ and $\land$. The
+remaining equations must be checked by hand. [NOT FINISHED.]
+
+
+\section{Validity in the realizability interpretation}
+\label{sec:realizability-validity}
+
+Let us summarize the realizability interpretation of first-order
+intuitionistic logic. For each formula $\phi$ we define its underlying
+type $|\phi|$ as follows:
+%
+\begin{align*}
+  |\bot| &= \unit \\
+  |\top| &= \unit \\
+  |t_1 = t_2| &= \unit \\
+  |\phi_1 \land \phi_2| &= |\phi_1| \times |\phi_2|\\
+  |\phi_1 \lor \phi_2| &= |\phi_1| + |\phi_2|\\
+  |\phi_1 \implies \phi_2| &= |\phi_1| \to |\phi_2|\\
+  |\xall{x}{\asm{T}}{\phi}| &= |T| \to |\phi| \\
+  |\xsome{x}{\asm{T}}{\phi}| &= |T| \times |\phi|.
+\end{align*}
+%
+The realizability relation $\R{r} \rz \phi$, where $\R{r} \in
+\Atyp{|\phi|}$ is defined inductively as follows:
+%
+\begin{align*}
+  \R{r} \rz \bot &\iff \bot\\
+  \R{r} \rz \top &\iff \top\\
+  \ttunit \rz t_1 = t_2 &\iff t_1 = t_2\\
+  \combPair\;\R{r}_1\;\R{r}_2 \rz \phi_1 \land \phi_2 &\iff
+  \R{r}_1 \rz \phi_1 \land \R{r}_2 \rz \phi_2\\
+  \combLeft\;\R{r} \rz \phi_1 \lor \phi_2 &\iff \R{r} \rz \phi_1\\
+  \combRight\;\R{r} \rz \phi_1 \lor \phi_2 &\iff \R{r} \rz \phi_2\\
+  \R{r} \rz \phi_1 \implies \phi_2 &\iff
+  \all{\R{s}}{\Atyp{|\phi_1|}}{\R{s} \rz \phi_1 \implies
+    \defined{\R{r}\;\R{s}} \land \R{r}\;\R{s} \rz \phi_2
+  }\\
+  \combPair\;\R{u}\;\R{r} \rz \xsome{x}{\asm{T}}{\phi} &\iff
+  \some{u}{T}{\R{u} \rz_T u \land \R{r} \rz \subst{\phi}{x \subto u}}
+  \\
+  \R{r} \rz \xall{x}{\asm{T}}{\phi} &\iff
+  \xall{\R{u}}{\Atyp{|T|}}{
+    \all{u}{T}{
+      \R{u} \rz_T u \implies
+      \defined{\R{r}\;\R{u}} \land \R{r}\;\R{u} \rz \subst{\phi}{x \subto u}
+    }}.
+\end{align*}
+%
+
+\section{Realizability toposes}
+\label{sec:realizability-toposes}
+
+
+\section[\texorpdfstring{$\neg\neg$-stable predicates}{Not-not-stable predicates}]{$\neg\neg$-stable predicates}
+\label{sec:decidable-predicates}
+
+\subsection{Excluded middle}
+\label{sec:excluded-middle}
+
+\subsection{Decidable predicates}
+\label{sec:decidable-predicates-1}
+
+\subsection{Semidecidable predicates}
+\label{sec:semid-pred}
+
+\subsection{Stability of equality}
+\label{sec:stability-equality}
+
+\subsection{Negative and almost negative formulas}
+\label{sec:negat-almost-negat}
+
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "notes-on-realizability"
+%%% End: 

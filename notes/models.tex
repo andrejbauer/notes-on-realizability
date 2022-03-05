@@ -35,13 +35,12 @@ actually write programs for Turing machines. If you are not familiar
 with Turing machines we recommend one of standard textbooks on the
 subject~\sidecite{odifreddi89:_class_recur_theor,h.r.92:_theor_recur_funct_effec_comput,davis58:_comput_unsol}.
 
-MISSING PICTURE OF TURING MACHINE
-% \begin{figure}[htbp]
-%   \centering
-%   \includegraphics[width=0.5\textwidth]{turing_machine}
-%   \caption{A Turing machine operates with tapes}
-%   \label{fig:turing-machine}
-% \end{figure}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.5\textwidth]{turing_machine}
+  \caption{A Turing machine operates with tapes}
+  \label{fig:turing-machine}
+\end{figure}
 
 A Turing machine is a device which operates on a number of tapes and
 heads, see Figure~\ref{fig:turing-machine}:
@@ -90,7 +89,7 @@ The answer was given by Turing.
 
 \begin{theorem}[Turing]
   \label{thm:universal-machine}
-  There exists a \emph{universal} machine---a machine that takes a
+  There exists a \defemph{universal  machine}---a machine that takes a
   description of another machine, as explained above, and simulates
   it.
 \end{theorem}
@@ -161,7 +160,7 @@ encoded into a single number as
 \end{equation*}
 %
 Every number except $0$ represents the code of a unique pair so we
-also have computable \emph{projections} $\xfst$ and $\xsnd$ which
+also have computable \defemph{projections} $\xfst$ and $\xsnd$ which
 recover $m$ and $n$ from $\code{(m, n)}$, respectively.
 
 We may also encode Turing machines with numbers. A program is a finite
@@ -359,7 +358,7 @@ We finish this section with a theorem which we shall often use to show
 \emph{non}-computability results.
 
 \begin{theorem}[Halting oracle]
-  The \emph{halting oracle},
+  The \defemph{halting oracle},
   %
   \begin{equation*}
     h(x) =
@@ -401,7 +400,6 @@ g n = if h g == 1 then g n else 0
   will do.
 \end{proof}
 
-
 \subsection{Type 2 machines}
 \label{sec:type-2}
 
@@ -439,7 +437,7 @@ $1^{n_0}01^{n_1}01^{n_2}0\cdots$, where $1^k$ means that the symbol
 $1$ is repeated $k$-times.
 
 A type 2 machine computes a partial function $f : \NNNN \parto
-\NNNN$, where $\NNNN$ is the \emph{Baire space} of infinite
+\NNNN$, where $\NNNN$ is the \defemph{Baire space} of infinite
 sequences of numbers. We run the machine with $\alpha \in \NNNN$
 written on the input tape. If every output cell is eventually written
 to, then the output tape represents the result $f(\alpha)$. If there is
@@ -480,9 +478,9 @@ base for $\Baire$ consists of the basic open sets, for $a \in
 %
 Because the basic open sets are both closed and open (clopen),
 $\Baire$ is in fact a countably based $0$-dimensional\sidenote{Recall
-  that a space is \emph{$0$-dimensional} when its clopen subsets form
+  that a space is \defemph{$0$-dimensional} when its clopen subsets form
   a base for its topology.} Hausdorff space. It is also a complete
-separable metric space for the \emph{comparison metric} $d : \Baire
+separable metric space for the \defemph{comparison metric} $d : \Baire
 \times \Baire \to \RR$, defined by
 %
 \begin{equation*}
@@ -546,7 +544,7 @@ by~$\beta$. We would like to know which maps are realizable.
 
 \begin{definition}
   \label{def:normalized-BB}%
-  A realizer $\alpha \in \Baire$ is \emph{normalized} when $k < m$ and
+  A realizer $\alpha \in \Baire$ is \defemph{normalized} when $k < m$ and
   $\alpha(\code{\seg{\beta}{k}}) \neq 0$ implies
   $\alpha(\code{\seg{\beta}{m}}) = \alpha(\code{\seg{\beta}{k}})$.
 \end{definition}
@@ -826,9 +824,16 @@ the interleaved sequence $\beta(0), \gamma(0), \beta(1), \gamma(1),
   The proof is left as an exercise in programming.
 \end{proof}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Turing machines with oracles}
+\label{sec:turing-machines-with}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{The graph model}
+\subsection{Hamkin's infinite time Turing machines}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Scott's graph model}
 \label{sec:graph-model}
 
 A model of computation may introduce features which are not easily
@@ -861,7 +866,7 @@ The set $\pow{\NN}$ may be equipped with a topology in two natural
 ways. One is the product topology arising from the observation that
 $\pow{\NN}$ is isomorphic to the countable product $\two^{\NN}$. This
 topology encodes positive and negative information. The other is the
-\emph{Scott} topology, which arises from the lattice structure of
+\defemph{Scott topology}, which arises from the lattice structure of
 $\pow{\NN}$, ordered by $\subseteq$. A subbasic open set for the Scott
 topology on $\pow{\NN}$ is one of the form
 %
@@ -876,7 +881,7 @@ By forming finite intersections we get the basic open sets
   \set{A \subseteq \NN \such \set{n_0, \ldots, n_{k-1}} \subseteq A}.
 \end{equation*}
 %
-A subset $\mathcal{U} \subseteq \pow{\NN}$ is then \emph{Scott open}
+A subset $\mathcal{U} \subseteq \pow{\NN}$ is then \defemph{Scott open}
 when it has the property that $B$ is a member of~$\mathcal{U}$ if, and
 only if, some finite subset of $B$ is a member of $\mathcal{U}$. If we
 write $A \wayb B$ when~$A$ is a finite subset of~$B$, this is
@@ -908,7 +913,7 @@ space equipped with the Scott topology.
 Another way to get the Scott topology of $\Scott$ is to observe that
 $\pow{\NN}$ is in bijective correspondence with the set of all
 functions $\set{\bot, \top}^{\NN}$. If we equip the two-element set
-$\Sierpinski = \set{\bot, \top}$ with the \emph{Sierpinski topology} in
+$\Sierpinski = \set{\bot, \top}$ with the \defemph{Sierpinski topology} in
 which the open sets are $\emptyset$, $\set{\top}$, and $\Sierpinski$, then
 $\Scott$ turns out to be homeomorphic to $\Sierpinski^{\NN}$ equipped with
 the product topology.
@@ -968,7 +973,7 @@ the product topology.
   We used the second statement in the first and last line.
 \end{proof}
 
-A continuous map on $\Scott$ is also called an \emph{enumeration
+A continuous map on $\Scott$ is also called an \defemph{enumeration
   operator}. The second part of the previous proposition tells us that
 every enumeration operator is determined by its values on finite sets.
 This gives us the idea that it should be possible to encode it by a
@@ -980,7 +985,7 @@ as
 \end{equation*}
 %
 Then we assign to every continuous $f : \Scott \to \Scott$ its
-\emph{graph}
+\defemph{graph}
 %
 \begin{equation*}
   \Gamma(f) = \set{\code{(\code{A}, n)} \in \NN \such
@@ -1026,7 +1031,7 @@ This is actually a homeomorphism between $\Scott \times \Scott$ and
 $\Scott$.
 
 Let us now discuss the role of $\Scott$ as a model of computation. An
-\emph{enumeration} of a set $A \subseteq \NN$ is a function $e : \NN
+\defemph{enumeration} of a set $A \subseteq \NN$ is a function $e : \NN
 \to \NN$ such that
 %
 \begin{equation*}
@@ -1036,7 +1041,7 @@ Let us now discuss the role of $\Scott$ as a model of computation. An
 In words, $e$ enumerates the elements of~$A$, incremented by $1$. The
 increment is needed so that~$e$ may enumerate the empty set by
 outputting only zeroes. The enumeration~$e$ may enumerate an element
-of~$A$ many times. The \emph{$k$-th stage} of an enumeration~$e$ is
+of~$A$ many times. The \defemph{$k$-th stage} of an enumeration~$e$ is
 the set
 %
 \begin{equation*}
@@ -1045,11 +1050,11 @@ the set
 %
 The stages form an increasing chain of finite sets whose union is the
 set enumerated by~$e$. Clearly, every $A \subseteq \NN$ has an
-enumeration. A \emph{computably enumerable set (c.e.\ set)} $A
+enumeration. A \defemph{computably enumerable set (c.e.\ set)} $A
 \subseteq \NN$ is a one that has a computable enumeration.
 
 We say that an enumeration operator $f : \Scott \to \Scott$ is
-\emph{computable} if its graph $\Gamma(f)$ is a c.e.~set. In what
+\defemph{computable} if its graph $\Gamma(f)$ is a c.e.~set. In what
 sense can we ``compute'' with a computable enumeration operator?
 Suppose the graph of $f : \Scott \to \Scott$ is enumerated by~$e_f$
 and $A \subseteq \NN$ is enumerated by $e_A$. Then we may compute an
@@ -1076,9 +1081,11 @@ model because we will see in the next section that they hold in a much
 more general context.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{$\lambda$-calculus and its models}
-\label{sec:lambda-calculus}
-
+\section[\texorpdfstring%
+{Church's $\lambda$-calculus}%
+{Church's lambda-calculus}%
+]{Church's $\lambda$-calculus}
+\label{sec:churchs-calculus}
 
 We have so far considered a model of computation based on Turing
 machines, and two models of a topological nature, the Baire
@@ -1089,9 +1096,9 @@ symbolic expressions.
 The $\lambda$-calculus is the abstract theory of functions, just like
 group theory is the abstract theory of symmetries. There are two basic
 operations that can be performed with functions. The first one is the
-\emph{application} of a function to an argument: if~$f$ is a function
+\defemph{application} of a function to an argument: if~$f$ is a function
 and $a$ is an argument, then $f\; a$ is the application of~$f$ to~$a$.
-The second operation is \emph{abstraction}: if $x$ is a variable
+The second operation is \defemph{abstraction}: if $x$ is a variable
 and~$t$ is an expression in which~$x$ may appear freely, then there is
 a function~$f$ defined by
 %
@@ -1115,7 +1122,7 @@ nested:
   \xulam{x}{t} \;.
 \end{equation*}
 %
-This operation is called \emph{$\lambda$-abstraction}. For example,
+This operation is called \defemph{$\lambda$-abstraction}. For example,
 $\xulam{x}{\ulam{y}}{x^2 + y^3}$ is the function which maps an
 argument~$a$ to the function $\ulam{y}{a^2 + y^3}$. In the expression
 $\xulam{x}{t}$ the variable~$x$ is \emph{bound} in~$t$.
@@ -1135,9 +1142,6 @@ application~$f\; a$ when~$a$ has a type~$A$ and~$f$ has a type $A \to
 B$, which indicates a function taking arguments of type~$A$ and giving
 results of type~$B$. We postpone discussion of the type
 $\lambda$-calculus to Section~\ref{sec:typed-lambda-calculus}.
-
-\subsection{Untyped $\lambda$-calculus}
-\label{sec:untyped-lambda-calculus}
 
 In the \emph{untyped} version no restrictions are imposed on
 application and abstraction. More precisely, the calculus consists of:
@@ -1174,7 +1178,7 @@ substitutions.\sidenote{It is notoriously easy to commit errors when
   defining the details of substitution. The best way to understand all
   the intricacies is to write a program that performs substitutions.}
 
-The basic axiom of $\lambda$-calculus is \emph{$\beta$-reduction}:
+The basic axiom of $\lambda$-calculus is \defemph{$\beta$-reduction}:
 %
 \begin{equation*}
   (\xulam{x}{e_1})\; e_2 = \subst{e_1}{x \subto e_2}.
@@ -1183,7 +1187,7 @@ The basic axiom of $\lambda$-calculus is \emph{$\beta$-reduction}:
 It says that the application of a function $\xulam{x}{e_1}$ to an
 argument $e_2$ is computed by replacing $x$ with $e_2$ in the function
 body~$e_1$. A second axiom, which is sometimes assumed is
-\emph{$\eta$-reduction}, which says that
+\defemph{$\eta$-reduction}, which says that
 %
 \begin{equation*}
   \xulam{x}{e\; x} = e,
@@ -1193,7 +1197,7 @@ provided $x$ does not occur freely in~$e$. We will \emph{not} assume
 $\eta$-reduction unless explicitly stated otherwise.
 
 In a given expression there may be several sub-expressions, called
-\emph{redexes}, where $\beta$-reduction could be performed. We write
+\defemph{redexes}, where $\beta$-reduction could be performed. We write
 $e \mapsto e'$ when $e'$ is obtained from $e$ by a single application
 of $\beta$-reduction to a redex in~$e$. For example, we could reduce
 %
@@ -1225,7 +1229,7 @@ infinite reduction sequence
 \end{equation*}
 %
 An expression in which no $\beta$-reductions are possible is called a
-\emph{normal form}. Think of normal forms as ``finished
+\defemph{normal form}. Think of normal forms as ``finished
 computations'', and those which cannot be reduced to a normal form as
 non-terminating computations. However, this is only an informal
 explanation on how $\lambda$-calculus can be used as a programming
@@ -1286,7 +1290,7 @@ They satisfy
   \combIf\;\combTrue\;a\;b = a.
 \end{equation*}
 %
-The natural numbers are encoded by \emph{Church numerals}. The $n$-th
+The natural numbers are encoded by \defemph{Church numerals}. The $n$-th
 Church numeral is a function which maps a function to its $n$-th
 iteration:
 %
@@ -1354,8 +1358,8 @@ the same partial functions $\NN \parto \NN$ as Turing machines (the
 terms which have no normal form are the analogue of undefined values).
 
 
-\subsection{Models of untyped $\lambda$-calculus}
-\label{sec:models-untyped-lambda-calculus}
+\section{Reflexive domains}
+\label{sec:reflexive-domains}
 
 The Church-Rosser theorems implies that the untyped $\lambda$-calculus
 is consistent, i.e., not all expressions are equal. To see this,
@@ -1407,7 +1411,7 @@ diagram: the graph model~$\Scott$ from Section~\ref{sec:graph-model}
 is an example. In general, a non-trivial\sidenote{By non-trivial we
   mean that it contains more than just a single point.} topological
 space $D$ which contains its own function space $\mathcal{C}(D,D)$ as
-a retract is called a \emph{reflexive domain}.
+a retract is called a \defemph{reflexive domain}.
 
 If $D$ is a reflexive domain as above, we interpret a
 $\lambda$-calculus expression $e$ whose free variables are among $x_1,
@@ -1466,6 +1470,9 @@ function $s$ from the smn theorem is $s = \xulam{p
 Therefore, every reflexive domain enjoys the utm and smn theorems.
 
 
+OTHER: Plotkin's $T^\omega$ and universal domain of Gunter-Scott.
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Partial combinatory algebras}
 \label{sec:pcas}
@@ -1493,7 +1500,7 @@ is the Baire space.
   \indexsee{PCA}{combinatory algebra, partial}%
   \indexsee{CA}{combinatory algebra, total}%
                                 %
-  A \emph{partial combinatory algebra (PCA)} $(A, {\cdot})$ is a
+  A \defemph{partial combinatory algebra (PCA)} $(A, {\cdot})$ is a
   set~$A$ with a
                                 %
   \index{application!partial in PCA}%
@@ -1513,10 +1520,10 @@ is the Baire space.
     \defined{\combS\; x\; y}.
   \end{equation}
   %
-  A \emph{total combinatory algebra (CA)} is a PCA whose application
+  A \defemph{total combinatory algebra (CA)} is a PCA whose application
   is a total operation.
 
-  A \emph{sub-PCA} of~$(A, {\cdot})$ is a subset $A' \subseteq A$
+  A \defemph{sub-PCA} of~$(A, {\cdot})$ is a subset $A' \subseteq A$
   which is closed under application, and there exist $\combK, \combS
   \in A'$ such that~\eqref{eq:pca} is satisfied for all $x, y, z \in
   A$.\sidenote{Read that carefully: the combinators $\combK$ and
@@ -1529,9 +1536,9 @@ is the Baire space.
 The definition looks strange at first. Where did $\combK$ and $\combS$
 come from? Theorem~\ref{th:combinatory-completeness} below explains
 that the reason for this definition is a property called
-\emph{combinatory completeness}.
+\defemph{combinatory completeness}.
 %
-For a PCA $A$ we define \emph{expressions over~$A$} inductively as
+For a PCA $A$ we define \defemph{expressions over~$A$} inductively as
 follows:
 %
 \begin{itemize}
@@ -1541,8 +1548,8 @@ follows:
   expression over~$A$.
 \end{itemize}
 %
-An expression is \emph{closed} if it contains no variables. We say
-that a closed expression $e$ is \emph{defined} and write $\defined{e}$
+An expression is \defemph{closed} if it contains no variables. We say
+that a closed expression $e$ is \defemph{defined} and write $\defined{e}$
 when all applications in~$e$ are defined so that $e$ denotes an
 element of~$A$. More generally, if $e$ is an expression with variables
 $x_1, \ldots, x_n$, we write $\defined{e}$ when, for all $a_1, \ldots,
@@ -1657,7 +1664,7 @@ For natural numbers we may use the
 \index{Curry numeral}%
 \label{sym:curry_numeral}%
 %
-\emph{Curry numerals} which are defined by 
+\defemph{Curry numerals} which are defined by 
 %
 \begin{equation*}
   \overline{0} = \combI = \combS\; \combK\; \combK
@@ -1711,7 +1718,7 @@ In a PCA we can define functions by recursion by using the
 \label{sym:combZ}%
 \label{sym:combW}%
 %
-\emph{fixed point combinators~$\combY$ and $\combZ$}, defined by
+\defemph{fixed point combinators~$\combY$ and $\combZ$}, defined by
 %
 \begin{alignat*}{2}
   W &= \pcalam{x y}{y(x\; x\; y)}\;, &
@@ -1845,16 +1852,16 @@ from the basic combinators $\combK$ and $\combS$, so we need to
 postulate the existence of other combinators. The end result looks
 more like a programming language and less like magic.
 
-A \emph{type system} $\mathcal{T}$ is a non-empty set, whose elements
-are called \emph{types}, equipped with two binary operations $\times$
+A \defemph{type system} $\mathcal{T}$ is a non-empty set, whose elements
+are called \defemph{types}, equipped with two binary operations $\times$
 and $\to$. The operation $\to$ associates to the right so that $s \to
-t \to u = s \to (t \to u)$. A \emph{typed partial combinatory algebra
+t \to u = s \to (t \to u)$. A \defemph{typed partial combinatory algebra
   (TPCA)} $A$ over a type system $\mathcal{T}$ consists of
 %
 \begin{enumerate}
 \item a non-empty set $A_t$ for each $t \in \mathcal{T}$, and
 \item a partial function $\cdot_{s,t} : A_{s \to t} \times A_s \to
-  A_t$, called \emph{application}, for all $s, t \in \mathcal{T}$,
+  A_t$, called \defemph{application}, for all $s, t \in \mathcal{T}$,
 \end{enumerate}
 %
 such that for any types $s, t, u \in \mathcal{T}$ there exist elements
@@ -1881,9 +1888,9 @@ For all elements $x, y, z$ of appropriate types we require:\sidenote{We
 %
 We say that the elements $\combK_{s,t}$, $\combS_{s,t,u}$,
 $\combPair_{s,t}$, $\combFst_{s,t}$, $\combSnd_{s,t}$ are
-\emph{suitable} for~$A$ when they satisfy the above properties.
+\defemph{suitable} for~$A$ when they satisfy the above properties.
 
-A \emph{TPCA with numerals (N-TPCA)} is a TPCA $A$ in which there is a
+A \defemph{TPCA with numerals (N-TPCA)} is a TPCA $A$ in which there is a
 type $\ttnat$ and elements
 %
 \begin{align*}
@@ -1904,9 +1911,9 @@ such that for all $x$, $f$ of appropriate types and all $n \in \NN$
 Note that $A_\ttnat$ may contain elements other than the
 numerals~$\numeral{n}$. Again, we say that the elements
 $\overline{n}$, $\combSucc$, $\combRec$, and the numerals are
-\emph{suitable} for~$A$.
+\defemph{suitable} for~$A$.
 
-A \emph{TPCA with numerals and general recursion (NR-TPCA)} is a
+A \defemph{TPCA with numerals and general recursion (NR-TPCA)} is a
 N-TPCA $A$ containing elements
 %
 \begin{equation*}
@@ -1921,27 +1928,27 @@ such that, for all $f \in A_{(s \to t) \to (s \to t)}$ and $x \in A_s$,
   \combY \; f \; x \klgeq f \; (\combY\; f) \; x.
 \end{equation*}
 %
-Such a $\combY_{s,t}$ is \emph{suitable} for~$A$. This concludes the
+Such a $\combY_{s,t}$ is \defemph{suitable} for~$A$. This concludes the
 definition of typed PCAs.
 
-A \emph{sub-TPCA} $A'$ of a TPCA~$A$ is a collection of non-empty
+A \defemph{sub-TPCA} $A'$ of a TPCA~$A$ is a collection of non-empty
 subsets $A'_t \subseteq A_t$, for each $t \in \mathcal{T}$, such that
 applications in~$A$ restrict to~$A'$, and there exist elements
 $\combK_{s,t}$, $\combS_{s,t,u}$, $\combPair_{s,t}$, $\combFst_{s,t}$,
 and $\combSnd_{s,t}$ in the corresponding subsets $A'_{\place}$ of
 appropriate types which are suitable for~$A$. Consequently, these
-elements are also suitable for~$A'$. The notions of \emph{sub-N-TPCA}
-and \emph{sub-NR-TPCA} are defined similarly.
+elements are also suitable for~$A'$. The notions of \defemph{sub-N-TPCA}
+and \defemph{sub-NR-TPCA} are defined similarly.
 
 We have required the sets $A_t$ to be non-empty. While this is not
 strictly necessary, it simplifies several constructions.
 
 A TPCA $A$ is combinatory complete. To express this precisely, we
-inductively define \emph{expressions over $A$}:
+inductively define \defemph{expressions over $A$}:
 %
 \begin{enumerate}
 \item every $a \in A_t$ is a an expression of type $t$, called a
-  \emph{primitive constant},
+  \defemph{primitive constant},
 \item an annotated variable $\annot{x}{t}$ is an expression of type~$t$,
 \item if $e_1$ is an expression of type $s \to t$ and $e_2$ is an
   expression of type $s$ then $e_1 \cdot e_2$ is an expression of
@@ -2001,22 +2008,25 @@ defined in Section~\ref{sec:pcas}, we just need to annotate the
 $\combK$ and $\combS$ with the (trivial) type.
 
 
-\subsection{Typed $\lambda$-calculus}
+\subsection[\texorpdfstring%
+{Typed $\lambda$-calculus}%
+{Typed lambda-calculus}%
+]{Typed $\lambda$-calculus}
 \label{sec:typed-lambda-calculus}
 
 The typed $\lambda$-calculus is to the untyped $\lambda$-calculus as
 TPCA is to a PCA. The types are inductively generated from the
-\emph{unit type $\unit$}, a (possibly empty) collection of
-\emph{ground types}, by using the type constructors $\times$ and
+\defemph{unit type $\unit$}, a (possibly empty) collection of
+\defemph{ground types}, by using the type constructors $\times$ and
 $\to$. Expressions are built inductively as follows, where $s$ and $t$
 are types:
 %
 \begin{enumerate}
 \item An annotated variable $\annot{x}{t}$ is an expression of type
   $t$.
-\item We may be given (a possibly empty) collection of \emph{primitive
+\item We may be given (a possibly empty) collection of \defemph{primitive
   constants} with their types.
-\item The constant $\ttunit$, called the \emph{unit}, has type
+\item The constant $\ttunit$, called the \defemph{unit}, has type
   $\unit$.
 \item If $e$ is an expression of type $t$ then
   $\xulam{\annot{x}{s}}{e}$ is an expression of type $s \to t$. The
@@ -2071,7 +2081,7 @@ of type $s$, $t$, $s \times t$:
 %
 There may be additional equations involving primitive constants.
 
-The \emph{pure} typed $\lambda$-calculus has only a single ground
+The \defemph{pure} typed $\lambda$-calculus has only a single ground
 type~$o$ and no primitive constants.
 
 The typed $\lambda$-calculus is a TPCA whose types are those of the
@@ -2080,8 +2090,7 @@ expressions of type~$t$, quotiented by the least equivalence relation
 generated by $\eta$- and $\beta$-reduction and the rules for the unit,
 projections, pairing, and primitive constants.
 
-
-\subsection{G\"odel's $T$}
+\subsection[\texorpdfstring{Gödel's $T$}{Gödel's T}]{Gödel's $T$}
 
 The typed $\lambda$-calculus is not a N-TPCA because it lacks the
 natural numbers and primitive recursion. To make it into a N-TPCA, we
@@ -2103,13 +2112,13 @@ elements of $A_t$ are closed expressions of type~$t$, quotiented by
 the equivalence relation generated by the rules of type
 $\lambda$-calculus and primitive recursion, as given above.
 
-This N-TPCA goes by the name \emph{G\"odel's
-  $T$}~\sidecite{GoedelK:ubeefs}. It was defined by Kurt G\"odel to give a
+This N-TPCA goes by the name \defemph{Gödel's
+  $T$}~\sidecite{GoedelK:ubeefs}. It was defined by Kurt Gödel to give a
 proof of consistency of Peano arithmetic. It is not as powerful as a
 general PCA or type~1 machines because only the primitive recursive
 functions are expressible in this system.
 
-\subsection{PCF}
+\subsection{Plotkin's PCF}
 \label{sec:pcf}
 
 The programming language PCF was introduced by Gordon
@@ -2137,8 +2146,8 @@ of PCF with their types are:
   \combFix_t &: (t \to t) \to t \quad\text{(for each type $t$),}
 \end{align*}
 %
-A \emph{program} of type $t$ is a closed expression of type $t$. The
-\emph{values} are programs of the following form, where $e_1$ and
+A \defemph{program} of type $t$ is a closed expression of type $t$. The
+\defemph{values} are programs of the following form, where $e_1$ and
 $e_2$ are programs of appropriate types:
 %
 \begin{gather*}
@@ -2227,7 +2236,7 @@ rule is essentially a directed version of $\beta$-reduction.
 \end{figure*}
 
 The transitive reflexive closure of $\oneto$ is denoted by $\manyto$.
-We define \emph{evaluation} $\mathsf{eval}$ as the partial map which
+We define \defemph{evaluation} $\mathsf{eval}$ as the partial map which
 maps programs to values,
 %
 \begin{equation*}
@@ -2244,14 +2253,14 @@ such that $e \oneto e'$. In fact, for a program~$e$ we only have two
 options: either there is an infinite sequence of reduction steps $e
 \oneto e' \oneto e'' \oneto \cdots$, or there is a finite sequence $e
 \oneto e' \oneto \cdots \oneto v$ ending with a value. We say that $e$
-\emph{diverges} in the former case, and \emph{terminates} in the
+\defemph{diverges} in the former case, and \defemph{terminates} in the
 latter. The third option, namely that the reduction sequence ends with
 a non-value, cannot happen.
 
 So far we have not specified any notion of equality between programs
 or values in~PCF. We need to do so in order to get a NR-TPCA. For
 programs $e_1$ and $e_2$ of type $t$, say that they are
-\emph{observationally equivalent} and write $e_1 \approx_t e_2$, when
+\defemph{observationally equivalent} and write $e_1 \approx_t e_2$, when
 for every program $e : t \to \unit$
 %
 \begin{equation*}
@@ -2313,7 +2322,7 @@ t$, and $r$, $x$, $f$, $n$ have types $t \to (\ttnat \to t \to t) \to
 \ttnat \to t$, $t$, $\ttnat \to t \to t$, $\ttnat$, respectively.
 
 
-\subsubsection{$\PCFinf$}
+\subsubsection[\texorpdfstring{$\PCFinf$}{PCF-infinity}]{$\PCFinf$}
 
 In Sections~\ref{sec:type-2} and~\ref{sec:graph-model} we saw that
 type~2 machines and the the graph model allow us to compute with
@@ -2339,6 +2348,9 @@ We usually write just $f$ instead of $\mathtt{func}_f$. The resulting
 NR-TPCA is denoted as $\PCFinf$. The original $\PCF$ is a sub-NR-TPCA
 of $\PCFinf$.
 
+\subsubsection[\texorpdfstring{$\PCF + X$}{PCF + X}]{$\PCF + X$}
+\label{sec:pcf-x}
+
 
 \subsection{Real-world programming languages}
 \label{sec:programming-languages}
@@ -2351,6 +2363,12 @@ Haskell also come close having formal specifications. Nevertheless,
 when it comes to actual implementation of computable structures, we
 shall use real-world programming languages as if they were NR-TPCAs
 since they mostly are, anyway.
+
+
+\section{Applicative morphisms}
+\label{sec:appl-morph}
+
+
 
 
 %%% Local Variables: 

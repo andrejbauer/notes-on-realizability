@@ -32,16 +32,13 @@ simple\sidenote{Simple means at most one arrow between any two
   vertices.} directed graphs with vertices labeled by distinct
 integers. A typical graph~$G$ is shown in Figure~\ref{fig:digraph}.
 
-MISSING PICTURE OF A GRAPH
-%
-% \begin{figure}[htp]
-%   \centering
-%   GRAPH HERE
-%   %\includegraphics[width=0.3\textwidth]{digraph}
-%   \caption{A finite directed graph $G$}
-%   \label{fig:digraph}
-% \end{figure}
-%
+\begin{figure}[htp]
+  \centering
+  \includegraphics[width=0.3\textwidth]{digraph}
+  \caption{A finite directed graph $G$}
+  \label{fig:digraph}
+\end{figure}
+
 One common representation of such graphs uses a pair of lists
 $(\ell_V, \ell_A)$, where $\ell_V$ is the list of vertex labels and
 $\ell_A$ is the \emph{adjacency list} representing the arrows by
@@ -74,7 +71,7 @@ Consequently, to fully implement the mathematical
 set~$\mathsf{Graphs}$ we must not only decide on the underlying
 datatype $\mathtt{graph}$, but also determine what values of that type
 represent which elements of~$\mathsf{Graphs}$. All this can be
-expressed with a \emph{realizability relation}
+expressed with a \defemph{realizability relation}
 %
 \begin{equation*}
   r \rz x
@@ -93,7 +90,7 @@ function $f : \mathsf{Graphs} \to \mathsf{Graphs}$ is computable? The
 answer again is quite natural for a programmer: $f$ is computed by a
 program $p : \mathtt{graph} \to \mathtt{graph}$ when $p$ does to
 realizers what $f$ does to elements: if $r \rz G$ then $p \; r \rz
-f(G)$. We say that the map $f$ is \emph{realized} or \emph{tracked} by
+f(G)$. We say that the map $f$ is \defemph{realized} or \defemph{tracked} by
 the program~$p$.
 
 We adopt the notational convention that a realizer for an element or a
@@ -108,13 +105,13 @@ We now give a precise definition of the ideas presented in the
 previous section.
 
 \begin{definition}[Assemblies]
-  Let $\AA$ be a TPCA and $\compAA$ a sub-TPCA. An \emph{assembly}
+  Let $\AA$ be a TPCA and $\compAA$ a sub-TPCA. An \defemph{assembly}
   over~$(\AA, \compAA)$ is a triple $\asm{S} = \xasm{S}$ where $S$ is
   a set, $|S|$ is a type, and $\rz_S$ is a relation between
   $\xAtyp{S}$ and~$S$ satisfying: for every $x \in S$ there is $\R{x}
   \in \xAtyp{S}$ such that $\R{x} \rz_S x$.
 
-  A \emph{realized map} $f : \asm{S} \to \asm{T}$ between assemblies
+  A \defemph{realized map} $f : \asm{S} \to \asm{T}$ between assemblies
   $\asm{S}$ and $\asm{T}$ is a map $f : S \to T$ between the
   underlying sets for which there exists $\R{f} \in \compAtyp{|S| \to
     |T|}$ satisfying: if $\R{x} \rz_S x$ then $\defined{\R{f} \cdot
@@ -148,7 +145,7 @@ In most examples the TPCA $\AA$ is actually an NR-TPCA, and $\compAA$ a
 sub-NR-TPCA of~$\AA$.
 
 \begin{proposition}
-  Assemblies and realized maps form the \emph{category $\AsmA$ of
+  Assemblies and realized maps form the \defemph{category $\AsmA$ of
     assemblies over $(\AA, \compAA)$}.
 \end{proposition}
 
@@ -191,9 +188,9 @@ elements $x, y \in S$ may share the same realizer $r \in \xAtyp{S}$.
 It is often reasonable to prohibit such anomalies.
 
 \begin{definition}
-  An assembly $\asm{S}$ is \emph{modest} when each $r \in \xAtyp{S}$
+  An assembly $\asm{S}$ is \defemph{modest} when each $r \in \xAtyp{S}$
   realizes at most one element of~$S$. A modest assembly is also
-  called a \emph{modest set}.
+  called a \defemph{modest set}.
 \end{definition}
 
 \noindent
@@ -225,7 +222,7 @@ and~\ref{sec:hyperspaces}.
 
 The extreme case of elements sharing the same realizer happens when
 all elements of a set share all realizers. Assemblies with this
-property are called \emph{constant assemblies}. They give us a way of
+property are called \defemph{constant assemblies}. They give us a way of
 representing arbitrary sets.
 
 Let $t$ be a type such that $\Atyp{t}$ is inhabited. Such a type
@@ -280,7 +277,7 @@ Because every $x$ is realized by something, $\Ex_S(x)$ always contains
 at least one element. Thus an assembly $\xasm{S}$ may be equivalently
 presented as a triple $(S, |S|, \Ex_S)$ where $\Ex_S : S \to
 \pow{\xAtyp{S}}$ is a map such that $\Ex_S(x)$ contains at least one
-element for every $x \in S$. The map $\Ex_S$ is called \emph{existence
+element for every $x \in S$. The map $\Ex_S$ is called \defemph{existence
   predicate} because we can think of the realizers $\Ex_S(x)$ as
 computational witnesses for ``existence of~$x$''.
 
@@ -296,7 +293,7 @@ $\R{f}\;\R{x} \in \Ex_T(f(x))$.
 \label{sec:representations}
 
 By turning the existence predicate around we obtain
-\emph{representations}. Suppose first that $S$ is a modest set. Since
+\defemph{representations}. Suppose first that $S$ is a modest set. Since
 every realizer $r \in \xAtyp{S}$ realizes at most one $x \in S$, we may
 define a partial map $\delta_S : \xAtyp{S} \parto S$ by
 %
@@ -307,7 +304,7 @@ define a partial map $\delta_S : \xAtyp{S} \parto S$ by
 The map $\delta_S$ is surjective because every $x \in S$ is realized,
 but it need not be defined everywhere. The triple $(S, |S|, \delta_S)$
 uniquely describes the modest set~$S$. The map $\delta_S$ is called a
-\emph{representation} of~$S$.
+\defemph{representation} of~$S$.
 
 A map $f : S \to T$ is realized or tracked by $\R{f} \in \compAtyp{|S|
   \to |T|}$ when, for all $\R{x} \in \dom{\delta_S}$,
@@ -351,18 +348,18 @@ The pair $(|S|, {\per_S})$ suffices for the reconstruction of the
 original modest set, up to isomorphism. Let us be a bit more precise
 about this.
 
-Let $\AA$ be a TPCA and $\comp{A}$ a sub-TPCA. A \emph{partial
+Let $\AA$ be a TPCA and $\comp{A}$ a sub-TPCA. A \defemph{partial
   equivalence relation} on~$\AA$ is a pair $S = (|S|, {\per_S})$ where
 $|S|$ is a type and $\per_S$ is a transitive and antisymmetric
-relation on $\xAtyp{S}$. A realizer $r \in \xAtyp{S}$ is \emph{total} if
+relation on $\xAtyp{S}$. A realizer $r \in \xAtyp{S}$ is \defemph{total} if
 $r \per_S r$. The set of total realizers is denoted by $\|S\| = \set{r
   \in \xAtyp{S} \such r \per_S r}$. Each $r \in \|S\|$ is a member of
 its equivalence class $[r]_S = \set{q \in \xAtyp{S} \such r \per_S q}$.
 
-An \emph{extensional realizer} between pers $S$ and $T$ is $p \in
+An \defemph{extensional realizer} between pers $S$ and $T$ is $p \in
 \compAtyp{|S| \to |T|}$ such that, for all $q, r \in \xAtyp{S}$, if $q
 \per_S r$ then $\defined{p\;q}$, $\defined{p\;r}$, and $p\;q \per_T
-p\;r$. Extensional realizers $p$ and $p'$ are \emph{equivalent} when
+p\;r$. Extensional realizers $p$ and $p'$ are \defemph{equivalent} when
 $q \per_S r$ implies $p\;q \per_T p'\;r$.
 
 Pers and equivalence classes of extensional realizers form a category
@@ -455,10 +452,10 @@ computable mathematics done with type 1 machines, cf.\
 Section~\ref{sec:type-1}. In our settings it corresponds to the
 category $\Rep{\NN}$ of representations over the first Kleene algebra.
 
-An object of $\Rep{\NN}$ is called a \emph{numbered set}. It is a pair
+An object of $\Rep{\NN}$ is called a \defemph{numbered set}. It is a pair
 $(S, \delta_S)$, where $S$ is a set $\delta_S : \NN \parto S$ a
-partial surjection, called a \emph{numbering} of~$S$. A function $f :
-S \to T$ is \emph{realized} by $n \in \NN$ when, for all $m \in
+partial surjection, called a \defemph{numbering} of~$S$. A function $f :
+S \to T$ is \defemph{realized} by $n \in \NN$ when, for all $m \in
 \dom{\delta_S}$,
 %
 \begin{equation*}
@@ -502,7 +499,7 @@ The graph model~$\Scott$ is a countably-based space. We always take it
 with the subbasis $(\upper{n})_{n \in \NN}$. Recall that $\upper{n} =
 \set{A \subseteq \NN \such n \in A}$.
 
-A \emph{(countably-based) equilogical space} $(X, (U_i)_{i \in \NN},
+A \defemph{(countably-based) equilogical space} $(X, (U_i)_{i \in \NN},
 {\equiv_X})$ is a countably-based topological space~$(X, (U_i)_{i \in
   \NN})$ with an equivalence relation~$\equiv_X$. We usually do not
 bother writing the subbasis $(U_i)_{i \in \NN}$. The canonical
@@ -537,7 +534,7 @@ faithful embedding $\wTop \to \Equ$ of the category $\wTop$ of
 countably-based spaces into the category $\Equ$.
 
 Let us show that $\Equ$ and $\Asm{\Scott}$ are equivalent. A
-\emph{pre-embedding} $e : X \to Y$ between topological spaces is a
+\defemph{pre-embedding} $e : X \to Y$ between topological spaces is a
 continuous map such that $\inv{e} : \topol{Y} \to \topol{X}$ is
 surjective. For $T_0$-spaces this is equivalent to~$e$ being an
 embedding. If $(U_i)_{i \in I}$ is a topological subbasis for $Y$ and
@@ -592,7 +589,7 @@ a topological subbasis for~$X$.
 
 \noindent
 %
-The pre-embedding $e_X : X \to \Scott$ is called the \emph{(subbasic)
+The pre-embedding $e_X : X \to \Scott$ is called the \defemph{(subbasic)
   neighborhood filter} because $e_X(x)$ is just the set of (indices
 of) subbasic neighborhoods of~$x$. Henceforth $e_X : X \to \Scott$
 will always denote the subbasic neighobrhood filter.
@@ -751,7 +748,7 @@ $g: \Scott \to \Scott$, so that the following diagram commutes:
   }
 \end{equation*}
 %
-We can define a \emph{computable continuous map} $f: X \to Y$ to be a
+We can define a \defemph{computable continuous map} $f: X \to Y$ to be a
 continuous map for which there exists a computable enumeration
 operator $g: \Scott \to \Scott$ which makes the above diagram commute.
 This idea gives the following definition of computable continuous
@@ -764,7 +761,7 @@ maps.
   %
   A continuous map $f : X \to Y$ between countably-based spaces $(X,
   (U_i)_{i \in \NN})$ and $(Y, (V_j)_{j \in \NN})$ is
-  \emph{computable} when there exists a c.e.~set $F \subseteq \NN
+  \defemph{computable} when there exists a c.e.~set $F \subseteq \NN
   \times \NN$ such that:
   %
   \begin{enumerate}
@@ -786,8 +783,8 @@ maps.
   %
   \indexdef{realizer!for computable continuous map}%
   %
-  The relation~$F$ is called a~\emph{c.e.~realizer} for~$f$. We also
-  say that~$F$ \emph{tracks}~$f$.
+  The relation~$F$ is called a~\defemph{c.e.~realizer} for~$f$. We also
+  say that~$F$ \defemph{tracks}~$f$.
   %
   \indexdef{category!of effective topological spaces}%
   %
@@ -833,7 +830,7 @@ a new relation $F'$ by
 It is easy to see that $F'$ satisfies all three conditions and
 realizes the same function as~$f$.
 
-A point $x \in X$ is \emph{computable} when the map $\set{\star} \to
+A point $x \in X$ is \defemph{computable} when the map $\set{\star} \to
 X$ which maps $\star$ to~$x$ is computable. This is equivalent to
 requiring that $e_X(x) = \set{i \in \NN \such x \in U_i}$ is a
 c.e.~set.
@@ -958,7 +955,7 @@ that we replace continuous maps by their computable versions.
   \indexdef{equilogical space!computable}%
   %
   A morphism $f : (X, {\equiv_X}) \to (Y, {\equiv_Y})$ between
-  equilogical spaces is \emph{computable} if there exists a computable
+  equilogical spaces is \defemph{computable} if there exists a computable
   continuous map $g : X \to Y$ which tracks~$f$.
   %
   The category of equilogical spaces and computable morphisms between
@@ -999,8 +996,8 @@ continuous map $f : X \to Y$ is the same thing as a morphism $f : (X,
 \subsection{Type Two Effectivity}
 \label{sec:tte}
 
-A popular realizability model is Kleene's~\sidecite{KV65} \emph{function
-  realizability}, which is better known by its newer name \emph{Type
+A popular realizability model is Kleene's~\sidecite{KV65} \defemph{function
+  realizability}, which is better known by its newer name \defemph{Type
   Two Effectivity (TTE)}~\sidecite{Wei00}. As the names say, it is the
 model of realizability based on functions and type 2 machines. 
 
@@ -1021,13 +1018,13 @@ the larger category of assemblies $\Asm{\Baire, \comp{\Baire}}$.
 
 Specifically, a representation $(S, \delta_S)$ over the Baire space is
 a partial surjection $\delta_S : \Baire \to S$. When $\delta_S(\alpha)
-= x$ we say that $\alpha$ is a \emph{$\delta_S$-name} of~$x$. A
-\emph{(continuously) realized map} $f :(S, \delta_S) \to (T,
+= x$ we say that $\alpha$ is a \defemph{$\delta_S$-name} of~$x$. A
+\defemph{(continuously) realized map} $f :(S, \delta_S) \to (T,
 \delta_T)$ is a map $f : S \to T$ for which there exists a partial
 continuous map $g : \Baire \parto \Baire$ such that
 $f(\delta_S(\alpha)) = \delta_T(g(\alpha))$ for all $\alpha \in
 \dom{\delta_S}$. If the realizer $g$ is computable we say that $f$ is
-\emph{computably realized}. Recall that a computable $g$ corresponds
+\defemph{computably realized}. Recall that a computable $g$ corresponds
 to a type~2 machine which converts a $\delta_S$-name of~$x$ to a
 $\delta_T$-name of $f(x)$.
 
@@ -1066,7 +1063,7 @@ line, which however might not exist. A stronger property is required.
 \begin{definition}
   Suppose $X$ is a topological space and $\delta_X : \Baire \parto X$
   is a representation and a topological quotient map. Then $\delta_X$
-  is \emph{admissible} if every continuous $g : \Baire \parto X$ has a
+  is \defemph{admissible} if every continuous $g : \Baire \parto X$ has a
   continuous lifting $h : \Baire \parto \Baire$ such that
   $\delta_X(h(\alpha)) = g(\alpha)$ for all $\alpha \in \dom{g}$.
 \end{definition}
@@ -1100,6 +1097,8 @@ proof is not too complicated.
   filter of at most one~$x$, hence $\delta_X$ is single-valued. We
   leave admissibility of~$\delta_X$ as an exercise.
 \end{proof}
+
+Further reading: Weihrauch degrees.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1231,7 +1230,7 @@ our framework. We only mention two:
   Closely related to the previous case is $\xasm{U, \comp{U}}$ where
   $U$ is a universal Scott domain~\sidecite{GunterScott} and $\comp{U}$ is
   its computable counterpart. This model has been studied under the
-  name of \emph{domain representations}~\sidecite{Bla97,Bla97a}.
+  name of \defemph{domain representations}~\sidecite{Bla97,Bla97a}.
 \item
   The case $A = \PCFinf$ and $\comp{A} = \PCF$ was used by
   Mart{\'\i}n Escard\'o in his investigations of compact, exhaustible
