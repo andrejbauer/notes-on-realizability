@@ -8,10 +8,10 @@ In this section we overview a selection of concepts which we need
 later on. We also fix notation and a number of definitions. At the
 momement the sections are not listed in any particular order.
 
-\paragraph{Free and bound variables.}
+\subsubsection*{Free and bound variables}
 
-Occurrences of variables in an expression may be \emph{free} or
-\emph{bound}. Variables are bound when they are used to indicate the
+Occurrences of variables in an expression may be \defemph{free} or
+\defemph{bound}. Variables are bound when they are used to indicate the
 range over which an operator acts. For example, in expressions
 %
 \begin{equation*}
@@ -24,7 +24,7 @@ range over which an operator acts. For example, in expressions
 %
 the variables $x$, $k$, and $t$ are bound by the operators $\forall$,
 $\sum$, and $\int$, respectively. The remaining variables are free. It
-is really the \emph{occurrence} of a variable that is bound or free,
+is really the \defemph{occurrence} of a variable that is bound or free,
 not the variable itself. In
 %
 \begin{equation*}
@@ -32,29 +32,25 @@ not the variable itself. In
 \end{equation*}
 %
 the left-most occurence of $x$ is free whereas the other two are bound
-by $\exists$.
+by~$\exists$.
 
-\paragraph{Functions.}
+\subsubsection*{Functions}
 
-The set of all functions from $A$ to $B$ is denoted by $B^A$ or $A \to
-B$. The arrow associates to the right, $A \to B \to C$ is $A \to (B
-\to C)$. We write $f : A \to B$ instead of $f \in A \to B$. If $f : A
-\to B$ and $x \in A$, the application $f(x)$ is also written as $f\,
-x$. We often work with \emph{curried} functions which take several
-arguments in succession, i.e., if $f : A \to B \to C$ then $f$ takes
-$x \in A$, and $y \in B$ to produce an element $f(x)(y)$ in $C$, also
-written $f\, x\, y$.
+The set of all functions from $A$ to $B$ is denoted by $B^A$ as well as $A \to B$. The arrow associates to the right,
+$A \to B \to C$ is $A \to (B \to C)$. We write $f : A \to B$ instead of $f \in A \to B$. If $f : A \to B$ and $x \in A$, the application $f(x)$ is also written as $f\, x$. We often work with \defemph{curried} functions which take several
+arguments in succession, i.e., if $f : A \to B \to C$ then $f$ takes $x \in A$, and $y \in B$ to produce an element
+$f(x)(y)$ in $C$, also written $f\, x\, y$.
 
 
-\paragraph{Partial functions.}
+\subsubsection*{Partial functions}
 
-A \emph{partial} function\sidenote{In the literature on Type Two
+A \defemph{partial} function\sidenote{In the literature on Type Two
   Effectivity the common notation is $f \mathbin{{:}{\subseteq}} A \to
   B$.} $f: A \parto B$ is a function that is defined on a subset
 $\dom{f} \subseteq A$, called the \emph{domain} of~$f$. Sometimes
 there is confusion between the domain~$\dom{f}$ and the set~$A$, which
 is also called the domain. In such cases we call $\dom{f}$ the
-\emph{support} of~$f$. If $f: A \parto B$ is a partial function and $x
+\defemph{support} of~$f$. If $f: A \parto B$ is a partial function and $x
 \in A$, we write $\defined{f\, x}$ to indicate that $f x$ is defined.
 For an expression~$e$, we also write $\defined{e}$ to indicate
 that~$e$ and all of its subexpressions are defined. The
@@ -71,17 +67,16 @@ then $e_2$ is defined and they are equal. Thus we have
 \end{equation*}
 
 A partial map $f: X \parto Y$ between topological spaces~$X$ and~$Y$
-is said to be \emph{continuous} when it is continuous as a total map
+is said to be \defemph{continuous} when it is continuous as a total map
 $f: \dom{f} \to Y$, where the domain of definition $\dom{f} \subseteq
-X$ is equipped with the subspace topology. Note that there is no
-restriction on the domain~$\dom{f}$.
+X$ is equipped with the subspace topology.
 
 
 
-\paragraph{Primitive recursive and recursive functions}
+\subsubsection*{Primitive recursive and recursive function}
 
-The \emph{primitive recursive function} are those function $\NN^k \to
-\NN$ that are built from the following functions and operations:
+The \defemph{primitive recursive function} are those function $\NN^k \to
+\NN$ that are built inductively from the following functions and operations:
 %
 \begin{enumerate}
 \item constant functions $f(n_1, \ldots, n_k) = c$, where $c \in \NN$,
@@ -106,56 +101,54 @@ computable function is primitive recursive.\sidenote{The Ackermann
   function is computable but not primitive recursive.}
 
 
-The \emph{(general) partial recursive functions} are built from the
-above building blocks and also \emph{minimization}: if $f :
-\NN^{k+1} \parto \NN$ is recursive, then also the function $g : \NN^k
-\parto \NN$, defined by
+The \defemph{(general) partial recursive functions} are built from the above operations and \defemph{minimization}: given a partial recursive $f : \NN^{k+1} \parto \NN$ the function $g : \NN^k \parto \NN$, defined by
 %
 \begin{equation*}
   g(n_1, \ldots, n_k) = \min_n (f(n, n_1, \ldots, n_k) \neq 0),
 \end{equation*}
 %
-is recursive. When no $n$ satisfies the condition $f(n, n_1, \ldots,
-n_k) \neq 0$ the value $g(n_1, \ldots, n_k)$ is undefined.
+is partial recursive as well. When no $n$ satisfies $f(n, n_1, \ldots, n_k) \neq 0$ the value $g(n_1, \ldots, n_k)$ is undefined.
+
+The \defemph{general recursive functions} are those partial recursive functions whose domain and support coincide.
 
 
-\paragraph{Order theory.}
+\subsubsection*{Order theory}
 
-A \emph{preorder} $(P, {\leq})$ is a set with a reflexive and
+A \defemph{preorder} $(P, {\leq})$ is a set with a reflexive and
 transitive relation.
-
-A \emph{partially ordered set (poset)} $(P, {\leq})$ is a set with a
+%
+A \defemph{partially ordered set (poset)} $(P, {\leq})$ is a set with a
 reflexive, transitive, and anti-symmetric relation.
 
-A function $f : P \to Q$ between posets is \emph{monotone} if $x \leq
+A function $f : P \to Q$ between posets is \defemph{monotone} if $x \leq
 y$ in $P$ implies $f(x) \leq f(y)$ in $Q$.
 
-A subset $S \subseteq P$ is an \emph{upper set} if $x \in S$ and $x
-\leq y$ implies $y \in S$. Similarly, it is a \emph{lower set} if $y
+A subset $S \subseteq P$ is an \defemph{upper set} if $x \in S$ and $x
+\leq y$ implies $y \in S$. Similarly, it is a \defemph{lower set} if $y
 \in S$ and $x \leq y$ implies $x \in S$.
-
-A subset $S \subseteq P$ of a poset $(P, {\leq})$ is \emph{directed}
+%
+A subset $S \subseteq P$ of a poset $(P, {\leq})$ is \defemph{directed}
 if it is non-empty and for every $x, y \in S$ there exists $z \in S$
 such that $x \leq z$ and $y \leq z$.
-
-An \emph{upper bound} of a subset $S \subseteq P$ in a poset is an
+%
+An \defemph{upper bound} of a subset $S \subseteq P$ in a poset is an
 element $x \in P$ such that $y \leq x$ for all $y \in S$.
-
-The \emph{supremum} $\sup S$ of a subset $S \subseteq P$ in a poset is
+%
+The \defemph{supremum} $\sup S$ of a subset $S \subseteq P$ in a poset is
 its least upper bound, if it exists. More precisely, it is an upper
 bound $x$ for $S$ such that if $y$ is also an upper bound for~$S$ then
 $x \leq y$.
 
-A \emph{directed-complete partial order (dcpo)} is a poset in which
+A \defemph{directed-complete partial order (dcpo)} is a poset in which
 every directed set has a supremum. Let $(D, {\leq})$ be a dcpo. For
-$x, y \in D$ we say that~$x$ is \emph{way below} $y$, written $x \wayb
+$x, y \in D$ we say that~$x$ is \defemph{way below} $y$, written $x \wayb
 y$, when for every directed $S \subseteq D$ such that $y \leq \sup S$
 there exists $z \in S$ for which $x \leq z$. An element $x \in D$ is
-\emph{compact} (or \emph{finite}) when $x \wayb x$. A subset $U
-\subseteq D$ is \emph{Scott open} if it is an upper set and is
+\defemph{compact} (or \defemph{finite}) when $x \wayb x$. A subset $U
+\subseteq D$ is \defemph{Scott open} if it is an upper set and is
 inaccessible by suprema of directed sets, which means that, for every
 directed $S \subseteq D$, if $\sup S \in U$ then already $x \in U$ fo
-rsome $x \in S$. The Scott open sets form the \emph{Scott topology}
+rsome $x \in S$. The Scott open sets form the \defemph{Scott topology}
 of~$D$.
 
 If $D$ and $E$ are dcpos then a function $f : D \to E$ is continuous
@@ -163,9 +156,9 @@ with respect to the Scott topologies precisely when it preserved
 suprema of directed sets. It follows that such a function is monotone.
 
 
-\paragraph{Topology.}
+\subsubsection*{Topology}
 
-A topological space~$X$ is \emph{$T_0$-space} if each point is
+A topological space~$X$ is \defemph{$T_0$-space} if each point is
 uniquely determined by its open neighborhoods: for all $x, y \in
 X$,
 %
@@ -173,7 +166,7 @@ X$,
   (\all{U}{\topol{X}}{x \in U \iff y \in U}) \implies x = y.
 \end{equation*}
 
-A topological space is \emph{zero-dimensional} if it has a basis
+A topological space is \defemph{zero-dimensional} if it has a basis
 consisting of clopen sets.
 
 
