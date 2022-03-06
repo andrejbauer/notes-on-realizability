@@ -48,20 +48,20 @@ calculus, which involves the quantifiers $\exists$ and $\forall$.
 Suppose $\phi$ is a predicate with free variables $x$ and $y$ ranging
 over sets $S$ and $T$, respectively. Then the interpretation of $\phi$
 is a subset $\sem{\phi} \subseteq S \times T$. From it we define the
-interpretation of $\xsome{x}{S}{\phi}$ and $\xall{x}{S}{\phi}$ to be
+interpretation of $\some{x}{S}{\phi}$ and $\all{x}{S}{\phi}$ to be
 the subsets of~$T$ given by
 %
 \begin{align*}
-  \sem{\xsome{x}{S}{\phi}} &=
-  \sem{b \in T \such \xsome{a}{S}{(a,b) \in \sem{\phi}}}, \\
-  \sem{\xall{x}{S}{\phi}} &=
-  \sem{b \in T \such \xall{a}{S}{(a,b) \in \sem{\phi}}}.
+  \sem{\some{x}{S}{\phi}} &=
+  \sem{b \in T \such \some{a}{S}{(a,b) \in \sem{\phi}}}, \\
+  \sem{\all{x}{S}{\phi}} &=
+  \sem{b \in T \such \all{a}{S}{(a,b) \in \sem{\phi}}}.
 \end{align*}
 %
-Observe that $\sem{\xsome{x}{S}{\phi}}$ is the least subset of~$T$
-such that $\sem{\phi} \subseteq S \times \sem{\xsome{x}{S}{\phi}}$,
-and that $\sem{\xall{x}{S}{\phi}}$ is the largest subset of~$T$ such
-that $S \times \sem{\xall{X}{S}{\phi}} \subseteq \sem{\phi}$. We shall
+Observe that $\sem{\some{x}{S}{\phi}}$ is the least subset of~$T$
+such that $\sem{\phi} \subseteq S \times \sem{\some{x}{S}{\phi}}$,
+and that $\sem{\all{x}{S}{\phi}}$ is the largest subset of~$T$ such
+that $S \times \sem{\all{X}{S}{\phi}} \subseteq \sem{\phi}$. We shall
 use these characterizations of $\exists$ and $\forall$ in the setting
 of realizability.
 
@@ -126,7 +126,7 @@ Read $\R{r} \rz p(x)$ as ``$\R{r}$ realizes $p(x)$''. Now define the
 assembly $\asm{S}_p$ by
 %
 \begin{align*}
-  S_p &= \set{x \in S \such \xsome{\R{r}}{\Atyp{|p|}}{\R{r} \in p(x)}}, \\
+  S_p &= \set{x \in S \such \some{\R{r}}{\Atyp{|p|}}{\R{r} \in p(x)}}, \\
   |S_p| &= |S| \times |p|, \\
   \combPair\;\R{x}\;\R{r} \rz_{S_p} x &\iff
   \R{r} \in p(x) \land \R{x} \rz_S x.
@@ -146,7 +146,7 @@ The mono $\iota_p : \asm{S}_p \to \asm{S}$ is called a \defemph{standard
   %
   \begin{equation*}
     p(x) = \tbigcup_{y \in \inv{u}(x)} \Ex_U(y) =
-    \set{\R{y} \in \Atyp{|p|} \such \xsome{y}{U}{u(y) = x \land \R{y} \rz_U y}}.
+    \set{\R{y} \in \Atyp{|p|} \such \some{y}{U}{u(y) = x \land \R{y} \rz_U y}}.
   \end{equation*}
   %
   We claim that the standard mono $\iota_p : \asm{S}_p \to \asm{S}$ is
@@ -389,7 +389,7 @@ $\exists_{\asm{T}} q \in \Pred{\asm{S}}$ defined by
   |\exists_{\asm{T}} q| &= |T| \times |q| \\
   (\exists_{\asm{T}} q)(x) &=
   \set{ \combPair\;\R{y}\;\R{r} \in \Atyp{|T| \times |q|} \such
-    \xsome{y}{T}{\R{y} \rz_T y \land \R{r} \rz q(x,y)}
+    \some{y}{T}{\R{y} \rz_T y \land \R{r} \rz q(x,y)}
   }.
 \end{align*}
 %
@@ -411,7 +411,7 @@ Similarly, the universal quantifier $\forall_{\asm{T}}$ maps $q \in
   |\forall_{\asm{T}} q| &= |T| \to |q| \\
   (\forall_{\asm{T}} q)(x) &=
   \set{ \R{r} \in \Atyp{|T| \to |q|} \such
-    \xall{\R{y}}{\Atyp{|T|}}{
+    \all{\R{y}}{\Atyp{|T|}}{
       \all{y \in T}
         (\R{y} \rz_T y \implies
         \defined{\R{r}\;\R{y}} \land
@@ -429,8 +429,8 @@ if $q \leq \forall_{\asm{T}} p$ is witnessed by $\R{g}$ then $q \times
 \asm{T} \leq p$ is witnessed by $\pcalam{\annot{s}{|S| \times |T|} \,
   \annot{r}{|q|}}{\R{g} \; (\combFst \; s) \; r \; (\combSnd \; s)}$.
 
-It is customary to write $\xsome{y}{T}{q(x,y)}$ and
-$\xall{y}{T}{q(x,y)}$ instead of $\exists_{\asm{T}} q$ and
+It is customary to write $\some{y}{T}{q(x,y)}$ and
+$\all{y}{T}{q(x,y)}$ instead of $\exists_{\asm{T}} q$ and
 $\forall_{\asm{T}} q$.
 
 \begin{proposition}
@@ -537,9 +537,9 @@ structure of the formula:
   (\subst{\phi}{\xtot}) \lor (\subst{\psi}{\xtot}), \\
   \subst{(\phi \implies \psi)}{\xtot} &= 
   (\subst{\phi}{\xtot}) \implies (\subst{\psi}{\xtot}), \\
-  \subst{(\xsome{y}{\asm{T}}{\phi})}{\xtot} &= 
+  \subst{(\some{y}{\asm{T}}{\phi})}{\xtot} &= 
   \some{y \in \asm{T}} \subst{\phi}{\xtot},\\
-  \subst{(\xall{y}{\asm{T}}{\phi})}{\xtot} &= 
+  \subst{(\all{y}{\asm{T}}{\phi})}{\xtot} &= 
   \all{y \in \asm{T}} \subst{\phi}{\xtot}.
 \end{align*}
 %
@@ -579,8 +579,8 @@ type $|\phi|$ as follows:
   |\phi_1 \land \phi_2| &= |\phi_1| \times |\phi_2|\\
   |\phi_1 \lor \phi_2| &= |\phi_1| + |\phi_2|\\
   |\phi_1 \implies \phi_2| &= |\phi_1| \to |\phi_2|\\
-  |\xall{x}{\asm{T}}{\phi}| &= |T| \to |\phi| \\
-  |\xsome{x}{\asm{T}}{\phi}| &= |T| \times |\phi|.
+  |\all{x}{\asm{T}}{\phi}| &= |T| \to |\phi| \\
+  |\some{x}{\asm{T}}{\phi}| &= |T| \times |\phi|.
 \end{align*}
 %
 The realizability relation $\R{r} \rz \phi$, where $\R{r} \in
@@ -598,11 +598,11 @@ The realizability relation $\R{r} \rz \phi$, where $\R{r} \in
   \all{\R{s} \in \Atyp{|\phi_1|}} (\R{s} \rz \phi_1 \implies
     \defined{\R{r}\;\R{s}} \land \R{r}\;\R{s} \rz \phi_2)
   \\
-  \combPair\;\R{u}\;\R{r} \rz \xsome{x}{\asm{T}}{\phi} &\iff
+  \combPair\;\R{u}\;\R{r} \rz \some{x}{\asm{T}}{\phi} &\iff
   \some{u \in T} \R{u} \rz_T u \land \R{r} \rz \subst{\phi}{x \subto u}
   \\
-  \R{r} \rz \xall{x}{\asm{T}}{\phi} &\iff
-  \xall{\R{u}}{\Atyp{|T|}}{
+  \R{r} \rz \all{x}{\asm{T}}{\phi} &\iff
+  \all{\R{u}}{\Atyp{|T|}}{
     \all{u \in T}
       (\R{u} \rz_T u \implies
       \defined{\R{r}\;\R{u}} \land \R{r}\;\R{u} \rz \subst{\phi}{x \subto u})

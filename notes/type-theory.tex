@@ -66,7 +66,7 @@ is
 \begin{equation*}
   \dprod_{i \in I} S_i =
   \set{f : I \to \tbigcup_{i \in I} S_i \such
-    \xall{i}{I}{f(i) \in S_i}
+    \all{i}{I}{f(i) \in S_i}
   }.
 \end{equation*}
 %
@@ -76,7 +76,7 @@ Let $\rz_{\dprod_{i \in I} S_i}$ be the relation between $\Atyp{|I|
 \begin{equation*}
   \R{f} \rz_{\dprod_{i \in I} S_i} f
   \iff
-  \xall{\R{i}}{\Atyp{|I|}}{
+  \all{\R{i}}{\Atyp{|I|}}{
     \all{i \in I}
       (\R{i} \rz_I i
       \implies
@@ -90,7 +90,7 @@ Finally, define the dependent product of the family to be the assembly
 \begin{equation*}
   \dprod_{i \in \asm{I}} \asm{S}_i =
   (\set{f \in \dprod_{i \in I} S_i \such
-    \xsome{\R{f}}{\Atyp{|I| \to |S|}}{\R{f} \rz_{\dprod_{i \in I} S_i}
+    \some{\R{f}}{\Atyp{|I| \to |S|}}{\R{f} \rz_{\dprod_{i \in I} S_i}
       f}},
   |I| \to |S|, {\rz_{\dprod_{i \in I} S_i}}).
 \end{equation*}

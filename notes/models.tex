@@ -288,7 +288,7 @@ u (f, y) = f y
 %
 and the function $s$ is the currying operation\sidenote{In Haskell the
   notation \texttt{{\char92}x -> e} stands for $\lambda$-abstraction
-  $\xulam{x}{e}$, which in turn means ``the function which maps $x$ to
+  $\lam{x}{e}$, which in turn means ``the function which maps $x$ to
   $e$'', see Section~\ref{sec:lambda-calculus}.}
 %
 \begin{lstlisting}[language=Haskell]
@@ -588,7 +588,7 @@ by~$\beta$. We would like to know which maps are realizable.
   \begin{equation*}
      A = \set{(a, i, j) \in \NN^{*} \times \NN^{2} \such
         \basicBB{a} \cap \dom{f} \neq \emptyset \land
-        \xall{\alpha}{(\basicBB{a} \cap \dom{f})}{
+        \all{\alpha}{(\basicBB{a} \cap \dom{f})}{
           f(\alpha)(i) = j
           }
         }
@@ -690,7 +690,7 @@ Recall that a $G_\delta$-set is a countable intersection of open sets.
   \begin{equation*}
     \fpr{\gamma} \beta =
     \begin{cases}
-      \xulam{n}{1} & \beta \in U \;,\\
+      \lam{n}{1} & \beta \in U \;,\\
       \text{undefined} & \text{otherwise} \;.
     \end{cases}
   \end{equation*}
@@ -749,7 +749,7 @@ Recall that a $G_\delta$-set is a countable intersection of open sets.
   \begin{align*}
     \dom{\xfpr_\alpha}
     &= \set{\beta \in \Baire \such
-      \xall{n}{\NN}{
+      \all{n}{\NN}{
         \alpha \star (\cons{n}{\beta}) \ \text{defined and $> 0$}}} \\
     &= \tbigcap_{n \in \NN}
       \set{\beta \in \Baire \such
@@ -888,7 +888,7 @@ write $A \wayb B$ when~$A$ is a finite subset of~$B$, this is
 expressed as
 %
 \begin{equation*}
-  B \in \mathcal{U} \iff \xusome{A \wayb B}{A \in \mathcal{U}}.
+  B \in \mathcal{U} \iff \some{A \wayb B} A \in \mathcal{U}.
 \end{equation*}
 %
 The Scott topology makes $\pow{\NN}$ into a countably based
@@ -937,9 +937,9 @@ the product topology.
   phrase continuity of $f$ as
   %
   \begin{equation*}
-    \xall{n}{\NN}{
+    \all{n}{\NN}{
       \all{B \in \Scott}
-        (n \in f(B) \iff \xusome{A \wayb B}{n \in f(A)})
+        (n \in f(B) \iff \some{A \wayb B} n \in f(A))
     }.
   \end{equation*}
   %
@@ -955,7 +955,7 @@ the product topology.
   established as follows. Suppose $f : \Scott \to \Scott$ satisfies
   the second statement and $\mathcal{F} \subseteq \Scott$ is a
   directed family. Observe that the families $\mathcal{G} = \set{A \in
-    \Scott \such \xsome{B}{\mathcal{F}}{A \wayb B}}$ and $\mathcal{H}
+    \Scott \such \some{B}{\mathcal{F}}{A \wayb B}}$ and $\mathcal{H}
   = \set{A \in \Scott \such A \wayb \tbigcup \mathcal{F}}$ are
   actually the same, both are directed, and $\tbigcup \mathcal{F} =
   \tbigcup \mathcal{H}$. Then
@@ -997,7 +997,7 @@ $\Lambda(A) : \Scott \to \Scott$, defined by
 %
 \begin{equation*}
   \Lambda(A)(B) = \set{n \in \NN \such
-    \xusome{C \wayb B}{\code{(\code{C}, n)} \in A}
+    \some{C \wayb B} \code{(\code{C}, n)} \in A
   }.
 \end{equation*}
 %
@@ -1034,7 +1034,7 @@ Let us now discuss the role of $\Scott$ as a model of computation. An
 \to \NN$ such that
 %
 \begin{equation*}
-  A = \set{n \in \NN \such \xsome{k}{\NN}{e(k) = n + 1}}.
+  A = \set{n \in \NN \such \some{k}{\NN}{e(k) = n + 1}}.
 \end{equation*}
 %
 In words, $e$ enumerates the elements of~$A$, incremented by $1$. The
@@ -1044,7 +1044,7 @@ of~$A$ many times. The \defemph{$k$-th stage} of an enumeration~$e$ is
 the set
 %
 \begin{equation*}
-  \enumstage{e}{k} = \set{n \in \NN \such \xusome{j < k}{e(j) = n + 1}}.
+  \enumstage{e}{k} = \set{n \in \NN \such \some{j < k} e(j) = n + 1}.
 \end{equation*}
 %
 The stages form an increasing chain of finite sets whose union is the
@@ -1118,20 +1118,20 @@ different notation, which is more convenient when abstractions are
 nested:
 %
 \begin{equation*}
-  \xulam{x}{t} \;.
+  \lam{x}{t} \;.
 \end{equation*}
 %
 This operation is called \defemph{$\lambda$-abstraction}. For example,
-$\xulam{x}{\ulam{y}}{x^2 + y^3}$ is the function which maps an
-argument~$a$ to the function $\ulam{y}{a^2 + y^3}$. In the expression
-$\xulam{x}{t}$ the variable~$x$ is \emph{bound} in~$t$.
+$\lam{x} \lam{y} (x^2 + y^3)$ is the function which maps an
+argument~$a$ to the function $\lam{y} (a^2 + y^3)$. In the expression
+$\lam{x} t$ the variable~$x$ is \emph{bound} in~$t$.
 
 There are two kinds of $\lambda$-calculus, the \emph{typed} and the
 \emph{untyped} one. In the untyped version there are no restrictions
 on how application is formed, so that an expression such as
 %
 \begin{equation*}
-  \xulam{x}{x\; x}
+  \lam{x}{x\; x}
 \end{equation*}
 %
 is valid, whatever it means. In typed $\lambda$-calculus every
@@ -1150,24 +1150,24 @@ application and abstraction. More precisely, the calculus consists of:
 \item For any expressions $e_1$ and $e_2$ we may form their
   application $e_1\; e_2$. Application associates to the left so that
   $e_1\; e_2\; e_3 = (e_1\; e_2)\; e_3$.
-\item If $e$ is an expression, then $\xulam{x}{e}$ is its abstraction,
-  where~$x$ is bound in~$e$. Think of $\xulam{x}{e}$ as the function
+\item If $e$ is an expression, then $\lam{x}{e}$ is its abstraction,
+  where~$x$ is bound in~$e$. Think of $\lam{x}{e}$ as the function
   which maps $x$ to $e$. We abbreviate a nested abstraction
-  $\xulam{x_1}{\cdots \xulam{x_n}{e}}$ as $\xulam{x_1 x_2 \ldots x_n}{e}$.
+  $\lam{x_1}{\cdots \lam{x_n}{e}}$ as $\lam{x_1 x_2 \ldots x_n}{e}$.
 \end{itemize}
 %
 This can be expressed succinctly by the grammar rules:
 %
 \begin{align*}
   \text{Variable}\ v &\bnfis x \bnfor y \bnfor z \bnfor \cdots \\
-  \text{Expression}\ e &\bnfis v \bnfor e_1\;e_2 \bnfor \xulam{x}{e}
+  \text{Expression}\ e &\bnfis v \bnfor e_1\;e_2 \bnfor \lam{x}{e}
 \end{align*}
 %
 In the \emph{pure} calculus, which we are considering, there are no
 constants, numbers, or other operations.
 
 Expressions which only differ in the naming of bound variables are
-equal, thus $\xulam{x}{y\; x} = \xulam{z}{y\; z} \neq \xulam{y}{y\;
+equal, thus $\lam{x}{y\; x} = \lam{z}{y\; z} \neq \lam{y}{y\;
   y}$. Substitution replaces free variables with expressions. We write
 $\subst{e}{x_1 \subto e_1, \ldots, x_n \subto e_n}$ for a
 simultaneous substitution of expressions $e_1, \ldots, e_n$ for
@@ -1180,16 +1180,16 @@ substitutions.\sidenote{It is notoriously easy to commit errors when
 The basic axiom of $\lambda$-calculus is \defemph{$\beta$-reduction}:
 %
 \begin{equation*}
-  (\xulam{x}{e_1})\; e_2 = \subst{e_1}{x \subto e_2}.
+  (\lam{x}{e_1})\; e_2 = \subst{e_1}{x \subto e_2}.
 \end{equation*}
 %
-It says that the application of a function $\xulam{x}{e_1}$ to an
+It says that the application of a function $\lam{x}{e_1}$ to an
 argument $e_2$ is computed by replacing $x$ with $e_2$ in the function
 body~$e_1$. A second axiom, which is sometimes assumed is
 \defemph{$\eta$-reduction}, which says that
 %
 \begin{equation*}
-  \xulam{x}{e\; x} = e,
+  \lam{x}{e\; x} = e,
 \end{equation*}
 %
 provided $x$ does not occur freely in~$e$. We will \emph{not} assume
@@ -1201,11 +1201,11 @@ $e \mapsto e'$ when $e'$ is obtained from $e$ by a single application
 of $\beta$-reduction to a redex in~$e$. For example, we could reduce
 %
 \begin{equation*}
-  ((\xulam{x}{x})\; a)\;((\xulam{y}{y})\;b) \mapsto
-  a\; ((\xulam{y}{y})\;b)
+  ((\lam{x}{x})\; a)\;((\lam{y}{y})\;b) \mapsto
+  a\; ((\lam{y}{y})\;b)
   \quad\text{or}\quad
-  ((\xulam{x}{x})\; a)\;((\xulam{y}{y})\;b) \mapsto
-  ((\xulam{x}{x})\; a)\; b.
+  ((\lam{x}{x})\; a)\;((\lam{y}{y})\;b) \mapsto
+  ((\lam{x}{x})\; a)\; b.
 \end{equation*}
 %
 The \href{http://en.wikipedia.org/wiki/Church%E2%80%93Rosser_theorem}{Church-Rosser theorem}~\sidecite{church36:_some_proper_of_conver} says that
@@ -1216,7 +1216,7 @@ become equal. In the example above, we get $a\;b$ in both cases after
 one more reduction.
 
 There are expressions which we can keep reducing forever, for example
-the term $\omega\;\omega$ where $\omega = \xulam{x}{f\;(x\;x)}$ has an
+the term $\omega\;\omega$ where $\omega = \lam{x}{f\;(x\;x)}$ has an
 infinite reduction sequence
 %
 \begin{equation*}
@@ -1247,11 +1247,11 @@ We outline programming in $\lambda$-calculus but do not provide the
 proofs. First, a pairing with projections may be defined as follows:
 %
 \begin{equation*}
-  \combPair = \xulam{x y z}{z\; x\; y},
+  \combPair = \lam{x y z}{z\; x\; y},
   \qquad
-  \combFst = \xulam{p}{p \; (\xulam{x y}{x})},
+  \combFst = \lam{p}{p \; (\lam{x y}{x})},
   \quad\text{and}\quad
-  \combSnd = \xulam{p}{p \; (\xulam{x y}{y})}.
+  \combSnd = \lam{p}{p \; (\lam{x y}{y})}.
 \end{equation*}
 %
 With these we have
@@ -1266,19 +1266,19 @@ For example,
 %
 \begin{equation*}
   \combFst (\combPair\; a\; b) =
-  \combFst (\xulam{z}{z\; a\; b}) =
-  (\xulam{z}{z\; a\; b}) \; (\xulam{x y}{x}) =
-  (\xulam{x y}{x}) \; a \; b = a.
+  \combFst (\lam{z}{z\; a\; b}) =
+  (\lam{z}{z\; a\; b}) \; (\lam{x y}{x}) =
+  (\lam{x y}{x}) \; a \; b = a.
 \end{equation*}
 %
 The Boolean values and the conditional statement are defined by
 %
 \begin{equation*}
-  \combIf = \xulam{x}{x},
+  \combIf = \lam{x}{x},
   \qquad
-  \combTrue = \xulam{x y}{x},
+  \combTrue = \lam{x y}{x},
   \quad\text{and}\quad
-  \combFalse = \xulam{x y}{y}.
+  \combFalse = \lam{x y}{y}.
 \end{equation*}
 %
 They satisfy
@@ -1294,18 +1294,18 @@ Church numeral is a function which maps a function to its $n$-th
 iteration:
 %
 \begin{align*}
-  \overline{0} &= \xulam{f\;x}{x},\\
-  \overline{1} &= \xulam{f\;x}{f\;x},\\
-  \overline{2} &= \xulam{f\;x}{f\;(f\;x)},\\
-  \overline{n} &= \xulam{f\;x}{\underbrace{f\;(\cdots (f}_n\;x) \cdots)}.
+  \overline{0} &= \lam{f\;x}{x},\\
+  \overline{1} &= \lam{f\;x}{f\;x},\\
+  \overline{2} &= \lam{f\;x}{f\;(f\;x)},\\
+  \overline{n} &= \lam{f\;x}{\underbrace{f\;(\cdots (f}_n\;x) \cdots)}.
 \end{align*}
 %
 Successor, addition and multiplication are, respectively,
 %
 \begin{align*}
-  \combSucc &= \xulam{n\;f\;x}{n f (f x)},\\
-  \pcacomb{add} &= \xulam{m\;n\;f\;x}{m f (n f x)},\\
-  \pcacomb{mult} &= \xulam{m\;n\;f\;x}{m (n f) x}.
+  \combSucc &= \lam{n\;f\;x}{n f (f x)},\\
+  \pcacomb{add} &= \lam{m\;n\;f\;x}{m f (n f x)},\\
+  \pcacomb{mult} &= \lam{m\;n\;f\;x}{m (n f) x}.
 \end{align*}
 %
 We leave it as exercise to figure out how the following work and what
@@ -1315,11 +1315,11 @@ they do:\sidenote{A legend says that Alonzo Church was at the
   out?}
 %
 \begin{align*}
-  \pcacomb{power} &= \xulam{m\;n}{n\;m},\\
-  \pcacomb{iszero} &= \xulam{n}{n\; (\xulam{x}{\combFalse})\; \combTrue},\\
+  \pcacomb{power} &= \lam{m\;n}{n\;m},\\
+  \pcacomb{iszero} &= \lam{n}{n\; (\lam{x}{\combFalse})\; \combTrue},\\
   \pcacomb{pred} &=
-    \xulam{n}{
-      \combSnd\; (n\; (\xulam{p}{
+    \lam{n}{
+      \combSnd\; (n\; (\lam{p}{
         \combPair\; (\combSucc\; (\combFst\; p))\;
         (\combFst\; p)})
       (\combPair\; \overline{0}\; \overline{0}))}.
@@ -1328,15 +1328,15 @@ they do:\sidenote{A legend says that Alonzo Church was at the
 Recursion is accomplished by means of the fixed-point operator
 %
 \begin{equation*}
-  \combFix = \xulam{f}{(\xulam{x}{f\;(x\;x)}) (\xulam{x}{f\;(x\;x)})}.
+  \combFix = \lam{f}{(\lam{x}{f\;(x\;x)}) (\lam{x}{f\;(x\;x)})}.
 \end{equation*}
 %
 For any $a$ we have
 %
 \begin{align*}
   \combFix\;a &=
-  (\xulam{x}{a\;(x\;x)}) (\xulam{x}{a\;(x\;x)}) \\
-  &= a\;((\xulam{x}{a\;(x\;x)})\;(\xulam{x}{a\;(x\;x)})) \\
+  (\lam{x}{a\;(x\;x)}) (\lam{x}{a\;(x\;x)}) \\
+  &= a\;((\lam{x}{a\;(x\;x)})\;(\lam{x}{a\;(x\;x)})) \\
   &= a\;(\combFix\;a).
 \end{align*}
 %
@@ -1344,7 +1344,7 @@ The fix-point operator is used to define recursive functions, for
 example equality of numbers is computed as follows:
 %
 \begin{equation*}
-  \pcacomb{equal} = \combFix\;(\xulam{e\;m\;n}{
+  \pcacomb{equal} = \combFix\;(\lam{e\;m\;n}{
     \combIf\;
     (\pcacomb{iszero}\;m)\;
     (\pcacomb{iszero}\;n)\;
@@ -1362,7 +1362,7 @@ terms which have no normal form are the analogue of undefined values).
 
 The Church-Rosser theorems implies that the untyped $\lambda$-calculus
 is consistent, i.e., not all expressions are equal. To see this,
-consider $\xulam{x}{x}$ and $\xulam{x y}{x}$. If these were equal via
+consider $\lam{x}{x}$ and $\lam{x y}{x}$. If these were equal via
 a sequence of $\beta$-reductions (going in either direction), then
 they would both reduce to the same normal form. But they are in normal
 form, so they are different.
@@ -1404,7 +1404,7 @@ pair of maps
 %
 Furthermore, $\Gamma$ should be a retraction and~$\Lambda$ a section
 because in the untyped $\lambda$-calculus
-$\xulam{y}{(\xulam{x}{e\;x})\; y} = \xulam{y}{e\;y}$, provided $x$ and
+$\lam{y}{(\lam{x}{e\;x})\; y} = \lam{y}{e\;y}$, provided $x$ and
 $y$ do not occur freely in~$e$. We have already seen the above
 diagram: the graph model~$\Scott$ from Section~\ref{sec:graph-model}
 is an example. In general, a non-trivial\sidenote{By non-trivial we
@@ -1430,7 +1430,7 @@ inductively on the structure of~$e$:
   \sem{\overline{x} \ctx x_k}(a) &= a_k, \\
   \sem{\overline{x} \ctx e_1\; e_2}(a) &= 
   \Lambda(\sem{\overline{x} \ctx e_1}(a))(\sem{\overline{x} \ctx e_2}(a)), \\
-  \sem{\xulam{x}{e}}(a) &= \Gamma(f),
+  \sem{\lam{x}{e}}(a) &= \Gamma(f),
 \end{align*}
 %
 where in the last clause $f : D \to D$ is the map $f (b) =
@@ -1439,32 +1439,32 @@ where in the last clause $f : D \to D$ is the map $f (b) =
 To see how the $\lambda$-calculus helps prove things about reflexive
 domains, let us show that $D \times D$ is a retract of~$D$. A purely
 topological proof is doable, but it is much easier to just interpret
-pairing $\combPair = \xulam{x y z}{z\;x\;y}$ in~$D$. Let $s : D
+pairing $\combPair = \lam{x y z}{z\;x\;y}$ in~$D$. Let $s : D
 \times D \to D$ be defined as
 %
 \begin{equation*}
-  s (a, b) = \sem{x,y \ctx \xulam{z}{z\;x\;y}}(a,b),
+  s (a, b) = \sem{x,y \ctx \lam{z}{z\;x\;y}}(a,b),
 \end{equation*}
 %
 and let $r : D \to D \times D$ be the map
 %
 \begin{equation*}
-  r(c) = (\sem{p \ctx p\;(\xulam{x y}{x})}(c),
-          \sem{p \ctx p\;(\xulam{x y}{y})}(c)).
+  r(c) = (\sem{p \ctx p\;(\lam{x y}{x})}(c),
+          \sem{p \ctx p\;(\lam{x y}{y})}(c)).
 \end{equation*}
 %
 Then $r (s (a, b)) = (a, b)$ because $\lambda$-calculus proves
 %
 \begin{equation*}
-  (\xulam{x y}{x})\; x \; y = x
+  (\lam{x y}{x})\; x \; y = x
   \qquad\text{and}\qquad
-  (\xulam{x y}{y})\; x \; y = y.
+  (\lam{x y}{y})\; x \; y = y.
 \end{equation*}
 %
 As another example we observe that the utm and smn theorems are
 expressed easily in the untyped $\lambda$-calculus. The universal
-function $u$ from the utm theorem is $u = \xulam{x y}{x\; y}$ and the
-function $s$ from the smn theorem is $s = \xulam{p
+function $u$ from the utm theorem is $u = \lam{x y}{x\; y}$ and the
+function $s$ from the smn theorem is $s = \lam{p
   z}{(\combFst\;p)\;(\combPair\;(\combSnd\; p)\;z)}$.
 Therefore, every reflexive domain enjoys the utm and smn theorems.
 
@@ -1809,8 +1809,8 @@ The closed expressions of the untyped $\lambda$-calculus form a
 (total) combinatory algebra whose application is the one from
 $\lambda$-calculus. More precisely, we quotient the set of closed
 expressions by the equivalence relation generated by
-$\beta$-reduction. Then the combinators are $\combK = \xulam{x y}{x}$
-and $\combS = \xulam{x y z}{(x \; z)(y \; z)}$.
+$\beta$-reduction. Then the combinators are $\combK = \lam{x y}{x}$
+and $\combS = \lam{x y z}{(x \; z)(y \; z)}$.
 
 In Section~\ref{sec:typed-lambda-calculus} we shall elaborate
 (the typed version of) the $\lambda$-calculus as a programming
@@ -2028,7 +2028,7 @@ are types:
 \item The constant $\ttunit$, called the \defemph{unit}, has type
   $\unit$.
 \item If $e$ is an expression of type $t$ then
-  $\xulam{\annot{x}{s}}{e}$ is an expression of type $s \to t$. The
+  $\lam{\annot{x}{s}}{e}$ is an expression of type $s \to t$. The
   variable $x$ is bound in $e$.
 \item If $e_1$ and $e_2$ are expressions of types $s \to t$ and
   $t$, respectively, then $e_1\; e_2$ is an expressions of type~$t$.
@@ -2040,21 +2040,21 @@ are types:
 \end{enumerate}
 %
 An alternative syntax omits annotations from variables, except in
-$\lambda$-abstractions where $\xulam{\annot{x}{t}}{e}$ is then written
-as $\xtlam{x}{t}{e}$. This is in fact the notation we normally prefer.
+$\lambda$-abstractions where $\lam{\annot{x}{t}}{e}$ is then written
+as $\lam{x \of t}{e}$. This is in fact the notation we normally prefer.
 
 As in the untyped version, here too we have the rule of
 $\beta$-reduction
 %
 \begin{equation*}
-  (\xtlam{x}{t}{e_1}) e_2 = \subst{e_1}{x \subto e_2}.
+  (\lam{x \of t}{e_1}) e_2 = \subst{e_1}{x \subto e_2}.
 \end{equation*}
 %
 There is also a corresponding $\eta$-reduction rule, for an expression
 $e$ of type $s \to t$,
 %
 \begin{equation*}
-  \xtlam{x}{s}{e\;x} = e.
+  \lam{x \of s}{e\;x} = e.
 \end{equation*}
 %
 In the untyped $\lambda$-calculus we did not assume the $\eta$-rule,
@@ -2153,7 +2153,7 @@ $e_2$ are programs of appropriate types:
   \star,\qquad \overline{n},\qquad \combSucc,\qquad \combPred,\\
   \combTrue,\qquad \combFalse,\qquad \combIsZero,\\
   \combIf_t,\qquad \combIf_t \; e_1,\qquad \combIf_t \; e_1\; e_2,\\
-  \combFix_t,\qquad \xtlam{x}{t}{e},\qquad (e_1, e_2).
+  \combFix_t,\qquad \lam{x \of t}{e},\qquad (e_1, e_2).
 \end{gather*}
 %
 Think of these as ``finished'' programs, or in the case of partially
@@ -2176,7 +2176,7 @@ rule is essentially a directed version of $\beta$-reduction.
   {e_1 \; e_2 \oneto e_1'\; e_2}
   \qquad
   \axiom
-  {(\xtlam{x}{t}{e})\;e_2 \oneto \subst{e}{x \subto e_2}}
+  {(\lam{x \of t}{e})\;e_2 \oneto \subst{e}{x \subto e_2}}
   \\ \\
   \infer
   {e \oneto e'}
@@ -2275,11 +2275,11 @@ other programs $e_2$ which diverge or evaluate to other numerals
 with the program
 %
 \begin{equation*}
-  \xtlam{x}{\ttnat}{
+  \lam{x \of \ttnat}{
     \cond
     {\mathtt{eq}\;x\;\numeral{n}}
     {\ttunit}
-    {\combFix\;(\xtlam{x}{\unit}{x})}
+    {\combFix\;(\lam{x \of \unit}{x})}
   },
 \end{equation*}
 %
@@ -2312,7 +2312,7 @@ terms of general recursion, Booleans, and predecessors as
 \begin{equation*}  
   \combRec_t =
   \combFix \;
-  (\xulam{r\;x\;f\;n}
+  (\lam{r\;x\;f\;n}
             \cond{n = 0}{x}{f\;n\;(r \; x\; f \; (\combPred\; n))})
 \end{equation*}
 %

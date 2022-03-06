@@ -15,7 +15,7 @@ Occurrences of variables in an expression may be \defemph{free} or
 range over which an operator acts. For example, in expressions
 %
 \begin{equation*}
-  \xall{x}{\RR}{x^2 + y \geq 0},
+  \all{x}{\RR}{x^2 + y \geq 0},
   \qquad\qquad
   \sum_{k = 0}^n \frac{1}{k^2},
   \qquad\qquad
@@ -28,7 +28,7 @@ is really the \defemph{occurrence} of a variable that is bound or free,
 not the variable itself. In
 %
 \begin{equation*}
-  P(x) \lor \xusome{x}{\lnot Q(x)}
+  P(x) \lor \some{x} \lnot Q(x)
 \end{equation*}
 %
 the left-most occurence of $x$ is free whereas the other two are bound

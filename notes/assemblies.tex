@@ -197,7 +197,7 @@ It is often reasonable to prohibit such anomalies.
 In symbols, modesty is the property
 %
 \begin{equation*}
-  \xall{r}{\xAtyp{S}}{
+  \all{r}{\xAtyp{S}}{
     \all{x,y \in S}
       (r \rz_S x \land r \rz_S y \implies x = y)
   }.
@@ -340,7 +340,7 @@ element:
 %
 \begin{equation*}
   q \per_S r \iff
-  \xsome{x}{S}{q \rz_S x \land r \rz_S x}.
+  \some{x}{S}{q \rz_S x \land r \rz_S x}.
 \end{equation*}
 %
 The pair $(|S|, {\per_S})$ suffices for the reconstruction of the
@@ -617,15 +617,15 @@ will always denote the subbasic neighobrhood filter.
     \invim{g}(\upper{n}) &=
     \set{y \in Y \such n \in g(y)} \\
     &=
-    \set{y \in Y \such \xsome{U}{
+    \set{y \in Y \such \some{U}{
         \topol{Y}}{y \in U \land
-        \xall{z}{\invim{e}(U)}{n \in f(z)}
+        \all{z}{\invim{e}(U)}{n \in f(z)}
       }
     } \\
     &=
     \tbigcup_{U \in \topol{Y}} \left\{
         U \such
-        \xall{z}{\invim{e}(U)}{n \in f(z)}
+        \all{z}{\invim{e}(U)}{n \in f(z)}
       \right\}.
   \end{align*}
   %
@@ -808,7 +808,7 @@ map $g \circ f: X \to Z$ because it has a c.e.~realizer $H$ defined by
 \begin{multline*}
   (\code{\set{j_1, \ldots, j_k}}, \ell) \in H
   \iff {} \\
-    \xsome{i_1, \ldots, i_n}{\NN}{
+    \some{i_1, \ldots, i_n}{\NN}{
       (\code{\set{i_1, \ldots, i_n}}, \ell) \in G \land
       \bigwedge\nolimits_{s = 1}^{n}
       (\code{\set{j_1, \ldots, j_k}}, i_s) \in F
@@ -902,7 +902,7 @@ Theorems.
   %
   \begin{equation*}
     g(A) = \set{m \in \NN \such
-      \xsome{i_1, \ldots, i_n}{\NN}{
+      \some{i_1, \ldots, i_n}{\NN}{
         (\code{\set{i_1, \ldots, i_n}}, m) \in F
       }}.
   \end{equation*}
@@ -912,7 +912,7 @@ Theorems.
   %
   \begin{align*}
     m \in g(e_X(x)) &\iff
-      \xsome{i_1, \ldots, i_n}{\NN}{
+      \some{i_1, \ldots, i_n}{\NN}{
         x \in U_{i_1} \cap \cdots \cap U_{i_n} \land
         (\code{\set{i_1, \ldots, i_n}}, m) \in F
       } \\
@@ -1184,7 +1184,7 @@ Define
 %
 \begin{equation*}
   \delta(A) = \set{\alpha \in \Baire \such
-    \all{n \in \NN} (n \in A \iff \xsome{m}{\NN}{\alpha(m) = n + 1})
+    \all{n \in \NN} (n \in A \iff \some{m}{\NN}{\alpha(m) = n + 1})
   }.
 \end{equation*}
 %
