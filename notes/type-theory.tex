@@ -77,12 +77,11 @@ Let $\rz_{\dprod_{i \in I} S_i}$ be the relation between $\Atyp{|I|
   \R{f} \rz_{\dprod_{i \in I} S_i} f
   \iff
   \xall{\R{i}}{\Atyp{|I|}}{
-    \all{i}{I}{
-      \R{i} \rz_I i
+    \all{i \in I}
+      (\R{i} \rz_I i
       \implies
       \defined{\R{f}\;\R{i}} \land
-      \R{f}\;\R{i} \rz_{S_i} f(i)
-    }
+      \R{f}\;\R{i} \rz_{S_i} f(i))
   }.
 \end{equation*}
 %

@@ -1187,11 +1187,10 @@ map satisfying this property.
     \R{f} \rz_{S \to T} f
     \iff
     \xall{x}{S}{
-      \all{\R{x}}{|S|}{
-          \R{x} \rz_S x \implies
+      \all{\R{x} \in |S|}
+          (\R{x} \rz_S x \implies
           \defined{\R{f}\;\R{x}} \land
-          \R{f}\;\R{x} \rz_T f(x)
-        }
+          \R{f}\;\R{x} \rz_T f(x))
       }.
   \end{equation*}
   %

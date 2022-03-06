@@ -198,9 +198,8 @@ In symbols, modesty is the property
 %
 \begin{equation*}
   \xall{r}{\xAtyp{S}}{
-    \all{x,y}{S}{
-      r \rz_S x \land r \rz_S y \implies x = y
-    }
+    \all{x,y \in S}
+      (r \rz_S x \land r \rz_S y \implies x = y)
   }.
 \end{equation*}
 %
@@ -1185,7 +1184,7 @@ Define
 %
 \begin{equation*}
   \delta(A) = \set{\alpha \in \Baire \such
-    \all{n}{\NN}{n \in A \iff \xsome{m}{\NN}{\alpha(m) = n + 1}}
+    \all{n \in \NN} (n \in A \iff \xsome{m}{\NN}{\alpha(m) = n + 1})
   }.
 \end{equation*}
 %

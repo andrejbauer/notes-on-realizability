@@ -319,12 +319,11 @@ equivalent ones.
   \begin{equation*}
     p(x) \imp q(x) = \set{
       \R{f} \in \Atyp{|p| \to |q|} \such
-      \all{\R{u}}{\Atyp{|p|}}{
-        \R{u} \rz p(x)
+      \all{\R{u} \in \Atyp{|p|}}
+        (\R{u} \rz p(x)
         \implies
         \defined{\R{f}\;\R{u}} \land
-        \R{f}\;\R{u} \rz q(x)
-      }
+        \R{f}\;\R{u} \rz q(x))
     }.
   \end{equation*}
   %
@@ -413,11 +412,10 @@ Similarly, the universal quantifier $\forall_{\asm{T}}$ maps $q \in
   (\forall_{\asm{T}} q)(x) &=
   \set{ \R{r} \in \Atyp{|T| \to |q|} \such
     \xall{\R{y}}{\Atyp{|T|}}{
-      \all{y}{T}{
-        \R{y} \rz_T y \implies
+      \all{y \in T}
+        (\R{y} \rz_T y \implies
         \defined{\R{r}\;\R{y}} \land
-        \R{r}\;\R{y} \rz q(x,y)
-      }
+        \R{r}\;\R{y} \rz q(x,y))
     }
   }.
 \end{align*}
@@ -542,7 +540,7 @@ structure of the formula:
   \subst{(\xsome{y}{\asm{T}}{\phi})}{\xtot} &= 
   \some{y}{\asm{T}}{\subst{\phi}{\xtot}},\\
   \subst{(\xall{y}{\asm{T}}{\phi})}{\xtot} &= 
-  \all{y}{\asm{T}}{\subst{\phi}{\xtot}}.
+  \all{y \in \asm{T}} \subst{\phi}{\xtot}.
 \end{align*}
 %
 In the last two cases we assume that $x_1, \ldots, x_n$ and the free
@@ -597,18 +595,18 @@ The realizability relation $\R{r} \rz \phi$, where $\R{r} \in
   \combLeft\;\R{r} \rz \phi_1 \lor \phi_2 &\iff \R{r} \rz \phi_1\\
   \combRight\;\R{r} \rz \phi_1 \lor \phi_2 &\iff \R{r} \rz \phi_2\\
   \R{r} \rz \phi_1 \implies \phi_2 &\iff
-  \all{\R{s}}{\Atyp{|\phi_1|}}{\R{s} \rz \phi_1 \implies
-    \defined{\R{r}\;\R{s}} \land \R{r}\;\R{s} \rz \phi_2
-  }\\
+  \all{\R{s} \in \Atyp{|\phi_1|}} (\R{s} \rz \phi_1 \implies
+    \defined{\R{r}\;\R{s}} \land \R{r}\;\R{s} \rz \phi_2)
+  \\
   \combPair\;\R{u}\;\R{r} \rz \xsome{x}{\asm{T}}{\phi} &\iff
   \some{u}{T}{\R{u} \rz_T u \land \R{r} \rz \subst{\phi}{x \subto u}}
   \\
   \R{r} \rz \xall{x}{\asm{T}}{\phi} &\iff
   \xall{\R{u}}{\Atyp{|T|}}{
-    \all{u}{T}{
-      \R{u} \rz_T u \implies
-      \defined{\R{r}\;\R{u}} \land \R{r}\;\R{u} \rz \subst{\phi}{x \subto u}
-    }}.
+    \all{u \in T}
+      (\R{u} \rz_T u \implies
+      \defined{\R{r}\;\R{u}} \land \R{r}\;\R{u} \rz \subst{\phi}{x \subto u})
+    }.
 \end{align*}
 %
 
