@@ -538,7 +538,7 @@ structure of the formula:
   \subst{(\phi \implies \psi)}{\xtot} &= 
   (\subst{\phi}{\xtot}) \implies (\subst{\psi}{\xtot}), \\
   \subst{(\xsome{y}{\asm{T}}{\phi})}{\xtot} &= 
-  \some{y}{\asm{T}}{\subst{\phi}{\xtot}},\\
+  \some{y \in \asm{T}} \subst{\phi}{\xtot},\\
   \subst{(\xall{y}{\asm{T}}{\phi})}{\xtot} &= 
   \all{y \in \asm{T}} \subst{\phi}{\xtot}.
 \end{align*}
@@ -599,7 +599,7 @@ The realizability relation $\R{r} \rz \phi$, where $\R{r} \in
     \defined{\R{r}\;\R{s}} \land \R{r}\;\R{s} \rz \phi_2)
   \\
   \combPair\;\R{u}\;\R{r} \rz \xsome{x}{\asm{T}}{\phi} &\iff
-  \some{u}{T}{\R{u} \rz_T u \land \R{r} \rz \subst{\phi}{x \subto u}}
+  \some{u \in T} \R{u} \rz_T u \land \R{r} \rz \subst{\phi}{x \subto u}
   \\
   \R{r} \rz \xall{x}{\asm{T}}{\phi} &\iff
   \xall{\R{u}}{\Atyp{|T|}}{
