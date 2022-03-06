@@ -223,7 +223,7 @@ prealgebra. Let us recall the definition.
 \begin{definition}
   A \defemph{Heyting prealgebra} $(H, {\leq})$ is a preorder (reflexive
   and transitive) with elements $\bot$, $\top$ and binary operations
-  meet $\land$, join $\lor$, and implication $\imp$ such that, for all
+  meet $\land$, join $\lor$, and implication $\lthen$ such that, for all
   $p, q, r \in H$:
   %
   \begin{enumerate}
@@ -235,9 +235,9 @@ prealgebra. Let us recall the definition.
   \item $p \lor q$ is a supremum of $p$ and $q$: $p \leq p \lor q$, $q
     \leq p \lor q$, and whenever $p \leq r$ and $q \leq r$ then $p
     \lor q \leq r$,
-  \item $p \imp {-}$ is right adjoint to $p \land {-}$: $(p \imp q)
+  \item $p \lthen {-}$ is right adjoint to $p \land {-}$: $(p \lthen q)
     \land p \leq q$ and whenever $r \land p \leq q$ then $r \leq p
-    \imp q$.
+    \lthen q$.
   \end{enumerate}
   %
   A \defemph{Heyting algebra} is a Heyting prealgebra which is partially
@@ -313,11 +313,11 @@ equivalent ones.
     }.
   \end{equation*}
   
-  Finally, define $p \imp q$ to be the predicate whose realizers have
-  the type $|p \imp q| = |p| \to |q|$ and
+  Finally, define $p \lthen q$ to be the predicate whose realizers have
+  the type $|p \lthen q| = |p| \to |q|$ and
   %
   \begin{equation*}
-    p(x) \imp q(x) = \set{
+    p(x) \lthen q(x) = \set{
       \R{f} \in \Atyp{|p| \to |q|} \such
       \all{\R{u} \in \Atyp{|p|}}
         (\R{u} \rz p(x)
@@ -328,11 +328,11 @@ equivalent ones.
   \end{equation*}
   %
   That is, $\R{f}$ maps realizers for $p(x)$ to realizers for $q(x)$.
-  Note that $\R{f}$ need not be computable. Let us show that $p \imp
-  q$ has the desired properties. The inequality $(p \imp q) \land p
+  Note that $\R{f}$ need not be computable. Let us show that $p \lthen
+  q$ has the desired properties. The inequality $(p \lthen q) \land p
   \leq q$ is witnessed by $\pcalam{\annot{x}{|S|} \annot{w}{(|p| \to
       |q|) \times |p|}}{(\combFst\;w)\; (\combSnd\;w)}$. If $r \land p
-  \leq q$ is witnessed by $\R{f}$ then $r \leq p \imp q$ is witnessed
+  \leq q$ is witnessed by $\R{f}$ then $r \leq p \lthen q$ is witnessed
   by $\pcalam{\annot{x}{|S|} \annot{w}{|r|}
     \annot{u}{|p|}}{\R{f}\;(\combPair\;w\;u)}$.
 \end{proof}
