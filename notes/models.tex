@@ -21,9 +21,8 @@ studying only Turing machines we will learn everything there is to
 learn about computable mathematics. Our inquiry into the nature of
 computation, especially computation with infinite structures, will
 reveal a plethora of possibilities which are \emph{not} equivalent.
-Thus we begin the chapter with a review of several models of
-computation, which then leads us to a general definition of
-computational models.
+Thus we begin the chapter with a review of several well-known models of
+computation. These will turn out to be examples of a general notion of computation, the typed partial combinatory algebras.
 
 
 \section{Turing machines}
@@ -43,7 +42,7 @@ subject~\sidecite{odifreddi89:_class_recur_theor,h.r.92:_theor_recur_funct_effec
 \end{figure}
 
 A Turing machine is a device which operates on a number of tapes and
-heads, see Figure~\ref{fig:turing-machine}:
+heads, see \cref{fig:turing-machine}:
 %
 \begin{itemize}
 \item the input tape is equipped with a reading head that can move
@@ -75,7 +74,7 @@ output, and intermediate work. The two formulations are equivalent in
 the sense that a single-tape machine can simulate the workings of a
 Turing machine with several tapes, and vice versa. Our variant will
 ease the description of infinite computations in
-Section~\ref{sec:type-2}.
+\cref{sec:type-2}.
 
 The state of a Turing machine may be encoded onto a single tape as
 follows. First we write down the program, suitably encoded by the
@@ -274,7 +273,7 @@ important properties.
 
 \noindent
 The utm theorem is essentially a restatement of
-Theorem~\ref{thm:universal-machine} in terms of computable partial
+\cref{thm:universal-machine} in terms of computable partial
 functions. A detailed proof of the utm and smn theorems would involve
 a lot of technical manipulations of Turing machines. Rather than
 losing time with such a historical exercise, let us see how these two
@@ -289,7 +288,7 @@ u (f, y) = f y
 and the function $s$ is the currying operation\sidenote{In Haskell the
   notation \texttt{{\char92}x -> e} stands for $\lambda$-abstraction
   $\lam{x}{e}$, which in turn means ``the function which maps $x$ to
-  $e$'', see Section~\ref{sec:lambda-calculus}.}
+  $e$'', see \cref{sec:lambda-calculus}.}
 %
 \begin{lstlisting}[language=Haskell]
 s (f, y) = \z -> f (y, z)
@@ -574,9 +573,8 @@ by~$\beta$. We would like to know which maps are realizable.
   \xfpr_\gamma$. The realizer $\gamma$ is normalized by construction.
 \end{proof}
 
-
 \begin{theorem}[Extension Theorem for $\Baire$]%
-  \label{th:extension_BB}%
+  \label[extensionTheorem]{th:extension_BB}%
   Every partial continuous map $f: \Baire \parto \Baire$ can be extended
   to a realized one.
 \end{theorem}
@@ -684,7 +682,7 @@ Recall that a $G_\delta$-set is a countable intersection of open sets.
     \end{cases}
   \end{equation*}
   %
-  is realized. By Proposition~\ref{th:G_delta_characteristic} there
+  is realized. By \cref{th:G_delta_characteristic} there
   exists $\gamma \in \Baire$ such that for all $\beta \in \Baire$
   %
   \begin{equation*}
@@ -695,7 +693,7 @@ Recall that a $G_\delta$-set is a countable intersection of open sets.
     \end{cases}
   \end{equation*}
   % 
-  By Lemma~\ref{lemma:normalized-BB} we may assume that $\alpha$ and
+  By \cref{lemma:normalized-BB} we may assume that $\alpha$ and
   $\gamma$ are normalized. We claim that a realizer for $f$ is
   %
   \begin{equation*}
@@ -765,10 +763,10 @@ Recall that a $G_\delta$-set is a countable intersection of open sets.
   are continuous operations.
   
   Now let $f: \Baire \parto \Baire$ be a partial continuous function
-  whose domain is a $G_\delta$-set. By Theorem~\ref{th:extension_BB}
+  whose domain is a $G_\delta$-set. By \cref{th:extension_BB}
   there exists $\gamma \in \Baire$ such that $f(\alpha) =
   \fpr{\gamma}{\alpha}$ for all $\alpha \in \dom{f}$. By
-  Lemma~\ref{th:restrict_G_delta} there exists $\psi \in \Baire$ such
+  \cref{th:restrict_G_delta} there exists $\psi \in \Baire$ such
   that $\dom{\xfpr_\psi} = \dom{f}$ and $\fpr{\psi}{\alpha} =
   \fpr{\gamma}{\alpha}$ for every $\alpha \in \dom{f}$.
 \end{proof}
@@ -1140,7 +1138,7 @@ expressions and types. For example, we can only form an
 application~$f\; a$ when~$a$ has a type~$A$ and~$f$ has a type $A \to
 B$, which indicates a function taking arguments of type~$A$ and giving
 results of type~$B$. We postpone discussion of the type
-$\lambda$-calculus to Section~\ref{sec:typed-lambda-calculus}.
+$\lambda$-calculus to \cref{sec:typed-lambda-calculus}.
 
 In the \emph{untyped} version no restrictions are imposed on
 application and abstraction. More precisely, the calculus consists of:
@@ -1232,7 +1230,7 @@ An expression in which no $\beta$-reductions are possible is called a
 computations'', and those which cannot be reduced to a normal form as
 non-terminating computations. However, this is only an informal
 explanation on how $\lambda$-calculus can be used as a programming
-language, see Section~\ref{sec:typed-lambda-calculus} for a
+language, see \cref{sec:typed-lambda-calculus} for a
 further investigation of these issues.
 
 It may seem a bit surprising, but $\lambda$-calculus is as powerful as
@@ -1406,7 +1404,7 @@ Furthermore, $\Gamma$ should be a retraction and~$\Lambda$ a section
 because in the untyped $\lambda$-calculus
 $\lam{y}{(\lam{x}{e\;x})\; y} = \lam{y}{e\;y}$, provided $x$ and
 $y$ do not occur freely in~$e$. We have already seen the above
-diagram: the graph model~$\Scott$ from Section~\ref{sec:graph-model}
+diagram: the graph model~$\Scott$ from \cref{sec:graph-model}
 is an example. In general, a non-trivial\sidenote{By non-trivial we
   mean that it contains more than just a single point.} topological
 space $D$ which contains its own function space $\mathcal{C}(D,D)$ as
@@ -1476,7 +1474,7 @@ OTHER: Plotkin's $T^\omega$ and universal domain of Gunter-Scott.
 \section{Partial combinatory algebras}
 \label{sec:pcas}
 
-The Baire space from Section~\ref{sec:type-2} is almost a model of the
+The Baire space from \cref{sec:type-2} is almost a model of the
 untyped $\lambda$-calculus, because every $\alpha \in \Baire$ may be
 viewed both as a (realizer of) a function and an argument. One is then
 tempted to define application by $\alpha \; \beta =
@@ -1533,7 +1531,7 @@ is the Baire space.
 
 \noindent
 The definition looks strange at first. Where did $\combK$ and $\combS$
-come from? Theorem~\ref{th:combinatory-completeness} below explains
+come from? \Cref{th:combinatory-completeness} below explains
 that the reason for this definition is a property called
 \defemph{combinatory completeness}.
 %
@@ -1812,7 +1810,7 @@ expressions by the equivalence relation generated by
 $\beta$-reduction. Then the combinators are $\combK = \lam{x y}{x}$
 and $\combS = \lam{x y z}{(x \; z)(y \; z)}$.
 
-In Section~\ref{sec:typed-lambda-calculus} we shall elaborate
+In \cref{sec:typed-lambda-calculus} we shall elaborate
 (the typed version of) the $\lambda$-calculus as a programming
 language and give explicit strategies for computing with it.
 
@@ -2003,7 +2001,7 @@ Every PCA is a NR-TPCA if we enrich it with the trivial types system
 that contains a single type, $\mathcal{T} = \set{\star}$ with (the
 only possible) operations $\star \times \star = \star \to \star =
 \star$, and $A_\star = A$. The required combinators are the ones we
-defined in Section~\ref{sec:pcas}, we just need to annotate the
+defined in \cref{sec:pcas}, we just need to annotate the
 $\combK$ and $\combS$ with the (trivial) type.
 
 
@@ -2162,7 +2160,7 @@ computations that make progress when more arguments are supplied.
 
 Execution of a program is described with the reduction relation $e
 \oneto e'$, which you can think of as ``$e$ evaluates to $e'$ in one
-step'', defined by the rules in Figure~\ref{fig:pcf}. Each rule says
+step'', defined by the rules in \cref{fig:pcf}. Each rule says
 that the reduction under the line is valid, provided the reductions
 above the line are. For example, the first rules says that in an
 application $e_1\;e_2$ we should evaluate $e_1$ if we can. The second
@@ -2323,7 +2321,7 @@ t$, and $r$, $x$, $f$, $n$ have types $t \to (\ttnat \to t \to t) \to
 
 \subsubsection[\texorpdfstring{$\PCFinf$}{PCF-infinity}]{$\PCFinf$}
 
-In Sections~\ref{sec:type-2} and~\ref{sec:graph-model} we saw that
+In \cref{sec:type-2,sec:graph-model} we saw that
 type~2 machines and the the graph model allow us to compute with
 arbitrary set-theoretic functions and sets. This is very convenient
 for studying computability over topological spaces and other

@@ -2,7 +2,7 @@
 \label{cha:categ-structure}
 
 
-In Chapter~\ref{chap:realizability} we defined assemblies as our basic
+In \cref{chap:realizability} we defined assemblies as our basic
 structures of interest. To learn more about them we study which
 operations on assemblies are supported by the category $\AsmA$. It
 turns out that there is not only a rich collection of constructions
@@ -570,7 +570,7 @@ that covers the instances we care about.
   \end{align*}
   %
   It is easy to check that these satisfy the conditions from
-  Definition~\ref{def:tpca-booleans}.
+  \cref{def:tpca-booleans}.
 
   Conversely, suppose $\AA$ has booleans, and let $s$, $t$, and $u$ be
   types. There exist $\omega_s \in \Atyp{s}$ and $\omega_t \in
@@ -625,8 +625,7 @@ Finally, let us put all these together.
 \end{proposition}
 
 \begin{proof}
-  Combine Propositions~\ref{prop:asm-coproducts-iff-tpca-sums},
-  \ref{prop:tpca-sums-iff-booleans}, and \ref{prop:n-tpca-booleans}.
+  Combine \cref{prop:asm-coproducts-iff-tpca-sums,prop:tpca-sums-iff-booleans,prop:n-tpca-booleans}.
 \end{proof}
 
 The other finite colimits are more easily dealt with. The initial
@@ -702,7 +701,7 @@ explicit description of pushouts as exercise.
 \begin{proof}
   Coequalizers and the initial object always exist. Therefore, all
   finite colimits exist, provided binary coproducts do. By
-  Proposition~\ref{prop:asm-coproducts-iff-tpca-sums} this is
+  \cref{prop:asm-coproducts-iff-tpca-sums} this is
   equivalent to the condition that $\AA$ have sums and $\compAA$ be a
   sub-TPCA with sums.
 \end{proof}
@@ -761,7 +760,7 @@ a homeomorphism.
 \end{corollary}
 
 \begin{proof}
-  This follows directly from Proposition~\ref{prop:asm-mono-epi-when}
+  This follows directly from \cref{prop:asm-mono-epi-when}
   and the fact that in $\Set$ an epi-mono is the same thing as a
   bijection.
 \end{proof}
@@ -799,7 +798,7 @@ see this, suppose $f : \asm{S} \to \asm{T}$ is a regular mono, thus an
 equalizer of morphisms $g, h : \asm{T} \to \asm{U}$. If we simply
 compute the equalizer of $g$ and $h$ again according to the
 recipe~\eqref{eq:asm-equalizer} from
-Section~\ref{sec:cartesian-structure}, we see that it is precisely the
+\cref{sec:cartesian-structure}, we see that it is precisely the
 restriction of $\asm{T}$ to the subset
 % 
 \begin{equation*}
@@ -887,7 +886,7 @@ suppose $f : \asm{T} \to \asm{U}$ is a coequalizer of $g, h : \asm{U}
 such that $g(x) = h(x)$ for all $x \in U$. Then $f$ is isomorphic to
 $q : \asm{T} \to \asm{T}/{\equiv}$ because $g : \asm{T} \to
 \asm{T}/{\equiv}$ is the coequalizer of $g$ and $h$ according to
-Section~\ref{sec:cocartesian-structure}.
+\cref{sec:cocartesian-structure}.
 
 There is another characterization of regular epis which is used often.
 
@@ -900,9 +899,9 @@ There is another characterization of regular epis which is used often.
 \end{proposition}
 
 \begin{proof}
-  In Section~\ref{sec:multi-valued-functions} we will see that $\R{i}$
+  In \cref{sec:multi-valued-functions} we will see that $\R{i}$
   is a realizer for a multi-valued right inverse of~$f$, while
-  in Section~\ref{sec:logical-reg-epi} we will see that $\R{i}$ is a
+  in \cref{sec:logical-reg-epi} we will see that $\R{i}$ is a
   realizer for the internal statement
   $\all{y}{\asm{S}}{\some{x}{\asm{T}}{f(x) = y}}$. For the moment we
   just concentrate on the proof.
@@ -910,7 +909,7 @@ There is another characterization of regular epis which is used often.
   Suppose first that we have a regular epi $f : \asm{T} \to \asm{U}$
   which is a coequalizer of~$g, h : \asm{S} \to \asm{T}$. Let $q :
   \asm{T} \to \asm{T}/{\equiv}$ be the coequalizer of~$g$ and~$h$, as
-  computed in Section~\ref{sec:cocartesian-structure}. Because~$f$ and
+  computed in \cref{sec:cocartesian-structure}. Because~$f$ and
   $q$ both equalize $g$ and $h$, there exists a unique isomorphism $i
   : \asm{U} \to \asm{T}/{\equiv}$ such that $q = i \circ f$. Let
   $\R{i} \in \compAtyp{|U| \to |T|}$ be a realizer for~$i$. We claim
@@ -982,7 +981,7 @@ It is realized by the same realizers as~$f$.
 
 In the above factorization we call $\asm{U}$ the \defemph{image} of~$f$
 and $\asm{V}$ the \defemph{stable image} of~$f$. The reason for the
-terminology is revealed in Section~\ref{internal-epi-reg-epi}, where
+terminology is revealed in \cref{internal-epi-reg-epi}, where
 the stable image is related to stable propositions.
 
 The factorization is unique up to isomorphism. Suppose we had another
@@ -1057,7 +1056,7 @@ feature of assemblies.
 \end{proposition}
 
 \begin{proof}
-  The first item was proved in Proposition~\ref{prop:asm-cartesian}.
+  The first item was proved in \cref{prop:asm-cartesian}.
   For the second item, take the above factorization $f = i \circ b
   \circ q$ and notice that $q$ is a regular epi and $i \circ b$ a
   mono. Lastly, suppose $q : \asm{T} \to \asm{T}/{\equiv}$ is a
@@ -1092,7 +1091,7 @@ feature of assemblies.
   %
   $\combPair\;\R{x}\;\R{y} \rz_P (x,y)$ if, and only if, $\R{x} \rz_S
   x$ and $\R{y} \rz_T y$ and $r : (x,y) \mapsto x$. Let us use
-  Proposition~\ref{prop:reg-epi-when} to show that~$r$ is regular epi.
+  \cref{prop:reg-epi-when} to show that~$r$ is regular epi.
   The realizer $\R{i} =
   \pcalam{\annot{x}{|S|}}{\combPair\;x\;(\R{f}\;x)}$ satisfies the
   conditions of the proposition: if $x \in S$ and $\R{x} \rz_S x$ then
@@ -1104,7 +1103,7 @@ feature of assemblies.
 The regular structure of assemblies is important for at least two
 reasons: it gives a well-defined notion of an image of a realized map,
 and it provides an interpretation of existential quantifiers, cf.\
-Section~\ref{sec:realizability-interpretation}.
+\cref{sec:realizability-interpretation}.
 
 
 \section{Cartesian closed structure}
@@ -1575,7 +1574,7 @@ precisely the projective objects of the category of assemblies.
 
 A canonically projective modest set $(S, |S|, {\rz_S})$ is determined,
 up to isomorphism, by the set of the total realizers~$\|S\|$. This
-follows from Lemma~\ref{lemma:iso-assembly} and the fact that
+follows from \cref{lemma:iso-assembly} and the fact that
 projectivity ensures that $S$ and $\|S\|$ are in bijective
 correspondence. This combined with the fact that every modest set is a
 quotient of a canonically projective one leads to the following

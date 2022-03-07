@@ -30,7 +30,7 @@ real-world programming example. Suppose we are asked to design a data
 structure for the set $\mathsf{Graphs}$ of all finite
 simple\sidenote{Simple means at most one arrow between any two
   vertices.} directed graphs with vertices labeled by distinct
-integers. A typical graph~$G$ is shown in Figure~\ref{fig:digraph}.
+integers. A typical graph~$G$ is shown in \cref{fig:digraph}.
 
 \begin{figure}[htp]
   \centering
@@ -124,8 +124,7 @@ rather than the ordinary ones. It is relative because we used one
 TPCA~$\AA$ for assemblies, and another for the realized maps. By this we
 are capturing the idea that computable functions may operate on
 potentially non-computable data, as was the case for type~2 machines
-and the graph model, cf.\ Sections~\ref{sec:type-2}
-and~\ref{sec:graph-model}. In the typical case the larger TPCA~$\AA$
+and the graph model, cf.\ \cref{sec:type-2,sec:graph-model}. In the typical case the larger TPCA~$\AA$
 allows representation of arbitrary data, but the sub-TPCA $\compAA$
 consists only of the computable part of~$\AA$ which forces the realizers
 for maps to be computable. Thus it makes sense to say in the general
@@ -212,8 +211,7 @@ $\xAtyp{S}$.
 Most structures in computable mathematics turn out to be modest.
 However, sometimes assemblies are needed, especially when we talk
 about multi-valued maps and hyperspaces,
-cf.~Sections~\ref{sec:multi-valued-functions}
-and~\ref{sec:hyperspaces}.
+cf.\ \cref{sec:multi-valued-functions,sec:hyperspaces}.
 
 
 \subsection{Constant assemblies}
@@ -402,7 +400,7 @@ equivalence class $[r]_S$, $\defined{p\;r}$ and $[p\;r]_T = f([r]_S)$.
   The functors $F$ and $G$ form an equivalence of categories. The
   composition $F \circ G$ is actually equal to identity, as is easily
   verified. A modest set~$\xasm{S}$ is isomorphic to
-  $G(F(S))$ by Lemma~\ref{lemma:iso-assembly} applied to the bijection
+  $G(F(S))$ by \cref{lemma:iso-assembly} applied to the bijection
   which takes an $x \in S$ to $[r]_{G(F(S))}$, where $r \in \xAtyp{S}$
   is any realizer such that $r \rz_S x$. We leave the verification
   that the isomorphisms are natural as exercise.
@@ -427,7 +425,7 @@ represented by an extensional realizer $p \in \compAtyp{|S| \to |T|}$.
 The difference between pers and equivalence relations is mostly a
 bureaucratic one. Nevertheless, it is useful to know about $\Er{\AA,
   \compAA}$ because sometimes we can describe it in useful
-alternative ways, e.g., in Section~\ref{sec:equilogical-spaces} we
+alternative ways, e.g., in \cref{sec:equilogical-spaces} we
 describe pers on the graph model as equivalence relations on
 topological spaces.
 
@@ -448,7 +446,7 @@ traditional terminology and notions to ours.
 \emph{Recursive Mathematics}~\sidecite{type-1}, also known as \emph{type
   one effectivity} or \emph{Russian constructivism}~\sidecite{russ}, is
 computable mathematics done with type 1 machines, cf.\
-Section~\ref{sec:type-1}. In our settings it corresponds to the
+\cref{sec:type-1}. In our settings it corresponds to the
 category $\Rep{\NN}$ of representations over the first Kleene algebra.
 
 An object of $\Rep{\NN}$ is called a \defemph{numbered set}. It is a pair
@@ -465,7 +463,7 @@ A numbered set $(S, \delta_S)$ has countably many elements because it
 is covered by the countable set~$\dom{\delta_S}$. This is sometimes
 considered a disadvantage and a reason for preferring type~2 machines,
 which are able to compute with uncountable structures such as real
-numbers. However, in Section~\ref{countable-sets} we will see that a
+numbers. However, in \cref{countable-sets} we will see that a
 numbered set may be \emph{internally uncountable}, i.e., it appears to
 be uncountable inside the category of numbered sets. In fact, it is
 perfectly possible to develop analysis in this setting. One gets an
@@ -477,7 +475,7 @@ unusual variant which is a rich source of counter-examples.
 An equilogical space is a topological space with an
 equivalence relation~\sidecite{BauerA:equs}. We study equilogical spaces
 in some detail because they give us a general theory of computable
-maps between countably-based spaces. In Section~\ref{sec:tte} we
+maps between countably-based spaces. In \cref{sec:tte} we
 relate equilogical spaces to Type Two Effectivity, which is another
 school of computability on general topological spaces.
 
@@ -541,7 +539,7 @@ $e : X \to Y$ is a pre-embedding, then $(\invim{e}(U_i))_{i \in I}$ is
 a topological subbasis for~$X$.
 
 \begin{theorem}[Embedding Theorem for $\Scott$]
-  \label{thm:scott-embedding}%
+  \label[embeddingTheorem]{thm:scott-embedding}%
   A space $X$ may be pre-emebedded in~$\Scott$ if, and only if, it is
   countably based.
 \end{theorem}
@@ -594,7 +592,7 @@ of) subbasic neighborhoods of~$x$. Henceforth $e_X : X \to \Scott$
 will always denote the subbasic neighobrhood filter.
 
 \begin{theorem}[Extension Theorem for $\Scott$]
-  \label{thm:scott-extension}%
+  \label[extensionTheorem]{thm:scott-extension}%
   Suppose $e : X \to Y$ is a pre-embedding and $f : X \to \Scott$
   continuous. Then~$f$ has a continuous extension $g : Y \to \Scott$
   along~$e$.
@@ -669,8 +667,7 @@ equivalence~\sidecite{Simpson-Menni}.
   functor we define $F(f) = f$ for a morphism $f : (X, {\equiv_X}) \to
   (Y, {\equiv_Y})$. If $f$ is tracked by $g : X \to Y$, then $F(f)$ is
   realized by a continuous extension of $e_Y \circ g : X \to \Scott$
-  along~$e_X$, which exists by the Extension
-  Theorem~\ref{thm:scott-extension}.
+  along~$e_X$, which exists by \cref{thm:scott-extension}.
 
   The functor $G : \Asm{\Scott} \to \Equ$ is defined as follows. An
   assembly $(S, \Ex_S)$ is mapped to the equilogical space $G(S) =
@@ -707,7 +704,7 @@ topological spaces are $T_0$-spaces.
 
 \begin{proof}
   We verify that the equivalence functors $F$ and $G$ from the proof
-  of Proposition~\ref{prop:equ-equiv-asm-scott} restrict to $\Equ_0$
+  of \cref{prop:equ-equiv-asm-scott} restrict to $\Equ_0$
   and $\Mod{\Scott}$. If $(X, {\equiv_X})$ is an equilogical space
   whose underlying space $X$ is $T_0$, then the pre-embedding $e : X
   \to \Scott$ is actually an embedding. Because it is injective the
@@ -731,9 +728,9 @@ version of equilogical spaces? To see that the answer to the question
 is affirmative, we first need to define computable maps between
 countably-based spaces.
 
-Recall from Section~\ref{sec:graph-model} that an enumeration operator
+Recall from \cref{sec:graph-model} that an enumeration operator
 $g: \Scott \to \Scott$ is computable when its graph $\Gamma(g)$ is a
-c.e.~set. By the Embedding Theorem~\ref{thm:scott-embedding}, every
+c.e.~set. By \cref{thm:scott-embedding}, every
 countably based $T_0$-space $X$ can be embedded in $\Scott$, and every
 continuous map $f: X \to Y$ can be extended to an enumeration operator
 $g: \Scott \to \Scott$, so that the following diagram commutes:
@@ -815,7 +812,7 @@ map $g \circ f: X \to Z$ because it has a c.e.~realizer $H$ defined by
     }.
 \end{multline*}
 %
-The monotonicity condition in Definition~\ref{def:computable-map} is
+The monotonicity condition in \cref{def:computable-map} is
 redundant, for if $F$ is an c.e.~relation that satisfies the second
 and the third condition, then we can recover monotonicity by defining
 a new relation $F'$ by
@@ -838,7 +835,7 @@ Next, we prove effective versions of the Embedding and Extension
 Theorems.
 
 \begin{theorem}[Computable Embedding Theorem]
-  \label{th:computable_embedding_theorem}%
+  \label[embeddingTheorem]{th:computable_embedding_theorem}%
   %
   \index{Theorem!Computable Embedding Theorem}%
   \index{computable!Computable Embedding Theorem}%
@@ -874,7 +871,7 @@ Theorems.
 \end{proof}
 
 \begin{theorem}[Computable Extension Theorem]
-  \label{th:computable_extension_theorem}%
+  \label[extensionTheorem]{th:computable_extension_theorem}%
   %
   \index{Theorem!Computable Extension Theorem}%
   \index{computable!Computable Extension Theorem}%
@@ -896,7 +893,7 @@ Theorems.
 
 \begin{proof}
   The maps $e_X$ and $e_Y$ are the computable embeddings from
-  Theorem~\ref{th:computable_embedding_theorem}. Let $F$ be a
+  \cref{th:computable_embedding_theorem}. Let $F$ be a
   c.e.~realizer for $f$. We define the map $g: \Scott \to \Scott$ by
   specifying its graph to be~$F$, i.e.,
   %
@@ -924,7 +921,7 @@ Theorems.
   \end{align*}
   %
   The second equivalence is implied from left to right by the second
-  condition in Definition~\ref{def:computable-map}, and from right to
+  condition in \cref{def:computable-map}, and from right to
   the left by the third condition.
 \end{proof}
 
@@ -975,11 +972,9 @@ that~$\comp{\Equ}$ is equivalent to $\Asm{\Scott, \comp{\Scott}}$.
 
 \begin{proof}
   The proof goes just as the proof of
-  Propoistion~\ref{prop:equ-equiv-asm-scott} that $\Equ$ and
+  \cref{prop:equ-equiv-asm-scott} that $\Equ$ and
   $\Asm{\Scott}$ are equivalent. The only difference is that we refer
-  to the Computable Embedding
-  Theorem~\ref{th:computable_embedding_theorem} and the Computable
-  Extension Theorem~\ref{th:computable_extension_theorem} in order to
+  to \cref{th:computable_embedding_theorem} and \cref{th:computable_extension_theorem} in order to
   extend computable maps to computable enumeration operators.
 \end{proof}
 
@@ -1139,8 +1134,7 @@ whenever $\fpr{\alpha}{\beta}$ is defined then
   p (\iota(\alpha), \iota(\beta)) = \iota(\fpr{\alpha}{\beta}).
 \end{equation*}
 %
-The existence of~$p$ may be inferred from the Computable Extension
-Theorem~\ref{th:computable_extension_theorem} by noting that the map
+The existence of~$p$ may be inferred from \cref{th:computable_extension_theorem} by noting that the map
 $(\alpha, \beta) \mapsto \fpr{\alpha}{\beta}$ is continuous and
 computable, where defined.
 
