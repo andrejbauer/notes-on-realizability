@@ -16,13 +16,13 @@ of computation turned out to be equivalent to Turing's in the sense
 that machines of one kind can simulate those of the other kind, and
 vice versa.
 
-However, we would commit a serious mistake if we concluded that by
+However, we would commit a mistake if we concluded that by
 studying only Turing machines we will learn everything there is to
 learn about computable mathematics. Our inquiry into the nature of
 computation, especially computation with infinite structures, will
 reveal a plethora of possibilities which are \emph{not} equivalent.
 Thus we begin the chapter with a review of several well-known models of
-computation. These will turn out to be examples of a general notion of computation, the typed partial combinatory algebras.
+computation other than Turing machines.
 
 
 \section{Turing machines}
@@ -41,16 +41,14 @@ subject~\sidecite{odifreddi89:_class_recur_theor,h.r.92:_theor_recur_funct_effec
   \label{fig:turing-machine}
 \end{figure}
 
-A Turing machine is a device which operates on a number of tapes and
+A \defemph{Turing machine} is a device which operates on a number of tapes and
 heads, see \cref{fig:turing-machine}:
 %
 \begin{itemize}
-\item the input tape is equipped with a reading head that can move
-  left and right, and read the symbols, but cannot write them.
-\item The working tapes are equipped with heads that move left and
-  right, and can both read and write symbols.
-\item The output tape is equipped with a write-once head which can
-  move left and right, and it can write into each cell exactly once.
+\item a \defemph{read-only input tape} is equipped with a reading head that can move left and right, and read the symbols, but cannot write them.
+\item The \defemph{read-write working tapes} are equipped with heads that move left and right, and can both read and write symbols.
+\item The \defemph{write-once output tape} is equipped with a head which can
+  move left and right, and it can write into each cell \emph{at most once}.
   Once a cell is filled with a non-blank symbol all subsequent writes
   to it are ignored.
 \end{itemize}
@@ -61,20 +59,19 @@ The tapes are infinite\sidenote{If you are worried about having actual
   this sense the tapes are \emph{potentially} infinite.} and contain
 symbols from a given finite alphabet. A common choice for the alphabet
 is $0$, $1$, and a special symbol `blank'. The machine manipulates the
-contents of the tapes according to a \emph{program}, which is a finite
+contents of the tapes according to a \defemph{program}, which is a \emph{finite}
 list of simple instructions that control the heads and the tapes. The
 machine executes one instruction at a time in a sequential manner. It
-may \emph{terminate} after having executed finitely many computation
+may \defemph{terminate} after having executed finitely many computation
 steps. If it does not terminate then it runs forever, in which case we
-say that it \emph{diverges}.
+say that it \defemph{diverges}.
 
 Our version of Turing machine is different from the usual one, where a
 machine is equipped with only a single tape that serves for input,
 output, and intermediate work. The two formulations are equivalent in
 the sense that a single-tape machine can simulate the workings of a
-Turing machine with several tapes, and vice versa. Our variant will
-ease the description of infinite computations in
-\cref{sec:type-2}.
+Turing machine with several tapes, and vice versa. Having working tapes will
+ease the description of infinite computations in \cref{sec:type-2}.
 
 The state of a Turing machine may be encoded onto a single tape as
 follows. First we write down the program, suitably encoded by the
@@ -88,7 +85,7 @@ The answer was given by Turing.
 
 \begin{theorem}[Turing]
   \label{thm:universal-machine}
-  There exists a \defemph{universal  machine}---a machine that takes a
+  There exists a \defemph{universal  machine}: a machine that takes a
   description of another machine, as explained above, and simulates
   it.
 \end{theorem}
@@ -131,7 +128,11 @@ undefined. Of course, the input $n$ must be suitably encoded onto the
 input tape, for example it can be written in binary form. The output
 tape contains the result encoded in the same manner.
 
-It is convenient to view every Turing machine as one computing a
+\begin{definition}
+  A partial map $f : \NN \parto \NN$ is \defemph{computable} if there exists a Turing machine $M$ such that for every $n \in \NN$: if $f(n)$ is defined then~$M$ terminates on input~$n$ and gives output $f(n)$; if $f(n)$ is undefined then~$M$ diverges on input~$n$.
+\end{definition}
+
+It is convenient to view \emph{every} Turing machine as one computing a
 function $\NN \parto \NN$. This can be arranged as long as we read the
 result off the output tape correctly. Suppose the alphabet contains
 symbols $0$, $1$, and blank. We encode the input $n$ onto the input
@@ -142,14 +143,17 @@ and $1$. If we ignore everything that comes after the first blank, we
 can interpret the output tape as a number written in binary (the empty
 sequence encodes zero).
 
-We could similarly define how a Turing machine computes a multivariate
+We can similarly define how a Turing machine computes a multivariate
 partial function $f : \NN^k \parto \NN$. We just have to correctly
 encode the arguments on the tape by placing special markers between
 them so that we can tell where one ends and the next one begins.
 
-It is common knowledge that computers encode everything with $0$'s and
-$1$'s, but logicians prefer to encode everything with natural numbers.
-We shall write in general $\code{e}$ for encoding of $e$ by a natural
+\begin{exercise}
+  Devise a coding scheme for $k$-tuples of numbers using the symbols $0$, $1$ and blank. Make sure that every tape which contains at most finitely many $0$'s and $1$'s encodes a $k$-tuple of numbers.
+\end{exercise}
+
+It is common knowledge that computers encode everything with $0$'s and~$1$'s, but logicians prefer to encode everything with natural numbers.
+We shall write in general $\code{e}$ for \defemph{encoding} of $e$ by a natural
 number. Of course, we must specify what $\code{e}$ is in each
 particular case. For example, a pair of numbers $(m, n)$ may be
 encoded into a single number as
@@ -161,8 +165,18 @@ encoded into a single number as
 Every number except $0$ represents the code of a unique pair so we
 also have computable \defemph{projections} $\xfst$ and $\xsnd$ which
 recover $m$ and $n$ from $\code{(m, n)}$, respectively.
+Once we know how to encode pairs of numbers, lists of numbers can be encoded as iterated pairs:
+%
+\begin{align*}
+  \code{[\;]} &= 0 \\
+  \code{[n_0, \ldots, n_k]} &= \code{(n_0, \code{[n_1, \ldots, n_k]})}.
+\end{align*}
+%
+Because we defined $\code{(m,n)}$ so that it is never zero, the
+elements of a sequence may be uniquely reconstructed from its code.
+By iterating the scheme we may encode lists of lists of numbers, etc.
 
-We may also encode Turing machines with numbers. A program is a finite
+Turing machines can be encoded with numbers, also. A program is a finite
 list of instructions, so it can be encoded as a finite sequence of
 $0$'s and $1$'s (your computer does this every time you save a piece of
 source code in a file), which in turn represents a number in binary
@@ -171,28 +185,18 @@ by the reverse process. Given a number, write it in binary form and
 interpret it as a sequence of $0$'s and $1$'s and decode from it a
 list of instructions. It may happen that the binary sequence does not
 properly encode a list of instructions, in which case we interpret it
-as the program that keeps moving the input head to the right forever.
+as some fixed silly little program.
 
 The next step is to encode tapes and entire computations with numbers.
 Because an infinite tape cannot be encoded in a single natural number,
-we limit attention to the so-called \emph{type 1} machines which
+we limit attention to the so-called \defemph{type 1 machines} which
 accept only \emph{finite} inputs. More precisely, the input always
 consists of a finite string of $0$'s and $1$'s followed by blanks.
 Such input may be encoded by a single number. Furthermore, at every
 step of computation the machine has used up only a finite portion of
-its working tapes. The contents of each tape may be encoded by a
-single number, and a finite sequence of numbers $[n_0, \ldots, n_k]$
-may again be encoded by a single number $\code{[n_0, \ldots, n_k]}$,
-which we define as iterated pairing:
-%
-\begin{align*}
-  \code{[\;]} &= 0 \\
-  \code{[n_0, \ldots, n_k]} &= \code{(n_0, \code{[n_1, \ldots, n_k]})}.
-\end{align*}
-%
-Because we defined $\code{(m,n)}$ so that it is never zero, the
-elements of a sequence may be uniquely reconstructed from its code. By
-continuing in this manner we may encode with a single number a finite
+its working tapes, whose contents may again be encoded by a single number.
+
+By continuing in this manner we may encode with a single number a finite
 sequence of computation steps, including the contents of the tapes
 and positions of the heads at each step. Stephen Kleene~\sidecite{kleene43:_recur_predic_and_quant}
 worked out the details of all this and defined the predicate
@@ -204,13 +208,11 @@ $T(x,y,z)$ whose meaning is
   terminates.''
 \end{quote}
 %
-The amazing thing is that $T$ may be defined in Peano arithmetic just
-in terms of basic arithmetical operations on numbers. There is an
+The amazing thing is that $T$ may be defined in \href{https://en.wikipedia.org/wiki/Peano_axioms#Peano_arithmetic_as_first-order_theory}{Peano arithmetic} just
+in terms of $0$, successor, $+$ and $\times$. There is an
 associated computable partial function $U(z)$ whose meaning is ``the
 number encoded by the contents of the output tape in the last step of
-computation encoded by $z$''. The function $U$ allows us to extract
-the result of a computation. If $z$ does not encode a terminating
-computation then $U(z)$ is undefined.
+computation encoded by $z$''. With it we can extract the result of a computation. It is easy to arrange $U$ so that it is defined for all~$z$, even those that do not encode terminating computations.
 
 Kleene's normal form theorem~\sidecite{kleene43:_recur_predic_and_quant}
 says that every partial computable function $f : \NN \parto \NN$ may
@@ -221,7 +223,7 @@ be written in the form
   y \mapsto U(\min \set{z \in \NN \such T(x,y,z)}).
 \end{equation}
 %
-The number $x$ is the encoding of any machine that computes~$f$. We
+The number $x$ is the encoding of a machine that computes~$f$. We
 emphasize that we are completely ignoring questions of computational
 efficiency. Just consider how we would compute $f(y)$ according
 to~\eqref{eq:kleene-normal-form}: for each $z = 0, 1, 2, \ldots$, test
@@ -274,12 +276,9 @@ important properties.
 \noindent
 The utm theorem is essentially a restatement of
 \cref{thm:universal-machine} in terms of computable partial
-functions. A detailed proof of the utm and smn theorems would involve
-a lot of technical manipulations of Turing machines. Rather than
-losing time with such a historical exercise, let us see how these two
-theorems manifest themselves in modern programming languages, say in
-Haskell. Keeping in mind that numbers are just codes for programs and
-data, the universal function $u$ from the utm theorem is
+functions. Detailed proofs of the utm and smn theorems would involve
+a lot of technical manipulations of Turing machines, you may consult~\cite{davis58:_comput_unsol} to get a taste of it.
+It is illuminating to see how the utm and smn theorems manifest themselves in modern programming languages, say in Haskell. Keeping in mind that numbers are just codes for programs and data, the universal function $u$ from the utm theorem is
 %
 \begin{lstlisting}[language=Haskell]
 u (f, y) = f y
@@ -295,11 +294,7 @@ s (f, y) = \z -> f (y, z)
 \end{lstlisting}
 %
 This may seem like a triviality to the programmer but is surely not
-considered one by those who implemented the Haskell compiler. The
-operation that we used to define \lstinline!s! are application,
-pairing, currying and $\lambda$-abstraction. They are ``the essence''
-of functional programming, just like the utm and smn theorems are the
-essence of partial computable functions.
+considered one by the implementors of the Haskell compiler. The definition of \lstinline!s! uses function application, pairing, currying and $\lambda$-abstraction, which are ``the essence'' of functional programming, just like the utm and smn theorems are the essence of partial computable functions.
 
 The following theorem is important in the theory of computable
 functions because it allows us to define partial computable functions
@@ -315,12 +310,10 @@ by recursion.
   partial map $\psi : \NN^2 \parto \NN$ such that
   %
   \begin{equation*}
-    \psi(u, x) =
-    \begin{cases}
-      \pr{\pr{u}{u}}{x} & \text{if $\defined{\pr{u}{u}}$,}\\
-      \text{undefined}  & \text{otherwise.}\\
-    \end{cases}
+    \psi(u, x) = \pr{\pr{u}{u}}{x},
   \end{equation*}
+  %
+  where $\psi(u, x)$ is undefined when $\pr{u}{u}$ is undefined.
   %
   By the smn theorem there is a computable function $g : \NN \to \NN$
   such that $\pr{g(u)}{x} = \psi(u, x)$. Now consider any computable
@@ -334,24 +327,25 @@ by recursion.
 This was a typical argument in the theory of computable functions. Let
 us prove the recursion theorem in Haskell to see what is going on. The
 function $f : \NN \to \NN$ operates on codes of computable partial
-maps. In Haskell we work directly with values, so in the Haskell
-version of the theorem $f$ has the type
+maps. Haskell has higher-order functions that work directly with functions as arguments and results, so $f$ should be given the type
 %
 \begin{lstlisting}[language=Haskell]
 f :: (Integer -> Integer) -> (Integer -> Integer)
 \end{lstlisting}
 %
 Rather than looking for a number $n$ we are looking for a function
-\lstinline!n! such that \lstinline!f n = n!. Because Haskell already
-has recursion built in this is very easy, just define
+%
+\begin{lstlisting}[language=Haskell]
+n :: Integer -> Integer
+\end{lstlisting}
+%
+such that \lstinline!f n = n!. Because Haskell already has recursion built in this is very easy, just define
 %
 \begin{lstlisting}
 n = f n
 \end{lstlisting}
 %
-Recursion theorem accomplishes for type~1 machines what is already
-built into general-purpose programming language, namely definition by
-recursion.
+The Recursion theorem is nothing but definition by recursion for type~1 machines.
 
 We finish this section with a theorem which we shall often use to show
 \emph{non}-computability results.
@@ -373,9 +367,9 @@ We finish this section with a theorem which we shall often use to show
 \begin{proof}
   Let us prove the theorem in Haskell. We must show that there is no
   %
-  \begin{lstlisting}[language=Haskell]
+\begin{lstlisting}[language=Haskell]
 h :: (Integer -> Integer) -> Integer
-  \end{lstlisting}
+\end{lstlisting}
   %
   such that, for all \lstinline!f :: Integer -> Integer!,
   %
@@ -389,9 +383,9 @@ h :: (Integer -> Integer) -> Integer
   %
   Suppose there were such an \lstinline!h!. Define
   %
-  \begin{lstlisting}[language=Haskell]
+\begin{lstlisting}[language=Haskell]
 g n = if h g == 1 then g n else 0
-  \end{lstlisting}
+\end{lstlisting}
   %
   By assumption \lstinline!h g! is either \lstinline!0! or
   \lstinline!1!. In either case there is a contradiction because
@@ -406,12 +400,9 @@ Type 1 machines from previous section only operate on finite inputs.
 In practice we often see programs whose input and output are
 (potentially) infinite. For example, when you listen to an Internet
 radio station, the player accepts a never-ending stream of data which
-it outputs to the speakers. Also, just because a program does not
-terminate that does not automatically mean it is useless. We therefore
-also need a model of computation that describes non-terminating
-programs with infinite inputs and outputs.
+it outputs to the speakers. Also, many useful programs, such as servers, operating systems, and browsers are potentially non-terminating. We therefore need a model of computation that describes non-terminating programs with infinite inputs and outputs.
 
-A popular one is \emph{type 2} Turing machine, which accepts an
+A popular one is \defemph{type 2 machine}, which accepts an
 infinite sequence on its input tape and is allowed to work forever. It
 may or may not fill the output tape entirely with non-blank symbols.
 Note that the requirement for the output tape to be write-once makes
@@ -435,38 +426,27 @@ changes are inessential because an infinite sequence $n_0, n_1, n_2,
 $1^{n_0}01^{n_1}01^{n_2}0\cdots$, where $1^k$ means that the symbol
 $1$ is repeated $k$-times.
 
-A type 2 machine computes a partial function $f : \NNNN \parto
-\NNNN$, where $\NNNN$ is the \defemph{Baire space} of infinite
-sequences of numbers. We run the machine with $\alpha \in \NNNN$
-written on the input tape. If every output cell is eventually written
-to, then the output tape represents the result $f(\alpha)$. If there is
-at least one output cell to which the machine does not write a number,
-then $f(\alpha)$ is undefined.
+\begin{definition}
+  Say that a type 2 machine $M$ \textbf{computes} a partial map $f : \NNNN \parto
+  \NNNN$ when for every $\alpha \in \NNNN$:
+  %
+  if $f(\alpha)$ is defined then~$M$ eventually writes to every output cell, and the output tape equals $f(\alpha)$; if $f(\alpha)$ is not defined, then at least one output cell to which~$M$ never writes to.
 
-We may similarly define what it means for a machine to compute a
-multivariate partial function $f : (\NNNN)^k \parto \NNNN$. The
-input $(\alpha_0, \ldots, \alpha_{k-1})$ is written onto the input tape in
-an interleaving manner, so that $\alpha_i(j)$ is found in the cell at
-position $k \cdot j + i$.
+  A partial map $f : \NNNN \parto \NNNN$ is \textbf{type~2 computable} if it is computed by a type~2 machine.
+\end{definition}
 
-Before proceeding with type 2 computability, we recall a few basic
-facts about the Baire space~$\Baire = \NNNN$. Let $\NN^{*}$ be the
-set of all finite sequences of natural numbers. If $a, b \in \NN^{*}$
-we write $a \sqsubseteq b$ when $a$ is a prefix of~$b$. The length of
-a finite sequence $a$ is denoted by~$|a|$. Similarly, we write $a
-\sqsubseteq \alpha$ when $a$ is a prefix of an infinite sequence
-$\alpha \in \Baire$. Define $\seg{a}{n} = [\alpha(0), \ldots,
-\alpha(n-1)]$ to be the prefix of~$\alpha$ consisting of the
-first~$n$ terms.
+We may similarly define what it means for a machine to compute a multivariate partial function $f : (\NNNN)^k \parto \NNNN$. The input $(\alpha_0, \ldots, \alpha_{k-1})$ is written onto the input tape in an interleaving manner, so that $\alpha_i(j)$ is found in the cell at position $k \cdot j + i$.
 
-The expression $\cons{n}{\alpha}$ denotes the sequence $n, \alpha(0),
-\alpha(1), \alpha(2), \ldots$, while $\append{a}{\beta}$ denotes the
-concatenation of the finite sequence $a \in \NN^{*}$ with the infinite
-sequence $\beta \in \Baire$.
+\subsubsection{The Baire space}
+\label{sec:baire-space}
 
-We equip $\Baire$ with the product topology. A countable topological
-base for $\Baire$ consists of the basic open sets, for $a \in
-\NN^{*}$,
+We recall a few basic facts about the \defemph{Baire space~$\Baire = \NNNN$}. Let $\NN^{*}$ be the set of all finite sequences of natural numbers. If $a, b \in \NN^{*}$
+we write $a \sqsubseteq b$ when $a$ is a prefix of~$b$. The length of a finite sequence $a$ is denoted by~$|a|$. Similarly, we write $a \sqsubseteq \alpha$ when $a$ is a prefix of an infinite sequence $\alpha \in \Baire$. Define $\seg{a}{n} = [\alpha(0), \ldots,
+\alpha(n-1)]$ to be the prefix of~$\alpha$ consisting of the first~$n$ terms.
+
+Write $\cons{n}{\alpha}$ for the sequence $n, \alpha(0), \alpha(1), \alpha(2), \ldots$, and $\append{a}{\beta}$ for concatenation of the finite sequence $a \in \NN^{*}$ with the infinite sequence $\beta \in \Baire$.
+
+We equip $\Baire$ with the product topology, which is the topology whose countable topological base consists of the basic open sets, for $a \in \NN^{*}$,
 %
 \begin{equation*}
   \basicBB{a}
@@ -489,62 +469,65 @@ separable metric space for the \defemph{comparison metric} $d : \Baire
 %
 If the first term in which $\alpha$ and $\beta$ differ is the $n$-th
 one, then $d(\alpha, \beta) = 2^{-n}$. The comparison metric is an
-ultrametric, which means that it satisfies the inequality $d(\alpha,
-\gamma) \leq \max(d(\alpha, \beta), d(\beta, \gamma))$. The clopen
-sets $\basicBB{a}$ are balls of radius $2^{-|a|}$.
+\defemph{ultrametric}, which means that it satisfies the inequality $d(\alpha,
+\gamma) \leq \max(d(\alpha, \beta), d(\beta, \gamma))$. In an ultrametric space every point of a ball is its center. The clopen sets $\basicBB{a}$ are precisely the balls of radius $2^{-|a|}$.
 
-Let us now see how encoding of partial computable functions works. We
-would like to encode a computable $f : \Baire \parto \Baire$ with an
-element $\beta \in \Baire$. Suppose that, given input $\alpha \in
-\Baire$, the machine which computes $f$ writes $j$ to the $i$-th
-output cell after $k$ steps of computation. This means that
-$f(\alpha)(i) = j$. Because in~$k$ steps the machine inspects at most
-the first $k$ input cells, it would have done the same for any other
-input that agrees with $\alpha$ in the first $k$ terms. This gives us
-the idea that $\beta$ should carry bits of information of the form
+\subsubsection{Encoding of partial maps $\Baire \parto \Baire$}
+\label{sec:encoding-maps-baire}
+
+Earlier we encoded the partial computable maps $\NN \parto \NN$ with numbers.
+We would like to similarly encode computable partial maps $\Baire \parto \Baire$ with 
+sequences.
+
+Consider a partial map $f : \Baire \parto \Baire$ computed by~$M$.
+Suppose that, given input $\alpha \in \Baire$, $M$~writes $j$ to the $i$-th output cell after $k$~steps of computation, hence $f(\alpha)(i) = j$. Because in~$k$ steps~$M$ inspects at most the first $k$ input cells, it would have done the same for any other input that agrees with~$\alpha$ in the first~$k$ terms. This gives us the idea that~$f$ can be encoded by a $\gamma \in \Baire$ carrying bits of information of the form:
 %
 \begin{quote}
-  ``if the input tape starts with $\alpha(0), \ldots,
-  \alpha(k-1)$ then the machine writes $j$ in the $i$-th input
-  cell.''
+  ``If the input starts with $\seg{\alpha}{k}$ then $f(\alpha)(i) = j$.''
 \end{quote}
 %
-More precisely, we compute $\beta(m)$ as follows. First decode~$m$ as
-$\seq{i, n_0, \ldots, n_{k-1}}$. (The number $m = 0$ encodes the empty
-sequence and cannot be so decoded, so we set $\beta(0) = 0$.) Then
-simulate the machine for $k$ steps with input tape $n_0, \ldots,
-n_{k-1}, 0, 0, \ldots$. If the machine writes $j$ into the $i$-th
-output cell during the simulation, set $\beta(m) = j + 1$, otherwise
-set $\beta(m) = 0$.
-
-Conversely, every $\beta \in \Baire$ determines a partial function $f :
-\Baire \parto \Baire$. For $\alpha, \beta \in \Baire$ define
+More precisely, we let $\gamma(m)$ encode information as follows. Decode~$m + 1$ as
+a finite sequence $\seq{i, n_0, \ldots, n_{k-1}}$ and simulate~$M$ for~$k$ steps with the input tape
 %
 \begin{equation*}
-  \alpha \star \beta = \alpha(\code{\seg{\beta}{k}}) - 1
-  \quad\text{where}\quad
-  k = \min\nolimits_k (\alpha(\code{\seg{\beta}{k}}) \neq 0),
+  n_0, \ldots, n_{k-1}, 0, 0, \ldots
 \end{equation*}
 %
-with $\alpha \star \beta$ undefined if no such $k$ exists. The map $f$
-represented by $\beta$ is defined as follows. Given $\alpha \in
-\Baire$, if $\alpha \star
-(\cons{i}{\beta})$ is defined for all $i \in \NN$ then we set
+If the machine writes $j$ into the $i$-th output cell during the simulation, set $\gamma(m) = j + 1$, otherwise set $\gamma(m) = 0$.
+
+The above scheme ensures that $\gamma \in \Baire$ encodes a map $\xfpr_\gamma : \Baire \parto \Baire$, as follows. Define
+%
+\begin{equation*}
+  \gamma \star \alpha = \gamma(\code{\seg{\alpha}{k}}) - 1
+  \quad\text{where}\quad
+  k = \min\nolimits_k (\gamma(\code{\seg{\alpha}{k}}) \neq 0)
+\end{equation*}
+%
+(if not such $k$ exists then $\gamma \star \alpha$ is undefined), and
+%
+\begin{equation*}
+  \gamma \mid \alpha =
+  \begin{cases}
+    \gamma \star (\cons{i}{\alpha}) & \text{if $\defined{\gamma \star (\cons{i}{\alpha})}$ for all $i \in \NN$,} \\
+    \text{undefined} & \text{otherwise.}
+  \end{cases}
+\end{equation*}
+%
+The map encoded $\xfpr_\gamma : \Baire \parto \Baire$ by $\gamma$ is
 %
 \begin{equation}
   \label{eq:type2-encoding}
-  f(\alpha)(i) = \alpha \star (\cons{i}{\beta}),
+  \xfpr_\gamma(\alpha) = \gamma \mid \alpha.
 \end{equation}
 %
-otherwise $f(\alpha)$ is undefined. The function encoded by $\beta$ is
-denoted by $\xfpr_\beta$. A partial map which equals $\xfpr_\beta$ for
-some $\beta \in \Baire$ is said to be \emph{(type 2) realized}
-by~$\beta$. We would like to know which maps are realizable.
+A partial map which equals $\xfpr_\gamma$ for some $\gamma \in \Baire$ is said to be \defemph{(type 2) realized} by~$\gamma$.
+
+We would like to know which maps are realizable. A first observation is that $\xfpr_\gamma$ may not be computable when~$\gamma$ is non-computable. As it turns out, is $\xfpr_\gamma$ still reasonable from a  topological point of view.
 
 \begin{definition}
   \label{def:normalized-BB}%
   A realizer $\alpha \in \Baire$ is \defemph{normalized} when $k < m$ and
-  $\alpha(\code{\seg{\beta}{k}}) \neq 0$ implies
+  $\alpha(\code{\seg{\beta}{k}}) \neq 0$ imply
   $\alpha(\code{\seg{\beta}{m}}) = \alpha(\code{\seg{\beta}{k}})$.
 \end{definition}
 
@@ -580,19 +563,18 @@ by~$\beta$. We would like to know which maps are realizable.
 \end{theorem}
 
 \begin{proof}
-  Suppose $f: \Baire \parto \Baire$ is a partial continuous map.  Consider
-  the set $A \subseteq \NN^{*} \times \NN^2$ defined by
+  Suppose $f: \Baire \parto \Baire$ is a partial continuous map, and let
   %
-  \begin{equation*}
-     A = \set{(a, i, j) \in \NN^{*} \times \NN^{2} \such
-        \basicBB{a} \cap \dom{f} \neq \emptyset \land
+  \begin{align*}
+     A = \big\{ & (a, i, j) \in \NN^{*} \times \NN^{2} \such \\
+       &\basicBB{a} \cap \dom{f} \neq \emptyset \land
         \all{\alpha}{(\basicBB{a} \cap \dom{f})}{
           f(\alpha)(i) = j
           }
-        }
-  \end{equation*}
+        \big\}.
+  \end{align*}
   %
-  If $(a, i, j) \in A$, $(a', i, j') \in A$ and $a \sqsubseteq a'$
+  If $(a, i, j) \in A$ and $(a', i, j') \in A$ and $a \sqsubseteq a'$
   then $j = j'$ because there is $\alpha \in \basicBB{a'} \cap
   \dom{f} \subseteq \basicBB{a} \cap \dom{f}$ such that $j =
   f(\alpha)(i) = j'$. We define a sequence $\gamma \in \Baire$ as
@@ -605,7 +587,7 @@ by~$\beta$. We would like to know which maps are realizable.
   $\gamma(\code{\cons{i}{a'}}) = j + 1$. Thus, if $(a, i, j) \in
   A$ and $a \sqsubseteq \alpha$ then $\fpr{\gamma}{\alpha}(i) = j$.
   %
-  We show that $\fpr{\gamma}{\alpha}(i) = f(\alpha)(i)$ for all
+  Let us how that $\fpr{\gamma}{\alpha}(i) = f(\alpha)(i)$ for all
   $\alpha \in \dom{f}$ and all $i \in \NN$. Because~$f$ is continuous,
   for all $\alpha \in \dom{f}$ and $i \in \NN$ there exists $(a, i, j)
   \in A$ such that $a \sqsubseteq \alpha$ and $f(\alpha)(i) = j$. Now
@@ -619,26 +601,25 @@ by~$\beta$. We would like to know which maps are realizable.
 \end{proof}
 
 \index{set!G-delta set@{$G_\delta$}}%
-%
-Recall that a $G_\delta$-set is a countable intersection of open sets.
+Recall that a \defemph{$G_\delta$-set} is a countable intersection of open sets.
 
-\begin{proposition}
+\begin{lemma}
   \label{th:G_delta_characteristic}%
   If $U \subseteq \Baire$ is a $G_\delta$-set then the partial
   function $u: \Baire \parto \Baire$ whose domain is $U$ and is
   defined by $u(\alpha)(i) = 1$, is realized.
-\end{proposition}
+\end{lemma}
 
 \begin{proof}
-  The set $U$ is a countable intersection of countable unions of basic
-  open sets
+  The set $U$ may be expressed as a countable intersection of countable unions of basic
+  open sets,
   %
   \begin{equation*}
     U = \bigcap_{i \in \NN}
         \bigcup_{j \in \NN} \basicBB{a_{i,j}} \;.
   \end{equation*}
   %
-  Define a sequence $\gamma \in \Baire$ by setting
+  Define $\gamma \in \Baire$ by setting
   $\gamma(\code{\cons{i}{a_{i,j}}}) = 2$ for all $i, j \in \NN$,
   and $\gamma(n) = 0$ for all other arguments~$n$. Clearly, if
   $\fpr{\gamma}{\alpha}$ is defined then its value is the constant
@@ -664,14 +645,20 @@ Recall that a $G_\delta$-set is a countable intersection of open sets.
 \begin{lemma}
   \label{th:restrict_G_delta}%
   Suppose $\alpha \in \Baire$ and $U \subseteq \Baire$ is a $G_\delta$-set.
-  Then there exists $\delta \in \Baire$ such that $\fpr{\alpha}{\beta} =
-  \fpr{\delta}{\beta}$ for all $\beta \in \dom{\xfpr_\alpha} \cap U$ and
-  $\dom{\xfpr_\delta} = U \cap \dom{\xfpr_\alpha}$.
+  Then there exists $\delta \in \Baire$ such that
+  %
+  $\dom{\xfpr_\delta} = U \cap \dom{\xfpr_\alpha}$
+  %
+  and
+  %
+  $\fpr{\alpha}{\beta} = \fpr{\delta}{\beta}$
+  %
+  for all $\beta \in \dom{\xfpr_\alpha} \cap U$.
 \end{lemma}
 
 \begin{proof}
-  We would like to show that the function $f: \Baire \parto \Baire$
-  defined by
+  By \cref{lemma:normalized-BB} we may assume that $\alpha$ is normalized.
+  Define $f: \Baire \parto \Baire$ by
   %
   \begin{equation*}
     f(\beta)(n) =
@@ -682,8 +669,7 @@ Recall that a $G_\delta$-set is a countable intersection of open sets.
     \end{cases}
   \end{equation*}
   %
-  is realized. By \cref{th:G_delta_characteristic} there
-  exists $\gamma \in \Baire$ such that for all $\beta \in \Baire$
+  We would like to show that $f$ is realized. From \cref{th:G_delta_characteristic} we obtain a normalized $\gamma \in \Baire$ such that, for all $\beta \in \Baire$,
   %
   \begin{equation*}
     \fpr{\gamma} \beta =
@@ -692,9 +678,8 @@ Recall that a $G_\delta$-set is a countable intersection of open sets.
       \text{undefined} & \text{otherwise} \;.
     \end{cases}
   \end{equation*}
-  % 
-  By \cref{lemma:normalized-BB} we may assume that $\alpha$ and
-  $\gamma$ are normalized. We claim that a realizer for $f$ is
+  %
+  We claim that $f$ is realized by
   %
   \begin{equation*}
     \delta(k) = \alpha(k) \cdot \gamma(k)/2.
@@ -732,6 +717,7 @@ Recall that a $G_\delta$-set is a countable intersection of open sets.
   wanted to show.
 \end{proof}
 
+We are now able to characterize the realized maps.
 
 \begin{theorem}
   A partial function $f: \Baire \parto \Baire$ is realized if, and only
@@ -784,30 +770,33 @@ Finally, we formulate the utm and smn theorems for type 2 machines.
   resorting to an explicit encoding of finite sequences by numbers.
   Define the type
   %
-  \begin{lstlisting}
+\begin{lstlisting}
 type Baire = Integer -> Integer
-  \end{lstlisting}
+\end{lstlisting}
   %
   The universal \lstinline!u :: ([Integer] -> Integer, Baire) -> Baire! %
   is just the transliteration of~\eqref{eq:type2-encoding}:
   %
-  \begin{lstlisting}[language=Haskell]
+\begin{lstlisting}[language=Haskell]
 u (a, b) i = x - 1
     where x = head $
               filter (/= 0) $
               [a (i : map b [0..(k-1)]) | k <- [0..]]
-  \end{lstlisting}
+\end{lstlisting}
   % 
   You may entertain yourself by learning Haskell and figuring out how
   it works.
 \end{proof}
 
-The simple version of type 2 smn theorem uses the representation
-$\xfpr^{(2)}$ which encodes partial maps $\Baire \times \Baire \to
-\Baire$. It is defined by $\fprm{2}{\alpha}{\beta, \gamma} =
-\fpr{\alpha}{\pair{\beta, \gamma}}$ where $\pair{\beta, \gamma}$ is
-the interleaved sequence $\beta(0), \gamma(0), \beta(1), \gamma(1),
-\ldots$.
+The type 2 variant of the smn theorem uses the representation
+$\xfpr^{(2)}$ for encoding partial maps $\Baire \times \Baire \to
+\Baire$ by
+%
+\begin{equation*}
+  \fprm{2}{\alpha}{\beta, \gamma} = \fpr{\alpha}{\pair{\beta, \gamma}}
+\end{equation*}
+%
+where $\pair{\beta, \gamma}$ is the interleaved sequence $\beta(0), \gamma(0), \beta(1), \gamma(1), \ldots$.
 
 \begin{theorem}[type 2 smn]
   There exists a computable $s : \Baire \times \Baire \to \Baire$ such
@@ -819,7 +808,7 @@ the interleaved sequence $\beta(0), \gamma(0), \beta(1), \gamma(1),
 \end{theorem}
 
 \begin{proof}
-  The proof is left as an exercise in programming.
+  Exercise in Haskell programming.
 \end{proof}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -935,7 +924,7 @@ the product topology.
   phrase continuity of $f$ as
   %
   \begin{equation*}
-    \all{n}{\NN}{
+    \all{n \in \NN}{
       \all{B \in \Scott}
         (n \in f(B) \iff \some{A \wayb B} n \in f(A))
     }.
@@ -1082,7 +1071,7 @@ more general context.
 {Church's $\lambda$-calculus}%
 {Church's lambda-calculus}%
 ]{Church's $\lambda$-calculus}
-\label{sec:churchs-calculus}
+\label{sec:lambda-calculus}
 
 We have so far considered a model of computation based on Turing
 machines, and two models of a topological nature, the Baire
