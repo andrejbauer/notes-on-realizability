@@ -277,7 +277,7 @@ important properties.
 The utm theorem is essentially a restatement of
 \cref{thm:universal-machine} in terms of computable partial
 functions. Detailed proofs of the utm and smn theorems would involve
-a lot of technical manipulations of Turing machines, you may consult~\cite{davis58:_comput_unsol} to get a taste of it.
+a lot of technical manipulations of Turing machines, you may consult~\sidecite{davis58:_comput_unsol} to get a taste of it.
 It is illuminating to see how the utm and smn theorems manifest themselves in modern programming languages, say in Haskell. Keeping in mind that numbers are just codes for programs and data, the universal function $u$ from the utm theorem is
 %
 \begin{lstlisting}[language=Haskell]
@@ -825,9 +825,135 @@ where $\pair{\beta, \gamma}$ is the interleaved sequence $\beta(0), \gamma(0), \
 \subsection{Turing machines with oracles}
 \label{sec:turing-machines-with}
 
+The computational models from \Cref{sec:type-1}\ref{sec:type-2} \emph{relativize}, i.e.,
+they may be adapted to use \defemph{oracle Turing machines}. Recall that an \defemph{oracle} is an infinite binary sequence $\omega : \NN \to \set{0, 1}$ and that a Turing machine with oracle~$\omega$ is a Turing machine with an extra read-only tape containing~$\omega$. The machine consults the tape to obtain the values of~$\omega$.
+When $\omega$ is a non-computable sequence, the oracle machine exceedds the computational power of ordinary Turing machines.
+
+Each oracle $\omega$ yields a type 1 and a type 2 model of computation in which the machines have access to~$\omega$. That is, in any given such model all machines access the same fixed oracle~$\omega$.
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Hamkin's infinite time Turing machines}
 
+Another model of computation that exceeds the power of Turing machines are Hamkin's \defemph{infinite time Turing machines}~\sidecite{hamkins00:_infin_turin}. We give here just a brief overview and recommend the cited reference for background reading.
+
+An infinite time Turing machine, or just \emph{machine}, is like a Turing
+machine which is allowed to run infinitely long, with the computation steps
+counted by ordinal numbers. The machine has a finite program, an input tape, work
+tapes, an output tape, etc. We assume that the tape cells contain $0$'s and
+$1$'s. At successor ordinals the machine acts like an ordinary Turing machine.
+At limit ordinals it enters a special ``limit'' state, its heads are placed at
+the beginnings of the tapes, and the content of each tape cell is computed as
+the $\limsup$ of the values written in the cell at earlier stages. More
+precisely, if $c_\alpha$ denotes the value of the cell $c$ at step $\alpha$,
+then for a limit ordinal $\beta$ we have
+%
+\begin{equation*}
+  c_\beta =
+  \begin{cases}
+    0 & \text{if $\some{\alpha < \beta} \all{\gamma}
+      (\alpha \leq \gamma < \beta \Rightarrow c_\alpha = 0)$},\\
+    1 & \text{otherwise}.
+  \end{cases}
+\end{equation*}
+%
+The machine terminates by entering a special halt state, or it may run forever. It turns
+out that a machine which has not terminated by step $\omega_1$ runs forever.
+
+We can think of machines as computing partial functions $\Cantor \parto \Cantor$ where $\two = \set{0, 1}$:
+%
+initialize the input tape with an infinite binary sequence $x \in \Cantor$, run the
+machine, and observe the contents of the output tape if and when the machine terminates.
+We can also consider infinite time computation of partial functions $\NN \parto \NN$:
+initialize the input tape with the input number, run the machine, and interpret the
+contents of the output tape as a natural number, where we ignore anything that is beyond
+the position of the output head. By performing the usual encoding tricks, we can feed the
+machines more complicated inputs and outputs, such as pairs, finite lists, and even
+infinite lists of numbers. We say that a function is \defemph{infinite time computable} if there is an infinite time Turing machine that computes it.
+
+The power of infinite time Turing machines is vast and extends far beyond the halting
+problem for ordinary Turing machines, although of course they cannot solve their own
+halting problem. For example, for every $\Pi^1_1$-subset $S \subseteq \Cantor$ there is a machine which, given $x \in \Cantor$ on its input tape, terminates and decides whether $x \in S$.
+
+There is a standard enumeration $M_0, M_1, M_2, \ldots$ of infinite time Turing
+machines, where $M_n$ is the machine whose program is encoded by the number $n$
+in some reasonable manner. The associated enumeration $\iitm{0}, \iitm{1}, \iitm{2},
+\ldots$ of infinite time computable partial functions $\NN \parto \NN$ is
+defines as
+%
+\begin{equation*}
+  \iitm{n}(k) =
+  \begin{cases}
+    m & \text{if $M_n(k)$ terminates and outputs $m$,}\\
+    \text{undefined} & \text{otherwise}.
+  \end{cases}
+\end{equation*}
+%
+We may similarly an enumeration $\iitm{0}^{(k)}, \iitm{1}^{(k)}, \iitm{2}^{(k)}, \ldots$ of $k$-ary infinite time computable partial maps $\NN^k \parto \NN$.
+
+The enumeration satisfies the smn and utm theorems.
+
+\begin{theorem}[infinite time smn]
+  There is an infinite time computable total map $s : \NN \times \NN \to \NN$
+  such that $\iitm{{s}(m,n)}(j) = \iitm{m}^{(2)}(n, j)$ for all $m, n, j \in \NN$.
+\end{theorem}
+
+\begin{theorem}[infinite time utm]
+  There is an infinite time computable partial map $u : \NN \times \NN \parto
+  \NN$ such that $\iitm{t}(m) = u(t,m)$ for all $t, m \in \NN$.
+\end{theorem}
+
+\noindent
+%
+To convince ourselves that the utm theorem holds, we think a bit how a universal
+infinite time Turing machine works. It accepts the description~$n$ of a machine and the
+initial input tape~$x$. At successor steps the simulation of machine~$M_n$ on input~$x$
+proceeds much like it does for the ordinary Turing machines. Thus it takes finitely many
+successor steps to simulate one successor step of $M_n$. Each limit step of $M_n$ is
+simulated by one limit step of the universal machine, followed by finitely many successor
+steps. Indeed, whenever the universal machine finds itself in the special limit state, it
+puts the simulated machine in the simulated limit state, and moves the simulated heads to
+the beginnings of the simulated tapes. These actions take finitely many steps. The
+contents of the simulated tapes need not be worried about, as it will be updated correctly at limit stages.
+
+To see what sort of tasks can be performed by infinite time Turing machines, we consider
+several examples that will be useful later on.
+
+\begin{example}
+  There is a machine which decides whether two infinite sequences $x, y \in
+  \Cantor$ are equal. It first initializes a fresh work cell with~$0$, and then
+  for each~$k$, it compares $x(k)$ and $y(k)$. If they differ, it sets the work cell to~$1$. After $\omega$ steps the work cell will be $1$ if, and only if, $x \neq y$.
+\end{example}
+
+\begin{example}
+  A more complicated problem is to \emph{semi}decide whether a given machine $M_n$ computes
+  a given sequence $x \in \Cantor$. The machine which performs such a task accepts $n$ and $x$ as inputs and begins by writing down the sequence $y_k = \iitm{n}(k)$ onto a work tape. This it can do by simulating $M_n$ successively on inputs $0, 1, 2, \ldots$ and writing down the values $y_k$ as they are obtained. The machine also keeps track for which~$k$'s the values $y_k$ have been computed by flipping the $k$-th bit of a separate ``tally'' tape from $0$ to $1$ whenever $M_n(k)$ terminates. If any of the $y_k$'s is undefined, the machine will run forever. Otherwise it will be able to detect in $\omega$ steps that the entire sequence $y$ has been computed and written down by checking that all bits on the separate ``tally'' tape have been flipped to~$1$. After that, the machine verifies that $x_k = y_k$ for all $k \in \NN$, as described previously.
+\end{example}
+
+\begin{example}
+  Suppose we have a machine~$M$ which expects as input an infinite sequence~$x$ and a
+  number~$n$. We would like to construct another machine which accepts an infinite
+  sequence~$x$ and outputs a number~$n$ such that $M(x,n)$ terminates, if one exists.
+  We use the familiar dovetailing technique to tackle the problem. Given $x \in \Cantor$ as input, we simulate in parallel the executions of machine $M$ on inputs of the form $(x,n)$, one
+  for each $n$:
+  % 
+  \begin{equation*}
+    M(x,0), \quad
+    M(x,1), \quad
+    M(x,2), \quad
+    \ldots
+  \end{equation*}
+  % 
+  Each of these requires several infinite tapes, but since we only need countably
+  many of them, they may be interleaved into a single tape. At successor steps the
+  simulation performs the usual dovetailing technique. At limit steps the
+  simulation inserts extra $\omega$ bookkeeping steps, during which it places the
+  simulated machines in the ``limit'' state and moves their head positions. The
+  extra steps do not ruin the limits of the simulated tapes, because those are
+  left untouched. After the extra steps are performed, dovetailing starts over
+  again. As soon as one of the simulations $M(x, n)$ terminates, we return the
+  results~$n$. Note that $n$ is computed from~$x$ in a deterministic fashion (that depends on the details of the dovetailing and simulation).
+\end{example}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Scott's graph model}
@@ -842,8 +968,8 @@ computation, the \emph{graph model}, introduced by Dana
 Scott~\sidecite{ScottD:dattl}, in which we use sets of numbers rather than
 sequences.
 
-How is computation of a map $f : \pow{\NN} \to \pow{\NN}$, where
-$\pow{\NN}$ is the powerset of natural numbers, to be performed? One
+How is computation of a map $f : \pow{\NN} \to \pow{\NN}$ on the
+powerset of natural numbers, to be performed? One
 natural idea would be to use computation with respect to an oracle:
 $f$ is computable if there is a Turing machine which computes $f(A)$
 when given $A$ as an oracle, i.e., it may test membership in~$A$.
@@ -853,8 +979,8 @@ having an infinite input tape with a $1$ in the $n$-th cell when $n
 \in A$, and a $0$ otherwise.
 
 An oracle provides both \emph{positive} and \emph{negative}
-information about membership in~$A$, whereas the graph model keeps
-only positive information. Rather than describing it explicitly as a
+information about membership in~$A$. In contrast, Scott's graph model operates
+only with positive information. Rather than describing it explicitly as a
 kind of Turing machines, we shall take a different route this time and
 first describe the topological aspects of the model. Computability
 will then follow naturally.
@@ -895,17 +1021,12 @@ $T_0$-space, i.e., for all $A, B \in \pow{\NN}$,
   \text{$A$ and $B$ have the same neighborhoods} \implies A = B.
 \end{equation*}
 %
-This is \emph{not} a Hausdorff space, not even a $T_1$-space. If you
-were taught in school by geometrically minded topologists to ignore
-non-Hausdorff spaces\sidenote{I surely was as an undergraduate student
-  in mathematics.}, you might be pleased to discover a non-geometric
-intuition for topology. In information processing the open sets
-correspond to (positively) observable properties. The natural
-separation axiom in this setting is~$T_0$, which is a form of
-Leibniz's principle of identity.\sidenote{The principle states that
-  two things are equal if they have exactly the same properties.} We
-denote $\pow{\NN}$ by $\Scott$ when we think of it as a topological
-space equipped with the Scott topology.
+
+In information processing the open sets are not about geometry but about (positively)
+observable properties. Thus it should not surprise you that the Scott topology is not
+Hausdorff, not even a $T_1$-space. It is however a $T_0$-space, which is a form of Leibniz's principle of identity.\sidenote{The principle
+  states that two things are equal if they have exactly the same properties.} We denote
+$\pow{\NN}$ by $\Scott$ when we think of it as a topological space equipped with the Scott topology.
 
 Another way to get the Scott topology of $\Scott$ is to observe that
 $\pow{\NN}$ is in bijective correspondence with the set of all
