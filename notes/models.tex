@@ -475,85 +475,89 @@ one, then $d(\alpha, \beta) = 2^{-n}$. The comparison metric is an
 \subsubsection{Encoding of partial maps $\Baire \parto \Baire$}
 \label{sec:encoding-maps-baire}
 
-Earlier we encoded the partial computable maps $\NN \parto \NN$ with numbers.
-We would like to similarly encode computable partial maps $\Baire \parto \Baire$ with 
-sequences.
+Earlier we encoded the partial computable maps $\NN \parto \NN$ with numbers describing Turing machines. We would like to similarly encode computable partial maps $\Baire \parto \Baire$ with sequences. An obvious idea, which we shall not pursue, is to use the first term of a sequence to encode a Turing machine. Instead, we shall use sequences as ``lookup tables'', with which even some non-computable maps will be encoded.
 
 Consider a partial map $f : \Baire \parto \Baire$ computed by~$M$.
-Suppose that, given input $\alpha \in \Baire$, $M$~writes $j$ to the $i$-th output cell after $k$~steps of computation, hence $f(\alpha)(i) = j$. Because in~$k$ steps~$M$ inspects at most the first $k$ input cells, it would have done the same for any other input that agrees with~$\alpha$ in the first~$k$ terms. This gives us the idea that~$f$ can be encoded by a $\gamma \in \Baire$ carrying bits of information of the form:
+Suppose that, given an input tape
+%
+\begin{equation*}
+  \alpha = n_0, n_1, n_2, \ldots
+\end{equation*}
+%
+$M$~writes $j$ to the $i$-th output cell after $k$~steps of computation,
+hence $f(\alpha)(i) = j$. Because in~$k$ steps~$M$ inspects at most the first $k$ input cells, it would have done the same for any other input that agrees with the given one in the first~$k$ terms. Thus $f$ is determined by pieces of information of the form:
 %
 \begin{quote}
-  ``If the input starts with $\seg{\alpha}{k}$ then $f(\alpha)(i) = j$.''
+  ``If the input starts with $n_0, n_1, \ldots, n_{k-1}$ then the $i$-th term of the output is~$j$.''
 \end{quote}
 %
-More precisely, we let $\gamma(m)$ encode information as follows. Decode~$m + 1$ as
-a finite sequence $\seq{i, n_0, \ldots, n_{k-1}}$ and simulate~$M$ for~$k$ steps with the input tape
+A code~$\gamma \in \Baire$ of~$f$ just has to contain such information, which we can arrange by coding lists and pairs as numbers. To determine the value $\gamma(m)$ for a given $m \in \NN$, decode~$m + 1$ as a finite sequence $m + 1 = \seq{i, n_0, \ldots, n_{k-1}}$ and simulate~$M$ for~$k$ steps with the input tape
 %
 \begin{equation*}
   n_0, \ldots, n_{k-1}, 0, 0, \ldots
 \end{equation*}
 %
 If the machine writes $j$ into the $i$-th output cell during the simulation, set $\gamma(m) = j + 1$, otherwise set $\gamma(m) = 0$.
+%
+Think of $\gamma$ as a lookup table which maps a key $\cons{i}[n_0, \ldots, n_{k-}]$ to an optional value~$j$.
+%
+Clearly, $\gamma$ can be computed from a description of~$M$.
 
-The above scheme ensures that $\gamma \in \Baire$ encodes a map $\xfpr_\gamma : \Baire \parto \Baire$, as follows. Define
+To decode the function $\xfpr_\gamma : \Baire \parto \Baire$ encoded by $\gamma \in \Baire$, we just have to devise a lookup procedure. Given input $\alpha \in \Baire$, we compute the value of the $i$-th output cell by successively looking up keys $\cons{i}{\seg{\alpha}{k}}$ for successively larger~$k$, until we find an answer~$j$. More precisely,
+for $\alpha \in \Baire$, define $\ell(\gamma, \alpha) : \NN \parto \NN$ as
 %
 \begin{equation*}
-  \gamma \star \alpha = \gamma(\code{\seg{\alpha}{k}}) - 1
+  \ell(\gamma, \alpha)(i) = \gamma(\code{\cons{i}{\seg{\alpha}{k}}}) - 1
   \quad\text{where}\quad
-  k = \min\nolimits_k (\gamma(\code{\seg{\alpha}{k}}) \neq 0)
+  k = \min\nolimits_k (\gamma(\code{\cons{i}{\seg{\alpha}{k}}}) \neq 0)
 \end{equation*}
 %
-(if not such $k$ exists then $\gamma \star \alpha$ is undefined), and
-%
-\begin{equation*}
-  \gamma \mid \alpha =
-  \begin{cases}
-    \gamma \star (\cons{i}{\alpha}) & \text{if $\defined{\gamma \star (\cons{i}{\alpha})}$ for all $i \in \NN$,} \\
-    \text{undefined} & \text{otherwise.}
-  \end{cases}
-\end{equation*}
-%
-The map encoded $\xfpr_\gamma : \Baire \parto \Baire$ by $\gamma$ is
+(if not such $k$ exists then $\ell(\gamma, \alpha)(i)$ is undefined), and let the map $\xfpr_\gamma : \Baire \parto \Baire$ encoded by $\gamma$ be
 %
 \begin{equation}
   \label{eq:type2-encoding}
-  \xfpr_\gamma(\alpha) = \gamma \mid \alpha.
+  \xfpr_\gamma(\alpha) =
+  \begin{cases}
+    \ell(\gamma, \alpha) & \text{if $\ell(\gamma, \alpha)$ is a total map,} \\
+    \text{undefined} & \text{otherwise.}
+  \end{cases}
 \end{equation}
-%
-A partial map which equals $\xfpr_\gamma$ for some $\gamma \in \Baire$ is said to be \defemph{(type 2) realized} by~$\gamma$.
-
-We would like to know which maps are realizable. A first observation is that $\xfpr_\gamma$ may not be computable when~$\gamma$ is non-computable. As it turns out, is $\xfpr_\gamma$ still reasonable from a  topological point of view.
 
 \begin{definition}
-  \label{def:normalized-BB}%
-  A realizer $\alpha \in \Baire$ is \defemph{normalized} when $k < m$ and
-  $\alpha(\code{\seg{\beta}{k}}) \neq 0$ imply
-  $\alpha(\code{\seg{\beta}{m}}) = \alpha(\code{\seg{\beta}{k}})$.
+  \label{def:type-2-realized}%
+  A partial function $f : \Baire \parto \Baire$ is \defemph{(type 2) realized} by $\gamma \in \Baire$ when $f = \xfpr_\gamma$.
 \end{definition}
+
+Clearly, if $\gamma$ is a computable sequence then $\xfpr_\gamma$ is type 2 computable.
+But what sort of partial map is $\xfpr_\gamma$ in general?
+
+An arbitrary $\gamma \in \Baire$ may give inconsistent answers, in the sense that looking up values at $\cons{i}{\seg{\alpha}{k}}$ and $\cons{i}{\seg{\alpha}{m}}$ may give inconsistent answers. Above we resolved the problem by taking the answer given by the least~$k$. We may also rectify~$\gamma$ to a realizer that gives consistent answers.
+
+Say that $\gamma \in \Baire$ is \defemph{consistent} when, for all $k, m \in \NN$ and
+$\alpha \in \Baire$, if $k < m$ and $\gamma(\code{\seg{\alpha}{k}}) \neq 0$ then
+$\gamma(\code{\seg{\alpha}{m}}) = \gamma(\code{\seg{\alpha}{k}})$.
 
 \begin{lemma}
   \label{lemma:normalized-BB}%
-  Every realized function is realized by a normalized realizer.
+  Every realized function is realized by a consistent realizer.
 \end{lemma}
 
 \begin{proof}
-  Suppose $f : \Baire \parto \Baire$ is realized by~$\alpha$. Define
-  $\gamma$ by induction on the length of $a \in \NN^{\star}$ by
+  Suppose $f : \Baire \parto \Baire$ is realized by~$\gamma$. Define
+  $\delta$ by induction on the length of $a \in \NN^{\star}$ by
   %
   \begin{equation*}
-    \gamma(\code{a}) =
+    \delta(\code{a}) =
     \begin{cases}
-      \alpha(\code{a}) & \text{if $a = [\;]$,}\\
-      \alpha(\code{a}) & \text{if $a = \cons{i}{a'}$ and
-        $\gamma(\code{a'}) = 0$,}\\
-      \gamma(\code{a'}) & \text{if $a = \cons{i}{a'}$ and
-        $\gamma(\code{a'}) \neq 0$,}
+      \gamma(\code{a}) & \text{if $a = [\;]$,}\\
+      \gamma(\code{a}) & \text{if $a = \cons{i}{a'}$ and
+        $\delta(\code{a'}) = 0$,}\\
+      \delta(\code{a'}) & \text{if $a = \cons{i}{a'}$ and
+        $\delta(\code{a'}) \neq 0$,}
     \end{cases}
   \end{equation*}
   %
-  It is easy to check that $\alpha \star \beta \kleq \gamma \star
-  \beta$ for all $\beta \in \Baire$, therefore $\xfpr_\alpha =
-  \xfpr_\gamma$. The realizer $\gamma$ is normalized by construction.
+  The realizer $\delta$ is consistent by construction. It is easy to check that $\xfpr_\gamma = \xfpr_\delta$.
 \end{proof}
 
 \begin{theorem}[Extension Theorem for $\Baire$]%
@@ -606,8 +610,17 @@ Recall that a \defemph{$G_\delta$-set} is a countable intersection of open sets.
 \begin{lemma}
   \label{th:G_delta_characteristic}%
   If $U \subseteq \Baire$ is a $G_\delta$-set then the partial
-  function $u: \Baire \parto \Baire$ whose domain is $U$ and is
-  defined by $u(\alpha)(i) = 1$, is realized.
+  function $u: \Baire \parto \Baire$, defined by
+  %
+  \begin{equation*}
+    u(\alpha) =
+    \begin{cases}
+      1 & \text{if $\alpha \in U$.}\\
+      \text{undefined} & \text{otherwise,}
+    \end{cases}
+  \end{equation*}
+  %
+  is realized.
 \end{lemma}
 
 \begin{proof}
@@ -625,9 +638,9 @@ Recall that a \defemph{$G_\delta$-set} is a countable intersection of open sets.
   $\fpr{\gamma}{\alpha}$ is defined then its value is the constant
   sequence $1, 1, 1, \ldots$, so we only need to verify that
   $\dom{\xfpr_\gamma} = U$. If $\alpha \in \dom{\xfpr_\gamma}$ then
-  $\gamma \star (\cons{i}{\alpha})$ is defined for every $i \in \NN$.
+  $\ell(\gamma,\alpha)(i)$ is defined for every $i \in \NN$.
   For every $i \in \NN$ there exists $j_i \in \NN$ such that $\gamma
-  (\code{\seg{(\cons{i}{\alpha})}{1+j_i}}) = 2$, which implies that $
+  (\code{\cons{i}{\seg{\alpha}{j_i}}}) = 2$, which implies that $
   a_{i, j_i} \sqsubseteq \alpha$. Hence
   %
   \begin{equation*}
@@ -637,8 +650,7 @@ Recall that a \defemph{$G_\delta$-set} is a countable intersection of open sets.
   Conversely, suppose $\alpha \in U$ and consider any $i \in \NN$.
   There exists $j \in \NN$ such that $a_{i,j} \sqsubseteq \alpha$,
   therefore $\gamma (\code{\cons{i}{\seg{\alpha}{|a_{i,j}|}}}) =
-  \gamma(\code{\cons{i}{a_{i,j}}}) = 2$ so that $\gamma \star
-  (\cons{i}{\alpha})$ is defined. We conclude that $\alpha \in
+  \gamma(\code{\cons{i}{a_{i,j}}}) = 2$ so that $\ell(\gamma,\alpha)(i)$ is defined. We conclude that $\alpha \in
   \dom{\xfpr_\gamma}$.
 \end{proof}
 
@@ -693,9 +705,9 @@ Recall that a \defemph{$G_\delta$-set} is a countable intersection of open sets.
   \subseteq \dom{\xfpr_\gamma}$ because $\delta(k) \neq 0$ implies
   $\gamma(k) \neq 0$. It remains to be shown that $\beta \in
   \dom{\xfpr_\alpha} \cap U$ implies $\beta \in \dom{\xfpr_\delta}$,
-  i.e., that for such $\beta$, $\delta \star (\cons{i}{\beta})$ is
-  defined for every $i \in \NN$. Because $\alpha \star
-  (\cons{i}{\beta})$ and $\gamma \star (\cons{i}{\beta})$ are
+  i.e., that for such $\beta$, $\ell(\delta, \beta)(i)$ is
+  defined for every $i \in \NN$. Because $\ell(\alpha, \beta)(i)$
+  and $\ell(\gamma, \beta)(i)$ are
   defined, there exist $k_1$ and $k_2$ such that
   %
   \begin{equation*}
@@ -721,35 +733,33 @@ We are now able to characterize the realized maps.
 
 \begin{theorem}
   A partial function $f: \Baire \parto \Baire$ is realized if, and only
-  if, $f$ is continuous and its domain is a $G_\delta$-set.
+  if, $f$ is continuous and its support is a $G_\delta$-set.
 \end{theorem}
 
 \begin{proof}
-  First we show that $\xfpr_\alpha$ is a continuous map whose domain
+  First we show that $\xfpr_\alpha$ is a continuous map whose support
   is a $G_\delta$-set. It is continuous because the value of
   $\fpr{\alpha}{\beta}(n)$ depends only on $n$ and a finite prefix of
-  $\beta$. The domain of $\xfpr_\alpha$ is the $G_\delta$-set
+  $\beta$. The support of $\xfpr_\alpha$ is the $G_\delta$-set
   %
   \begin{align*}
     \dom{\xfpr_\alpha}
     &= \set{\beta \in \Baire \such
       \all{n}{\NN}{
-        \alpha \star (\cons{n}{\beta}) \ \text{defined and $> 0$}}} \\
+        \ell(\alpha, \beta)(n) \ \text{defined and $> 0$}}} \\
     &= \tbigcap_{n \in \NN}
       \set{\beta \in \Baire \such
-        \alpha \star (\cons{n}{\beta}) \ \text{defined and $> 0$}} \\
+        \ell(\alpha, \beta)(n) \ \text{defined and $> 0$}} \\
     &=  \tbigcap_{n \in \NN}
         \tbigcup_{m \in \NN}
           \set{\beta \in \Baire \such
-          \alpha \star (\cons{n}{\beta}) = m + 1} \;.
+          \ell(\alpha, \beta)(n) = m + 1} \;.
   \end{align*}
   %
-  Each of the sets $\set{\beta \in \Baire \such \alpha \star
-    (\cons{n}{\beta}) = m}$ is open because $\star$ and $\cons{}{}$
-  are continuous operations.
+  Each of the sets $\set{\beta \in \Baire \such \ell(\alpha, \beta)(n) = m}$ is open because~$\ell$ is a continuous operation.
   
   Now let $f: \Baire \parto \Baire$ be a partial continuous function
-  whose domain is a $G_\delta$-set. By \cref{th:extension_BB}
+  whose support is a $G_\delta$-set. By \cref{th:extension_BB}
   there exists $\gamma \in \Baire$ such that $f(\alpha) =
   \fpr{\gamma}{\alpha}$ for all $\alpha \in \dom{f}$. By
   \cref{th:restrict_G_delta} there exists $\psi \in \Baire$ such
