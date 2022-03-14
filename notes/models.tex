@@ -1255,8 +1255,10 @@ You might expect to see the utm and smn theorems for~$\Scott$ at this point, but
 We have so far considered a model of computation based on Turing
 machines, and two models of a topological nature, the Baire
 space~$\Baire$ and the graph model~$\Scott$. We now look at a purely
-syntactic model in which computation is expressed as manipulation of
+syntactic model, the $\lambda$-calculus, in which computation is expressed as manipulation of
 symbolic expressions.
+It was proposed by Alonzo Church~\sidecite{church32:_set_of_postul_for_found_of_logic} as a
+notion of general computation before Turing invented his machines. Only later did it turn out that Church's and Turing's models can simulate each other.
 
 The $\lambda$-calculus is the abstract theory of functions, just like
 group theory is the abstract theory of symmetries. There are two basic
@@ -1318,15 +1320,14 @@ application and abstraction. More precisely, the calculus consists of:
   $\lam{x_1}{\cdots \lam{x_n}{e}}$ as $\lam{x_1 x_2 \ldots x_n}{e}$.
 \end{itemize}
 %
-This can be expressed succinctly by the grammar rules:
+The above can be expressed succinctly by the grammar rules:
 %
 \begin{align*}
   \text{Variable}\ v &\bnfis x \bnfor y \bnfor z \bnfor \cdots \\
   \text{Expression}\ e &\bnfis v \bnfor e_1\,e_2 \bnfor \lam{x}{e}
 \end{align*}
 %
-In the \emph{pure} calculus, which we are considering, there are no
-constants, numbers, or other operations.
+There are no constants, numbers, or other constants -- we are studying the \emph{pure} $\lambda$-calculus.
 
 Expressions which only differ in the naming of bound variables are
 equal, thus $\lam{x}{y\, x} = \lam{z}{y\, z} \neq \lam{y}{y\,
@@ -1357,25 +1358,33 @@ body~$e_1$. A second axiom, which is sometimes assumed is
 provided $x$ does not occur freely in~$e$. We will \emph{not} assume
 $\eta$-reduction unless explicitly stated otherwise.
 
-In a given expression there may be several sub-expressions, called
-\defemph{redexes}, where $\beta$-reduction could be performed. We write
-$e \mapsto e'$ when $e'$ is obtained from $e$ by a single application
-of $\beta$-reduction to a redex in~$e$. For example, we could reduce
+A sub-expression of the form $(\lam{x}{e_1})\, e_2$ is called a \defemph{$\beta$-redex}.
+If~$e$ contains such a redex, we may replace it by $\subset{e_1}{x \subto e_2}$ to obtain a new expression~$e'$. We say that we performed a \defemph{$\beta$-reduction} and write
 %
 \begin{equation*}
-  ((\lam{x}{x})\, a)\,((\lam{y}{y})\,b) \mapsto
-  a\, ((\lam{y}{y})\,b)
-  \quad\text{or}\quad
-  ((\lam{x}{x})\, a)\,((\lam{y}{y})\,b) \mapsto
-  ((\lam{x}{x})\, a)\, b.
+  e \mapsto e'
 \end{equation*}
 %
-The \href{http://en.wikipedia.org/wiki/Church%E2%80%93Rosser_theorem}{Church-Rosser theorem}~\sidecite{church36:_some_proper_of_conver} says that
-$\lambda$-calculus is \emph{confluent}, which means that the order of
-reductions is not important in the sense that two different ways of
-reducing and expression may always be reduced further so that they
-become equal. In the example above, we get $a\,b$ in both cases after
-one more reduction.
+A chain of reductions $e \mapsto e' \mapsto \cdots \mapsto e''$ is written $e \mapsto^* e''$.
+
+In a given expression there may be several $\beta$-redeces. For example, we can reduce
+$((\lam{x}{x})\, a)\,((\lam{y}{y})\,b)$ either as
+%
+\begin{equation*}
+  ((\lam{x}{x})\, a)\,((\lam{y}{y})\,b) \mapsto a\, ((\lam{y}{y})\,b)
+\end{equation*}
+%
+or as
+%
+\begin{equation*}
+  ((\lam{x}{x})\, a)\,((\lam{y}{y})\,b) \mapsto ((\lam{x}{x})\, a)\, b.
+\end{equation*}
+%
+A theorem of Church and Rosser's~\sidecite{church36:_some_proper_of_conver} states that
+$\lambda$-calculus is \defemph{confluent}, which means that the order of
+$\beta$-reductions is not important in the sense that two different ways of
+reducing and expression may always be reconciled by further reductions.
+In the above example we get $a\,b$ in both cases after one more reduction.
 
 There are expressions which we can keep reducing forever, for example
 the term $\omega\,\omega$ where $\omega = \lam{x}{f\,(x\,x)}$ has an
@@ -1390,64 +1399,51 @@ infinite reduction sequence
 \end{equation*}
 %
 An expression in which no $\beta$-reductions are possible is called a
-\defemph{normal form}. Think of normal forms as ``finished
-computations'', and those which cannot be reduced to a normal form as
-non-terminating computations. However, this is only an informal
-explanation on how $\lambda$-calculus can be used as a programming
-language, see \cref{sec:typed-lambda-calculus} for a
-further investigation of these issues.
+\defemph{normal form}. Think of normal forms\sidenote{From a programming-language perspective, it is unusual to compute under a $\lambda$-abstraction, as we do to reach a normal form. A good alternative is to consider the \emph{weak-head normal form}, which avoids doing so.} as ``finished''
+computations, and those which cannot be reduced to a normal form as
+``non-terminating'' computations.
 
-It may seem a bit surprising, but $\lambda$-calculus is as powerful as
-Turing machines, and was proposed by Alonzo Church~\sidecite{church32:_set_of_postul_for_found_of_logic} as a
-notion of computability before Turing invented his machines. In
-$\lambda$-calculus we may write seemingly non-sensical expressions,
-such as $e\, e$. It is a bit puzzling how $e$ could be both a function
-and its own argument, but this is what gives $\lambda$-calculus its
-power.
-
-We outline programming in $\lambda$-calculus but do not provide the
-proofs. First, a pairing with projections may be defined as follows:
+We outline programming in $\lambda$-calculus but do not provide the proofs. First, a pairing with projections may be defined as follows:
 %
-\begin{equation*}
-  \combPair = \lam{x y z}{z\, x\, y},
-  \qquad
-  \combFst = \lam{p}{p \, (\lam{x y}{x})},
-  \quad\text{and}\quad
-  \combSnd = \lam{p}{p \, (\lam{x y}{y})}.
-\end{equation*}
+\begin{align*}
+  \combPair &= \lam{x y z}{z\, x\, y},
+  \\
+  \combFst &= \lam{p}{p \, (\lam{x y}{x})},
+  \\
+  \combSnd &= \lam{p}{p \, (\lam{x y}{y})}.
+\end{align*}
 %
 With these we have
 %
 \begin{equation*}
-  \combFst (\combPair\, a\, b) = a
-  \quad\text{and}\quad
-  \combSnd (\combPair\, a\, b) = b.
+  \combFst \,(\combPair\, a\, b) = a
+  \qquad\text{and}\qquad
+  \combSnd \,(\combPair\, a\, b) = b,
 \end{equation*}
 %
-For example,
+for instance
 %
 \begin{equation*}
-  \combFst (\combPair\, a\, b) =
-  \combFst (\lam{z}{z\, a\, b}) =
-  (\lam{z}{z\, a\, b}) \, (\lam{x y}{x}) =
-  (\lam{x y}{x}) \, a \, b = a.
+  \combFst \, (\combPair\, a\, b)
+   = (\lam{z}{z\, a\, b}) \, (\lam{x y}{x})
+   = (\lam{x y}{x}) \, a \, b = a.
 \end{equation*}
 %
-The Boolean values and the conditional statement are defined by
+The Boolean values and the conditional statement are encoded as
 %
-\begin{equation*}
-  \combIf = \lam{x}{x},
-  \qquad
-  \combTrue = \lam{x y}{x},
-  \quad\text{and}\quad
-  \combFalse = \lam{x y}{y}.
-\end{equation*}
+\begin{align*}
+  \combIf &= \lam{x}{x},
+  \\
+  \combTrue &= \lam{x y}{x},
+  \\
+  \combFalse &= \lam{x y}{y}.
+\end{align*}
 %
 They satisfy
 %
 \begin{equation*}
   \combIf\,\combFalse\,a\,b = b
-  \quad\text{and}\quad
+  \qquad\text{and}\qquad
   \combIf\,\combTrue\,a\,b = a.
 \end{equation*}
 %
@@ -1459,10 +1455,11 @@ iteration:
   \overline{0} &= \lam{f\,x}{x},\\
   \overline{1} &= \lam{f\,x}{f\,x},\\
   \overline{2} &= \lam{f\,x}{f\,(f\,x)},\\
+  \intertext{and in general}
   \overline{n} &= \lam{f\,x}{\underbrace{f\,(\cdots (f}_n\,x) \cdots)}.
 \end{align*}
 %
-Successor, addition and multiplication are, respectively,
+The successor, addition and multiplication operations are as follows:
 %
 \begin{align*}
   \combSucc &= \lam{n\,f\,x}{n f (f x)},\\
@@ -1471,7 +1468,7 @@ Successor, addition and multiplication are, respectively,
 \end{align*}
 %
 We leave it as exercise to figure out how the following work and what
-they do:\sidenote{A legend says that Alonzo Church was at the
+they do:\sidenote{A legend says that Alfred Tarski was at the
   dentists' when he figured out how to compute predecessors. Is
   programming the untyped $\lambda$-calculus like pulling one's teeth
   out?}
@@ -1487,7 +1484,7 @@ they do:\sidenote{A legend says that Alonzo Church was at the
       (\combPair\, \overline{0}\, \overline{0}))}.
 \end{align*}
 %
-Recursion is accomplished by means of the fixed-point operator
+Recursion is accomplished by means of the \defemph{fixed-point operator}
 %
 \begin{equation*}
   \combFix = \lam{f}{(\lam{x}{f\,(x\,x)}) (\lam{x}{f\,(x\,x)})}.
@@ -1513,29 +1510,60 @@ example equality of numbers is computed as follows:
     (e\,(\combPred\,m)\,(\combPred\,n))}).
 \end{equation*}
 %
-By continuing in this manner we can build a general-purpose
-programming language. The untyped $\lambda$-calculus computes exactly
-the same partial functions $\NN \parto \NN$ as Turing machines (the
-terms which have no normal form are the analogue of undefined values).
+By continuing in this manner we can build a general-purpose programming language. It turns out that the untyped
+$\lambda$-calculus computes exactly the same partial functions $\NN \parto \NN$ as Turing machines.
 
 
 \section{Reflexive domains}
 \label{sec:reflexive-domains}
 
-The Church-Rosser theorems implies that the untyped $\lambda$-calculus
-is consistent, i.e., not all expressions are equal. To see this,
-consider $\lam{x}{x}$ and $\lam{x y}{x}$. If these were equal via
-a sequence of $\beta$-reductions (going in either direction), then
-they would both reduce to the same normal form. But they are in normal
-form, so they are different.
+The Church-Rosser theorem implies that the untyped $\lambda$-calculus
+is consistent, i.e., not all expressions are equal. Indeed if $\lam{x}{x}$ and $\lam{x y}{x}$ were equal there would be a sequence of $\beta$-reductions (performed in either direction) leading from on to the other. By confluence we would obtain a normal form to which both reduce, but that cannot be since they already are distinct normal forms.
 
 Still the question remains what the untyped $\lambda$-calculus is
 about, speaking mathematically as opposed to formalistically. A naive
-attempt at an interpretation quickly runs into difficulties. Suppose
-we interpret the closed expressions of the $\lambda$-calculus as
-elements of a set~$D$. We expect abstractions to represent functions,
-which means that $D \to D$ can be embedded into~$D$. But the only set
-with this property is the singleton!
+attempt at an interpretation runs into difficulties.
+%
+Suppose we interpret the expressions of the $\lambda$-calculus as the elements of a set~$D$, where $\lambda$-abstraction should correspond to formation of functions $D \to D$, and $\lambda$-application to application of such functions to elements of~$D$.
+%
+Because every $\lambda$-expression may be used either as an argument or a function, we shall require maps
+%
+\begin{equation}
+  \label{eq:lambda-section-retraction}
+  \xymatrix{
+    **[l]{D^D}
+    \ar@<+0.25em>[r]^{\Gamma}
+    &
+    {D}
+    \ar@<+0.25em>[l]^{\Lambda}
+  }
+\end{equation}
+%
+that mediate between the two roles. These can be used to give an interpretation
+by assigning to each $\lambda$-expression~$e$ with free variables $x_1, \ldots, x_n$ a map
+%
+\begin{equation*}
+  \sem{x_1, \ldots, x_n \ctx e} : D^n \to D
+\end{equation*}
+%
+as follows, where $\vec{x} = (x_1, \ldots, x_n)$ and $\vec{a} = (a_1, \ldots, a_n) \in D^n$:
+%
+\begin{align*}
+  \sem{\vec{x} \ctx x_i} \, \vec{a} &= a_i \\
+  \sem{\vec{x} \ctx e_1\, e_2} \, \vec{a} &= 
+    \Gamma(\sem{\vec{x} \ctx e_1} \, \vec{a}) (\sem{\vec{x} \ctx e_2} \, \vec{a}), \\
+  \sem{\vec{x} \ctx \lam{y}{e}} \, \vec{a} &= \Lambda(b \mapsto \sem{\vec{x}, y \ctx e} (\vec{a}, b)).
+\end{align*}
+%
+Now comes the trouble. By the $\beta$-rule~$\Lambda$ must be a section of~$\Gamma$,
+%
+\begin{align*}
+  \Gamma(\Lambda(f)) \, a
+  &= \Gamma(\sem{x \ctx x} (\Lambda(f), a)) \, (\sem{x \ctx x} \, a) \\
+  &= \sem{x, y \ctx x , y}  \\
+  &= \Gamma(b \mapsto (\sem{x \ctx x} \, f) \, b)
+\end{align*}
+
 
 The solution was discovered by Dana Scott~\sidecite{scott72:_contin_lattic} who
 constructed a non-trivial topological space $D_\infty$ such that the
