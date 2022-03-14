@@ -1469,7 +1469,7 @@ The successor, addition and multiplication operations are as follows:
 %
 We leave it as exercise to figure out how the following work and what
 they do:\sidenote{A legend says that Alfred Tarski was at the
-  dentists' when he figured out how to compute predecessors. Is
+  dentist's when he figured out how to compute predecessors. Is
   programming the untyped $\lambda$-calculus like pulling one's teeth
   out?}
 %
@@ -1526,7 +1526,7 @@ attempt at an interpretation runs into difficulties.
 %
 Suppose we interpret the expressions of the $\lambda$-calculus as the elements of a set~$D$, where $\lambda$-abstraction should correspond to formation of functions $D \to D$, and $\lambda$-application to application of such functions to elements of~$D$.
 %
-Because every $\lambda$-expression may be used either as an argument or a function, we shall require maps
+Because every $\lambda$-expression may be used either as an argument or a function, we require
 %
 \begin{equation}
   \label{eq:lambda-section-retraction}
@@ -1539,8 +1539,8 @@ Because every $\lambda$-expression may be used either as an argument or a functi
   }
 \end{equation}
 %
-that mediate between the two roles. These can be used to give an interpretation
-by assigning to each $\lambda$-expression~$e$ with free variables $x_1, \ldots, x_n$ a map
+that mediate between the two roles. These can be used to interpret
+each $\lambda$-expression~$e$ with free variables $x_1, \ldots, x_n$ a map
 %
 \begin{equation*}
   \sem{x_1, \ldots, x_n \ctx e} : D^n \to D
@@ -1548,24 +1548,32 @@ by assigning to each $\lambda$-expression~$e$ with free variables $x_1, \ldots, 
 %
 as follows, where $\vec{x} = (x_1, \ldots, x_n)$ and $\vec{a} = (a_1, \ldots, a_n) \in D^n$:
 %
-\begin{align*}
-  \sem{\vec{x} \ctx x_i} \, \vec{a} &= a_i \\
-  \sem{\vec{x} \ctx e_1\, e_2} \, \vec{a} &= 
+\begin{equation}
+  \label{eq:semantics-lambda-calculus}
+  \begin{aligned}
+    \sem{\vec{x} \ctx x_i} \, \vec{a} &= a_i \\
+    \sem{\vec{x} \ctx e_1\, e_2} \, \vec{a} &= 
     \Gamma(\sem{\vec{x} \ctx e_1} \, \vec{a}) (\sem{\vec{x} \ctx e_2} \, \vec{a}), \\
-  \sem{\vec{x} \ctx \lam{y}{e}} \, \vec{a} &= \Lambda(b \mapsto \sem{\vec{x}, y \ctx e} (\vec{a}, b)).
-\end{align*}
+    \sem{\vec{x} \ctx \lam{y}{e}} \, \vec{a} &= \Lambda(b \mapsto \sem{\vec{x}, y \ctx e} (\vec{a}, b)).
+  \end{aligned}
+\end{equation}
 %
-Now comes the trouble. By the $\beta$-rule~$\Lambda$ must be a section of~$\Gamma$,
+Since we intend to interpret ``functions as functions'' and ``application as application'', we expect, for all $f : D \to D$ and $a \in D$,
 %
-\begin{align*}
-  \Gamma(\Lambda(f)) \, a
-  &= \Gamma(\sem{x \ctx x} (\Lambda(f), a)) \, (\sem{x \ctx x} \, a) \\
-  &= \sem{x, y \ctx x , y}  \\
-  &= \Gamma(b \mapsto (\sem{x \ctx x} \, f) \, b)
-\end{align*}
+\begin{equation*}
+  \sem{x, y \ctx x \, y}(\Lambda(f), a) = f a,
+\end{equation*}
+%
+from which it follows that $\Lambda$ is a section of $\Gamma$ because
+%
+\begin{equation*}
+  \Gamma(\Lambda \, f) \, a =
+  \sem{x, y \ctx x \, y}(\Lambda(f), a) = f a.
+\end{equation*}
+%
+The only set that contains its own function space as a retract is the singleton set. The $\lambda$-calculus has no non-trivial set-theoretic models. We need to look elsewhere, but where?
 
-
-The solution was discovered by Dana Scott~\sidecite{scott72:_contin_lattic} who
+An answer was given by Dana Scott~\sidecite{scott72:_contin_lattic} who
 constructed a non-trivial topological space $D_\infty$ such that the
 space of continuous functions $\mathcal{C}(D_\infty, D_\infty)$,
 equipped with the compact-open topology, is homeomorphic
@@ -1574,15 +1582,10 @@ $\lambda$-calculus for $\beta\eta$-reduction. Since the construction
 involves more domain theory than we wish to assume here, we shall look
 at the simpler case of models that satisfy just $\beta$-reduction.
 
-Suppose we interpret the untyped $\lambda$-calculus in a topological
-space~$D$. The interpretation should be standard in the sense that
-closed expressions represent points of~$D$, and expressions $e$ with a
-free variable~$x$ represent continuous maps $D \to D$. Abstraction
-converts a continuous map $D \to D$ to a point in $D$. And since every
-point $e \in D$ may be converted to the function, we expect to have a
-pair of maps
+We seek a topological space~$D$ with a continuous section-retraction pair\sidenote{$D$ must be nice enough for $\mathcal{C}(D,D)$, equipped with the compact-open topology, to be an \emph{exponential} in the category of topological spaces and continuous maps.}
 %
-\begin{equation*}
+\begin{equation}
+  \label{eq:section-retraction-D}
   \xymatrix{
     **[l]{\mathcal{C}(D, D)}
     \ar@<+0.25em>[r]^{\Gamma}
@@ -1590,76 +1593,84 @@ pair of maps
     {D}
     \ar@<+0.25em>[l]^{\Lambda}
   }
-\end{equation*}
+\end{equation}
 %
-Furthermore, $\Gamma$ should be a retraction and~$\Lambda$ a section
-because in the untyped $\lambda$-calculus
-$\lam{y}{(\lam{x}{e\,x})\, y} = \lam{y}{e\,y}$, provided $x$ and
-$y$ do not occur freely in~$e$. We have already seen the above
-diagram: the graph model~$\Scott$ from \cref{sec:graph-model}
-is an example. In general, a non-trivial\sidenote{By non-trivial we
-  mean that it contains more than just a single point.} topological
-space $D$ which contains its own function space $\mathcal{C}(D,D)$ as
-a retract is called a \defemph{reflexive domain}.
+A non-trivial topological space~$D$ which retracts to its own continuous function space $\mathcal{C}(D,D)$, as abbove, is called a \defemph{reflexive domain}.
 
-If $D$ is a reflexive domain as above, we interpret a
-$\lambda$-calculus expression $e$ whose free variables are among $x_1,
-\ldots, x_n$ as a continuous map
-%
-\begin{equation*}
-  \sem{x_1, \ldots, x_n \ctx e} : D^n \to D.
-\end{equation*}
-%
-We must explicitly list the variables which may occur freely in $e$ to
-keep track of which variable corresponds to which coordinate in $D^n$.
-We abbreviate the list $x_1, \ldots, x_n$ as $\overline{x}$. For $a = (a_1,
-\ldots, a_n) \in D^n$ we define the meaning of $\sem{\overline{x} \ctx x}$
-inductively on the structure of~$e$:
+
+The denotations of $\lambda$-expressions in a reflexive domain~$D$ are given by~\eqref{eq:semantics-lambda-calculus}, and $\beta$-reduction is valid thanks to $\Lambda$ being a section of $\Gamma$:
 %
 \begin{align*}
-  \sem{\overline{x} \ctx x_k}(a) &= a_k, \\
-  \sem{\overline{x} \ctx e_1\, e_2}(a) &= 
-  \Lambda(\sem{\overline{x} \ctx e_1}(a))(\sem{\overline{x} \ctx e_2}(a)), \\
-  \sem{\lam{x}{e}}(a) &= \Gamma(f),
+  \sem{\vec{x} \ctx (\lam{y} e_1) \, e_2} \, \vec{a}
+  &= \Gamma(\Lambda(b \mapsto \sem{\vec{x}, y \ctx e_1} \, (\vec{a}, b))) 
+     \, (\sem{\vec{x} \ctx e_2} \, \vec{a}) \\
+  &= (b \mapsto \sem{\vec{x}, y \ctx e_1} \, (\vec{a}, b))
+     \, (\sem{\vec{x} \ctx e_2} \, \vec{a}) \\
+  &= \sem{\vec{x}, y \ctx e_1} \, (\vec{a}, (\sem{\vec{x} \ctx e_2} \, \vec{a})) \\
+  &= \sem{\vec{x} \ctx \subst{e_1}{y \subto e_2}} \, \vec{a}.
 \end{align*}
-%
-where in the last clause $f : D \to D$ is the map $f (b) =
-\sem{\overline{x}, x \ctx e}(a_1, \ldots, a_n, b)$.
+
+\begin{exercise}
+  Prove the \emph{substitution lemma}
+  %
+  \begin{equation*}
+    \sem{\vec{x}, y \ctx e_1} \, (\vec{a}, \sem{\vec{x} \ctx e_2} \, \vec{a}) =
+    \sem{\vec{x}, y \ctx \subst{e_1}{y \subto e_2}} \, \vec{a},
+  \end{equation*}
+  %
+  which we used in the last line above. You may proceed by induction on the structure of~$e_1$, but should first generalize the statement so that the induction case of $\lambda$-abstraction works out.
+\end{exercise}
+
+We have already seen a diagram like~\eqref{eq:section-retraction-D}, namely the section-retraction pair~\eqref{eq:scott-section-retraction} for the graph model~$\Scott$ from \cref{sec:graph-model}. We thus have at least one example of a reflexive domain.
+There are many other reflexive domains, such as Plotkin's $T^\omega$~\sidecite{Plotkin:78} and the universal Scott domain~\sidecite{Gunter:Scott:90}.
+
 
 To see how the $\lambda$-calculus helps prove things about reflexive
-domains, let us show that $D \times D$ is a retract of~$D$. A purely
-topological proof is doable, but it is much easier to just interpret
-pairing $\combPair = \lam{x y z}{z\,x\,y}$ in~$D$. Let $s : D
+domains, let us show that $D \times D$ is a retract of~$D$ with the aid of
+$\combPair = \lam{x y z}{z\,x\,y}$ from the previous section. Let $p : D
 \times D \to D$ be defined as
 %
 \begin{equation*}
-  s (a, b) = \sem{x,y \ctx \lam{z}{z\,x\,y}}(a,b),
+  p (a, b) = \sem{x,y \ctx \lam{z}{z\,x\,y}}(a,b),
 \end{equation*}
 %
 and let $r : D \to D \times D$ be the map
 %
 \begin{equation*}
-  r(c) = (\sem{p \ctx p\,(\lam{x y}{x})}(c),
-          \sem{p \ctx p\,(\lam{x y}{y})}(c)).
+  r(c) = (\sem{u \ctx u\,(\lam{x y}{x})} \, c,
+          \sem{u \ctx u\,(\lam{x y}{y})} \, c).
 \end{equation*}
 %
-Then $r (s (a, b)) = (a, b)$ because $\lambda$-calculus proves
+Then $r (p (a, b)) = (a, b)$ because $\lambda$-calculus proves
 %
 \begin{equation*}
   (\lam{x y}{x})\, x \, y = x
   \qquad\text{and}\qquad
   (\lam{x y}{y})\, x \, y = y.
 \end{equation*}
-%
-As another example we observe that the utm and smn theorems are
-expressed easily in the untyped $\lambda$-calculus. The universal
-function $u$ from the utm theorem is $u = \lam{x y}{x\, y}$ and the
-function $s$ from the smn theorem is $s = \lam{p
-  z}{(\combFst\,p)\,(\combPair\,(\combSnd\, p)\,z)}$.
-Therefore, every reflexive domain enjoys the utm and smn theorems.
+
+The retraction $\Gamma : D \to \mathcal{C}(D, D)$ decodes an element of~$D$ as a continuous map $D \to D$. We may also decode $a \in D$ as a continuous map $\Gamma^{(2)}\, a : D \times D \to D$ of two arguments, namely $\Gamma^{(2)}(a) = (\Gamma \, a) \circ p$ where $p : D \times D \to D$ is the above section.
+
+It is now easy to state and prove the utm and smn theorems for reflexive domains. Note however that they are somewhat redundant because they just reduce to easy $\lambda$-calculus.
+
+\begin{theorem}[reflexive domain smn]
+  Given a reflexive domain~$D$,
+  there is a continuous map $s : D \times D \to D$ such that $\Gamma (s(m, n)) \, a = \Gamma^{(2)} \, m \, (n, a)$ for all $m, n, a \in D$.
+\end{theorem}
+
+\begin{proof}
+  Take $s = \sem{m, n \ctx \lam{a}{m \,(\lam{z} z\,\,n\,a)}}$.
+\end{proof}
+
+\begin{theorem}[reflexive domain utm]
+  Given a reflexive domain~$D$, there is a continuous map $u : D \times D \to D$ such that $u (t, m) = \Gamma\,t\,m$ for all $t, m \in D$.
+\end{theorem}
+
+\begin{proof}
+  Take $u = \sem{x, y \ctx x y}$.
+\end{proof}
 
 
-OTHER: Plotkin's $T^\omega$ and universal domain of Gunter-Scott.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1670,8 +1681,7 @@ The Baire space from \cref{sec:type-2} is almost a model of the
 untyped $\lambda$-calculus, because every $\alpha \in \Baire$ may be
 viewed both as a (realizer of) a function and an argument. One is then
 tempted to define application by $\alpha \, \beta =
-\fpr{\alpha}{\beta}$, but this fails to give a model of the untyped
-$\lambda$-calculus because the result $\fpr{\alpha}{\beta}$ need not
+\fpr{\alpha}{\beta}$, but this fails because the result $\fpr{\alpha}{\beta}$ need not
 be defined, whereas application in $\lambda$-calculus is a total
 operation. We now consider a generalization of the $\lambda$-calculus
 which allows application to be a partial operation, and whose example
