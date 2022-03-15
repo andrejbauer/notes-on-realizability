@@ -153,7 +153,7 @@ The mono $\iota_p : \asm{S}_p \to \asm{S}$ is called a \defemph{standard
   isomorphic to~$u$. The function $u : U \to S$ restricts to a
   bijection $u : U \to S_p$, which is realized as a map from $\asm{U}$
   to $\asm{S}_p$ by
-  $\xpcalam{\annot{y}{|U|}}{\combPair\;(\R{u}\;y)\;y}$. The inverse
+  $\tpcalam{y}{|U|} \combPair\;(\R{u}\;y)\;y$. The inverse
   $\inv{u} : S_p \to U$ is realized as a map from $\asm{S}_p$ to
   $\asm{U}$ by $\combSnd$.
 \end{proof}
@@ -185,8 +185,8 @@ $\iota_p \leq \iota_q$.
   Suppose first that $p \leq q$. Then $\iota_p \leq \iota_q$, which
   means that $S_p \subseteq S_q$ and that the subset inclusion $i :
   S_p \to S_q$ is realized, say by $\R{i} \in \compAtyp{|S| \times |p|
-    \to |S| \times |q|}$. Let $\R{f} = \pcalam{\annot{x}{|S|}
-    \annot{r}{|p|}}{\combSnd\;(\R{i}\;(\combPair\;x\;r))}$. Suppose $x
+    \to |S| \times |q|}$. Let $\R{f} = \tpcalam{x}{|S|}
+    \tpcalam{r}{|p|}{\combSnd\;(\R{i}\;(\combPair\;x\;r))}$. Suppose $x
   \in S$, $\R{x} \in \Atyp{|S|}$, $\R{r} \rz p(x)$, and $\R{x} \rz_S
   x$. Then $\combPair\;\R{x}\;\R{r} \rz_{S_p} x$, therefore
   $\R{i}\;(\combPair\;\R{x}\;\R{r}) \rz_{S_q} x$, which implies
@@ -197,8 +197,8 @@ $\iota_p \leq \iota_q$.
   lemma, and suppose $\R{x} \rz_S x$ and $\R{r} \rz p(x)$. Because
   $\R{f}\;\R{x}\;\R{r} \rz q(x)$, we see that $x \in S_q$. Hence $S_p
   \subseteq S_q$. A realizer for the inclusion map $i : S_p \to S_q$
-  is $\R{i} = \pcalam{\annot{u}{|S| \times
-      |p|}}{\combPair\;(\combFst\;u)\;(\R{f}\;(\combFst\;u)\;(\combSnd\;u))}$,
+  is $\R{i} = \tpcalam{u}{|S| \times
+      |p|}{\combPair\;(\combFst\;u)\;(\R{f}\;(\combFst\;u)\;(\combSnd\;u))}$,
   as is easily verified.
 \end{proof}
 
@@ -206,10 +206,10 @@ The lemma is our main tool for analyzing the preorder $\leq$. For
 example, let us show that it is reflexive and transitive, i.e., that
 the family $\Pred{\asm{S}}$ of all realizability predicates on
 $\asm{S}$ is a \emph{preorder}. Reflexivity $p \leq p$ is witnessed by
-the realizer $\pcalam{\annot{x}{|S|} \annot{u}{|p|}}{u}$. For
+the realizer $\tpcalam{x}{|S|} \tpcalam{u}{|p|}{u}$. For
 transitivity, suppose $p \leq q$ and $q \leq r$ are witnessed by
 $\R{f}$ and $\R{g}$. Then $p \leq r$ is witnessed by
-$\pcalam{\annot{x}{|S|} \annot{u}{|p|}}{\R{g}\;x\;(\R{f}\;x\;u))}$.
+$\tpcalam{x}{|S|} \tpcalam{u}{|p|}{\R{g}\;x\;(\R{f}\;x\;u))}$.
 
 
 \section{The Heyting prealgebra of realizability predicates}
@@ -284,12 +284,12 @@ equivalent ones.
   Here we wrote $p(x) \land q(x)$ instead of $(p \land q)(x)$. Let us
   verify that $p \land q$ is the infimum of $p$ and $q$. The
   inequalities $p \land q \leq p$ and $p \land q \leq q$ are witnessed
-  by $\pcalam{\annot{x}{|S|} \annot{u}{|p| \times |q|}}{\combFst\;u}$
-  and $\pcalam{\annot{x}{|S|} \annot{u}{|p| \times
-      |q|}}{\combSnd\;u}$, respectively. Suppose $r \leq p$ and $r
+  by $\tpcalam{x}{|S|} \tpcalam{u}{|p| \times |q|}{\combFst\;u}$
+  and $\tpcalam{x}{|S|} \tpcalam{u}{|p| \times
+      |q|}{\combSnd\;u}$, respectively. Suppose $r \leq p$ and $r
   \leq q$ are witnessed by $\R{f}$ and $\R{g}$, respectively. Then $r
-  \leq p \land q$ is witnessed by $\pcalam{\annot{x}{|S|}
-    \annot{u}{|r|}}{\combPair\; (\R{f}\;x\;u)\; (\R{g}\;x\;u)}$.
+  \leq p \land q$ is witnessed by $\tpcalam{x}{|S|}
+    \tpcalam{u}{|r|}{\combPair\; (\R{f}\;x\;u)\; (\R{g}\;x\;u)}$.
 
   Next we consider suprema. Define $p \lor q$ to be the predicate
   whose realizers have the type $|p \land q| = |p| + |q|$. There are
@@ -302,13 +302,13 @@ equivalent ones.
   \end{equation*}
   %
   The inequalities $p \leq p \lor q$ and $q \leq p \lor q$ are
-  witnessed by $\pcalam{\annot{x}{|S|} \annot{u}{|p|}}{\combLeft\;u}$
-  and $\pcalam{\annot{x}{|S|} \annot{v}{|q|}}{\combRight\;v}$,
+  witnessed by $\tpcalam{x}{|S|} \tpcalam{u}{|p|}{\combLeft\;u}$
+  and $\tpcalam{x}{|S|} \tpcalam{v}{|q|}{\combRight\;v}$,
   respectively. If $p \leq r$ and $q \leq r$ are witnessed by $\R{f}$
   and $\R{g}$ then $p \lor q \leq r$ is witnessed by
   %
   \begin{equation*}
-    \pcalam{\annot{x}{|S|} \annot{w}{|p|+|q|}}{
+    \tpcalam{x}{|S|} \tpcalam{w}{|p|+|q|}{
       \combCase\;w\;(\R{f}\;x)\;(\R{g}\;x)
     }.
   \end{equation*}
@@ -330,11 +330,11 @@ equivalent ones.
   That is, $\R{f}$ maps realizers for $p(x)$ to realizers for $q(x)$.
   Note that $\R{f}$ need not be computable. Let us show that $p \lthen
   q$ has the desired properties. The inequality $(p \lthen q) \land p
-  \leq q$ is witnessed by $\pcalam{\annot{x}{|S|} \annot{w}{(|p| \to
-      |q|) \times |p|}}{(\combFst\;w)\; (\combSnd\;w)}$. If $r \land p
+  \leq q$ is witnessed by $\tpcalam{x}{|S|} \tpcalam{w}{(|p| \to
+      |q|) \times |p|}{(\combFst\;w)\; (\combSnd\;w)}$. If $r \land p
   \leq q$ is witnessed by $\R{f}$ then $r \leq p \lthen q$ is witnessed
-  by $\pcalam{\annot{x}{|S|} \annot{w}{|r|}
-    \annot{u}{|p|}}{\R{f}\;(\combPair\;w\;u)}$.
+  by $\tpcalam{x}{|S|} \pcalam{w}{|r|}
+    \tannot{u}{|p|}{\R{f}\;(\combPair\;w\;u)}$.
 \end{proof}
 
 \section{Quantifiers}
@@ -396,11 +396,11 @@ $\exists_{\asm{T}} q \in \Pred{\asm{S}}$ defined by
 Let us verify that we have a left adjoint to weakening. Suppose $p \in
 \Pred{\asm{S} \times \asm{T}}$ and $q \in \Pred{\asm{S}}$. If $p \leq
 q \times \asm{T}$ is witnessed by $\R{f}$ then $\exists_{\asm{T}} p
-\leq q$ is witnessed by $\pcalam{\annot{x}{|S|} \, \annot{e}{|T| \times
-    |p|}}{\R{f}\; (\combPair \; x \; (\combFst\; e)) \; (\combSnd \; e)}$.
+\leq q$ is witnessed by $\tpcalam{x}{|S|} \tpcalam{e}{|T| \times
+    |p|}{\R{f}\; (\combPair \; x \; (\combFst\; e)) \; (\combSnd \; e)}$.
 Conversely, if $\exists_{\asm{T}} p \leq q$ is witnessed by $\R{g}$
-then $p \leq q \times \asm{T}$ is witnessed by $\pcalam{\annot{r}{|S|
-    \times |T|} \, \annot{s}{|p|}}{\R{g} \;
+then $p \leq q \times \asm{T}$ is witnessed by $\tpcalam{r}{|S|
+    \times |T|} \tpcalam{s}{|p|}{\R{g} \;
   (\combFst\;r)\; (\combPair \; (\combSnd \; r) \; s)}$.
 
 Similarly, the universal quantifier $\forall_{\asm{T}}$ maps $q \in
@@ -423,11 +423,11 @@ Similarly, the universal quantifier $\forall_{\asm{T}}$ maps $q \in
 To verify that this is the right adjoint, suppose $p \in \Pred{\asm{S}
   \times \asm{T}}$ and $q \in \Pred{\asm{S}}$. If $q \times \asm{T}
 \leq p$ is witnessed by $\R{f}$ then $q \leq \forall_{\asm{T}} p$ is
-witnessed by $\pcalam{\annot{x}{|S|} \, \annot{r}{|q|} \,
-  \annot{y}{|T|}}{\R{f} \; (\combPair \; x \; y) \; r}$. Conversely,
+witnessed by $\tpcalam{x}{|S|} \tpcalam{r}{|q|}
+  \tpcalam{y}{|T|}{\R{f} \; (\combPair \; x \; y) \; r}$. Conversely,
 if $q \leq \forall_{\asm{T}} p$ is witnessed by $\R{g}$ then $q \times
-\asm{T} \leq p$ is witnessed by $\pcalam{\annot{s}{|S| \times |T|} \,
-  \annot{r}{|q|}}{\R{g} \; (\combFst \; s) \; r \; (\combSnd \; s)}$.
+\asm{T} \leq p$ is witnessed by $\tpcalam{s}{|S| \times |T|}
+  \tpcalam{r}{|q|}{\R{g} \; (\combFst \; s) \; r \; (\combSnd \; s)}$.
 
 It is customary to write $\some{y}{T}{q(x,y)}$ and
 $\all{y}{T}{q(x,y)}$ instead of $\exists_{\asm{T}} q$ and

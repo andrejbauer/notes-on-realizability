@@ -108,7 +108,7 @@ property, suppose $f : \asm{U} \to \asm{S}$ and $g : \asm{U} \to
 U \to S \times T$ for which $f = \pi_1 \circ h$ and $g = \pi_2 \circ g$,
 namely $h(u) = \pair{f,g}(u) = (f(u), g(u))$. We only need a realizer
 for~$h$, and $\R{h} =
-\pcalam{\annot{u}{|U|}}{\combPair\;(\R{f}\;u)\;(\R{g}\;u)}$ does the
+\tpcalam{u}{|U|}{\combPair\;(\R{f}\;u)\;(\R{g}\;u)}$ does the
 job:
 %
 \begin{multline*}
@@ -187,7 +187,7 @@ to augment this with realizers. The equalizer of $f, g : \asm{S} \to
 %
 where $\R{x} \rz_E x$ if, and only if, $\R{x} \rz_S x$. The map $e : E
 \to S$ is the subset inclusion, $e(x) = x$. It is realized by
-$\xpcalam{\annot{x}{|S|}}{x}$. Clearly, $e$ equalizes~$f$ and~$g$. We
+$\tpcalam{x}{|S|} x$. Clearly, $e$ equalizes~$f$ and~$g$. We
 leave the verification of the universal property as exercise.
 
 A \defemph{pullback}, sometimes called \defemph{fibered product}, is a
@@ -446,7 +446,7 @@ underlying TPCAs.
   \end{equation*}
   %
   is realized by
-  $\pcalam{\annot{u}{|S|+|T|}}{\combCase\;u\;\R{f}\;\R{g}}$. It is the
+  $\tpcalam{u}{|S|+|T|}{\combCase\;u\;\R{f}\;\R{g}}$. It is the
   unique morphism satisfying $h \circ \iota_1 = f$ and $h \circ
   \iota_2 = g$.
 
@@ -473,15 +473,15 @@ underlying TPCAs.
     \to (t \to u) \to u}$ by
   %
   \begin{equation*}
-    a = \pcalam{\annot{x}{s}
-                 \annot{f}{s \to u}
-                 \annot{g}{t \to u}}
-                 {f\;x}
+    a = \tpcalam{x}{s}
+        \tpcalam{f}{s \to u}
+        \tpcalam{g}{t \to u}}
+        f\;x
    \qquad\text{and}\qquad
-    b = \pcalam{\annot{x}{s}
-                 \annot{f}{s \to u}
-                 \annot{g}{t \to u}}
-                 {g\;x}.
+    b = \tpcalam{x}{s}
+        \tpcalam{f}{s \to u}
+        \tpcalam{g}{t \to u}}
+        g\;x.
   \end{equation*}
   %
   The map $x \mapsto a\;x$ is a morphism from $\asm{A}_s$ to
@@ -563,10 +563,10 @@ that covers the instances we care about.
     \ttbool &= o + o, \\
     \combTrue &= \combLeft\;\omega_o, \\
     \combFalse &= \combRight\;\omega_o \\
-    \combIf_t &= \pcalam{\annot{b}{\ttbool}
-                         \annot{x}{t}
-                         \annot{y}{t}}
-                        {\combCase_{o,t,t}\;b\;(\combK_{o,t}\;x)\;(\combK_{o,t}\;y)}
+    \combIf_t &= \tpcalam{b}{\ttbool
+                 \tpcalam{x}{t}
+                 \tpcalam{y}{t}
+                 \combCase_{o,t,t}\;b\;(\combK_{o,t}\;x)\;(\combK_{o,t}\;y)
   \end{align*}
   %
   It is easy to check that these satisfy the conditions from
@@ -579,14 +579,16 @@ that covers the instances we care about.
   \begin{align*}
     s + t &= \ttbool \times (s \times t),\\
     \combLeft_{s,t} &=
-    \pcalam{\annot{x}{s}}{\combPair\;\combTrue\;(\combPair\;x \; \omega_t)} \\
+      \tpcalam{x}{s}{\combPair\;\combTrue\;(\combPair\;x \; \omega_t)} \\
     \combRight_{s,t} &=
-    \pcalam{\annot{y}{t}}{\combPair\;\combFalse\;(\combPair \; \omega_s \; y)} \\
+      \tpcalam{y}{t}{\combPair\;\combFalse\;(\combPair \; \omega_s \; y)} \\
     \combCase_{s,t,u} &=
-    \pcalam{\annot{z}{s+t}
-            \annot{f}{s \to u}
-            \annot{g}{s \to u}}
-    {\combIf\;(\combFst\;z)\;(f\;(\combFst\;(\combFst\;z)))\;(g\;(\combSnd\;(\combFst\;z)))}
+      \tpcalam{z}{s+t}
+      \tpcalam{f}{s \to u}
+      \tpcalam{g}{s \to u}}
+      \combIf\;(\combFst\;z)\;
+               (f\;(\combFst\;(\combFst\;z)))\;
+               (g\;(\combSnd\;(\combFst\;z)))
   \end{align*}
   %
   These have the required properties, as is easily checked.
@@ -605,12 +607,11 @@ that covers the instances we care about.
     \ttbool &= \ttnat, \\
     \combFalse &= \numeral{0}, \\
     \combTrue &= \numeral{1}, \\
-    \combIf_t &= \pcalam{\annot{b}{\ttbool}
-                         \annot{x}{t}
-                         \annot{y}{t}}{
-                         \combRec_t \; y \;
-                         (\xpcalam{\annot{n}{\ttnat} \annot{z}{t}}{x}) \; b 
-                       }
+    \combIf_t &= \tpcalam{b}{\ttbool}
+                 \tpcalam{x}{t}
+                 \tpcalam{y}{t}
+                 \combRec_t \; y \;
+                 (\tpcalam{n}{\ttnat} \tpcalam{z}{t} x) \; b
   \end{align*}
   %
   Again, it is easy to check that these have the desired properties.
@@ -683,7 +684,7 @@ $f$ and $g$ computed in sets, as described above, $|\asm{T}/{\equiv}|
 \end{equation*}
 %
 The canonical quotient map $q : T \to T/{\equiv}$ is realized by
-$\xpcalam{\annot{y}{|T|}}{y}$.
+$\tpcalam{y}{|T|} y$.
 
 Pushouts, which are dual to pullbacks, exist in~$\AsmA$ if coproducts
 do, because every finite colimit is a coequalizer of a finite
@@ -780,7 +781,7 @@ subspace embeddings. Given an assembly $\asm{T}$ and a subset $T'
 as the restriction of $\asm{T}$, i.e., $\R{x} \rz_{T'} x$ if, and only
 if $x \in T'$ and $\R{x} \rz_T x$. The subset inclusion $\iota : T'
 \to T$ is a morphism of assemblies because it is realized by
-$\xpcalam{\annot{x}{|T|}}{x}$, and it is a regular mono because it is
+$\tpcalam{x}{|T|} x$, and it is a regular mono because it is
 the equalizer of the maps $g, h : T \to \nabla \two$, defined by
 %
 \begin{equation*}
@@ -866,7 +867,7 @@ the \defemph{quotient assembly} $\asm{T}/{\equiv} = (T/{\equiv}, |T|,
 \rz_{T/{\equiv}})$ whose realizability relation satisfies $\R{x}
 \rz_{T/{\equiv}} [y]$ if, and only if, $\R{x} \rz_T x$ and $x \equiv
 y$ for some $x \in T$. The quotient map $q : T \to T/{\equiv}$ is
-realized by $\xpcalam{\annot{x}{|T|}}{x}$, and is a coequalizer of $g,
+realized by $\tpcalam{x}{|T|} x$, and is a coequalizer of $g,
 h : \asm{V} \to \asm{T}$ where\sidenote{You should convince yourself
   that $\asm{V}$ is the \defemph{kernel pair} of~$q$, i.e., the pullback
   of $q$ with itself.}
@@ -1093,7 +1094,7 @@ feature of assemblies.
   x$ and $\R{y} \rz_T y$ and $r : (x,y) \mapsto x$. Let us use
   \cref{prop:reg-epi-when} to show that~$r$ is regular epi.
   The realizer $\R{i} =
-  \pcalam{\annot{x}{|S|}}{\combPair\;x\;(\R{f}\;x)}$ satisfies the
+  \tpcalam{x}{|S|}{\combPair\;x\;(\R{f}\;x)}$ satisfies the
   conditions of the proposition: if $x \in S$ and $\R{x} \rz_S x$ then
   $\R{i}\;\R{x} = \combPair\;\R{x}\;(\R{f}\;\R{x})$ is defined. There
   is $y \in T$ such that $f(x) = [y]_{\equiv}$, hence $r (x, y) = x$,
@@ -1198,8 +1199,8 @@ map satisfying this property.
   \asm{S} \to \asm{T}$ is $e(f, x) = f(x)$, which is realized by
   %
   \begin{equation*}
-    \R{e} = \pcalam{\annot{p}{(|S| \to |T|) \times |S| \to
-      |T|}}{(\combFst\;p)\;(\combSnd\;p)}.
+    \R{e} = \tpcalam{p}{(|S| \to |T|) \times |S| \to
+      |T|}{(\combFst\;p)\;(\combSnd\;p)}.
   \end{equation*}
   %
   The transpose of $f : \asm{U} \times \asm{S} \to \asm{T}$, realized
@@ -1207,9 +1208,7 @@ map satisfying this property.
   by
   %
   \begin{equation*}
-    \R{\curry{f}} = \pcalam{\annot{z}{|U|} \; \annot{x}{|S|}}{
-      \R{f}\;(\combPair\;z\;x)
-    }.
+    \R{\curry{f}} = \tpcalam{z}{|U|} \tpcalam{x}{|S|} \R{f}\;(\combPair\;z\;x).
   \end{equation*}
 \end{proof}
 
@@ -1218,8 +1217,8 @@ transpose $\curry{f} : \asm{U} \to \asm{T}^{\asm{S}}$ has an inverse.
 To every $g : \asm{U} \to \asm{T}^{\asm{S}}$ we may assign
 $\uncurry{g} : \asm{U} \times \asm{S} \to \asm{T}$, defined by
 $\uncurry{g}(z,x) = g(z)(x)$. If $g$ is realized by $\R{g}$ then
-$\uncurry{g}$ is realized by $\uncurry{\R{g}} = \pcalam{\annot{p}{|U|
-    \times |S|}}{\R{g}\;(\combFst\;p)\;(\combSnd\;p)}$. It is easy to
+$\uncurry{g}$ is realized by $\uncurry{\R{g}} = \tpcalam{p}{|U|
+    \times |S|}{\R{g}\;(\combFst\;p)\;(\combSnd\;p)}$. It is easy to
 check that $\uncurry{\curry{f}} = f$ and $\curry{\uncurry{g}} = g$.
 The operation $f \mapsto \curry{f}$ is also known as \defemph{currying}
 and its inverse $g \mapsto \uncurry{g}$ as \defemph{uncurrying}.
@@ -1266,8 +1265,8 @@ S_n$:
   which is realized\sidenote{Had we allowed as primitive constants
     \emph{all} elements of~$\asm{T}$, we would face a difficulty here,
     because we could not exhibit a computable realizer for the
-    constant map.} by $\xpcalam{\annot{x}{|S_1| \times \cdots \times
-      |S_n|}}{\R{b}}$.
+    constant map.} by $\tpcalam{x}{|S_1| \times \cdots \times
+      |S_n|} \R{b}$.
 \item A variable $\annot{x_i}{\asm{S}_i}$ is interpreted as the $i$-th
   projection
   %

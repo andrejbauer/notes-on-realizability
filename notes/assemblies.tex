@@ -152,10 +152,10 @@ sub-NR-TPCA of~$\AA$.
   If $f : \asm{S} \to \asm{T}$ and $g : \asm{T} \to \asm{U}$ are
   realized by $\R{f} \in \compAtyp{|S| \to |T|}$ and $\R{g} \in
   \compAtyp{|T| \to |U|}$, respectively, then their composition $g
-  \circ f$ is realized by $\pcalam{\annot{x}{|S|}}{r\;(q\;x)} =
+  \circ f$ is realized by $\tpcalam{x}{|S|}{r\;(q\;x)} =
   \combS\;(\combK\;r)\;(\combS\;(\combK\;q)\;(\combS\;\combK\;\combK))$.
   The identity map $\id_S : \asm{S} \to \asm{S}$ is realized by
-  $\pcalam{\annot{x}{|S|}}{x} = \combS\;\combK\;\combK$. Composition
+  $\tpcalam{x}{|S|}{x} = \combS\;\combK\;\combK$. Composition
   is associative because it is just composition of maps.
 \end{proof}
 
@@ -171,7 +171,7 @@ A common way to get isomorphic assemblies is the following.
 
 \begin{proof}
   The map $f$ is a morphism from $\asm{S}$ to $\asm{T}$ because it is
-  tracked by~$\pcalam{\annot{x}{|S|}}{x}$. Similarly, $\inv{f}$ is a
+  tracked by~$\tpcalam{x}{|S|}{x}$. Similarly, $\inv{f}$ is a
   morphism because it is also tracked by the same realizer. Obviously,
   $f$ and $\inv{f}$ are inverses of each other.
 \end{proof}
@@ -230,7 +230,7 @@ set is~$X$ and the realizability relation is trivial, i.e., $r
 \rz_{\nabla X} x$ for all $x \in X$ and $r \in A_t$. If $f : X \to Y$
 is any map between sets~$X$ and~$Y$ then~$f$ is a morphism $\nabla f :
 \nabla X \to \nabla Y$ because it is tracked by
-$\pcalam{\annot{x}{t}}{x}$. This defines a functor
+$\tpcalam{x}{t}{x}$. This defines a functor
 %
 \begin{equation*}
   \nabla : \Set \to \AsmA.
@@ -363,8 +363,8 @@ Pers and equivalence classes of extensional realizers form a category
 $\Per{\AA, \compAA}$ whose objects are pers on~$\AA$ and morphisms are
 equivalence classes of extensional realizers. The composition of $[p]
 : S \to T$ and $[q] : T \to U$ is $[q \circ p] : S \to U$ where $q
-\circ p = \pcalam{\annot{x}{|S|}}{q\;(p\;x)}$. The identity morphism
-$\id_S : S \to S$ is represented by $\xpcalam{\annot{x}{|S|}}{x}$. It
+\circ p = \tpcalam{x}{|S|}{q\;(p\;x)}$. The identity morphism
+$\id_S : S \to S$ is represented by $\tpcalam{x}{|S|} x$. It
 is easy to check that this forms a category.
 
 Let $S$ and $T$ be pers over $(\AA, \compAA)$. A morphism between them

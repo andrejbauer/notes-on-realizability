@@ -769,6 +769,7 @@ We are now able to characterize the realized maps.
 Finally, we formulate the utm and smn theorems for type 2 machines.
 
 \begin{theorem}[type 2 utm]
+  \label{th:type-2-utm}%
   There exists a computable partial function $u : \Baire \times
   \Baire \parto \Baire$ such that $u(\alpha, \beta) \simeq
   \fpr{\alpha}{\beta}$ for all $\alpha, \beta \in \Baire$.
@@ -808,6 +809,7 @@ $\xfpr^{(2)}$ for encoding partial maps $\Baire \times \Baire \to
 where $\pair{\beta, \gamma}$ is the interleaved sequence $\beta(0), \gamma(0), \beta(1), \gamma(1), \ldots$.
 
 \begin{theorem}[type 2 smn]
+  \label{th:type-2-smd}%
   There exists a computable $s : \Baire \times \Baire \to \Baire$ such
   that, for all $\alpha, \beta, \gamma \in \Baire$,
   %
@@ -832,11 +834,12 @@ Each oracle $\omega$ yields a type 1 and a type 2 model of computation in which 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Hamkin's infinite time Turing machines}
+\subsection{Hamkin's infinite-time Turing machines}
+\label{sec:iitm}
 
-Another model of computation that exceeds the power of Turing machines are Hamkin's \defemph{infinite time Turing machines}~\sidecite{hamkins00:_infin_turin}. We give here just a brief overview and recommend the cited reference for background reading.
+Another model of computation that exceeds the power of Turing machines are Hamkin's \defemph{infinite-time Turing machines}~\sidecite{hamkins00:_infin_turin}. We give here just a brief overview and recommend the cited reference for background reading.
 
-An infinite time Turing machine, or just \emph{machine}, is like a Turing
+An infinite-time Turing machine, or just \emph{machine}, is like a Turing
 machine which is allowed to run infinitely long, with the computation steps
 counted by ordinal numbers. The machine has a finite program, an input tape, work
 tapes, an output tape, etc. We assume that the tape cells contain $0$'s and
@@ -868,16 +871,16 @@ initialize the input tape with the input number, run the machine, and interpret 
 contents of the output tape as a natural number, where we ignore anything that is beyond
 the position of the output head. By performing the usual encoding tricks, we can feed the
 machines more complicated inputs and outputs, such as pairs, finite lists, and even
-infinite lists of numbers. We say that a function is \defemph{infinite time computable} if there is an infinite time Turing machine that computes it.
+infinite lists of numbers. We say that a function is \defemph{infinite-time computable} if there is an infinite-time Turing machine that computes it.
 
-The power of infinite time Turing machines is vast and extends far beyond the halting
+The power of infinite-time Turing machines is vast and extends far beyond the halting
 problem for ordinary Turing machines, although of course they cannot solve their own
 halting problem. For example, for every $\Pi^1_1$-subset $S \subseteq \Cantor$ there is a machine which, given $x \in \Cantor$ on its input tape, terminates and decides whether $x \in S$.
 
-There is a standard enumeration $M_0, M_1, M_2, \ldots$ of infinite time Turing
+There is a standard enumeration $M_0, M_1, M_2, \ldots$ of infinite-time Turing
 machines, where $M_n$ is the machine whose program is encoded by the number $n$
 in some reasonable manner. The associated enumeration $\iitm{0}, \iitm{1}, \iitm{2},
-\ldots$ of infinite time computable partial functions $\NN \parto \NN$ is
+\ldots$ of infinite-time computable partial functions $\NN \parto \NN$ is
 defines as
 %
 \begin{equation*}
@@ -888,24 +891,24 @@ defines as
   \end{cases}
 \end{equation*}
 %
-We may similarly an enumeration $\iitm{0}^{(k)}, \iitm{1}^{(k)}, \iitm{2}^{(k)}, \ldots$ of $k$-ary infinite time computable partial maps $\NN^k \parto \NN$.
+We may similarly an enumeration $\iitm{0}^{(k)}, \iitm{1}^{(k)}, \iitm{2}^{(k)}, \ldots$ of $k$-ary infinite-time computable partial maps $\NN^k \parto \NN$.
 
 The enumeration satisfies the smn and utm theorems.
 
-\begin{theorem}[infinite time smn]
+\begin{theorem}[infinite-time smn]
   There is an infinite time computable total map $s : \NN \times \NN \to \NN$
   such that $\iitm{{s}(m,n)}(j) = \iitm{m}^{(2)}(n, j)$ for all $m, n, j \in \NN$.
 \end{theorem}
 
-\begin{theorem}[infinite time utm]
-  There is an infinite time computable partial map $u : \NN \times \NN \parto
+\begin{theorem}[infinite-time utm]
+  There is an infinite-time computable partial map $u : \NN \times \NN \parto
   \NN$ such that $\iitm{t}(m) = u(t,m)$ for all $t, m \in \NN$.
 \end{theorem}
 
 \noindent
 %
 To convince ourselves that the utm theorem holds, we think a bit how a universal
-infinite time Turing machine works. It accepts the description~$n$ of a machine and the
+infinite-time Turing machine works. It accepts the description~$n$ of a machine and the
 initial input tape~$x$. At successor steps the simulation of machine~$M_n$ on input~$x$
 proceeds much like it does for the ordinary Turing machines. Thus it takes finitely many
 successor steps to simulate one successor step of $M_n$. Each limit step of $M_n$ is
@@ -915,7 +918,7 @@ puts the simulated machine in the simulated limit state, and moves the simulated
 the beginnings of the simulated tapes. These actions take finitely many steps. The
 contents of the simulated tapes need not be worried about, as it will be updated correctly at limit stages.
 
-To see what sort of tasks can be performed by infinite time Turing machines, we consider
+To see what sort of tasks can be performed by infinite-time Turing machines, we consider
 several examples that will be useful later on.
 
 \begin{example}
@@ -1163,7 +1166,7 @@ where $A \wayb \NN$ and $n \in \NN$.
 We shall use $\Gamma$ and $\Lambda$ in \cref{sec:reflexive-domains} to model the untyped $\lambda$-calculus in~$\Scott$.
 
 \begin{exercise}
-  There is a pairing function $\pair{{-}, {-}} : \Scott \times
+  There is a pairing function $\pair{\place, \place} : \Scott \times
   \Scott \to \Scott$ which interleaves sets $A$ and $B$ as odd and even
   numbers, respectively,
   % 
@@ -1171,7 +1174,7 @@ We shall use $\Gamma$ and $\Lambda$ in \cref{sec:reflexive-domains} to model the
     \pair{A, B} = \set{2 m \such m \in A} \cup \set{2 n + 1 \such n \in B}.
   \end{equation*}
   % 
-  Verifty that $\pair{{-}, {-}}$ is a homeomorphism between $\Scott \times \Scott$ and
+  Verifty that $\pair{\place, \place}$ is a homeomorphism between $\Scott \times \Scott$ and
   $\Scott$.
 \end{exercise}
 
@@ -1452,11 +1455,11 @@ Church numeral is a function which maps a function to its $n$-th
 iteration:
 %
 \begin{align*}
-  \overline{0} &= \lam{f\,x}{x},\\
-  \overline{1} &= \lam{f\,x}{f\,x},\\
-  \overline{2} &= \lam{f\,x}{f\,(f\,x)},\\
+  \numeral{0} &= \lam{f\,x}{x},\\
+  \numeral{1} &= \lam{f\,x}{f\,x},\\
+  \numeral{2} &= \lam{f\,x}{f\,(f\,x)},\\
   \intertext{and in general}
-  \overline{n} &= \lam{f\,x}{\underbrace{f\,(\cdots (f}_n\,x) \cdots)}.
+  \numeral{n} &= \lam{f\,x}{\underbrace{f\,(\cdots (f}_n\,x) \cdots)}.
 \end{align*}
 %
 The successor, addition and multiplication operations are as follows:
@@ -1481,7 +1484,7 @@ they do:\sidenote{A legend says that Alfred Tarski was at the
       \combSnd\, (n\, (\lam{p}{
         \combPair\, (\combSucc\, (\combFst\, p))\,
         (\combFst\, p)})
-      (\combPair\, \overline{0}\, \overline{0}))}.
+      (\combPair\, \numeral{0}\, \numeral{0}))}.
 \end{align*}
 %
 Recursion is accomplished by means of the \defemph{fixed-point operator}
@@ -1553,22 +1556,22 @@ as follows, where $\vec{x} = (x_1, \ldots, x_n)$ and $\vec{a} = (a_1, \ldots, a_
   \begin{aligned}
     \sem{\vec{x} \ctx x_i} \, \vec{a} &= a_i \\
     \sem{\vec{x} \ctx e_1\, e_2} \, \vec{a} &= 
-    \Gamma(\sem{\vec{x} \ctx e_1} \, \vec{a}) (\sem{\vec{x} \ctx e_2} \, \vec{a}), \\
-    \sem{\vec{x} \ctx \lam{y}{e}} \, \vec{a} &= \Lambda(b \mapsto \sem{\vec{x}, y \ctx e} (\vec{a}, b)).
+    \Lambda(\sem{\vec{x} \ctx e_1} \, \vec{a}) (\sem{\vec{x} \ctx e_2} \, \vec{a}), \\
+    \sem{\vec{x} \ctx \lam{y}{e}} \, \vec{a} &= \Gamma(b \mapsto \sem{\vec{x}, y \ctx e} (\vec{a}, b)).
   \end{aligned}
 \end{equation}
 %
 Since we intend to interpret ``functions as functions'' and ``application as application'', we expect, for all $f : D \to D$ and $a \in D$,
 %
 \begin{equation*}
-  \sem{x, y \ctx x \, y}(\Lambda(f), a) = f a,
+  \sem{x, y \ctx x \, y}(\Gamma(f), a) = f a,
 \end{equation*}
 %
-from which it follows that $\Lambda$ is a section of $\Gamma$ because
+from which it follows that $\Gamma$ is a section of $\Lambda$ because
 %
 \begin{equation*}
-  \Gamma(\Lambda \, f) \, a =
-  \sem{x, y \ctx x \, y}(\Lambda(f), a) = f a.
+  \Lambda (\Gamma \, f) \, a =
+  \sem{x, y \ctx x \, y}(\Gamma(f), a) = f a.
 \end{equation*}
 %
 The only set that contains its own function space as a retract is the singleton set. The $\lambda$-calculus has no non-trivial set-theoretic models. We need to look elsewhere, but where?
@@ -1582,7 +1585,7 @@ $\lambda$-calculus for $\beta\eta$-reduction. Since the construction
 involves more domain theory than we wish to assume here, we shall look
 at the simpler case of models that satisfy just $\beta$-reduction.
 
-We seek a topological space~$D$ with a continuous section-retraction pair\sidenote{$D$ must be nice enough for $\mathcal{C}(D,D)$, equipped with the compact-open topology, to be an \emph{exponential} in the category of topological spaces and continuous maps.}
+We seek a non-trivial topological space~$D$ that continuously retracts onto its own function space\sidenote{$D$ must be nice enough for $\mathcal{C}(D,D)$, equipped with the compact-open topology, to be an \emph{exponential} in the category of topological spaces and continuous maps.}
 %
 \begin{equation}
   \label{eq:section-retraction-D}
@@ -1595,14 +1598,14 @@ We seek a topological space~$D$ with a continuous section-retraction pair\sideno
   }
 \end{equation}
 %
-A non-trivial topological space~$D$ which retracts to its own continuous function space $\mathcal{C}(D,D)$, as abbove, is called a \defemph{reflexive domain}.
+Such a space is called a \defemph{reflexive domain}.
 
 
-The denotations of $\lambda$-expressions in a reflexive domain~$D$ are given by~\eqref{eq:semantics-lambda-calculus}, and $\beta$-reduction is valid thanks to $\Lambda$ being a section of $\Gamma$:
+The denotations of $\lambda$-expressions in a reflexive domain~$D$ are given by~\eqref{eq:semantics-lambda-calculus}, and $\beta$-reduction is valid thanks to $\Gamma$ being a section of $\Lambda$:
 %
 \begin{align*}
   \sem{\vec{x} \ctx (\lam{y} e_1) \, e_2} \, \vec{a}
-  &= \Gamma(\Lambda(b \mapsto \sem{\vec{x}, y \ctx e_1} \, (\vec{a}, b))) 
+  &= \Lambda(\Gamma(b \mapsto \sem{\vec{x}, y \ctx e_1} \, (\vec{a}, b))) 
      \, (\sem{\vec{x} \ctx e_2} \, \vec{a}) \\
   &= (b \mapsto \sem{\vec{x}, y \ctx e_1} \, (\vec{a}, b))
      \, (\sem{\vec{x} \ctx e_2} \, \vec{a}) \\
@@ -1649,13 +1652,13 @@ Then $r (p (a, b)) = (a, b)$ because $\lambda$-calculus proves
   (\lam{x y}{y})\, x \, y = y.
 \end{equation*}
 
-The retraction $\Gamma : D \to \mathcal{C}(D, D)$ decodes an element of~$D$ as a continuous map $D \to D$. We may also decode $a \in D$ as a continuous map $\Gamma^{(2)}\, a : D \times D \to D$ of two arguments, namely $\Gamma^{(2)}(a) = (\Gamma \, a) \circ p$ where $p : D \times D \to D$ is the above section.
+The retraction $\Lambda$ decodes an element of~$D$ as a continuous map $D \to D$. We may also decode $a \in D$ as a continuous map $\Lambda^{(2)}\, a : D \times D \to D$ of two arguments, namely $\Lambda^{(2)} a = \Gamma \, a \circ p$ where $p : D \times D \to D$ is the above section.
 
-It is now easy to state and prove the utm and smn theorems for reflexive domains. Note however that they are somewhat redundant because they just reduce to easy $\lambda$-calculus.
+It is now easy to state and prove the utm and smn theorems for reflexive domains. Note however that they are somewhat redundant because the $\lambda$-calculus already does all the work.
 
 \begin{theorem}[reflexive domain smn]
   Given a reflexive domain~$D$,
-  there is a continuous map $s : D \times D \to D$ such that $\Gamma (s(m, n)) \, a = \Gamma^{(2)} \, m \, (n, a)$ for all $m, n, a \in D$.
+  there is a continuous map $s : D \times D \to D$ such that $\Lambda (s(m, n)) \, a = \Lambda^{(2)} \, m \, (n, a)$ for all $m, n, a \in D$.
 \end{theorem}
 
 \begin{proof}
@@ -1663,7 +1666,7 @@ It is now easy to state and prove the utm and smn theorems for reflexive domains
 \end{proof}
 
 \begin{theorem}[reflexive domain utm]
-  Given a reflexive domain~$D$, there is a continuous map $u : D \times D \to D$ such that $u (t, m) = \Gamma\,t\,m$ for all $t, m \in D$.
+  Given a reflexive domain~$D$, there is a continuous map $u : D \times D \to D$ such that $u (t, m) = \Lambda\,t\,m$ for all $t, m \in D$.
 \end{theorem}
 
 \begin{proof}
@@ -1712,11 +1715,11 @@ is the Baire space.
   %
   \begin{equation}
     \label{eq:pca}%
-    \combK\, x\, y = x,
+    \combK \cdot x \cdot y = x,
     \qquad
-    \combS\, x\, y\, z \simeq (x\, z)\,(y\, z),
+    \combS \cdot x \cdot y \cdot z \simeq (x \cdot z) \cdot (y \cdot z),
     \quad\text{and}\quad
-    \defined{\combS\, x\, y}.
+    \defined{\combS \cdot x \cdot y}.
   \end{equation}
   %
   A \defemph{total combinatory algebra (CA)} is a PCA whose application
@@ -1747,6 +1750,9 @@ follows:
   expression over~$A$.
 \end{itemize}
 %
+Application associates to the left, $x \cdot y \cdot z = (x \cdot y) \cdot z$.
+When no confusion can arise, we write $x \, y$ instead of $x \cdot y$.
+
 An expression is \defemph{closed} if it contains no variables. We say
 that a closed expression $e$ is \defemph{defined} and write $\defined{e}$
 when all applications in~$e$ are defined so that $e$ denotes an
@@ -1776,31 +1782,27 @@ a_n \in A$,
 \end{theorem}
 
 \begin{proof}
-  We give a construction of such an expression $\xpcalam{x}{e}$:
+  We give a construction of such an expression $\pcalam{x} e$:
   %
   \begin{enumerate}
-  \item $\xpcalam{x}{x} = \combS\, \combK\, \combK$,
-  \item $\xpcalam{x}{y} = \combK\, y$ if $y$ is a variable distinct from~$x$,
-  \item $\xpcalam{x}{a} = \combK\, a$ if $a$ is an element of~$A$,
-  \item $\pcalam{x}{e_1\, e_2} = \combS\, (\xpcalam{x}{e_1})\, (\xpcalam{x}{e_2})$
+  \item $\pcalam{x} x = \combS\, \combK\, \combK$,
+  \item $\pcalam{x} y = \combK\, y$ if $y$ is a variable distinct from~$x$,
+  \item $\pcalam{x} a = \combK\, a$ if $a$ is an element of~$A$,
+  \item $\pcalam{x}{e_1\, e_2} = \combS\, (\pcalam{x} e_1)\, (\pcalam{x} e_2)$
   \end{enumerate}
   %
-  We omit the verification that $e' = \xpcalam{x}{e}$ has the required
+  We omit the verification that $e' = \pcalam{x} e$ has the required
   properties. See~\sidecite{LongleyJ:reatls} for details.
 \end{proof}
 
-The meta-notation $\xpcalam{x}{e}$ plays a role similar to that of
+The meta-notation $\pcalam{x} e$ plays a role similar to that of
 $\lambda$-abstraction in the untyped $\lambda$-calculus. We abbreviate
-$\xpcalam{x}{\xpcalam{y}{e}}$ as $\xpcalam{x y}{e}$, and similarly for
+$\pcalam{x} \pcalam{y} e$ as $\pcalam{x\,y} e$, and similarly for
 more variables. We need to be careful with the ``$\beta$-rule''
 because it is only valid in a restricted sense,
-see~\sidecite{LongleyJ:reatls}.
+see~\cite{LongleyJ:reatls} for details.
 
-Just like in the case of untyped $\lambda$-calculus, we can build up
-the identity function, pairs, conditionals, natural numbers, and
-recursion by combining the two basic combinators $\combK$ and
-$\combS$. The encoding of basic programming constructs is similar to
-the encoding by untyped $\lambda$-calculus.
+We can build up the identity function, pairs, conditionals, natural numbers, and recursion by combining the two basic combinators $\combK$ and $\combS$. The encoding of basic programming constructs is similar to the encoding by untyped $\lambda$-calculus.
 %
 \index{combinator!pair@{$\combPair$}}%
 \index{combinator!fst@{$\combFst$}}%
@@ -1813,23 +1815,23 @@ Pairing, projections, Boolean values and conditional statement are the
 same, except that $\lambda$-abstraction must be replaced by
 $\langle\,\rangle$-notation:
 %
-\begin{xalignat*}{3}
+\begin{align*}
   \combPair &= \pcalam{x y z}{z\, x\, y},
   &
-  \combFst &= \pcalam{p}{p \, (\xpcalam{x y}{x})},
-  &
-  \combSnd &= \pcalam{p}{p \, (\xpcalam{x y}{y})}
+  \combIf &= \pcalam{x} x,
   \\
-  \combIf &= \xpcalam{x}{x},
+  \combFst &= \pcalam{p}{p \, (\pcalam{x\,y} x)},
   &
-  \combTrue &= \xpcalam{x y}{x},
+  \combTrue &= \pcalam{x\,y} x,
+  \\
+  \combSnd &= \pcalam{p}{p \, (\pcalam{x\,y} y)}
   &
-  \combFalse &= \xpcalam{x y}{y}.
-\end{xalignat*}
+  \combFalse &= \pcalam{x\,y} y.
+\end{align*}
 %
 The notation $\langle\,\rangle$ makes expressions much more
 comprehensible and saves a lot of space, for example the term
-$\combPair = \pcalam{x y z}{z\, x\, y}$ is quite unwieldy when written
+$\combPair = \pcalam{x\,y\,z}{z\, x\, y}$ is quite unwieldy when written
 just with~$\combS$ and~$\combK$:
 %
 \begin{equation*}
@@ -1857,54 +1859,31 @@ just with~$\combS$ and~$\combK$:
   \end{aligned}
 \end{equation*}
 %
-For natural numbers we may use the
+Natural numbers are implemented as the
 %
 \index{combinator!Curry numeral}%
 \index{Curry numeral}%
 \label{sym:curry_numeral}%
 %
-\defemph{Curry numerals} which are defined by 
+\defemph{Curry numerals}
 %
 \begin{equation*}
-  \overline{0} = \combI = \combS\, \combK\, \combK
+  \numeral{0} = \combI = \combS\, \combK\, \combK
   \qquad\text{and}\qquad
-  \overline{n+1} = \combPair \, \combFalse \, \overline{n}.
+  \numeral{n+1} = \combPair \, \combFalse \, \numeral{n}.
 \end{equation*}
 %
-There exist elements
+with successor, predecessor and zero-test
 %
 \index{combinator!successor@{successor ($\pcacomb{succ}$)}}%
 \index{combinator!predecessor@{predecessor ($\pcacomb{pred}$)}}%
 \index{combinator!iszero@{$\pcacomb{iszero}$}}%
 %
-$\pcacomb{succ}, \pcacomb{pred}, \pcacomb{iszero} \in A$ such that,
-for all $n \in \NN$,
-%
-\label{sym:succ}%
-\label{sym:pred}%
-\label{sym:iszero}%
-%
-\begin{align*}
-  \pcacomb{succ}\, \overline{n} &= \overline{n+1} \\
-  \pcacomb{pred}\, \overline{n} &= 
-  \begin{cases}
-    \overline{0} & \text{if $n = 0$} \\
-    \overline{n-1} & \text{if $n > 0$}
-  \end{cases}\\
-  \pcacomb{iszero}\, \overline{n} &=
-  \begin{cases}
-    \combTrue & \text{if $n = 0$} \\
-    \combFalse & \text{if $n > 0$}
-  \end{cases}
-\end{align*}
-%
-To see this, take
-%
 \begin{align*}
   \pcacomb{succ} &= \pcalam{x}{\combPair \, \combFalse \,x},\\ 
   \pcacomb{iszero} &= \combFst,\\
   \pcacomb{pred} &=
-  \pcalam{x}{\combIf\, (\pcacomb{iszero}\, x)\, \overline{0}\, (\combSnd\, x)}.
+  \pcalam{x}{\combIf\, (\pcacomb{iszero}\, x)\, \numeral{0}\, (\combSnd\, x)}.
 \end{align*}
 %
 In a PCA we can define functions by recursion by using the
@@ -1937,30 +1916,41 @@ These combinators satisfy, for all $f, x \in A$,
   \qquad
   (\combY\, f)\, x \kleq f\, (\combY f)\, x.
 \end{equation*}
-
-Finally, let us see how to define functions by primitive recursion.
+%
+The combinator $\combZ$ can be used to implement primitive recursion on natural numbers as
 %
 \index{primitive recursion, in a PCA}%
 %
-The element
+\begin{align*}
+   R &= \pcalam{r x f m}{\combIf\, (\pcacomb{iszero}\, m)\, (\combK\, x)
+        (\pcalam{y}{f\, (\pcacomb{pred}\, m)(r\, x\, f\, (\pcacomb{pred}\, m)\,
+        \combI)})}
+  \\
+  \pcacomb{rec} &= \pcalam{x f m}{((\combZ\, R)\, x\, f\, m\, \combI)}.
+\end{align*}
+%
+It satisfies, for all $a, f \in A$ and $n \in \NN$,
 %
 \begin{equation*}
-  \pcacomb{rec} = \pcalam{x f m}{((\combZ\, R)\, x\, f\, m\, \combI)},
+  \pcacomb{rec}\, a\, f\, \numeral{0} = a,\qquad
+  \pcacomb{rec}\, a\, f\, \numeral{n+1} \kleq
+    f\, \numeral{n}\, (\pcacomb{rec}\, a\, f\, \numeral{n}).
 \end{equation*}
-%
-where $R = \pcalam{r x f m}{\combIf\, (\pcacomb{iszero}\, m)\, (\combK\, x)
-  (\pcalam{y}{f\, (\pcacomb{pred}\, m)(r\, x\, f\, (\pcacomb{pred}\, m)\,
-    \combI)})}$, satisfies
-%
-\begin{equation*}
-  \pcacomb{rec}\, x\, f\, \overline{0} = x,\qquad
-  \pcacomb{rec}\, x\, f\, \overline{n+1} \kleq
-    f\, \overline{n}\, (\pcacomb{rec}\, x\, f\, \overline{n}).
-\end{equation*}
-%
-It turns out that every partial recursive function can be encoded in a
-PCA, and so PCAs are Turing complete. Let us now consider some
-examples of PCAs.
+
+\begin{exercise}
+  Implement the \defemph{minimization combinator $\combMin$}, which satisfies, for all $f \in A$ and $n \in \NN$,
+  %
+  \begin{equation*}
+    \combMin \, f = \numeral{n}
+    \iff
+    \text{$\some{k > 0} f \, \overline{n} = \overline{k}$
+          and
+          $\all{m < n} f \, \overline{m} = \overline{0}$.}
+  \end{equation*}
+\end{exercise}
+
+With these combinators every general recursive function may be implemented in a~PCA.
+
 
 \subsection{Examples of partial combinatory algebras}
 \label{sec:pca-examples}
@@ -1968,12 +1958,11 @@ examples of PCAs.
 The models of computation that we have considered so far are all
 examples of partial combinatory algebras.
 
-\paragraph{First Kleene Algebra.}
+\subsubsection{The first Kleene Algebra}
 
-Turing machines, or more precisely their codes, form a PCA $(\NN,
-{\cdot})$ whose application is defined as $m \cdot n = \pr{m}{n}$.
-Because $m \cdot n$ can be easily confused with multiplication, a
-traditional notation for application is $\set{m}(n)$. 
+Turing machines, or more precisely their codes, form a PCA $(\NN, {\cdot})$ whose
+application is defined as $m \cdot n = \pr{m}{n}$. Because $m \cdot n$ can be easily
+confused with multiplication, we also write application with Kleene's notation~$\set{m}(n)$.
 
 The combinator $\combK$ is easily obtained. The function $p(x,y) = x$
 is easily seen to be computable. By the smn theorem there exists a
@@ -1981,53 +1970,59 @@ computable map $q : \NN \to \NN$ such that $\pr{q(x)}{y} = x$. Take
 $\combK$ to be any number such that $q = \xpr_\combK$.
 
 The combinator $\combS$ requires a bit more thought. The partial
-function $g(x,y,z) = \pr{\pr{x}{z}}{\pr{y}{z}}$ is computable,
-essentially by several applications of the utm theorem. By the smn
+function $g(x,y,z) = \pr{\pr{x}{z}}{\pr{y}{z}}$ is computable
+by several applications of the utm theorem. By the smn
 theorem there is a computable $r : \NN \to \NN$ such that
 $\pr{r(x,y)}{z} = g(x,y,z)$. Another application of the smn theorem
 yields a computable function $q : \NN \to \NN$ such that $\pr{q(x)}{y}
 = r(x,y)$. Take $\combS$ to be any number such that $q = \xpr_\combS$.
 
-\paragraph{Second Kleene Algebra.}
+\subsubsection{The second Kleene Algebra}
 
-Type 2 machines, or more precisely the Baire space~$\Baire$, is a PCA
-$(\Baire, {\mid})$ whose application is defined as $\alpha \mid \beta
-= \fpr{\alpha}{\beta}$. The combinators $\combK$ and $\combS$ exists
-by an argument similar to that for the first Kleene algebra. The
-$\combK$ and $\combS$ so obtained turn out to be computable sequences.
+The Baire space~$\Baire$, is a PCA $(\Baire, {\mid})$ whose application is $\alpha \mid \beta = \xfpr{\alpha}{\beta}$, as defined in~\eqref{eq:type2-encoding}. The combinators $\combK$ and $\combS$ exists by \cref{th:type-2-utm,th:type-2-smd}, analogously to the first Kleene algebra.
 
-There are actually two version, the \emph{continuous} second Kleene
-algebra which consists of the entire Baire space~$\Baire$, and the
-\emph{computable} one~$\comp{\Baire}$, which consists only of the
-computable sequences in~$\Baire$. The computable Baire
-space~$\comp{\Baire}$ is a sub-PCA of the continuous one because the
-combinators~$\combK$ and~$\combS$ are computable.
+There are actually two version of the second Kleene algebra, the \defemph{continuous} one
+with carrier~$\Baire$, and the \defemph{computable} one, whose carrier
+%
+\begin{equation*}
+  \comp{\Baire} = \set{\alpha \in \Baire \such \text{$\alpha$ is computable}}.a
+\end{equation*}
+%
+consists only of the computable sequences. Because $\combK$ and $\combS$ obtained above are computable, $\comp{\Baire}$ is a sub-PCA of $\Baire$.
 
-\paragraph{Untyped $\lambda$-calculus.}
+
+\subsubsection{The untyped $\lambda$-calculus}
 
 The closed expressions of the untyped $\lambda$-calculus form a
 (total) combinatory algebra whose application is the one from
 $\lambda$-calculus. More precisely, we quotient the set of closed
 expressions by the equivalence relation generated by
-$\beta$-reduction. Then the combinators are $\combK = \lam{x y}{x}$
+$\beta$-reduction. The basic combinators are $\combK = \lam{x y}{x}$
 and $\combS = \lam{x y z}{(x \, z)(y \, z)}$.
-
-In \cref{sec:typed-lambda-calculus} we shall elaborate
-(the typed version of) the $\lambda$-calculus as a programming
-language and give explicit strategies for computing with it.
+%
+In \cref{sec:typed-lambda-calculus} we shall consider a type version of the $\lambda$-calculus and variants that turn it into a programming language with an operational semantics.
 
 
-\paragraph{The graph model and reflexive domains.}
+\subsubsection{Reflexive domains and the graph model}
 
-The graph model $\Scott$, and in fact any reflexive domain~$D$ is a
-combinatory algebra with application defined by $a \cdot b =
-\Lambda(a)(b)$, where $\Lambda : D \to \mathcal{C}(D, D)$ is the
-retraction onto the function space. The combinators $\combK$ and
-$\combS$ are (the interpretations of) those from the untyped
-$\lambda$-calculus.
+A reflexive domain~$D$ is a total combinatory algebra with application defined by $a \cdot b = \Lambda \, a \, b$, where $\Lambda : D \to \mathcal{C}(D, D)$ is the
+retraction onto the function space, see~\eqref{eq:section-retraction-D}. The combinators $\combK$ and $\combS$ are (the interpretations of) those from the untyped $\lambda$-calculus.
 
-The graph model contains a computable sub-PCA $\comp{\Scott}$ which
-consists of c.e.~sets.
+The graph model comes in two versions. The \defemph{continuous graph model} has as its carrier the full powerset $\Scott = \pow{\NN}$ and the \defemph{computable graph model} the computably enumerable sets
+%
+\begin{equation*}
+  \comp{\Scott} = \set{ A \in \Scott \mid \text{$A$ is computably enumerable} }.
+\end{equation*}
+%
+The latter is a sub-PCA of the former.
+
+\subsubsection{Other partial combinatory algebras}
+\label{sec:other-pcas}
+
+If we replace Turing machines with oracle Turing machines from~\cref{sec:turing-machines-with}, we obtain the \defemph{oracle first Kleene algebra}, and by switching to infinite-time Turing machines from \cref{sec:iitm} the \defemph{infinite-time first Kleene algebra}. In all cases the basic combinators~$\combK$ and~$\combS$ exist by the corresponding smn and utm theorems.
+
+There are still many more partial combinatory algebras, but we shall have to stop here. We refer the interested readers to \S1.4 of \sidecite{oosten08:_realiz}.
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2039,17 +2034,12 @@ As we have just seen, partial combinatory algebras are general enough
 to subsume many models of computation. Nevertheless, these models, as
 well as PCAs in general, lack an important feature that most
 real-world programming languages have, namely \emph{types} that impose
-restrictions on how programs may be formed. In contrast to PCAs, in a
-typical programming language we cannot meaningfully apply \emph{any}
-expression to any other expression. In this section we look at a
-version of PCAs with types, which were defined by John
+well-formedness restrictions on programs. For instance, in a typical programming language we cannot meaningfully apply an  expression to itself because the typing discipline prevents us from doing so.
+
+In this section we look at PCAs with types, which were defined by John
 Longley~\sidecite{longley99:_unify_typed_and_untyp_realiz}.
 
-The definition of a PCA with types is not as short as that of an
-ordinary PCA because the types prevent us from cooking up everything
-from the basic combinators $\combK$ and $\combS$, so we need to
-postulate the existence of other combinators. The end result looks
-more like a programming language and less like magic.
+His definition is sets up a type system that limits the applicability of the basic basic combinators~$\combK$ and~$\combS$, so that existence of additional combinators is postulated. In the end we obtain a notion that is closer to a programming language than to magical incantations with~$\combK$ and~$\combS$.
 
 A \defemph{type system} $\mathcal{T}$ is a non-empty set, whose elements
 are called \defemph{types}, equipped with two binary operations $\times$
@@ -2109,7 +2099,7 @@ such that for all $x$, $f$ of appropriate types and all $n \in \NN$
 %
 Note that $A_\ttnat$ may contain elements other than the
 numerals~$\numeral{n}$. Again, we say that the elements
-$\overline{n}$, $\combSucc$, $\combRec$, and the numerals are
+$\numeral{n}$, $\combSucc$, $\combRec$, and the numerals are
 \defemph{suitable} for~$A$.
 
 A \defemph{TPCA with numerals and general recursion (NR-TPCA)} is a
@@ -2176,21 +2166,21 @@ for all $a_1 \in A_{t_1}, \ldots, a_n \in A_{t_n}$.
 
 \begin{proof}
   Similarly to the untyped case we define the notation
-  $\xtpcalam{x}{t}{e}$ inductively as follows:
+  $\tpcalam{x}{t} e$ inductively as follows:
   %
   \begin{enumerate}
-  \item $\xtpcalam{x}{t}{x} = \combS_{t,t \to t,t} \, \combK_{t,t \to
+  \item $\tpcalam{x}{t} x = \combS_{t,t \to t,t} \, \combK_{t,t \to
       t} \, \combK_{t,t}$,
-  \item $\xtpcalam{x}{t}{y} = \combK_{s,t}\, y$ if $\annot{y}{s}$ is a
+  \item $\tpcalam{x}{t} y = \combK_{s,t}\, y$ if $\annot{y}{s}$ is a
     variable distinct from $\annot{x}{t}$,
-  \item $\xtpcalam{x}{t}{a} = \combK_{s,t} \, a$ if $a$ is a primitive
+  \item $\tpcalam{x}{t} a = \combK_{s,t} \, a$ if $a$ is a primitive
     constant of type~$s$.
-  \item $\tpcalam{x}{t}{e_1\, e_2} = \combS_{t,u,v}\,
-    (\xtpcalam{x}{t}{e_1}) \, (\xtpcalam{x}{t}{e_2})$ if $e_1$ and
+  \item $\tpcalam{x}{t} {e_1\, e_2} = \combS_{t,u,v}\,
+    (\tpcalam{x}{t} e_1) \, (\tpcalam{x}{t} e_2)$ if $e_1$ and
     $e_2$ have types $u \to v$ and $u$, respectively.
   \end{enumerate}
   %
-  It turns out that $e' = \xtpcalam{x}{t}{e}$ satisfies the conditions
+  It turns out that $e' = \tpcalam{x}{t} e$ satisfies the conditions
   of the theorem.
 \end{proof}
 
@@ -2335,7 +2325,7 @@ the type $\unit$ which has an element~$\ttunit$. The primitive constants
 of PCF with their types are:
 %
 \begin{align*}
-  \overline{n} &: \ttnat \quad \text{(for each $n \in \NN$),} \\
+  \numeral{n} &: \ttnat \quad \text{(for each $n \in \NN$),} \\
   \combSucc &: \ttnat \to \ttnat, \\
   \combPred &: \ttnat \to \ttnat, \\
   \combTrue &: \ttbool, \\
@@ -2350,7 +2340,7 @@ A \defemph{program} of type $t$ is a closed expression of type $t$. The
 $e_2$ are programs of appropriate types:
 %
 \begin{gather*}
-  \star,\qquad \overline{n},\qquad \combSucc,\qquad \combPred,\\
+  \star,\qquad \numeral{n},\qquad \combSucc,\qquad \combPred,\\
   \combTrue,\qquad \combFalse,\qquad \combIsZero,\\
   \combIf_t,\qquad \combIf_t \, e_1,\qquad \combIf_t \, e_1\, e_2,\\
   \combFix_t,\qquad \lam{x \of t}{e},\qquad (e_1, e_2).
@@ -2397,14 +2387,14 @@ rule is essentially a directed version of $\beta$-reduction.
   {\combSucc\,e \oneto \combSucc\,e'}
   \qquad
   \axiom
-  {\combSucc\,\overline{n} \oneto \overline{n+1}}
+  {\combSucc\,\numeral{n} \oneto \numeral{n+1}}
   \\ \\
   \infer
   {e \oneto e'}
   {\combPred\,e \oneto \combPred\,e'}
   \qquad
   \axiom
-  {\combPred\,\overline{n+1} \oneto \overline{n}}
+  {\combPred\,\numeral{n+1} \oneto \numeral{n}}
   \qquad
   \axiom
   {\combPred\,0 \oneto 0}
@@ -2489,16 +2479,16 @@ where we leave it as exercise for you to write $\mathtt{eq} : \ttnat
 We usually omit the index~$t$ in $\approx_t$. Some useful
 observational equivalences are:
 %
-\begin{xalignat*}{2}
-  \combSucc\,\overline{n} &\approx \overline{n+1}, &
+\begin{align*}
+  \combSucc\,\numeral{n} &\approx \numeral{n+1}, &
   \combIsZero\,\numeral{0} &\approx \combTrue,\\
-  \combPred\,\overline{n+1} &\approx \overline{n},&
+  \combPred\,\numeral{n+1} &\approx \numeral{n},&
   \combIsZero\,\numeral{n+1} &\approx \combFalse,\\  
   \combPred\,0 &\approx 0, &
   \combIf_t \, \combTrue \, e_1 \, e_2 &\approx e_1,\\
   \combFix_t \, e &\approx e \, (\combFix_t \, e), &
   \combIf_t \, \combFalse \, e_1 \, e_2 &\approx e_2.
-\end{xalignat*}
+\end{align*}
 %
 Also, if $e_1$ and $e_2$ are both diverging programs of the same type,
 they are observationally equivalent.

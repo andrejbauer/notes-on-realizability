@@ -69,8 +69,8 @@
 \newcommand{\invim}[1]{#1^{*}}
 \newcommand{\inv}[1]{{#1}^{-1}}
 
-\newcommand{\defined}[1]{#1\,{\downarrow}}
-\newcommand{\divergent}[1]{#1\,{\uparrow}}
+\newcommand{\defined}[1]{#1{\downarrow}}
+\newcommand{\divergent}[1]{#1{\uparrow}}
 \newcommand{\place}{{-}}
 
 \newcommand{\restrict}[2]{#1{\restriction}_{#2}}
@@ -154,11 +154,9 @@
 \renewcommand{\AA}{\mathbb{A}}
 \newcommand{\compAA}{\comp{\AA}}
 
-\newcommand{\xpcalam}[2]{\langle #1 \rangle\,#2}
-\newcommand{\pcalam}[2]{\langle #1 \rangle\,(#2)}
+\newcommand{\pcalam}[1]{\langle #1 \rangle}
 \newcommand{\annot}[2]{#1^{#2}}
-\newcommand{\xtpcalam}[3]{\langle \annot{#1}{#2} \rangle\,#3}
-\newcommand{\tpcalam}[3]{\langle \annot{#1}{#2} \rangle\,(#3)}
+\newcommand{\tpcalam}[2]{\langle \annot{#1}{#2} \rangle}
 \newcommand{\kleq}{\simeq}
 \newcommand{\klgeq}{\succeq}
 \newcommand{\numeral}[1]{\overline{#1}}
@@ -189,15 +187,16 @@
 \newcommand{\combPred}{\pcacomb{pred}}
 
 \newcommand{\combRec}{\pcacomb{rec}}
+\newcommand{\combMin}{\pcacomb{min}}
 
 \newcommand{\combIf}{\pcacomb{if}}
 \newcommand{\combTrue}{\pcacomb{true}}
 \newcommand{\combFalse}{\pcacomb{false}}
 \newcommand{\combIsZero}{\pcacomb{iszero}}
-\newcommand{\cond}[3]{\mathtt{if}\;#1\;\mathtt{then}\;#2\;\mathtt{else}\;#3}
+\newcommand{\cond}[3]{\mathtt{if}\,#1\,\mathtt{then}\,#2\,\mathtt{else}\,#3}
 
-\newcommand{\case}[5]{\mathtt{case}\;#1\;\mathtt{of}\;#2 \mapsto #3 \mid #4 \mapsto #5}
-\newcommand{\xcase}[5]{\begin{aligned}[t]\mathtt{case}\;&#1\;\mathtt{of}\\&#2 \mapsto #3 \\&#4 \mapsto #5\end{aligned}}
+\newcommand{\case}[5]{\mathtt{case}\,#1\,\mathtt{of}\,#2 \mapsto #3 \mid #4 \mapsto #5}
+\newcommand{\xcase}[5]{\begin{aligned}[t]\mathtt{case}\,&#1\;\mathtt{of}\\&#2 \mapsto #3 \\&#4 \mapsto #5\end{aligned}}
 
 
 % PCF
@@ -206,7 +205,7 @@
 
 
 % Realizability
-\newcommand{\comp}[1]{#1^{\#}}
+\newcommand{\comp}[1]{#1_{\#}}
 \newcommand{\rz}{\Vdash}
 \newcommand{\Ex}{\mathsf{E}}
 \newcommand{\per}{\approx}
