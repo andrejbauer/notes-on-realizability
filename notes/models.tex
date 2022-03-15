@@ -2038,102 +2038,118 @@ well-formedness restrictions on programs. For instance, in a typical programming
 
 In this section we look at PCAs with types, which were defined by John
 Longley~\sidecite{longley99:_unify_typed_and_untyp_realiz}.
+His definition sets up a type system that limits the applicability of the basic combinators, which is offset by additional basic combinators. In the end we obtain a notion that is closer to a programming language than to magical incantations with~$\combK$ and~$\combS$.
 
-His definition is sets up a type system that limits the applicability of the basic basic combinators~$\combK$ and~$\combS$, so that existence of additional combinators is postulated. In the end we obtain a notion that is closer to a programming language than to magical incantations with~$\combK$ and~$\combS$.
+\begin{definition}
+  A \defemph{type system} $\mathcal{T}$ is a non-empty set, whose elements
+  are called \defemph{types}, equipped with two binary operations $\times$
+  and $\to$. The operation $\to$ associates to the right so that $s \to
+  t \to u = s \to (t \to u)$.
+\end{definition}
 
-A \defemph{type system} $\mathcal{T}$ is a non-empty set, whose elements
-are called \defemph{types}, equipped with two binary operations $\times$
-and $\to$. The operation $\to$ associates to the right so that $s \to
-t \to u = s \to (t \to u)$. A \defemph{typed partial combinatory algebra
-  (TPCA)} $A$ over a type system $\mathcal{T}$ consists of
-%
-\begin{enumerate}
-\item a non-empty set $A_t$ for each $t \in \mathcal{T}$, and
-\item a partial function $\cdot_{s,t} : A_{s \to t} \times A_s \to
-  A_t$, called \defemph{application}, for all $s, t \in \mathcal{T}$,
-\end{enumerate}
-%
-such that for any types $s, t, u \in \mathcal{T}$ there exist elements
-%
-\begin{align*}
-  \combK_{s,t} &\in A_{s \to t \to s}, \\
-  \combS_{s,t,u} &\in A_{(s \to t \to u) \to (s \to t) \to s \to u}, \\
-  \combPair_{s,t} &\in A_{s \to t \to s \times t}, \\
-  \combFst_{s,t} &\in A_{s \times t \to s}, \\
-  \combSnd_{s,t} &\in A_{s \times t \to t}.
-\end{align*}
-%
-For all elements $x, y, z$ of appropriate types we require:\sidenote{We
-  usually omit the types in subscripts and write $x \, y$ for $x
-  \cdot_{s,t} y$.}
-%
-\begin{align*}
-  \combK \, x \, y &= x, \\
-  \defined{\combS \, x \, y}, & \\
-  \combS \, x \, y \, z &\klgeq  (x \, z) (y \, z), \\
-  \combFst \, (\combPair \, x \, y) &= x, \\
-  \combSnd \, (\combPair \, x \, y) &= y.
-\end{align*}
-%
-We say that the elements $\combK_{s,t}$, $\combS_{s,t,u}$,
-$\combPair_{s,t}$, $\combFst_{s,t}$, $\combSnd_{s,t}$ are
-\defemph{suitable} for~$A$ when they satisfy the above properties.
+\begin{definition}
+  A \defemph{typed partial combinatory algebra
+    (TPCA)} $A$ over a type system $\mathcal{T}$ consists of
+  % 
+  \begin{itemize}
+  \item a non-empty set $A_t$ for each $t \in \mathcal{T}$, and
+  \item a partial function $\cdot_{s,t} : A_{s \to t} \times A_s \to
+    A_t$, called \defemph{application}, for all $s, t \in \mathcal{T}$,
+  \end{itemize}
+  %
+  such that for all $s, t, u \in \mathcal{T}$ there exist elements
+  % 
+  \begin{align*}
+    \combK_{s,t} &\in A_{s \to t \to s}, \\
+    \combS_{s,t,u} &\in A_{(s \to t \to u) \to (s \to t) \to s \to u}, \\
+    \combPair_{s,t} &\in A_{s \to t \to s \times t}, \\
+    \combFst_{s,t} &\in A_{s \times t \to s}, \\
+    \combSnd_{s,t} &\in A_{s \times t \to t}.
+  \end{align*}
+  %
+  We usually omit the types in subscripts and write $x \, y$ for $x \cdot_{s,t} y$.
+  For all elements $x, y, z$ of the appropriate types we require:
+  % 
+  \begin{align*}
+    \combK \, x \, y &= x, \\
+    \defined{\combS \, x \, y}, & \\
+    \combS \, x \, y \, z &\klgeq  (x \, z) (y \, z), \\
+    \combFst \, (\combPair \, x \, y) &= x, \\
+    \combSnd \, (\combPair \, x \, y) &= y.
+  \end{align*}
+  % 
+  We say that the elements $\combK_{s,t}$, $\combS_{s,t,u}$,
+  $\combPair_{s,t}$, $\combFst_{s,t}$, $\combSnd_{s,t}$ are
+  \defemph{suitable} for~$A$ when they satisfy the above properties.
 
-A \defemph{TPCA with numerals (N-TPCA)} is a TPCA $A$ in which there is a
-type $\ttnat$ and elements
-%
-\begin{align*}
-  \numeral{0}, \numeral{1}, \numeral{2}, \ldots &\in A_{\ttnat}, \\
-  \combSucc &\in A_{\ttnat \to \ttnat}, \\
-  \combRec_s &\in A_{s \to (\ttnat \to s \to s) \to \ttnat \to s}.
-\end{align*}
-%
-such that for all $x$, $f$ of appropriate types and all $n \in \NN$
-%
-\begin{align*}
-  \combSucc \, \numeral{n} &= \numeral{n + 1}, \\
-  \combRec \, x \, f \, \numeral{0} &= x, \\
-  \combRec \, x \, f \, \numeral{n+1} &=
-  f \, \numeral{n} \, (\combRec \, x \, f \, \numeral{n}).
-\end{align*}
-%
-Note that $A_\ttnat$ may contain elements other than the
-numerals~$\numeral{n}$. Again, we say that the elements
-$\numeral{n}$, $\combSucc$, $\combRec$, and the numerals are
-\defemph{suitable} for~$A$.
-
-A \defemph{TPCA with numerals and general recursion (NR-TPCA)} is a
-N-TPCA $A$ containing elements
-%
-\begin{equation*}
-  \combY_{s,t} \in A_{((s \to t) \to (s \to t)) \to (s \to t)}
-\end{equation*}
-%
-such that, for all $f \in A_{(s \to t) \to (s \to t)}$ and $x \in A_s$,
-%
-\begin{equation*}
-  \defined{\combY \, f}
-  \qquad\text{and}\qquad
-  \combY \, f \, x \klgeq f \, (\combY\, f) \, x.
-\end{equation*}
-%
-Such a $\combY_{s,t}$ is \defemph{suitable} for~$A$. This concludes the
-definition of typed PCAs.
-
-A \defemph{sub-TPCA} $A'$ of a TPCA~$A$ is a collection of non-empty
-subsets $A'_t \subseteq A_t$, for each $t \in \mathcal{T}$, such that
-applications in~$A$ restrict to~$A'$, and there exist elements
-$\combK_{s,t}$, $\combS_{s,t,u}$, $\combPair_{s,t}$, $\combFst_{s,t}$,
-and $\combSnd_{s,t}$ in the corresponding subsets $A'_{\place}$ of
-appropriate types which are suitable for~$A$. Consequently, these
-elements are also suitable for~$A'$. The notions of \defemph{sub-N-TPCA}
-and \defemph{sub-NR-TPCA} are defined similarly.
+  A \defemph{typed (total) combinatory algebra} is a TPCA whose application operations are total.
+\end{definition}
 
 We have required the sets $A_t$ to be non-empty. While this is not
 strictly necessary, it simplifies several constructions.
 
-A TPCA $A$ is combinatory complete. To express this precisely, we
-inductively define \defemph{expressions over $A$}:
+In a PCA the natural numbers may be encoded with the basic combinators as the Curry numerals. In a TPCA they are must be postulated separately.
+
+\begin{definition}
+  A \defemph{TPCA with numerals (N-TPCA)} is a TPCA $A$ in which there is a
+  type $\ttnat$ and elements
+  % 
+  \begin{align*}
+    \numeral{0}, \numeral{1}, \numeral{2}, \ldots &\in A_{\ttnat}, \\
+    \combSucc &\in A_{\ttnat \to \ttnat}, \\
+    \combRec_s &\in A_{s \to (\ttnat \to s \to s) \to \ttnat \to s}.
+  \end{align*}
+  % 
+  such that for all $x$, $f$ of appropriate types and all $n \in \NN$
+  % 
+  \begin{align*}
+    \combSucc \, \numeral{n} &= \numeral{n + 1}, \\
+    \combRec \, x \, f \, \numeral{0} &= x, \\
+    \combRec \, x \, f \, \numeral{n+1} &=
+                                          f \, \numeral{n} \, (\combRec \, x \, f \, \numeral{n}).
+  \end{align*}
+  % 
+  We say that $\ttnat$, $\numeral{n}$, $\combSucc$, $\combRec$, and the numerals satisfying these properties are \defemph{suitable} for~$A$.
+\end{definition}
+
+Note that $A_\ttnat$ may contain elements other than the numerals~$\numeral{n}$.
+An N-TPCA has primitive recursion but may lack general recursion, so we need one more definition.
+
+\begin{definition}
+  A \defemph{TPCA with numerals and general recursion (NR-TPCA)} is a
+  N-TPCA $A$ containing, for all types $s$ and $t$,
+  % 
+  \begin{equation*}
+    \combY_{s,t} \in A_{((s \to t) \to (s \to t)) \to (s \to t)}
+  \end{equation*}
+  % 
+  such that, for all $f \in A_{(s \to t) \to (s \to t)}$ and $x \in A_s$,
+  % 
+  \begin{equation*}
+    \defined{\combY \, f}
+    \qquad\text{and}\qquad
+    \combY \, f \, x \klgeq f \, (\combY\, f) \, x.
+  \end{equation*}
+  % 
+  Such a $\combY_{s,t}$ is \defemph{suitable} for~$A$.
+\end{definition}
+
+The relevant notion of substructure is as follows.
+
+\begin{definition}
+  A \defemph{sub-TPCA} $A'$ of a TPCA~$A$ is a collection of non-empty
+  subsets $A'_t \subseteq A_t$, for each $t \in \mathcal{T}$, such that
+  applications in~$A$ restrict to~$A'$, and there exist elements
+  $\combK_{s,t}$, $\combS_{s,t,u}$, $\combPair_{s,t}$, $\combFst_{s,t}$,
+  and $\combSnd_{s,t}$ in~$A'$ of
+  appropriate types which are suitable for~$A$.
+
+  The notions of \defemph{sub-N-TPCA}
+  and \defemph{sub-NR-TPCA} are defined analogously.
+\end{definition}
+
+The basic theory of typed PCAs follows the theory of untyped PCAs.
+\defemph{Expressions over $A$} are defined inductively:
 %
 \begin{enumerate}
 \item every $a \in A_t$ is a an expression of type $t$, called a
@@ -2144,12 +2160,12 @@ inductively define \defemph{expressions over $A$}:
   type~$t$.
 \end{enumerate}
 %
-Note that we explicitly annotate variables with their types. We also
-assume that the type of a primitive constant is uniquely given (an
+Note that variables are annotated with types. We also
+assume that the type of a primitive constant is unique (an
 assumption which may easily be violated, in which case we have to tag
-constants with their types).
-Consequently, every expression has a uniquely determined type. A
-closed expression $e$ of type~$t$ is defined, written $\defined{e}$,
+constants with their types), so that every expression has at most one type.
+
+A closed expression $e$ of type~$t$ is defined, written $\defined{e}$,
 when all applications appearing in it are defined. Such an expression
 denotes an element of~$A_t$. If $e$ contains variables
 $\annot{x_1}{t_1}, \ldots, \annot{x_n}{t_n}$, we write $\defined{e}$
@@ -2165,8 +2181,7 @@ for all $a_1 \in A_{t_1}, \ldots, a_n \in A_{t_n}$.
 \end{theorem}
 
 \begin{proof}
-  Similarly to the untyped case we define the notation
-  $\tpcalam{x}{t} e$ inductively as follows:
+  Similarly to the untyped case we define $\tpcalam{x}{t} e$ rescursively as follows:
   %
   \begin{enumerate}
   \item $\tpcalam{x}{t} x = \combS_{t,t \to t,t} \, \combK_{t,t \to
@@ -2180,8 +2195,7 @@ for all $a_1 \in A_{t_1}, \ldots, a_n \in A_{t_n}$.
     $e_2$ have types $u \to v$ and $u$, respectively.
   \end{enumerate}
   %
-  It turns out that $e' = \tpcalam{x}{t} e$ satisfies the conditions
-  of the theorem.
+  The expression $e' = \tpcalam{x}{t} e$ satisfies the stated condition.
 \end{proof}
 
 \section{Examples of Typed Partial Combinatory Algebras}
@@ -2193,8 +2207,8 @@ Every PCA is a NR-TPCA if we enrich it with the trivial types system
 that contains a single type, $\mathcal{T} = \set{\star}$ with (the
 only possible) operations $\star \times \star = \star \to \star =
 \star$, and $A_\star = A$. The required combinators are the ones we
-defined in \cref{sec:pcas}, we just need to annotate the
-$\combK$ and $\combS$ with the (trivial) type.
+defined in \cref{sec:pcas}, we just need to sprinkle $\star$ on
+$\combK$ and $\combS$ everywhere.
 
 
 \subsection[\texorpdfstring%
