@@ -1301,7 +1301,7 @@ on how application is formed, so that an expression such as
   \lam{x}{x\,x}
 \end{equation*}
 %
-is valid, whatever it means. In typed $\lambda$-calculus every
+is valid, whatever it means. In the simply typed $\lambda$-calculus every
 expression has a \emph{type}, and there are rules for forming valid
 expressions and types. For example, we can only form an
 application~$f\,a$ when~$a$ has a type~$A$ and~$f$ has a type $A \to
@@ -2030,9 +2030,7 @@ There are still many more partial combinatory algebras, but we shall have to sto
 \section{Typed partial combinatory algebras}
 \label{sec:tpcas}
 
-As we have just seen, partial combinatory algebras are general enough
-to subsume many models of computation. Nevertheless, these models, as
-well as PCAs in general, lack an important feature that most
+PCAs and theor models lack an important feature that most
 real-world programming languages have, namely \emph{types} that impose
 well-formedness restrictions on programs. For instance, in a typical programming language we cannot meaningfully apply an  expression to itself because the typing discipline prevents us from doing so.
 
@@ -2043,9 +2041,10 @@ His definition sets up a type system that limits the applicability of the basic 
 \begin{definition}
   A \defemph{type system} $\mathcal{T}$ is a non-empty set, whose elements
   are called \defemph{types}, equipped with two binary operations $\times$
-  and $\to$. The operation $\to$ associates to the right so that $s \to
-  t \to u = s \to (t \to u)$.
+  and $\to$.
 \end{definition}
+
+The operation $\to$ associates to the right, $s \to t \to u = s \to (t \to u)$.
 
 \begin{definition}
   A \defemph{typed partial combinatory algebra
@@ -2120,18 +2119,18 @@ An N-TPCA has primitive recursion but may lack general recursion, so we need one
   N-TPCA $A$ containing, for all types $s$ and $t$,
   % 
   \begin{equation*}
-    \combY_{s,t} \in A_{((s \to t) \to (s \to t)) \to (s \to t)}
+    \combFix_{s,t} \in A_{((s \to t) \to (s \to t)) \to (s \to t)}
   \end{equation*}
   % 
   such that, for all $f \in A_{(s \to t) \to (s \to t)}$ and $x \in A_s$,
   % 
   \begin{equation*}
-    \defined{\combY \, f}
+    \defined{\combFix \, f}
     \qquad\text{and}\qquad
-    \combY \, f \, x \klgeq f \, (\combY\, f) \, x.
+    \combFix \, f \, x \klgeq f \, (\combFix\, f) \, x.
   \end{equation*}
   % 
-  Such a $\combY_{s,t}$ is \defemph{suitable} for~$A$.
+  Such a $\combFix_{s,t}$ is \defemph{suitable} for~$A$.
 \end{definition}
 
 The relevant notion of substructure is as follows.
@@ -2156,13 +2155,12 @@ The basic theory of typed PCAs follows the theory of untyped PCAs.
   \defemph{primitive constant},
 \item an annotated variable $\annot{x}{t}$ is an expression of type~$t$,
 \item if $e_1$ is an expression of type $s \to t$ and $e_2$ is an
-  expression of type $s$ then $e_1 \cdot e_2$ is an expression of
+  expression of type~$s$ then $e_1 \cdot e_2$ is an expression of
   type~$t$.
 \end{enumerate}
 %
 Note that variables are annotated with types. We also
-assume that the type of a primitive constant is unique (an
-assumption which may easily be violated, in which case we have to tag
+assume that the type of a primitive constant is unique (if not we tag
 constants with their types), so that every expression has at most one type.
 
 A closed expression $e$ of type~$t$ is defined, written $\defined{e}$,
@@ -2203,7 +2201,7 @@ for all $a_1 \in A_{t_1}, \ldots, a_n \in A_{t_n}$.
 
 \subsection{Partial combinatory algebras}
 
-Every PCA is a NR-TPCA if we enrich it with the trivial types system
+Every PCA is an NR-TPCA if we enrich it with the trivial types system
 that contains a single type, $\mathcal{T} = \set{\star}$ with (the
 only possible) operations $\star \times \star = \star \to \star =
 \star$, and $A_\star = A$. The required combinators are the ones we
@@ -2212,12 +2210,12 @@ $\combK$ and $\combS$ everywhere.
 
 
 \subsection[\texorpdfstring%
-{Typed $\lambda$-calculus}%
-{Typed lambda-calculus}%
-]{Typed $\lambda$-calculus}
+{Simply typed $\lambda$-calculus}%
+{Simply typed lambda-calculus}%
+]{Simply typed $\lambda$-calculus}
 \label{sec:typed-lambda-calculus}
 
-The typed $\lambda$-calculus is to the untyped $\lambda$-calculus as
+The simply typed $\lambda$-calculus is to the untyped $\lambda$-calculus as
 TPCA is to a PCA. The types are inductively generated from the
 \defemph{unit type $\unit$}, a (possibly empty) collection of
 \defemph{ground types}, by using the type constructors $\times$ and
@@ -2227,8 +2225,8 @@ are types:
 \begin{enumerate}
 \item An annotated variable $\annot{x}{t}$ is an expression of type
   $t$.
-\item We may be given (a possibly empty) collection of \defemph{primitive
-  constants} with their types.
+\item A set (possibly empty) of \defemph{primitive
+  constants} with their associated types.
 \item The constant $\ttunit$, called the \defemph{unit}, has type
   $\unit$.
 \item If $e$ is an expression of type $t$ then
@@ -2274,46 +2272,52 @@ of type $\ttunit$,
 The rules for pairing and projections are, for all $e_1$, $e_2$, $e$
 of type $s$, $t$, $s \times t$:
 %
-\begin{equation*}
-  \combFst\,(e_1, e_2) = e_1,
-  \qquad
-  \combSnd\,(e_1, e_2) = e_2,
-  \qquad\text{and}\qquad
-  e = (\combFst\,e, \combSnd\,e),
-\end{equation*}
+\begin{align*}
+  \combFst\,(e_1, e_2) &= e_1,
+  \\
+  \combSnd\,(e_1, e_2) &= e_2,
+  \\
+  (\combFst\,e, \combSnd\,e) &= e,
+\end{align*}
 %
 There may be additional equations involving primitive constants.
 
-The \defemph{pure} typed $\lambda$-calculus has only a single ground
+The \defemph{pure simply typed $\lambda$-calculus} has only a single ground
 type~$o$ and no primitive constants.
 
-The typed $\lambda$-calculus is a TPCA whose types are those of the
-calculus. For a type~$t$ we take $A_t$ to be the set of closed
+The simply typed $\lambda$-calculus is a TPCA whose types are those of the
+calculus. For a type $t$ we take $A_t$ to be the set of closed
 expressions of type~$t$, quotiented by the least equivalence relation
 generated by $\eta$- and $\beta$-reduction and the rules for the unit,
 projections, pairing, and primitive constants.
 
 \subsection[\texorpdfstring{Gödel's $T$}{Gödel's T}]{Gödel's $T$}
 
-The typed $\lambda$-calculus is not a N-TPCA because it lacks the
-natural numbers and primitive recursion. To make it into a N-TPCA, we
-add a ground type $\ttnat$ and primitive constants $0$ of type
-$\ttnat$, $\combSucc$ of type $\ttnat \to \ttnat$, and for each
-type~$t$, a constant $\combRec_t$ of type $t \to (\mathtt{nat} \to t
-\to t) \to \ttnat \to t$. We also add two further reduction rules
+The pure simply typed $\lambda$-calculus is not an N-TPCA because it lacks the
+natural numbers. To make it into an N-TPCA, we
+add a ground type $\ttnat$ and primitive constants
 %
-\begin{equation*}
-  \combRec \, e_1 \, e_2 \, 0 = e_1
-  \qquad\text{and}\qquad
-  \combRec \, e_1 \, e_2 \, (\combSucc \, e_3) =
+\begin{align*}
+  0 &: \ttnat \\
+  \combSucc  &: \ttnat \to \ttnat \\
+  \combRec_t &: t \to (\mathtt{nat} \to t \to t) \to \ttnat \to t
+  \quad\text{(for each type $t$)}
+\end{align*}
+%
+We also add two further equations
+%
+\begin{align*}
+  \combRec \, e_1 \, e_2 \, 0 &= e_1
+  \\
+  \combRec \, e_1 \, e_2 \, (\combSucc \, e_3) &=
   e_2 \, e_3 \, (\combRec \, e_1 \, e_2 \, e_3).
-\end{equation*}
+\end{align*}
 %
 This gives us an N-TPCA~$T$ with numerals defined by $\numeral{0} = 0$
 and $\numeral{n+1} = \combSucc \, \numeral{n}$. More precisely, the
-elements of $A_t$ are closed expressions of type~$t$, quotiented by
-the equivalence relation generated by the rules of type
-$\lambda$-calculus and primitive recursion, as given above.
+elements of $A_t$ are the closed expressions of type~$t$, quotiented by
+the equivalence relation generated by the equational rules of the simply typeda
+$\lambda$-calculus and primitive recursion.
 
 This N-TPCA goes by the name \defemph{Gödel's
   $T$}~\sidecite{GoedelK:ubeefs}. It was defined by Kurt Gödel to give a
@@ -2324,19 +2328,13 @@ functions are expressible in this system.
 \subsection{Plotkin's PCF}
 \label{sec:pcf}
 
-The programming language PCF was introduced by Gordon
-Plotkin~\sidecite{plotkin77:_lcf_consid_as_progr_languag}. It has since
+The programming language PCF (``programming computable functions'')  was introduced by Gordon Plotkin~\sidecite{plotkin77:_lcf_consid_as_progr_languag}. It has since
 served as the ``laboratory mouse'' of the theory of programming
 languages. The design of real-world functional languages, such as SML,
 Ocaml, and Haskell, was inspired by PCF. In fact, PCF is a fragment of
-Haskell. We consider PCF because it is an example of a (total)
-NR-TPCA.
+Haskell.
 
-PCF is an extension of typed $\lambda$-calculus. In the original version
-of PCF there are two ground types, $\ttnat$ for natural numbers
-and~$\ttbool$ for Booleans. For convenience we shall add a third one,
-the type $\unit$ which has an element~$\ttunit$. The primitive constants
-of PCF with their types are:
+We present PCF as an extension of the simply typed $\lambda$-calculus. It has two ground types, $\ttnat$ for natural numbers and~$\ttbool$ for Booleans. The primitive constants of PCF with their types are:
 %
 \begin{align*}
   \numeral{n} &: \ttnat \quad \text{(for each $n \in \NN$),} \\
@@ -2349,223 +2347,64 @@ of PCF with their types are:
   \combFix_t &: (t \to t) \to t \quad\text{(for each type $t$),}
 \end{align*}
 %
-A \defemph{program} of type $t$ is a closed expression of type $t$. The
-\defemph{values} are programs of the following form, where $e_1$ and
-$e_2$ are programs of appropriate types:
-%
-\begin{gather*}
-  \star,\qquad \numeral{n},\qquad \combSucc,\qquad \combPred,\\
-  \combTrue,\qquad \combFalse,\qquad \combIsZero,\\
-  \combIf_t,\qquad \combIf_t \, e_1,\qquad \combIf_t \, e_1\, e_2,\\
-  \combFix_t,\qquad \lam{x \of t}{e},\qquad (e_1, e_2).
-\end{gather*}
-%
-Think of these as ``finished'' programs, or in the case of partially
-applied conditional statement and $\lambda$-abstractions as suspended
-computations that make progress when more arguments are supplied.
-
-Execution of a program is described with the reduction relation $e
-\oneto e'$, which you can think of as ``$e$ evaluates to $e'$ in one
-step'', defined by the rules in \cref{fig:pcf}. Each rule says
-that the reduction under the line is valid, provided the reductions
-above the line are. For example, the first rules says that in an
-application $e_1\,e_2$ we should evaluate $e_1$ if we can. The second
-rule is essentially a directed version of $\beta$-reduction.
-
-\begin{figure*}[htpb]
-  \centering
-\begin{gather*}
-  \infer
-  {e_1 \oneto e_1'}
-  {e_1 \, e_2 \oneto e_1'\, e_2}
-  \qquad
-  \axiom
-  {(\lam{x \of t}{e})\,e_2 \oneto \subst{e}{x \subto e_2}}
-  \\ \\
-  \infer
-  {e \oneto e'}
-  {\combFst\,e \oneto \combFst\,e'}
-  \qquad
-  \axiom
-  {\combFst\,(e_1, e_2) \oneto e_1}
-  \qquad
-  \infer
-  {e \oneto e'}
-  {\combSnd\,e \oneto \combSnd\,e'}
-  \qquad
-  \axiom
-  {\combSnd\,(e_1, e_2) \oneto e_2}
-  \\ \\
-  \infer
-  {e \oneto e'}
-  {\combSucc\,e \oneto \combSucc\,e'}
-  \qquad
-  \axiom
-  {\combSucc\,\numeral{n} \oneto \numeral{n+1}}
-  \\ \\
-  \infer
-  {e \oneto e'}
-  {\combPred\,e \oneto \combPred\,e'}
-  \qquad
-  \axiom
-  {\combPred\,\numeral{n+1} \oneto \numeral{n}}
-  \qquad
-  \axiom
-  {\combPred\,0 \oneto 0}
-  \\ \\
-  \infer
-  {e \oneto e'}
-  {\combIsZero\,e \oneto \combIsZero\,e'}
-  \qquad
-  \axiom{\combIsZero\,0 \oneto \combTrue}
-  \qquad
-  \axiom{\combIsZero\,\numeral{n+1} \oneto \combFalse}
-  \\ \\
-  \infer
-  {e_1 \oneto e_1'}
-  {\cond{e_1}{e_2}{e_3} \oneto \cond{e_1'}{e_2}{e_3}}
-  \\ \\
-  \axiom
-  {\cond{\combTrue}{e_2}{e_3} \oneto e_2}
-  \qquad
-  \axiom
-  {\cond{\combFalse}{e_2}{e_3} \oneto e_3}
-  \\ \\
-  \axiom
-  {\combFix_t\,e \oneto e\,(\combFix_t e)}
-\end{gather*}
-  \caption{Small-step semantics of PCF}
-  \label{fig:pcf}
-\end{figure*}
-
-The transitive reflexive closure of $\oneto$ is denoted by $\manyto$.
-We define \defemph{evaluation} $\mathsf{eval}$ as the partial map which
-maps programs to values,
-%
-\begin{equation*}
-  \mathsf{eval}(e) =
-  \begin{cases}
-    v & \text{if $e \manyto v$ and $v$ is a value,}\\
-    \text{undefined} & \text{otherwise.}
-  \end{cases}
-\end{equation*}
-%
-Evaluation is well defined because the reduction rules are
-\emph{deterministic}, i.e., for each~$e$ there is at most one~$e'$
-such that $e \oneto e'$. In fact, for a program~$e$ we only have two
-options: either there is an infinite sequence of reduction steps $e
-\oneto e' \oneto e'' \oneto \cdots$, or there is a finite sequence $e
-\oneto e' \oneto \cdots \oneto v$ ending with a value. We say that $e$
-\defemph{diverges} in the former case, and \defemph{terminates} in the
-latter. The third option, namely that the reduction sequence ends with
-a non-value, cannot happen.
-
-So far we have not specified any notion of equality between programs
-or values in~PCF. We need to do so in order to get a NR-TPCA. For
-programs $e_1$ and $e_2$ of type $t$, say that they are
-\defemph{observationally equivalent} and write $e_1 \approx_t e_2$, when
-for every program $e : t \to \unit$
-%
-\begin{equation*}
-  \mathsf{eval}(e\,e_1) = \ttunit \iff
-  \mathsf{eval}(e\,e_2) = \ttunit.
-\end{equation*}
-%
-The idea is that $e_1$ and $e_2$ are equivalent if they cannot be
-distinguished by ``probing'' $e_1$ and $e_2$ with a function that
-terminates or diverges. For example, if $e_1$ of type $\ttnat$
-evaluates to a numeral $\numeral{n}$ then we may distinguish it from
-other programs $e_2$ which diverge or evaluate to other numerals
-with the program
-%
-\begin{equation*}
-  \lam{x \of \ttnat}{
-    \cond
-    {\mathtt{eq}\,x\,\numeral{n}}
-    {\ttunit}
-    {\combFix\,(\lam{x \of \unit}{x})}
-  },
-\end{equation*}
-%
-where we leave it as exercise for you to write $\mathtt{eq} : \ttnat
-\to \ttnat \to \ttbool$, which compares natural numbers for equality.
-
-We usually omit the index~$t$ in $\approx_t$. Some useful
-observational equivalences are:
+The specific equations are:
 %
 \begin{align*}
-  \combSucc\,\numeral{n} &\approx \numeral{n+1}, &
-  \combIsZero\,\numeral{0} &\approx \combTrue,\\
-  \combPred\,\numeral{n+1} &\approx \numeral{n},&
-  \combIsZero\,\numeral{n+1} &\approx \combFalse,\\  
-  \combPred\,0 &\approx 0, &
-  \combIf_t \, \combTrue \, e_1 \, e_2 &\approx e_1,\\
-  \combFix_t \, e &\approx e \, (\combFix_t \, e), &
-  \combIf_t \, \combFalse \, e_1 \, e_2 &\approx e_2.
+  \combSucc \, \numeral{n} &= \numeral{n + 1}
+  \\
+  \combPred \, \numeral{0} &= \numeral{0}
+  \\
+  \combPred \, \numeral{n+1} &= \numeral{n}
+  \\
+  \combIsZero \, \numeral{0} &= \combTrue
+  \\
+  \combIsZero \, \numeral{n+1} &= \combFalse
+  \\
+  \combIf_t \, \combTrue \, e_1 \, e_2 &= e_1
+  \\
+  \combIf_t \, \combFalse \, e_1 \, e_2 &= e_2
+  \\
+  \combFix_t f &= e \, (\combFix_t \, e)
 \end{align*}
 %
-Also, if $e_1$ and $e_2$ are both diverging programs of the same type,
-they are observationally equivalent.
 
-Now define the NR-TPCA $\PCF$ by taking $\PCF_t$ to be the programs of
-type~$t$ quotiented by observational equivalence. This is easily seen
-to be a NR-TPCA. The only non-trivial bit is that there are the
-primitive recursion combinators $\combRec_t$. They can be defined in
-terms of general recursion, Booleans, and predecessors as
+To see that $\PCF$ is a an NR-TPCA, take $\PCF_t$ to be the programs of
+type~$t$, quotiented by the equations of the simply typed $\lambda$-calculus and the above equations.
+%
+The primitive recursion combinator $\combRec_t$ required by the definition of NR-TPCA is implemented as
 %
 \begin{equation*}  
   \combRec_t =
   \combFix \,
   (\lam{r\,x\,f\,n}
-            \cond{n = 0}{x}{f\,n\,(r \, x\, f \, (\combPred\, n))})
+            \cond{n = 0}{x}{f\,n\,(r \, x\, f \, (\combPred\, n))}).
 \end{equation*}
-%
-where $\combFix$ is at type $t \to (\ttnat \to t \to t) \to \ttnat \to
-t$, and $r$, $x$, $f$, $n$ have types $t \to (\ttnat \to t \to t) \to
-\ttnat \to t$, $t$, $\ttnat \to t \to t$, $\ttnat$, respectively.
 
+\subsection[\texorpdfstring{$\text{PCF}^\infty$}{PCF-infinity}]{$\text{PCF}^\infty$}
 
-\subsubsection[\texorpdfstring{$\PCFinf$}{PCF-infinity}]{$\PCFinf$}
-
-In \cref{sec:type-2,sec:graph-model} we saw that
-type~2 machines and the the graph model allow us to compute with
-arbitrary set-theoretic functions and sets. This is very convenient
-for studying computability over topological spaces and other
-uncountable structures. To achieve the same effect in PCF we extend it
-with all set-theoretic functions.
+Type~2 machines and the enumeration operators from \cref{sec:type-2,sec:graph-model}
+compute with non-computable data, which is convenient for studying computability over topological spaces. To allow PCF computations with non-computable data we extend it oracles, as follows.
 
 For every function $f : \NN \to \NN$ we add a constant $\mathtt{func}_f$
-of type $\ttnat \to \ttnat$ to PCF, consider $\mathtt{func}_f$ to be a
-value, and extend the reduction operation with the rules
+of type $\ttnat \to \ttnat$ to PCF, together with equations
 %
 \begin{equation*}
-  \infer
-  {e \oneto e'}
-  {\mathtt{func}_f\,e \oneto \mathtt{func}_f\,e'}
-  \qquad\qquad
-  \axiom
-  {\mathtt{func}_f\,\numeral{n} \oneto \numeral{f(n)}}
+  \mathtt{func}_f \, \overline{n} = \overline{f(n)}.
 \end{equation*}
 %
-We usually write just $f$ instead of $\mathtt{func}_f$. The resulting
-NR-TPCA is denoted as $\PCFinf$. The original $\PCF$ is a sub-NR-TPCA
-of $\PCFinf$.
+We write $f$ instead of $\mathtt{func}_f$ when no confusion can arise.
 
-\subsubsection[\texorpdfstring{$\PCF + X$}{PCF + X}]{$\PCF + X$}
-\label{sec:pcf-x}
+The resulting NR-TPCA is denoted as $\PCFinf$. The original $\PCF$ is a sub-NR-TPCA of~$\PCFinf$.
 
+\subsection{Other models of computation}
+\label{sec:other-models}
 
-\subsection{Real-world programming languages}
-\label{sec:programming-languages}
+Are the real world-programming languages models of computation, too? On one hand they must be because we use them to carry out \emph{actual} computations. On the other hand they often lack precise formal definitions that would allow us to treat them as mathematical entities.
 
-Real-world programming languages, such as C/C++, Fortran, Java, and
-Python, are not mathematical objects because they do not have precise
-mathematical definitions. An exception to this rule is SML which has a
-formal mathematical definition, see~\sidecite{MilnerR:defsml}. Ocaml and
-Haskell also come close having formal specifications. Nevertheless,
-when it comes to actual implementation of computable structures, we
-shall use real-world programming languages as if they were NR-TPCAs
-since they mostly are, anyway.
+Giving a mathematically precise definition of a practical programming language is a lot of work, as can be testified by the authors of Standard ML~\sidecite{MilnerR:defsml}. Luckily, for our purposes we only need to formalize a small core language that captures the ``essence''.
+
+For example, we could define a call-by-value PCF that captures the purely functional aspects of ML~languages (SML, OCaml, F\#), and possibly incorporate in it    computational effects (exceptions, mutable state, input-output). 
+The interested reader should consult the work of John Longley~\sidecite{longley99:_unify_typed_and_untyp_realiz,longley99:_match} to see examples of PCF extended with computational effects, and to learn about general models of computation~\sidecite{longley14:_comput} that subsume combinatory algebras.
 
 
 \section{Applicative morphisms}
