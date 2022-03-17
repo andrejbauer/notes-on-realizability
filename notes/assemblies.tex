@@ -1230,6 +1230,172 @@ our framework. We only mention two:
   and searchable sets~\sidecite{Escardo}.
 \end{enumerate}
 
+\section{Applicative functors}
+\label{sec:applicative-functors}
+
+\begin{proposition}
+  \label{th:applicative_morphism_induce_functor}%
+  %
+  \index{functor!induced by applicative morphism}%
+  \index{applicative!morphism!functor induced by}%
+  %
+  A discrete applicative morphism $\rho: (\EE, \subEE) \pcato (\FF,
+  \subFF)$ induces a functor
+                                %
+  \begin{equation*}
+     \ff{\rho}: \Mod{\EE, \subEE} \longrightarrow \Mod{\FF, \subFF},
+  \end{equation*}
+                                %
+  defined as follows. For $S \in \Mod{\EE, \subEE}$, let
+                                %
+  \begin{align*}
+    |\ff{\rho} S| &= |S|,
+    &
+    \exi_{\ff{\rho} S} t &= \bigcup_{u \in \exi_S t} \rho(u).
+  \end{align*}
+                                %
+  A realized function $f: S \to T$ is mapped to $\ff{\rho} f = f:
+  |\ff{\rho} S| \to |\ff{\rho} T|$.
+\end{proposition}
+
+\begin{proof}
+  Because $\rho$ is discrete $\ff{\rho} S$ is indeed a modest set.
+  Let~$r$ be a realizer for~$\rho$. The function $\ff{\rho} f :
+  \ff{\rho} S \to \ff{\rho} T$ is realized because if $u \rz_{S \to T}
+  f$ then there exists $x \in \subFF$ such that $\rho(u, x)$, and $r
+  \cdot x \rz_{\ff{\rho} S \to \ff{\rho} T} f$.
+\end{proof}
+
+All applicative morphism that we are going to consider are
+discrete.
+
+\begin{proposition}
+  \label{th:applicative_morphisms_properties}%
+  %
+  Let $\gamma: (\EE, \subEE) \pcato
+  (\FF, \subFF)$ be a discrete applicative morphism.
+  %
+  \begin{enumerate}
+  \item[(1)] The induced functor $\ff{\gamma}: \Mod{\EE, \subEE} \to
+    \Mod{\FF, \subFF}$ is faithful, and it preserves finite limits,
+    and coequalizers of kernel pairs.
+  \item[(2)] If $\gamma$ is projective then $\ff{\gamma}$ preserves
+    projective objects.
+  \item[(3)] If $\gamma$ is decidable then $\ff{\gamma}$ preserves
+    finite colimits and the natural numbers object.
+  \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+  (1) $\ff{\gamma}$ preserves finite limits
+  by~\cite[Proposition~2.2.2]{Longley:94}, and coequalizers of kernel
+  pairs by~\cite[Proposition~2.2.3]{Longley:94}. It is faithful
+  because it acts trivially on morphisms.
+  %
+  (2) See~\cite[Theorem~2.4.12]{Longley:94}.
+  %
+  (3) See~\cite[Theorem~2.4.19]{Longley:94}.
+\end{proof}
+
+
+\begin{theorem}
+  \label{th:applicative_morphisms_tfae}%
+  If $(\EE, \subEE)$ and $(\FF, \subFF)$ are equivalent via discrete
+  applicative morphisms
+                                %
+  \begin{align*}
+    \delta &: (\EE, \subEE) \pcato (\FF, \subFF),
+    &
+    \gamma &: (\FF, \subFF) \pcato (\EE, \subEE),
+  \end{align*}
+                                %
+  then $\Mod{\EE, \subEE}$ and $\Mod{\FF, \subFF}$ are equivalent
+  via the induced functors
+                                %
+  \begin{equation*}
+    \diag{
+      **[l]{\Mod{\EE, \subEE}} \ar@<0.5ex>[r]^{\ff{\delta}}
+      &
+      **[r]{\Mod{\FF, \subFF}} \ar@<0.5ex>[l]^{\ff{\gamma}}
+      }
+  \end{equation*}
+                                %
+\end{theorem}
+
+\begin{proof}
+  By Corollary~\ref{th:corollary2_applicative_morphisms_properties},
+  there exist functions $\gamma: \EE \to \FF$ and $\delta: \FF \to
+  \EE$ which are applicative morphisms. It is straightforward to check
+  that~$\ff{\gamma}$ and~$\ff{\delta}$ constitute an equivalence of
+  $\Mod{\EE, \subEE}$ and $\Mod{\FF, \subFF}$. See also~\cite[Theorem
+  2.5.6]{Longley:94}.
+\end{proof}
+
+
+\begin{theorem}
+  \label{th:applicative_adjunction_functor_adjunction}%
+  Suppose we have discrete applicative morphisms
+                                %
+  \begin{align*}
+    \delta &: (\EE, \subEE) \pcato (\FF, \subFF),
+    &
+    \gamma &: (\FF, \subFF) \pcato (\EE, \subEE).
+  \end{align*}
+                                %
+  \begin{enumerate}
+  \item[(1)] If $\gamma \dashv \delta$ is an adjoint pair, then
+    $\ff{\gamma} \dashv \ff{\delta}$ is an adjunction.
+    %
+    \index{adjunction!induced by applicative adjunction}%
+    %
+    In
+    addition,~$\ff{\gamma}$ preserves finite limits, and~$\ff{\delta}$
+    preserves regular epis.
+    %
+  \item[(2)] If $\gamma \dashv \delta$ is an inclusion then the counit 
+    $\ff{\gamma} \circ \ff{\delta} \natto \one_{\Mod{\EE, \subEE}}$ is 
+    a natural isomorphism.
+    %
+  \item[(3)] If $\gamma \dashv \delta$ is a retraction then the unit
+    $\one_{\Mod{\FF, \subFF}} \natto \ff{\delta} \circ \ff{\gamma}$ is
+    a natural isomorphism.
+  \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+  This is the easy part of~\cite[Proposition 2.5.9]{Longley:94},
+  except that we are using the extended notion of applicative
+  morphism. Also, we are restricting attention to categories of modest
+  sets, whereas~\cite[Proposition 2.5.9]{Longley:94} is stated for
+  functors between realizability toposes. This is not a problem
+  because by
+  Corollary~\ref{th:corollary1_applicative_morphisms_properties} the
+  applicative morphisms~$\gamma$ and~$\delta$ are discrete, therefore
+  the induced functors between toposes restrict to functors between
+  modest sets.
+\end{proof}
+
+
+\begin{proposition}
+  \label{th:inclusion_retraction_properties}%
+  \textnormal{\cite[Proposition 2.5.11]{Longley:94}} For discrete
+  applicative morphisms $\gamma: \EE \pcato \FF$ and $\delta: \FF
+  \pcato \EE$:
+  %
+  \begin{enumerate}
+  \item[(1)] If $(\gamma \vdash \delta)$ is an applicative inclusion
+    then~$\ff{\delta}$ is full and faithful and preserves
+    exponentials.
+  \item[(2)] If $(\gamma \vdash \delta)$ is an applicative retraction
+    then~$\ff{\delta}$ preserves finite colimits, and~$\ff{\gamma}$
+    reflects isomorphisms.
+  \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+  See \cite[Proposition 2.5.11]{Longley:94}.
+\end{proof}
+
 
 
 %%% Local Variables: 

@@ -1,0 +1,673 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Comparing models of computations}
+\label{sec:comparing-models}%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%
+In Chapter~\ref{cha:mod_over_topological_pcas} we are going to compare
+categories of modest sets on various PCAs. This is done most easily by
+using John Longley's theory of \emph{applicative morphisms} between
+PCAs. We extend his definition to applicative morphisms between PCAs
+with subPCAs. We also recall the basic results about applicative
+morphisms and the induced functors between categories of modest sets.
+See~\cite[Chapter 2]{Longley:94} for further material on this topic.
+Let us first state the original definition.
+
+\begin{definition}[John Longley]
+  \label{def:longley_applicative_morphism}%
+  \cite[Definition 2.1.1]{Longley:94}
+  %
+  \indexsee{morphism!applicative}{applicative, morphism}%
+  \indexdef{applicative!morphism}%
+  %
+  Let $\EE$ and $\FF$ be PCAs.  An \emph{applicative morphism}
+  $\rho: \EE \pcato \FF$ is a total\footnote{A relation $\rho$ is
+    total when $\all{x} \some{y} \rho(x,y)$.} relation $\rho
+  \subseteq \EE \times \FF$ for which there exists $r \in \FF$ such
+  that, for all $u, v \in \EE$, $x, y \in \FF$,
+  %
+  (a) if $\rho(u, x)$ then $\defined{r \cdot x}$, and
+  %
+  (b) if $\rho(u, x) \land \rho(u, y)$ and $\defined{u \cdot v}$ then
+  $\defined{r \cdot x \cdot y} \land \rho(u \cdot v, r \cdot x \cdot
+  y)$.
+
+  \index{realizer!for applicative morphism}%
+  \index{applicative!morphism!realizer for}%
+  %
+  We write $\rho(u) = \set{x \in \FF \such \rho(u, x)}$.
+  We say that~$r$ \emph{realizes} the morphism~$\rho$. When $\rho$ is
+  an applicative morphism we write $\rho: \EE \pcato \FF$.
+\end{definition}
+
+One might expect that a morphism of PCAs ought to be a map $f: \EE
+\to \FF$ such that $f \combK_\EE = \combK_\FF$, $f \combS_\FF =
+\combS_\FF$, and $f (x \cdot y) \kleq (f x) \cdot (f y)$. This is how
+an algebraist would define a morphism of PCAs. However, we are
+interested in computational aspects of PCAs, not the algebraic ones.
+%
+An applicative morphism $\EE \pcato \FF$ is best viewed as an
+\emph{implementation} of~$\EE$ within~$\FF$. Then $\rho(u, x)$ is
+understood as ``$x$ is a $\rho$-implementation of~$u$''. The realizer
+$r \in \FF$ in the above definition implements the application
+of~$\EE$ in~$\FF$. An applicative morphism is allowed to be a
+relation rather than a function because there might be many
+implementations of $u \in \EE$, and there might be no canonical way of
+choosing one of them.
+
+For the purposes of studying computability, we need a notion of
+applicative morphisms between PCAs \emph{with subPCAs}. We extend
+Longley's notion of applicative morphisms as follows.
+
+\begin{definition}
+  \label{def:applicative_morphism}%
+  %
+  \indexdef{applicative!morphism}%
+  %
+  Let $\subEE \subseteq \EE$ and $\subFF \subseteq \FF$ be PCAs with
+  subPCAs. An \emph{applicative morphism} $\rho: (\EE, \subEE)
+  \pcato (\FF, \subFF)$ is a total relation $\rho \subseteq \EE \times 
+  \FF$ such that:
+  %
+  (a)
+                                %
+  for all $u \in \subEE$ there exists $x \in \subFF$ such that
+  $\rho(u, x)$, and
+                                %
+  (b)
+                                %
+  there exists $r \in \subFF$ such that, for all $u, v \in \EE$, $x, y
+  \in \FF$, if $\rho(u, x)$ then $\defined{r \cdot x}$, and if $\rho(u,
+  x)$, $\rho(u, y)$ and $\defined{u \cdot v}$ then $\defined{r \cdot x \cdot y}$ and $\rho(u \cdot v, r \cdot x \cdot y)$.
+\end{definition}
+
+If $\rho: (\EE, \subEE) \pcato (\FF, \subFF)$ is an applicative
+morphism, then $\rho$ is an applicative morphism from~$\EE$ to~$FF$ in
+the sense of Definition~\ref{def:longley_applicative_morphism}, and
+also the restriction of~$\rho$ to $\subEE \times \subEE$ is an
+applicative morphism from~$\subEE$ to~$\subFF$ in the sense of
+Definition~\ref{def:longley_applicative_morphism}.
+
+\index{applicative!morphism!composition of}%
+\index{composition!of applicative morphisms}%
+%
+Applicative morphisms can be composed in the usual way as relations.
+If $\rho: (\EE, \subEE) \pcato (\FF, \subFF)$ and $\sigma: (\FF,
+\subFF) \pcato (\GG, \subGG)$ then $\sigma \circ \rho: (\EE, \subEE)
+\pcato (\GG, \subGG)$ is defined, for $u \in \EE$, $s \in \GG$, by
+%
+\begin{equation*}
+  \sigma \circ \rho (u, s)
+  \iff
+  \some{x \in \FF}{\rho(u, x) \land \sigma(x, s)}.
+\end{equation*}
+%
+The identity applicative morphism $\id{(\EE, \subEE)}: (\EE,
+\subEE) \to (\EE, \subEE)$ is the identity relation on~$\EE$.
+
+If we take PCAs with subPCAs as objects and applicative morphisms as
+morphisms, we obtain a category that can be preorder-enriched as
+follows~\cite[Proposition 2.1.6]{Longley:94}.
+%
+\indexdef{category!of applicative morphisms}%
+\index{translation, of applicative morphisms}%
+\index{equivalence!applicative, of PCAs}%
+\indexsee{applicative!equivalence}{equivalence, applicative}%
+%
+There is a preorder~$\preceq$ on applicative morphisms $(\EE, \subEE)
+\pcato (\FF, \subFF)$. If~$\rho$ and~$\sigma$ are such applicative
+morphisms, we define $\rho \preceq \sigma$ to hold if, and only if,
+there exists $t \in \subFF$ such that, for all $u \in \EE$, $x \in
+\FF$, $\rho(u, x)$ implies $\defined{t \cdot x}$ and $\sigma(u, t \cdot x)$. We think
+of~$t$ as a \emph{translation} of $\rho$-implementations into
+$\sigma$-implementations. We write $\rho \sim \sigma$ when $\rho
+\preceq \sigma$ and $\sigma \preceq \rho$. We say that $(\EE, \subEE)$
+and $(\FF, \subFF)$ are \emph{equivalent} when there exist applicative
+morphisms
+                                %
+\begin{align*}
+  \delta &: (\EE, \subEE) \pcato (\FF, \subFF),
+  &
+  \gamma &: (\FF, \subFF) \pcato (\EE, \subEE),
+\end{align*}
+                                %
+such that $\gamma \circ \delta \sim \one_\EE$ and $\delta \circ \gamma
+\sim \one_\FF$.
+
+\begin{definition}
+  Let $\rho: (\EE, \subEE) \to (\FF, \subFF)$ be an applicative
+  morphism:
+  %
+  \indexdef{applicative!morphism!discrete}%
+  \indexdef{applicative!morphism!projective}%
+  \indexdef{applicative!morphism!decidable}%
+  \indexdef{discrete!applicative morphism}%
+  \indexdef{projective!applicative morphism}%
+  \indexdef{decidable!applicative morphism}%
+  %
+  \begin{enumerate}
+  \item[(1)] $\rho$ is \emph{discrete} when, for all $u, v \in \EE$,
+    $x \in \FF$, if $\rho(u, x)$ and $\rho(v, x)$ then $u = v$.
+  \item[(2)] $\rho$ is \emph{projective} when there is a single-valued
+    applicative morphism\footnote{In other words, $\rho'$ is a
+      function.} $\rho'$ such that $\rho' \sim \rho$.
+                                %
+  \item[(3)] $\rho$ is \emph{decidable} when there is $d \in \subFF$,
+    called the
+    %
+    \indexdef{decider}%
+    %
+    \emph{decider} for~$\rho$, such that, for all $x \in
+    \FF$,
+                                %
+    \begin{align*}
+      \rho(\combTrue_\EE, x) &\lthen d \cdot x = \combTrue_\FF,
+      &
+      \rho(\combFalse_\EE, x) &\lthen d \cdot x = \combFalse_\FF.
+    \end{align*}
+  \end{enumerate}
+\end{definition}
+
+
+
+\begin{definition}
+  \cite[Definition 2.5.1]{Longley:94}
+  %
+  \index{applicative!morphism!adjoint pair of}%
+  \index{adjunction!applicative}%
+  %
+  An \emph{adjoint pair} of applicative morphisms
+                                %
+  \begin{equation*}
+    (\gamma \dashv \delta): (\EE, \subEE) \pcato (\FF, \subFF)
+  \end{equation*}
+                                %
+  consists of a pair of applicative morphisms
+                                %
+  \begin{align*}
+    \delta &: (\EE, \subEE) \pcato (\FF, \subFF),
+    &
+    \gamma &: (\FF, \subFF) \pcato (\EE, \subEE),
+  \end{align*}
+                                %
+  such that $\one_{\FF} \preceq \delta \circ \gamma$ and $\gamma \circ
+  \delta \preceq \one_{\EE}$. We say that~$\gamma$ is \emph{left
+    adjoint} to~$\delta$, or that~$\delta$ is \emph{right adjoint}
+  to~$\gamma$.
+\end{definition}
+
+
+\begin{definition}
+  \cite[Definition 2.5.2]{Longley:94}
+  %
+  \indexdef{applicative!inclusion}%
+  \indexdef{applicative!retraction}%
+  \indexsee{inclusion!applicative}{applicative, inclusion}%
+  \indexsee{retraction, applicative}{applicative, retraction}%
+  %
+  Suppose $(\gamma \dashv
+  \delta): (\EE, \subEE) \pcato (\FF, \subFF)$ is an adjoint pair.
+  We say that $(\gamma, \delta)$ is an \emph{applicative inclusion}
+  when $\gamma \circ \delta \sim \id[\EE]$, and an \emph{applicative
+    retraction} when $\delta \circ \gamma \sim \one_\FF$.
+\end{definition}
+
+
+\begin{theorem}
+  \label{th:applicative_morphisms_properties2}%
+  \textnormal{\cite[Theorem 2.5.3]{Longley:94}}
+  Suppose $\delta: (\EE, \subEE) \pcato (\FF, \subFF)$ and
+  $\gamma: (\FF, \subFF) \pcato (\EE, \subEE)$ are applicative
+  morphisms.
+                                %
+  \begin{enumerate}
+  \item[(1)]
+    If $\gamma \circ \delta \preceq \id[\EE]$ then $\delta$ is discrete 
+    and $\gamma$ is decidable.
+  \item[(2)]
+    If $\gamma \dashv \delta$ then $\gamma$ is also projective.
+  \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+  The proof of \cite[Theorem 2.5.3]{Longley:94} is stated for
+  applicative morphisms, as defined by
+  Definition~\ref{def:longley_applicative_morphism}, but it works just
+  as well with Definition~\ref{def:applicative_morphism}.
+\end{proof}
+
+\begin{corollary}
+  \label{th:corollary1_applicative_morphisms_properties}%
+  If $(\gamma \dashv \delta)$ is a retraction then both~$\delta$
+  and~$\gamma$ are discrete and decidable, and~$\gamma$ is projective.
+\end{corollary}
+
+\begin{proof}
+  Immediate. This is~\cite[Corollary 2.5.4]{Longley:94}.
+\end{proof}
+
+\begin{corollary}
+  \label{th:corollary2_applicative_morphisms_properties}%
+  If $(\EE, \subEE)$ and $(\FF, \subFF)$ are equivalent PCAs, then the 
+  there exist an equivalence
+                                %
+  \begin{align*}
+    \delta &: (\EE, \subEE) \pcato (\FF, \subFF),
+    &
+    \gamma &: (\FF, \subFF) \pcato (\EE, \subEE),
+  \end{align*}
+                                %
+  such that $\gamma$ and $\delta$ are single-valued.
+\end{corollary}
+
+\begin{proof}
+  Both $\delta$ and $\gamma$ are projective by
+  Theorem~\ref{th:applicative_morphisms_properties2}.
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Let us now look at examples of applicative morphisms between PCAs.
+
+\subsection{Applicative Adjunction between $\klone$ and $\comp{\Scott}$}
+\label{ex:pcamorphism_K1_RE}%
+
+\indexsee{applicative!adjunction}{adjunction, applicative}%
+\index{adjunction!applicative!between N and P@{between~$\klone$ and~$\comp{\Scott}$}}%
+
+There is an applicative retraction $(\delta \dashv \gamma): \comp{\Scott}
+\pcato \klone$. The inclusion $\delta: \klone \to \comp{\Scott}$ is defined
+by
+                                %
+\begin{equation*}
+  \delta n = \set{n},
+\end{equation*}
+                                %
+and the retraction $\gamma: \comp{\Scott} \pcato \klone$ is defined by
+                                %
+\begin{equation*}
+  \gamma(U, n)
+  \iff
+  U = \im{\xpr{n}},
+\end{equation*}
+                                %
+where $\xpr{\place}$ is a standard enumeration of partial
+recursive functions. See~\cite[Proposition 3.3.7]{Longley:94} for
+details.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\subsection{Applicative Retraction from $(\Scott, \comp{\Scott})$ to
+  $(\Baire, \comp{\Baire})$}
+\label{sec:applicative_retraction_PP_BB}%
+
+\index{adjunction!applicative!between P and B@{between~$(\Scott, \comp{\Scott})$ and~$(\Baire, \comp{\Baire})$}}%
+\index{applicative!retraction!between P and B@{between~$(\Scott, \comp{\Scott})$ and~$(\Baire, \comp{\Baire})$}}%
+
+Lietz~\cite{Lietz:99} compared realizability models over~$\Scott$ and
+over~$\Baire$ and observed that there is an applicative retraction
+$(\iota \dashv \delta): PP \pcato BB$. In this subsection we
+describe it explicitly and show that it is in fact a retraction from
+$(\Scott, \comp{\Scott})$ to $(\Baire, \comp{\Baire})$,
+                                %
+\begin{equation*}
+  (\iota \dashv \delta): (\Scott, \comp{\Scott}) \pcato (\Baire, \comp{\Baire}).
+\end{equation*}
+                                %
+Given a finite sequence of natural numbers $a = \seq{a_0, \ldots,
+  a_{k-1}}$, let $\code{a}$ be the encoding of~$a$ as a natural
+number, as defined in Section~\ref{sec:second_kleene}. Define the
+embedding $\iota: \Baire \to \Scott$ by
+                                %
+\begin{equation*}
+  \iota \alpha =
+  \set{ \code{a} \such
+    a \in \NN^{*} \land a  \sqsubseteq \alpha 
+    }.
+\end{equation*}
+                                %
+Observe that if $\alpha \in \comp{\Baire}$ then $\iota \alpha \in \comp{\Scott}$.
+Let $\Baire' = \im{\iota}$ and define $p: \Baire' \times \Baire' \to \Scott$
+by
+                                %
+\begin{equation*}
+  p \pair{\iota \alpha, \iota \beta} =
+  \begin{cases}
+    \iota (\alpha \mid \beta) 
+    & \text{if $\alpha \mid \beta$ defined} \,\\
+    \emptyset
+    & \text{otherwise}.
+  \end{cases}
+\end{equation*}
+                                %
+The map $p$ is continuous and it can be extended to an
+r.e.~enumeration operator $p: \Scott \times \Scott \to \Scott$. Thus, $p$
+realizes~$\iota$, which is therefore an applicative morphism.
+
+Let $\delta: \Scott \pcato \Baire$ be the applicative morphism defined,
+for  $x \in \Scott$, $\alpha \in \Baire$, by
+                                %
+\begin{equation*}
+  \delta(x, \alpha)
+  \iff
+  x = \set{n \in \NN \such \some{k \in \NN} \alpha k = n + 1}.
+\end{equation*}
+                                %
+In words, $\alpha$ is a $\delta$-implementation of~$x$ when it
+enumerates~$x$. We added~$1$ to~$n$ in the above definition so that
+the empty set is enumerated as well. Clearly, if $\alpha \in \comp{\Baire}$
+then~$x \in \comp{\Scott}$. In order for~$\delta$ to be an applicative
+morphism, it must have a realizer~$\rho \in \comp{\Baire}$ such that
+                                %
+\begin{equation*}
+  \delta(x, \alpha) \land
+  \delta(y, \beta)
+  \lthen
+  \delta(x \cdot y, \rho \mid \alpha \mid \beta).
+\end{equation*}
+                                %
+Equivalently, we may require that $\delta(x \cdot y, \rho \mid
+\pair{\alpha, \beta})$. Such a~$\rho$ can be obtained as follows.
+To determine the value $(\rho \mid \pair{\alpha, \beta})
+(\code{(m, n)})$, let $A = \set{\alpha_0, \ldots, \alpha_{m-1}}$
+and $B = \set{\beta_0, \ldots, \beta_{m-1}}$. If there exists $k
+\in B$ such that $k = 1 + \code{(n, j)}$ and $\mathsf{finset}(j) \subseteq
+A$ then the value is~$n+1$, otherwise it is~$0$. Clearly, this is an
+effective procedure, therefore it is continuous and realized by an
+element~$\rho \in \comp{\Baire}$. If we compare the definition of~$\rho$ to
+the definition of application in~$\Scott$, we see that they match.
+
+Let us show that $\iota \dashv \delta$ is an applicative retraction.
+Suppose $\alpha \in \Baire$, $x = \iota(\alpha)$, and $\delta(x,
+\beta)$. We can effectively reconstruct $\alpha$ from~$\beta$,
+because $\beta$ enumerates the initial segments of~$\alpha$. This
+shows that $\delta \circ \iota \preceq \id[\Baire]$. Also, given
+$\alpha$ we can easily construct a sequence~$\beta$ which enumerates
+the initial segments of~$\alpha$, therefore $\id[\Baire] \preceq
+\delta \circ \iota$, and we conclude that $\delta \circ \iota \sim
+\id[\Baire]$.
+
+To see that $\iota \circ \delta \preceq \id[\Scott]$, consider $x, y \in
+\Scott$ and $\alpha \in \Baire$ such that $\delta(x, \alpha)$ and $y =
+\iota(\alpha)$. The sequence~$\alpha$ enumerates~$x$, and $y$
+consists of the initial segments of~$\alpha$. Hence, we can
+effectively reconstruct $x$ from $y$, by
+                                %
+\begin{equation*}
+  m \in x
+  \iff
+  \some{n \in y} n = 1 + \code{a} \land \some{i < |a|} m = a_i.
+\end{equation*}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Applicative Inclusion from $(\Scott, \comp{\Scott})$ to $(\UU,
+  \comp{\UU})$}
+\label{sec:app_mor_PP_UU}%
+
+\index{adjunction!applicative!between P and U@{between~$(\Scott, \comp{\Scott})$ and~$(\UU, \comp{\UU})$}}%
+\index{applicative!inclusion!between P and U@{between~$(\Scott, \comp{\Scott})$ and~$(\UU, \comp{\UU})$}}%
+
+We construct an applicative inclusion
+                                %
+\begin{equation*}
+  (\eta \dashv \zeta): (\Scott, \comp{\Scott}) \pcato (\UU, \comp{\UU}),
+\end{equation*}
+                                %
+with the additional property that~$\eta$ is discrete. The applicative
+morphism~$\zeta$ is discrete by
+Theorem~\ref{th:applicative_morphisms_properties2}(1). By the Effective
+Embedding Theorem~\ref{th:effective_embedding_theorem} there exists a
+computable embedding $\eta: \UU \to \Scott$. Specifically,~$\eta$ is
+defined by
+%
+\begin{equation*}
+  \eta S = \set{ n \in \NN \such B_n \subseteq S },
+\end{equation*}
+%
+where $B : \NN \to \UU$ is an effective enumeration of the compact elements. For every $n \in \NN$, let $C_n$ be the clopen set
+%
+\begin{equation*}
+  C_n = \set{ \alpha \in \NN \such
+    \alpha 0 = \cdots = \alpha n = 0 \land \alpha (n+1) = 1
+    }.
+\end{equation*}
+%
+Note that whenever $n \neq m$ then $C_n$ and $C_m$ are disjoint. The
+family $\set{C_n \such n \in \NN}$ is a discrete subspace of~$\UU$.
+Because~$\UU$ is an effective universal domain and $\Scott$ is an
+effective domain, there exists a computable embedding-projection pair
+$(\zeta, \zeta^{-}): \UU \to \Scott$. In particular, we define
+$\zeta: \Scott \to \UU$ and $\zeta^{-}: \UU \to \Scott$ by
+%
+\begin{align*}
+  \zeta x &= \bigcup_{n \in x} C_n,
+  &
+  \zeta^{-} S &= \set{n \in \NN \such C_n \subseteq S}.
+\end{align*}
+%
+It is obvious that $\zeta^{-} \circ \zeta = \id[\Scott]$. Let us verify
+that $\eta$ is an applicative morphism. Because it is computable, it
+is the case that $\eta x \in \comp{\Scott}$ whenever $x \in \comp{\UU}$. The
+application on~$\UU$ is a computable map, therefore by the Effective
+Extension Theorem~\ref{th:effective_extension_theorem} there exists a
+computable map $\phi: \Scott \times \Scott \to \Scott$ such that, for all $S, T
+\in \UU$,
+                                %
+\begin{equation*}
+  \eta (S \cdot T) = \phi \pair{\eta S, \eta T}.
+\end{equation*}
+                                %
+There exists $f \in \comp{\Scott}$ such that $\phi \pair{\eta S, \eta T} = f
+\cdot (\eta S) \cdot (\eta T)$ for all $S, T \in \UU$.
+Therefore,~$\eta$ is an applicative morphism. We show next that
+$\zeta$ is an applicative morphism. Since it is computable, $\zeta a
+\in \comp{\UU}$ whenever $a \in \comp{\UU}$. Let $\gamma: \UU \times \UU \to
+\UU$ be defined by
+                                %
+\begin{equation*}
+  \gamma \pair{S, T} = \zeta ((\zeta^{-} S) \cdot (\zeta^{-} T)).
+\end{equation*}
+                                %
+Because $\gamma$ is a composition of computable maps, it is
+computable. There exists $g \in \comp{\UU}$ such that $\gamma \pair{S, T}
+= g \cdot S \cdot T$ for all $S, T \in \UU$. For all $x, y \in \Scott$,
+                                %
+\begin{equation*}
+  \zeta(x \cdot y) =
+  \zeta((\zeta^{-} (\zeta x)) \cdot (\zeta^{-} (\zeta x))) =
+  \gamma \pair{\zeta x, \zeta y} = g \cdot (\zeta x) \cdot (\zeta y).
+\end{equation*}
+                                %
+Therefore, $\zeta$ is an applicative morphism.
+
+The relations $\eta \circ \zeta \preceq \id[\Scott]$ and $\zeta \circ \eta 
+\preceq \id[\UU]$ hold because $\eta \circ \zeta$ and $\zeta \circ
+\eta$ are computable and realized in~$\Scott$ and~$\UU$, respectively.
+Lastly, we need to verify that $\id[\Scott] \preceq \eta \circ \zeta$,
+which amounts to checking that there exists a computable map $\rho:
+\Scott \to \Scott$ such that $\rho \circ \eta \circ \zeta = \id[\Scott]$.
+We define the graph of $\rho$ to be
+%
+\begin{equation*}
+  m \in \rho(\set{n_1, \ldots, n_k})
+  \iff
+  B_{n_1} \subseteq C_m \lor \cdots \lor B_{n_k} \subseteq C_m.
+\end{equation*}
+%
+The relation on the right-hand side is r.e.~in $m, n_1, \ldots, n_k$,
+hence~$\rho$ is computable. The map~$\rho$ is the left inverse of
+$\eta \circ \zeta$ because, for any $x \in \Scott$,
+%
+\begin{multline*}
+  m \in \rho(\eta(\zeta x)) \iff
+  \some{n \in \eta(\zeta x)} B_n \subseteq C_m \iff \\
+  \some{k \in x} \some{n \in \NN}
+      B_n \subseteq C_k \land B_n \subseteq C_m
+  \iff
+  m \in x.
+\end{multline*}
+%
+Here we used the property that $\some{n \in \NN} B_n \subseteq C_k \land
+  B_n \subseteq C_m$ is equivalent to $C_k \cap C_m \neq
+\emptyset$, which is equivalent to $C_k = C_m$, which is equivalent to
+$k = m$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\subsection{Equivalence of Reflexive Continuous Lattices}
+\label{sec:equivalence_reflexive_continuous_lattices}%
+
+\index{equivalence!applicative!of reflexive continuous lattices}%
+\index{continuous!lattice}%
+
+In Subsection~\ref{sec:reflexive_cpo_model} we saw that a reflexive
+CPO is a model of the untyped $\lambda$-calculus, hence a combinatory
+algebra. So far we have considered two reflexive CPOs, the graph
+model~$\Scott$ and the universal domain~$\UU$. In this subsection we show
+that every countably based reflexive continuous lattice is equivalent
+to~$\Scott$. Thus, as far as categories of modest sets on countably based
+reflexive continuous lattices are concerned, we do not lose any
+generality by considering only the graph model~$\Scott$.
+
+We only consider countably based continuous lattices.
+%
+\index{reflexive!continuous lattice}%
+\index{continuous!reflexive lattice}%
+%
+A continuous lattice~$L$ is \emph{reflexive} if it contains at least
+two elements and its continuous function space~$L^L$ is a retract
+of~$L$.
+
+\begin{proposition}
+  \label{th:PP_retract_of_reflexive_lattice}%
+  The graph model is a continuous retract of every reflexive
+  continuous lattice.
+\end{proposition}
+
+\begin{proof}
+  \newcommand{\retr}[1]{\mathscr{R}(#1)}
+  %
+  Let $L$ be a reflexive continuous lattice. Then we have a
+  section-retraction pair
+  %
+  \begin{equation*}
+    \xymatrix@+1.5em{
+      {L^L} \ar@<0.5ex>[r]^{\Gamma} &
+      {L} \ar@<0.5ex>[l]^{\Lambda}.
+      }
+  \end{equation*}
+  %
+  The lattice~$L$ is a model of the untyped $\lambda$-calculus.
+  The product $L \times L$ is a retract of~$L$. The section $p^{+}: L
+  \times L \to L$ and the retraction $p^{-}: L \to L \times L$ can
+  be most conveniently expressed as the untyped $\lambda$-terms as
+  %
+  \begin{align*}
+    p^{+} \pair{x, y} &= \lam{z}{z x y},
+    &
+    p^{-} z &= \pair{\fst{z}, \snd{z}},
+  \end{align*}
+  %
+  where $\fst{z} = z (\lam{x \, y} x)$ and $\snd{z} = z (\lam{x \,
+    y} y)$. Let $p = p^{+} \circ p^{-}$.
+  
+  Let $\retr{L}$ be the continuous lattice of retractions on~$L$.
+  There is a continuous pairing operation on~$\retr{L}$, defined by
+  %
+  \begin{equation*}
+    A \times B =
+    \lam{\annot{z}{L}} p^{+} \pair{
+       A (\fst{(p z)}),
+       B (\snd{(p z)})}.
+  \end{equation*}
+  %
+  The Sierpinski space $\Sierpinski$ is a retract of~$L$, with the
+  corresponding retraction $S: L \to L$
+  %
+  \begin{equation*}
+    S x = 
+    \begin{cases}
+      \bot & \text{if $x = \bot$} \\
+      \top & \text{if $x \neq \bot$}
+    \end{cases}
+  \end{equation*}
+  %
+  Let $P$ be the least retraction on $L$ satisfying the recursive
+  equation
+  %
+  \begin{equation*}
+    P = S \times P.
+  \end{equation*}
+  %
+  The retraction $P$ is the directed supremum of the chain of
+  retractions $P_0 \leq P_1 \leq \cdots$, defined by
+  %
+  \begin{align*}
+    P_0 &= \bot,
+    &
+    P_{k+1} &= S \times P_k.
+  \end{align*}
+  %
+  We abuse notation slightly and denote a retraction and its lattice
+  of fixed points with the same letter. Clearly $P_k \cong
+  \Sierpinski^k$ for every $k \in \NN$. Thus,~$P$ is isomorphic to the
+  limit/colimit of the chain
+  %
+  \begin{equation*}
+    \xymatrix@+1.5em{
+      {\bot} \ar@<0.5ex>[r] &
+      {\Sierpinski} \ar@<0.5ex>[l] \ar@<0.5ex>[r] &
+      {\Sierpinski^2} \ar@<0.5ex>[l] \ar@<0.5ex>[r] &
+      {\Sierpinski^3} \ar@<0.5ex>[l] \ar@<0.5ex>[r] &
+      {\cdots} \ar@<0.5ex>[l],
+    }
+  \end{equation*}
+  %
+  where the pairs of arrows between the stages are the canonical
+  section-retraction pairs between $\Sierpinski^k$ and
+  $\Sierpinski^{k+1}$.  The limit/colimit is the
+  lattice~$\Sierpinski^{\NN}$, which is isomorphic to~$\Scott$.
+\end{proof}
+
+\begin{corollary}
+  \label{th:reflexive_lattices_equivalent}%
+  Every two countably based reflexive continuous lattices are retracts 
+  of each other, hence they are equivalent as combinatory algebras.
+\end{corollary}
+
+\begin{proof}
+  If $L$ and $M$ are reflexive continuous lattices, then they are
+  retracts of each other because each is a retract of~$\Scott$, and $\Scott$
+  is a retract of each of them by
+  Proposition~\ref{th:PP_retract_of_reflexive_lattice}.  There are
+  section-retraction pairs
+                                %
+  \begin{align*}
+    &\xymatrix@+1.5em{
+      L \ar@<0.5ex>[r]^{\lambda^{+}} &
+      M \ar@{->>}@<0.5ex>[l]^{\lambda^{-}}
+      },
+    &
+    &\xymatrix@+1.5em{
+      M \ar@<0.5ex>[r]^{\mu^{+}} &
+      L \ar@{->>}@<0.5ex>[l]^{\mu^{-}}
+      }.
+  \end{align*}
+                                %
+  The applicative equivalence $L \sim M$ is witnessed by the sections
+  $\lambda^{+}$ and $\mu^{+}$. We omit the details.
+\end{proof}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "notes-on-realizability"
+%%% End:

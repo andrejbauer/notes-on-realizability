@@ -1702,16 +1702,16 @@ is the Baire space.
   \indexsee{PCA}{combinatory algebra, partial}%
   \indexsee{CA}{combinatory algebra, total}%
                                 %
-  A \defemph{partial combinatory algebra (PCA)} $(A, {\cdot})$ is a
-  set~$A$ with a
+  A \defemph{partial combinatory algebra (PCA)} $(\AA, {\cdot})$ is a
+  set~$\AA$ with a
                                 %
   \index{application!partial in PCA}%
   \indexsee{partial!application}{application, partial in PCA}%
                                 %
-  \emph{partial} binary operation ${\cdot} : A \times A \parto A$. We
+  \emph{partial} binary operation ${\cdot} : \AA \times \AA \parto \AA$. We
   usually write $x\, y$ instead of $x \cdot y$, and recall that
   application associates to the left. Furthermore, there must exist
-  $\combK, \combS \in A$ such that, for all $x, y, z \in A$,
+  $\combK, \combS \in \AA$ such that, for all $x, y, z \in \AA$,
   %
   \begin{equation}
     \label{eq:pca}%
@@ -1725,13 +1725,13 @@ is the Baire space.
   A \defemph{total combinatory algebra (CA)} is a PCA whose application
   is a total operation.
 
-  A \defemph{sub-PCA} of~$(A, {\cdot})$ is a subset $A' \subseteq A$
+  A \defemph{sub-PCA} of~$(\AA, {\cdot})$ is a subset $\subAA \subseteq \AA$
   which is closed under application, and there exist $\combK, \combS
-  \in A'$ such that~\eqref{eq:pca} is satisfied for all $x, y, z \in
-  A$.\sidenote{Read that carefully: the combinators $\combK$ and
-    $\combS$ must come from the subaglebra~$A'$ but they must have the
-    defining property with respect to~$A$, and so consequently also
-    with respect to $A'$.}
+  \in \subAA$ such that~\eqref{eq:pca} is satisfied for all $x, y, z \in
+  \AA$.\sidenote{Read that carefully: the combinators $\combK$ and
+    $\combS$ must come from the subaglebra~$\subAA$ but they must have the
+    defining property with respect to~$\AA$, and so consequently also
+    with respect to $\subAA$.}
 \end{definition}
 
 \noindent
@@ -1740,14 +1740,14 @@ come from? \Cref{th:combinatory-completeness} below explains
 that the reason for this definition is a property called
 \defemph{combinatory completeness}.
 %
-For a PCA $A$ we define \defemph{expressions over~$A$} inductively as
+For a PCA $\AA$ we define \defemph{expressions over~$\AA$} inductively as
 follows:
 %
 \begin{itemize}
-\item every $a \in A$ is an expression over~$A$,
-\item a variable is an expression over~$A$,
+\item every $a \in \AA$ is an expression over~$\AA$,
+\item a variable is an expression over~$\AA$,
 \item if $e_1$ and $e_2$ are expressions then $e_1 \cdot e_2$ is an
-  expression over~$A$.
+  expression over~$\AA$.
 \end{itemize}
 %
 Application associates to the left, $x \cdot y \cdot z = (x \cdot y) \cdot z$.
@@ -1756,9 +1756,9 @@ When no confusion can arise, we write $x \, y$ instead of $x \cdot y$.
 An expression is \defemph{closed} if it contains no variables. We say
 that a closed expression $e$ is \defemph{defined} and write $\defined{e}$
 when all applications in~$e$ are defined so that $e$ denotes an
-element of~$A$. More generally, if $e$ is an expression with variables
+element of~$\AA$. More generally, if $e$ is an expression with variables
 $x_1, \ldots, x_n$, we write $\defined{e}$ when, for all $a_1, \ldots,
-a_n \in A$, the closed expression
+a_n \in \AA$, the closed expression
 %
 \begin{equation*}
   \subst{e}{x_1 \subto a_1, \ldots, x_n \subto a_n}
@@ -1766,7 +1766,7 @@ a_n \in A$, the closed expression
 %
 is defined. If $e$ and $e'$ are expressions whose variables are among
 $x_1, \ldots, x_n$, we write $e \kleq e'$ when, for all $a_1, \ldots,
-a_n \in A$,
+a_n \in \AA$,
 %
 \begin{equation*}
   \subst{e}{x_1 \subto a_1, \ldots, x_n \subto a_n} \kleq
@@ -1775,10 +1775,10 @@ a_n \in A$,
 
 \begin{theorem}[Combinatory completeness]
   \label{th:combinatory-completeness}
-  Let $(A, {\cdot})$ be a PCA. For every variable $x$ and expression
-  $e$ over $A$ there is an expression $e'$ over $A$ whose variables
+  Let $(\AA, {\cdot})$ be a PCA. For every variable $x$ and expression
+  $e$ over $\AA$ there is an expression $e'$ over $\AA$ whose variables
   are those of~$e$ excluding~$x$ such that $\defined{e'}$ and $e'
-  \cdot a \kleq \subst{e}{x \subto a}$ for all $a \in A$.
+  \cdot a \kleq \subst{e}{x \subto a}$ for all $a \in \AA$.
 \end{theorem}
 
 \begin{proof}
@@ -1787,7 +1787,7 @@ a_n \in A$,
   \begin{enumerate}
   \item $\pcalam{x} x = \combS\, \combK\, \combK$,
   \item $\pcalam{x} y = \combK\, y$ if $y$ is a variable distinct from~$x$,
-  \item $\pcalam{x} a = \combK\, a$ if $a$ is an element of~$A$,
+  \item $\pcalam{x} a = \combK\, a$ if $a$ is an element of~$\AA$,
   \item $\pcalam{x}{e_1\, e_2} = \combS\, (\pcalam{x} e_1)\, (\pcalam{x} e_2)$
   \end{enumerate}
   %
@@ -1907,7 +1907,7 @@ In a PCA we can define functions by recursion by using the
   \combY &= X\, X.
 \end{alignat*}
 %
-These combinators satisfy, for all $f, x \in A$,
+These combinators satisfy, for all $f, x \in \AA$,
 %
 \begin{equation*}
   \combZ\, f \kleq f\, (\combZ\, f),
@@ -1929,7 +1929,7 @@ The combinator $\combZ$ can be used to implement primitive recursion on natural 
   \pcacomb{rec} &= \pcalam{x f m}{((\combZ\, R)\, x\, f\, m\, \combI)}.
 \end{align*}
 %
-It satisfies, for all $a, f \in A$ and $n \in \NN$,
+It satisfies, for all $a, f \in \AA$ and $n \in \NN$,
 %
 \begin{equation*}
   \pcacomb{rec}\, a\, f\, \numeral{0} = a,\qquad
@@ -1938,7 +1938,7 @@ It satisfies, for all $a, f \in A$ and $n \in \NN$,
 \end{equation*}
 
 \begin{exercise}
-  Implement the \defemph{minimization combinator $\combMin$}, which satisfies, for all $f \in A$ and $n \in \NN$,
+  Implement the \defemph{minimization combinator $\combMin$}, which satisfies, for all $f \in \AA$ and $n \in \NN$,
   %
   \begin{equation*}
     \combMin \, f = \numeral{n}
@@ -2030,7 +2030,7 @@ There are still many more partial combinatory algebras, but we shall have to sto
 \section{Typed partial combinatory algebras}
 \label{sec:tpcas}
 
-PCAs and theor models lack an important feature that most
+PCAs and their models lack an important feature that most
 real-world programming languages have, namely \emph{types} that impose
 well-formedness restrictions on programs. For instance, in a typical programming language we cannot meaningfully apply an  expression to itself because the typing discipline prevents us from doing so.
 
@@ -2048,22 +2048,22 @@ The operation $\to$ associates to the right, $s \to t \to u = s \to (t \to u)$.
 
 \begin{definition}
   A \defemph{typed partial combinatory algebra
-    (TPCA)} $A$ over a type system $\mathcal{T}$ consists of
+    (TPCA)} $\AA$ over a type system $\mathcal{T}$ consists of
   % 
   \begin{itemize}
-  \item a non-empty set $A_t$ for each $t \in \mathcal{T}$, and
-  \item a partial function $\cdot_{s,t} : A_{s \to t} \times A_s \to
-    A_t$, called \defemph{application}, for all $s, t \in \mathcal{T}$,
+  \item a non-empty set $\AA_t$ for each $t \in \mathcal{T}$, and
+  \item a partial function $\cdot_{s,t} : \AA_{s \to t} \times \AA_s \to
+    \AA_t$, called \defemph{application}, for all $s, t \in \mathcal{T}$,
   \end{itemize}
   %
   such that for all $s, t, u \in \mathcal{T}$ there exist elements
   % 
   \begin{align*}
-    \combK_{s,t} &\in A_{s \to t \to s}, \\
-    \combS_{s,t,u} &\in A_{(s \to t \to u) \to (s \to t) \to s \to u}, \\
-    \combPair_{s,t} &\in A_{s \to t \to s \times t}, \\
-    \combFst_{s,t} &\in A_{s \times t \to s}, \\
-    \combSnd_{s,t} &\in A_{s \times t \to t}.
+    \combK_{s,t} &\in \AA_{s \to t \to s}, \\
+    \combS_{s,t,u} &\in \AA_{(s \to t \to u) \to (s \to t) \to s \to u}, \\
+    \combPair_{s,t} &\in \AA_{s \to t \to s \times t}, \\
+    \combFst_{s,t} &\in \AA_{s \times t \to s}, \\
+    \combSnd_{s,t} &\in \AA_{s \times t \to t}.
   \end{align*}
   %
   We usually omit the types in subscripts and write $x \, y$ for $x \cdot_{s,t} y$.
@@ -2079,24 +2079,24 @@ The operation $\to$ associates to the right, $s \to t \to u = s \to (t \to u)$.
   % 
   We say that the elements $\combK_{s,t}$, $\combS_{s,t,u}$,
   $\combPair_{s,t}$, $\combFst_{s,t}$, $\combSnd_{s,t}$ are
-  \defemph{suitable} for~$A$ when they satisfy the above properties.
+  \defemph{suitable} for~$\AA$ when they satisfy the above properties.
 
   A \defemph{typed (total) combinatory algebra} is a TPCA whose application operations are total.
 \end{definition}
 
-We have required the sets $A_t$ to be non-empty. While this is not
+We have required the sets $\AA_t$ to be non-empty. While this is not
 strictly necessary, it simplifies several constructions.
 
 In a PCA the natural numbers may be encoded with the basic combinators as the Curry numerals. In a TPCA they are must be postulated separately.
 
 \begin{definition}
-  A \defemph{TPCA with numerals (N-TPCA)} is a TPCA $A$ in which there is a
+  A \defemph{TPCA with numerals (N-TPCA)} is a TPCA $\AA$ in which there is a
   type $\ttnat$ and elements
   % 
   \begin{align*}
-    \numeral{0}, \numeral{1}, \numeral{2}, \ldots &\in A_{\ttnat}, \\
-    \combSucc &\in A_{\ttnat \to \ttnat}, \\
-    \combRec_s &\in A_{s \to (\ttnat \to s \to s) \to \ttnat \to s}.
+    \numeral{0}, \numeral{1}, \numeral{2}, \ldots &\in \AA_{\ttnat}, \\
+    \combSucc &\in \AA_{\ttnat \to \ttnat}, \\
+    \combRec_s &\in \AA_{s \to (\ttnat \to s \to s) \to \ttnat \to s}.
   \end{align*}
   % 
   such that for all $x$, $f$ of appropriate types and all $n \in \NN$
@@ -2108,21 +2108,21 @@ In a PCA the natural numbers may be encoded with the basic combinators as the Cu
                                           f \, \numeral{n} \, (\combRec \, x \, f \, \numeral{n}).
   \end{align*}
   % 
-  We say that $\ttnat$, $\numeral{n}$, $\combSucc$, $\combRec$, and the numerals satisfying these properties are \defemph{suitable} for~$A$.
+  We say that $\ttnat$, $\numeral{n}$, $\combSucc$, $\combRec$, and the numerals satisfying these properties are \defemph{suitable} for~$\AA$.
 \end{definition}
 
-Note that $A_\ttnat$ may contain elements other than the numerals~$\numeral{n}$.
+Note that $\AA_\ttnat$ may contain elements other than the numerals~$\numeral{n}$.
 An N-TPCA has primitive recursion but may lack general recursion, so we need one more definition.
 
 \begin{definition}
   A \defemph{TPCA with numerals and general recursion (NR-TPCA)} is a
-  N-TPCA $A$ containing, for all types $s$ and $t$,
+  N-TPCA $\AA$ containing, for all types $s$ and $t$,
   % 
   \begin{equation*}
-    \combFix_{s,t} \in A_{((s \to t) \to (s \to t)) \to (s \to t)}
+    \combFix_{s,t} \in \AA_{((s \to t) \to (s \to t)) \to (s \to t)}
   \end{equation*}
   % 
-  such that, for all $f \in A_{(s \to t) \to (s \to t)}$ and $x \in A_s$,
+  such that, for all $f \in \AA_{(s \to t) \to (s \to t)}$ and $x \in \AA_s$,
   % 
   \begin{equation*}
     \defined{\combFix \, f}
@@ -2130,28 +2130,28 @@ An N-TPCA has primitive recursion but may lack general recursion, so we need one
     \combFix \, f \, x \klgeq f \, (\combFix\, f) \, x.
   \end{equation*}
   % 
-  Such a $\combFix_{s,t}$ is \defemph{suitable} for~$A$.
+  Such a $\combFix_{s,t}$ is \defemph{suitable} for~$\AA$.
 \end{definition}
 
 The relevant notion of substructure is as follows.
 
 \begin{definition}
-  A \defemph{sub-TPCA} $A'$ of a TPCA~$A$ is a collection of non-empty
-  subsets $A'_t \subseteq A_t$, for each $t \in \mathcal{T}$, such that
-  applications in~$A$ restrict to~$A'$, and there exist elements
+  A \defemph{sub-TPCA} $\subAA$ of a TPCA~$\AA$ is a collection of non-empty
+  subsets $\subAA_t \subseteq \AA_t$, for each $t \in \mathcal{T}$, such that
+  applications in~$\AA$ restrict to~$\subAA$, and there exist elements
   $\combK_{s,t}$, $\combS_{s,t,u}$, $\combPair_{s,t}$, $\combFst_{s,t}$,
-  and $\combSnd_{s,t}$ in~$A'$ of
-  appropriate types which are suitable for~$A$.
+  and $\combSnd_{s,t}$ in~$\subAA$ of
+  appropriate types which are suitable for~$\AA$.
 
   The notions of \defemph{sub-N-TPCA}
   and \defemph{sub-NR-TPCA} are defined analogously.
 \end{definition}
 
 The basic theory of typed PCAs follows the theory of untyped PCAs.
-\defemph{Expressions over $A$} are defined inductively:
+\defemph{Expressions over $\AA$} are defined inductively:
 %
 \begin{enumerate}
-\item every $a \in A_t$ is a an expression of type $t$, called a
+\item every $a \in \AA_t$ is a an expression of type $t$, called a
   \defemph{primitive constant},
 \item an annotated variable $\annot{x}{t}$ is an expression of type~$t$,
 \item if $e_1$ is an expression of type $s \to t$ and $e_2$ is an
@@ -2165,17 +2165,17 @@ constants with their types), so that every expression has at most one type.
 
 A closed expression $e$ of type~$t$ is defined, written $\defined{e}$,
 when all applications appearing in it are defined. Such an expression
-denotes an element of~$A_t$. If $e$ contains variables
+denotes an element of~$\AA_t$. If $e$ contains variables
 $\annot{x_1}{t_1}, \ldots, \annot{x_n}{t_n}$, we write $\defined{e}$
 when $\subst{e}{x_1 \subto a_1, \ldots, x_n \subto a_n}$ is defined
-for all $a_1 \in A_{t_1}, \ldots, a_n \in A_{t_n}$.
+for all $a_1 \in \AA_{t_1}, \ldots, a_n \in \AA_{t_n}$.
 
 \begin{theorem}[Combinatory completeness]
-  Let $A$ be a TPCA. For every expression $e$ over~$A$ of type~$u$ and
+  Let $\AA$ be a TPCA. For every expression $e$ over~$\AA$ of type~$u$ and
   every variable $\annot{x}{t}$ there is an expression $e'$ of type $t
   \to u$ whose variables are those of~$e$ excluding~$\annot{x}{t}$
   such that $\defined{e'}$ and $e' \cdot a \kleq \subst{e}{x \subto
-    a}$ for all $a \in A_t$.
+    a}$ for all $a \in \AA_t$.
 \end{theorem}
 
 \begin{proof}
@@ -2204,7 +2204,7 @@ for all $a_1 \in A_{t_1}, \ldots, a_n \in A_{t_n}$.
 Every PCA is an NR-TPCA if we enrich it with the trivial types system
 that contains a single type, $\mathcal{T} = \set{\star}$ with (the
 only possible) operations $\star \times \star = \star \to \star =
-\star$, and $A_\star = A$. The required combinators are the ones we
+\star$, and $\AA_\star = \AA$. The required combinators are the ones we
 defined in \cref{sec:pcas}, we just need to sprinkle $\star$ on
 $\combK$ and $\combS$ everywhere.
 
@@ -2286,7 +2286,7 @@ The \defemph{pure simply typed $\lambda$-calculus} has only a single ground
 type~$o$ and no primitive constants.
 
 The simply typed $\lambda$-calculus is a TPCA whose types are those of the
-calculus. For a type $t$ we take $A_t$ to be the set of closed
+calculus. For a type $t$ we take $\AA_t$ to be the set of closed
 expressions of type~$t$, quotiented by the least equivalence relation
 generated by $\eta$- and $\beta$-reduction and the rules for the unit,
 projections, pairing, and primitive constants.
@@ -2315,7 +2315,7 @@ We also add two further equations
 %
 This gives us an N-TPCA~$T$ with numerals defined by $\numeral{0} = 0$
 and $\numeral{n+1} = \combSucc \, \numeral{n}$. More precisely, the
-elements of $A_t$ are the closed expressions of type~$t$, quotiented by
+elements of $\AA_t$ are the closed expressions of type~$t$, quotiented by
 the equivalence relation generated by the equational rules of the simply typeda
 $\lambda$-calculus and primitive recursion.
 
@@ -2405,12 +2405,6 @@ Giving a mathematically precise definition of a practical programming language i
 
 For example, we could define a call-by-value PCF that captures the purely functional aspects of ML~languages (SML, OCaml, F\#), and possibly incorporate in it    computational effects (exceptions, mutable state, input-output). 
 The interested reader should consult the work of John Longley~\sidecite{longley99:_unify_typed_and_untyp_realiz,longley99:_match} to see examples of PCF extended with computational effects, and to learn about general models of computation~\sidecite{longley14:_comput} that subsume combinatory algebras.
-
-
-\section{Applicative morphisms}
-\label{sec:appl-morph}
-
-
 
 
 %%% Local Variables: 
