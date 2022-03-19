@@ -1,247 +1,198 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Comparing models of computations}
-\label{sec:comparing-models}%
+\section{Simulations}
+\label{sec:simulations}%
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+If you open a book on computability theory, chances are that you will find a statement saying that ``models of computation are equivalent''. The claim refers to a collection of specific models of computation, such as variations of Turing machines, $\lambda$-calculi, recursive functions, and others.. The book supports the claim by describing ad hoc simulations between such models, with varying degrees of detail, after which it hurries on to core topics of computability theory. An opportunity is missed to ask about a general notion of computation, and the overall structure of models and simulations.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+We seize the opportunity and do ask that such a notion be provided. An excellent one was given by John Longley~\sidecite{Longley:94}, namely \emph{applicative morphism} of PCAs. We extend his definition to account for PCAs with sub-PCAs, and dare rename it to \emph{simulation}. There are also applicative morphisms between TPCAs~\cite{longley99:_match}, but we stick to the untyped version for simplicity.
 
-%
-In Chapter~\ref{cha:mod_over_topological_pcas} we are going to compare
-categories of modest sets on various PCAs. This is done most easily by
-using John Longley's theory of \emph{applicative morphisms} between
-PCAs. We extend his definition to applicative morphisms between PCAs
-with subPCAs. We also recall the basic results about applicative
-morphisms and the induced functors between categories of modest sets.
-See~\cite[Chapter 2]{Longley:94} for further material on this topic.
-Let us first state the original definition.
-
-\begin{definition}[John Longley]
-  \label{def:longley_applicative_morphism}%
-  \cite[Definition 2.1.1]{Longley:94}
+\begin{definition}
+  \label{def:simulation}%
   %
   \indexsee{morphism!applicative}{applicative, morphism}%
   \indexdef{applicative!morphism}%
+  \indexdef{simulation}%
   %
-  Let $\EE$ and $\FF$ be PCAs.  An \emph{applicative morphism}
-  $\rho: \EE \pcato \FF$ is a total\footnote{A relation $\rho$ is
-    total when $\all{x} \some{y} \rho(x,y)$.} relation $\rho
-  \subseteq \EE \times \FF$ for which there exists $r \in \FF$ such
-  that, for all $u, v \in \EE$, $x, y \in \FF$,
+  A \defemph{simulation}, originally an \defemph{applicative morphism}~\cite{Longley:94},
+  $\rho: \EE \pcato \FF$ between PCAs~$\EE$ and~$\FF$ is a total relation $\rho
+  \subseteq \EE \times \FF$ for which there exists a \defemph{realizer} $r \in \FF$
   %
-  (a) if $\rho(u, x)$ then $\defined{r \cdot x}$, and
+  \indexdef{realizer!for applicative morphism}%
+  \indexdef{applicative!morphism!realizer for}%
+  \indexdef{realizer!for simulation}%
+  \indexdef{simulation!realizer for}%
   %
-  (b) if $\rho(u, x) \land \rho(u, y)$ and $\defined{u \cdot v}$ then
-  $\defined{r \cdot x \cdot y} \land \rho(u \cdot v, r \cdot x \cdot
-  y)$.
+  such that, for all $u, v \in \EE$ and $x, y \in \FF$,
+  %
+  \begin{itemize}
+  \item if $\rho(u, x)$ then $\defined{r \, x}$ and
+  \item if $\rho(u, x)$, $\rho(u, y)$ and $\defined{u \, v}$ then
+    $\defined{r \, x \, y}$ and $\rho(u \, v, r \, x \, y)$.
+  \end{itemize}
+  %
+  We write $\rho[u] = \set{x \in \FF \such \rho(u, x)}$.
 
-  \index{realizer!for applicative morphism}%
-  \index{applicative!morphism!realizer for}%
-  %
-  We write $\rho(u) = \set{x \in \FF \such \rho(u, x)}$.
-  We say that~$r$ \emph{realizes} the morphism~$\rho$. When $\rho$ is
-  an applicative morphism we write $\rho: \EE \pcato \FF$.
+  A \defemph{simulation} $\rho: (\EE, \subEE) \pcato (\FF, \subFF)$ between PCAs with subPCAs is a simulation
+  $\rho : \EE \pcato \FF$ which has a realizer $r \in \subFF$, and which restricts to a simulation
+  $\rho : \subEE \pcato \subFF$, with the same realizer~$r$.
 \end{definition}
 
-One might expect that a morphism of PCAs ought to be a map $f: \EE
-\to \FF$ such that $f \combK_\EE = \combK_\FF$, $f \combS_\FF =
-\combS_\FF$, and $f (x \cdot y) \kleq (f x) \cdot (f y)$. This is how
-an algebraist would define a morphism of PCAs. However, we are
-interested in computational aspects of PCAs, not the algebraic ones.
+We take a simulation $\rho : \EE \pcato \EE$ to be a total relation rather than a function because there might be many ways to simulate an element of $\EE$ in $\FF$, without any one being canonical or preferred. The notation $\rho[u]$ suggests that~$\rho$ is construed as a multi-valued map rather than a mere relation.
 %
-An applicative morphism $\EE \pcato \FF$ is best viewed as an
-\emph{implementation} of~$\EE$ within~$\FF$. Then $\rho(u, x)$ is
-understood as ``$x$ is a $\rho$-implementation of~$u$''. The realizer
-$r \in \FF$ in the above definition implements the application
-of~$\EE$ in~$\FF$. An applicative morphism is allowed to be a
-relation rather than a function because there might be many
-implementations of $u \in \EE$, and there might be no canonical way of
-choosing one of them.
+The realizer $r \in \FF$ for~$\rho$ is an implementation of an interpreter for~$\EE$ in~$\FF$.
 
-For the purposes of studying computability, we need a notion of
-applicative morphisms between PCAs \emph{with subPCAs}. We extend
-Longley's notion of applicative morphisms as follows.
+One might expect that a simulation ought to be a map $f : \EE \to \FF$ such that $f(\combK_\EE) = \combK_\FF$, $f(\combS_\FF) = \combS_\FF$, and $f (x \cdot y) \kleq (f x) \cdot (f y)$. This is how an algebraist would define a morphism, but we are interested in the computational aspects of PCAs, not the algebraic ones.
 
-\begin{definition}
-  \label{def:applicative_morphism}%
-  %
-  \indexdef{applicative!morphism}%
-  %
-  Let $\subEE \subseteq \EE$ and $\subFF \subseteq \FF$ be PCAs with
-  subPCAs. An \emph{applicative morphism} $\rho: (\EE, \subEE)
-  \pcato (\FF, \subFF)$ is a total relation $\rho \subseteq \EE \times 
-  \FF$ such that:
-  %
-  (a)
-                                %
-  for all $u \in \subEE$ there exists $x \in \subFF$ such that
-  $\rho(u, x)$, and
-                                %
-  (b)
-                                %
-  there exists $r \in \subFF$ such that, for all $u, v \in \EE$, $x, y
-  \in \FF$, if $\rho(u, x)$ then $\defined{r \cdot x}$, and if $\rho(u,
-  x)$, $\rho(u, y)$ and $\defined{u \cdot v}$ then $\defined{r \cdot x \cdot y}$ and $\rho(u \cdot v, r \cdot x \cdot y)$.
-\end{definition}
-
-If $\rho: (\EE, \subEE) \pcato (\FF, \subFF)$ is an applicative
-morphism, then $\rho$ is an applicative morphism from~$\EE$ to~$FF$ in
-the sense of Definition~\ref{def:longley_applicative_morphism}, and
-also the restriction of~$\rho$ to $\subEE \times \subEE$ is an
-applicative morphism from~$\subEE$ to~$\subFF$ in the sense of
-Definition~\ref{def:longley_applicative_morphism}.
-
-\index{applicative!morphism!composition of}%
-\index{composition!of applicative morphisms}%
+\index{simulation!composition of}%
+\index{composition!simulations}%
 %
-Applicative morphisms can be composed in the usual way as relations.
+Simulations can be \defemph{composed} as relations.
 If $\rho: (\EE, \subEE) \pcato (\FF, \subFF)$ and $\sigma: (\FF,
 \subFF) \pcato (\GG, \subGG)$ then $\sigma \circ \rho: (\EE, \subEE)
-\pcato (\GG, \subGG)$ is defined, for $u \in \EE$, $s \in \GG$, by
+\pcato (\GG, \subGG)$ is defined, for $x \in \EE$ and $z \in \GG$, by
 %
 \begin{equation*}
-  \sigma \circ \rho (u, s)
+  z \in (\sigma \circ \rho)[x]
   \iff
-  \some{x \in \FF}{\rho(u, x) \land \sigma(x, s)}.
+  \some{y \in \FF} y \in \rho[x] \land z \in \sigma[y].
 \end{equation*}
-%
-The identity applicative morphism $\id{(\EE, \subEE)}: (\EE,
-\subEE) \to (\EE, \subEE)$ is the identity relation on~$\EE$.
 
-If we take PCAs with subPCAs as objects and applicative morphisms as
-morphisms, we obtain a category that can be preorder-enriched as
-follows~\cite[Proposition 2.1.6]{Longley:94}.
+\begin{exercise}
+  Show that $\sigma \circ \rho$ is realized if $\rho$ and $\sigma$ are.
+\end{exercise}
+
+The identity simulation $\id[(\EE, \subEE)]: (\EE,
+\subEE) \to (\EE, \subEE)$ is the identity relation on~$\EE$. It is realized by $\pcalam{x\,y} x \, y$.
+
+PCAs with subPCAs and simulations therefore form a category, which is preoder enriched\sidenote{A category $\mathcal{C}$ is \defemph{preorder enriched} if hom-sets $\mathcal{C}(X,Y)$ are equipped with preorders (reflexive and transitive relations) under which composition is monotone.}
 %
-\indexdef{category!of applicative morphisms}%
-\index{translation, of applicative morphisms}%
-\index{equivalence!applicative, of PCAs}%
-\indexsee{applicative!equivalence}{equivalence, applicative}%
+\indexdef{category!of simulations}%
+\index{translation, of simulations}%
+\index{equivalence!of PCAs}%
 %
-There is a preorder~$\preceq$ on applicative morphisms $(\EE, \subEE)
-\pcato (\FF, \subFF)$. If~$\rho$ and~$\sigma$ are such applicative
-morphisms, we define $\rho \preceq \sigma$ to hold if, and only if,
-there exists $t \in \subFF$ such that, for all $u \in \EE$, $x \in
-\FF$, $\rho(u, x)$ implies $\defined{t \cdot x}$ and $\sigma(u, t \cdot x)$. We think
-of~$t$ as a \emph{translation} of $\rho$-implementations into
-$\sigma$-implementations. We write $\rho \sim \sigma$ when $\rho
-\preceq \sigma$ and $\sigma \preceq \rho$. We say that $(\EE, \subEE)$
-and $(\FF, \subFF)$ are \emph{equivalent} when there exist applicative
-morphisms
-                                %
+Given $\rho, \sigma : (\EE, \subEE) \pcato (\FF, \subFF)$, define $\rho \preceq \sigma$ to hold when
+there exists $t \in \subFF$ such that, for all $x \in \EE$ and $y \in \rho[x]$, $\defined{t \, x}$ and $\sigma(x, t \, y)$.
+Think of~$t$ as a \defemph{translation} of $\rho$-simulations to
+$\sigma$-simulations.
+
+\begin{exercise}
+  Given $\rho, \rho' : (\EE, \subEE) \pcato (\FF, \subFF)$ and $\sigma, \sigma' : (\FF, \subFF) \pcato (\GG, \subGG)$, show that if $\rho \preceq \rho'$ and $\sigma \preceq \sigma'$ then $\sigma \circ \rho \preceq \sigma' \circ \rho'$.
+\end{exercise}
+
+We write $\rho \sim \sigma$ when $\rho \preceq \sigma$ and $\sigma \preceq \rho$. An \defemph{equivalence of PCAs}
+$(\EE, \subEE)$ and $(\FF, \subFF)$ is a pair of simulations
+%
 \begin{align*}
   \delta &: (\EE, \subEE) \pcato (\FF, \subFF),
   &
   \gamma &: (\FF, \subFF) \pcato (\EE, \subEE),
 \end{align*}
-                                %
+%
 such that $\gamma \circ \delta \sim \one_\EE$ and $\delta \circ \gamma
 \sim \one_\FF$.
 
+We identify several useful properties of simulations. These are related to the properties of functors induced by simulations, see~\cref{sec:applicative-functors}.
+
+
 \begin{definition}
-  Let $\rho: (\EE, \subEE) \to (\FF, \subFF)$ be an applicative
-  morphism:
+  A simulation $\rho: (\EE, \subEE) \to (\FF, \subFF)$ is
   %
-  \indexdef{applicative!morphism!discrete}%
-  \indexdef{applicative!morphism!projective}%
-  \indexdef{applicative!morphism!decidable}%
-  \indexdef{discrete!applicative morphism}%
-  \indexdef{projective!applicative morphism}%
-  \indexdef{decidable!applicative morphism}%
+  \indexdef{simulation!discrete}%
+  \indexdef{simulation!projective}%
+  \indexdef{simulation!decidable}%
+  \indexdef{discrete!simulation}%
+  \indexdef{projective!simulation}%
+  \indexdef{decidable!simulation}%
   %
   \begin{enumerate}
-  \item[(1)] $\rho$ is \emph{discrete} when, for all $u, v \in \EE$,
-    $x \in \FF$, if $\rho(u, x)$ and $\rho(v, x)$ then $u = v$.
-  \item[(2)] $\rho$ is \emph{projective} when there is a single-valued
-    applicative morphism\footnote{In other words, $\rho'$ is a
-      function.} $\rho'$ such that $\rho' \sim \rho$.
-                                %
-  \item[(3)] $\rho$ is \emph{decidable} when there is $d \in \subFF$,
+  \item \defemph{discrete} when, for all $x, y \in \EE$ if $\rho[x] \cap \rho[y]$ is in inhabited then
+    $x = y$.
+
+  \item \defemph{projective} when there is a single-valued
+    simulation (a function) $\rho'$ such that $\rho' \sim \rho$.
+
+  \item \defemph{decidable} when there is $d \in \subFF$,
     called the
     %
     \indexdef{decider}%
     %
-    \emph{decider} for~$\rho$, such that, for all $x \in
+    \defemph{decider} for~$\rho$, such that, for all $x \in
     \FF$,
-                                %
+    %
     \begin{align*}
-      \rho(\combTrue_\EE, x) &\lthen d \cdot x = \combTrue_\FF,
-      &
-      \rho(\combFalse_\EE, x) &\lthen d \cdot x = \combFalse_\FF.
+      x \in \rho[\combTrue_\EE] &\implies d \, x = \combTrue_\FF,
+      \\
+      x \in \rho[\combFalse_\EE] &\implies d \, x = \combFalse_\FF.
     \end{align*}
   \end{enumerate}
 \end{definition}
 
+In words, a simulation $\rho$ is discrete when no two elements share a simulation, projective when it is equivalent to a function, and decidable when the boolean values are simulated by values that can ne decoded as booleans in the codomain.
 
+\begin{exercise}
+  Say that a simulation $\rho: (\EE, \subEE) \to (\FF, \subFF)$ \defemph{preserves numerals}
+  when there is $c \in \subFF$ such that, for all $n \in \NN$ and $x \in \FF$,
+  %
+  \begin{equation*}
+    x \in \rho[\overline{n}_\EE] \implies c \, x = \overline{n}_\FF.
+  \end{equation*}
+  %
+  Does a decidable simulation preserve numerals, and vice versa?
+\end{exercise}
+
+The preorder enrichment induces a notion of adjunction of simulations.
 
 \begin{definition}
-  \cite[Definition 2.5.1]{Longley:94}
   %
-  \index{applicative!morphism!adjoint pair of}%
-  \index{adjunction!applicative}%
+  \index{simulation!adjoint pair of}%
+  \index{adjunction!simulation}%
   %
-  An \emph{adjoint pair} of applicative morphisms
-                                %
-  \begin{equation*}
-    (\gamma \dashv \delta): (\EE, \subEE) \pcato (\FF, \subFF)
-  \end{equation*}
-                                %
-  consists of a pair of applicative morphisms
-                                %
+  Simulations
+  %
   \begin{align*}
     \delta &: (\EE, \subEE) \pcato (\FF, \subFF),
     &
     \gamma &: (\FF, \subFF) \pcato (\EE, \subEE),
   \end{align*}
-                                %
-  such that $\one_{\FF} \preceq \delta \circ \gamma$ and $\gamma \circ
-  \delta \preceq \one_{\EE}$. We say that~$\gamma$ is \emph{left
-    adjoint} to~$\delta$, or that~$\delta$ is \emph{right adjoint}
+  %
+  form an \defemph{adjunction}, written $\gamma \dashv \delta$, when
+  %
+  $\one_{\FF} \preceq \delta \circ \gamma$ and $\gamma \circ
+  \delta \preceq \one_{\EE}$. We say that~$\gamma$ is \defemph{left
+    adjoint} to~$\delta$, or that~$\delta$ is \defemph{right adjoint}
   to~$\gamma$.
+
+  \indexdef{simulation!inclusion}%
+  \indexdef{simulation!retraction}%
+  \indexsee{inclusion!simulation}{simulation, inclusion}%
+  \indexsee{retraction!simulation}{simulation, retraction}%
+  %
+  Such an adjoint pair is an \defemph{inclusion} when $\gamma \circ \delta \sim \id[\EE]$, and a
+  \defemph{retraction} when $\delta \circ \gamma \sim \one_\FF$.
 \end{definition}
 
-
-\begin{definition}
-  \cite[Definition 2.5.2]{Longley:94}
-  %
-  \indexdef{applicative!inclusion}%
-  \indexdef{applicative!retraction}%
-  \indexsee{inclusion!applicative}{applicative, inclusion}%
-  \indexsee{retraction, applicative}{applicative, retraction}%
-  %
-  Suppose $(\gamma \dashv
-  \delta): (\EE, \subEE) \pcato (\FF, \subFF)$ is an adjoint pair.
-  We say that $(\gamma, \delta)$ is an \emph{applicative inclusion}
-  when $\gamma \circ \delta \sim \id[\EE]$, and an \emph{applicative
-    retraction} when $\delta \circ \gamma \sim \one_\FF$.
-\end{definition}
-
+To show how the above definitions can be put to work, we recall several basic results of John Longley's.
 
 \begin{theorem}
-  \label{th:applicative_morphisms_properties2}%
-  \textnormal{\cite[Theorem 2.5.3]{Longley:94}}
-  Suppose $\delta: (\EE, \subEE) \pcato (\FF, \subFF)$ and
-  $\gamma: (\FF, \subFF) \pcato (\EE, \subEE)$ are applicative
-  morphisms.
-                                %
+  \label{th:simulation-properties2}%
+  For simulations $\delta: (\EE, \subEE) \pcato (\FF, \subFF)$ and
+  $\gamma: (\FF, \subFF) \pcato (\EE, \subEE)$:
+  %
   \begin{enumerate}
-  \item[(1)]
+  \item
     If $\gamma \circ \delta \preceq \id[\EE]$ then $\delta$ is discrete 
     and $\gamma$ is decidable.
-  \item[(2)]
-    If $\gamma \dashv \delta$ then $\gamma$ is also projective.
+  \item
+    If $\gamma \dashv \delta$ then $\gamma$ is projective.
   \end{enumerate}
 \end{theorem}
 
 \begin{proof}
-  The proof of \cite[Theorem 2.5.3]{Longley:94} is stated for
-  applicative morphisms, as defined by
-  Definition~\ref{def:longley_applicative_morphism}, but it works just
-  as well with Definition~\ref{def:applicative_morphism}.
+  See \cite[Theorem 2.5.3]{Longley:94}.
 \end{proof}
 
 \begin{corollary}
-  \label{th:corollary1_applicative_morphisms_properties}%
-  If $(\gamma \dashv \delta)$ is a retraction then both~$\delta$
+  \label{th:simulation-properties}%
+  If $\gamma \dashv \delta$ is a retraction then both~$\delta$
   and~$\gamma$ are discrete and decidable, and~$\gamma$ is projective.
 \end{corollary}
 
@@ -250,7 +201,7 @@ such that $\gamma \circ \delta \sim \one_\EE$ and $\delta \circ \gamma
 \end{proof}
 
 \begin{corollary}
-  \label{th:corollary2_applicative_morphisms_properties}%
+  \label{th:simulation-properties-more}%
   If $(\EE, \subEE)$ and $(\FF, \subFF)$ are equivalent PCAs, then the 
   there exist an equivalence
                                 %
@@ -265,14 +216,18 @@ such that $\gamma \circ \delta \sim \one_\EE$ and $\delta \circ \gamma
 
 \begin{proof}
   Both $\delta$ and $\gamma$ are projective by
-  Theorem~\ref{th:applicative_morphisms_properties2}.
+  \cref{th:simulation-properties2}.
 \end{proof}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Let us now look at examples of simulations between PCAs.
 
-Let us now look at examples of applicative morphisms between PCAs.
 
-\subsection{Applicative Adjunction between $\klone$ and $\comp{\Scott}$}
+\subsection{Applicative adjunction between $\klone$ and $\lambda$-calculus}
+\label{ex:pcamorphism-K1-lambda}%
+
+
+
+\subsection{Applicative adjunction between $\klone$ and $\comp{\Scott}$}
 \label{ex:pcamorphism_K1_RE}%
 
 \indexsee{applicative!adjunction}{adjunction, applicative}%
@@ -302,7 +257,7 @@ details.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\subsection{Applicative Retraction from $(\Scott, \comp{\Scott})$ to
+\subsection{Applicative retraction from $(\Scott, \comp{\Scott})$ to
   $(\Baire, \comp{\Baire})$}
 \label{sec:applicative_retraction_PP_BB}%
 
@@ -421,7 +376,7 @@ We construct an applicative inclusion
                                 %
 with the additional property that~$\eta$ is discrete. The applicative
 morphism~$\zeta$ is discrete by
-Theorem~\ref{th:applicative_morphisms_properties2}(1). By the Effective
+Theorem~\ref{th:simulation-properties2}(1). By the Effective
 Embedding Theorem~\ref{th:effective_embedding_theorem} there exists a
 computable embedding $\eta: \UU \to \Scott$. Specifically,~$\eta$ is
 defined by
