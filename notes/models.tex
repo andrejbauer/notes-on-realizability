@@ -1958,9 +1958,12 @@ With these combinators every general recursive function may be implemented in a~
 The models of computation that we have considered so far are all
 examples of partial combinatory algebras.
 
-\subsubsection{The first Kleene Algebra}
+\subsubsection[\texorpdfstring%
+{The first Kleene Algebra $\klone$}%
+{The first Kleene Algebra K1}%
+]{The first Kleene Algebra~$\klone$}
 
-Turing machines, or more precisely their codes, form a PCA $(\NN, {\cdot})$ whose
+Turing machines, or more precisely their codes, form a PCA $\klone = (\NN, {\cdot})$ whose
 application is defined as $m \cdot n = \pr{m}{n}$. Because $m \cdot n$ can be easily
 confused with multiplication, we also write application with Kleene's notation~$\set{m}(n)$.
 
@@ -1977,7 +1980,11 @@ $\pr{r(x,y)}{z} = g(x,y,z)$. Another application of the smn theorem
 yields a computable function $q : \NN \to \NN$ such that $\pr{q(x)}{y}
 = r(x,y)$. Take $\combS$ to be any number such that $q = \xpr_\combS$.
 
-\subsubsection{The second Kleene Algebra}
+
+\subsubsection[\texorpdfstring%
+{The second Kleene Algebra $\Baire$}%
+{The second Kleene Algebra B}%
+]{The second Kleene Algebra~$\Baire$}
 
 The Baire space~$\Baire$, is a PCA $(\Baire, {\mid})$ whose application is $\alpha \mid \beta = \xfpr{\alpha}{\beta}$, as defined in~\eqref{eq:type2-encoding}. The combinators $\combK$ and $\combS$ exists by \cref{th:type-2-utm,th:type-2-smd}, analogously to the first Kleene algebra.
 
@@ -1990,8 +1997,10 @@ with carrier~$\Baire$, and the \defemph{computable} one, whose carrier
 %
 consists only of the computable sequences. Because $\combK$ and $\combS$ obtained above are computable, $\comp{\Baire}$ is a sub-PCA of $\Baire$.
 
-
-\subsubsection{The untyped $\lambda$-calculus}
+\subsubsection[\texorpdfstring%
+{The untyped $\lambda$-calculus}%
+{The untyped lambda-calculus}%
+]{The untyped $\lambda$-calculus}
 
 The closed expressions of the untyped $\lambda$-calculus form a
 (total) combinatory algebra whose application is the one from
