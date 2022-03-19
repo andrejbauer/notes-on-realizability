@@ -11,18 +11,18 @@ other models of computation. Turing's notion of computability is very
 robust. Firstly, it is robust because changes to the definition of
 Turing machines, such as increasing the number of tapes or heads, or
 allowing the head to jump around, does not change the computational
-power. Secondly, the notion is robust because many other definitions
-of computation turned out to be equivalent to Turing's in the sense
-that machines of one kind can simulate those of the other kind, and
-vice versa.
+power. Secondly, the notion is robust because many other models of
+computation turned out to be equivalent to Turing's in the sense
+that they can simulate Turing machines, and can simulated by them.
 
-However, we would commit a mistake if we concluded that by
-studying only Turing machines we will learn everything there is to
-learn about computable mathematics. Our inquiry into the nature of
-computation, especially computation with infinite structures, will
-reveal a plethora of possibilities which are \emph{not} equivalent.
-Thus we begin the chapter with a review of several well-known models of
-computation other than Turing machines.
+However, it would be wrong to conclude that other models can be safely ignored. Once a precise definition of simulation
+is given in \cref{sec:comparing-models}, it will turn out that there is more to equivalence of computational models than mutual simulation.
+
+We begin our investigations with a review of models of computation other than Turing machines. After having seen several examples, we take \emph{(typed) partial combinatory algebras} as the common unifying notion that is well-suited for the later development.
+%
+There are of course interesting models of computation that fall oustide of our framework.
+For example, even though partical combinatory algebras can incorporate certain specific computational effects~\sidecite{longley99:_unify_typed_and_untyp_realiz,longley99:_match}, it is not clear how to give a systematic account of ``effectful TPCAs''. John Longley~\sidecite{longley14:_comput} investigated more general structures that do.
+
 
 
 \section{Turing machines}
@@ -2396,15 +2396,6 @@ We write $f$ instead of $\mathtt{func}_f$ when no confusion can arise.
 
 The resulting NR-TPCA is denoted as $\PCFinf$. The original $\PCF$ is a sub-NR-TPCA of~$\PCFinf$.
 
-\subsection{Other models of computation}
-\label{sec:other-models}
-
-Are the real world-programming languages models of computation, too? On one hand they must be because we use them to carry out \emph{actual} computations. On the other hand they often lack precise formal definitions that would allow us to treat them as mathematical entities.
-
-Giving a mathematically precise definition of a practical programming language is a lot of work, as can be testified by the authors of Standard ML~\sidecite{MilnerR:defsml}. Luckily, for our purposes we only need to formalize a small core language that captures the ``essence''.
-
-For example, we could define a call-by-value PCF that captures the purely functional aspects of ML~languages (SML, OCaml, F\#), and possibly incorporate in it    computational effects (exceptions, mutable state, input-output). 
-The interested reader should consult the work of John Longley~\sidecite{longley99:_unify_typed_and_untyp_realiz,longley99:_match} to see examples of PCF extended with computational effects, and to learn about general models of computation~\sidecite{longley14:_comput} that subsume combinatory algebras.
 
 
 %%% Local Variables: 
