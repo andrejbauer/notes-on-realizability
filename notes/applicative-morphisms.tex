@@ -12,7 +12,7 @@ We seize the opportunity and do ask that such a notion be provided. An excellent
   \indexdef{applicative!morphism}%
   \indexdef{simulation}%
   %
-  A \defemph{simulation}, originally an \defemph{applicative morphism}~\cite{Longley:94},
+  A \defemph{(PCA) simulation}, originally an \defemph{applicative morphism}~\cite{Longley:94},
   $\rho: \EE \pcato \FF$ between PCAs~$\EE$ and~$\FF$ is a total relation $\rho
   \subseteq \EE \times \FF$ for which there exists a \defemph{realizer} $r \in \FF$
   %
@@ -31,16 +31,16 @@ We seize the opportunity and do ask that such a notion be provided. An excellent
   %
   We write $\rho[u] = \set{x \in \FF \such \rho(u, x)}$.
 
-  A \defemph{simulation} $\rho: (\EE, \subEE) \pcato (\FF, \subFF)$ between PCAs with subPCAs is a simulation
+  A \defemph{(subPCA) simulation} $\rho: (\EE, \subEE) \pcato (\FF, \subFF)$ between PCAs with subPCAs is a simulation
   $\rho : \EE \pcato \FF$ which has a realizer $r \in \subFF$, and which restricts to a simulation
   $\rho : \subEE \pcato \subFF$, with the same realizer~$r$.
 \end{definition}
 
-We take a simulation $\rho : \EE \pcato \EE$ to be a total relation rather than a function because there might be many ways to simulate an element of $\EE$ in $\FF$, without any one being canonical or preferred. The notation $\rho[u]$ suggests that~$\rho$ is construed as a multi-valued map rather than a mere relation.
-%
-The realizer $r \in \FF$ for~$\rho$ is an implementation of an interpreter for~$\EE$ in~$\FF$.
+We defined a simulation $\rho : \EE \pcato \FF$ to be a total relation rather than a function because there might be many simulations an element of $\EE$ in $\FF$, without any one being canonical or preferred. The notation $\rho[u]$ suggests that~$\rho$ is construed as a multi-valued map rather than a mere relation.
 
-One might expect that a simulation ought to be a map $f : \EE \to \FF$ such that $f(\combK_\EE) = \combK_\FF$, $f(\combS_\FF) = \combS_\FF$, and $f (x \cdot y) \kleq (f x) \cdot (f y)$. This is how an algebraist would define a morphism, but we are interested in the computational aspects of PCAs, not the algebraic ones.
+The realizer $r \in \FF$ for a simulation~$\rho$ is an $\FF$-implementation of the application in~$\EE$.
+
+One might expect that a simulation ought to be a map $f : \EE \to \FF$ such that $f(\combK_\EE) = \combK_\FF$, $f(\combS_\FF) = \combS_\FF$, and $f (x \cdot_\EE y) \kleq f x \cdot_\FF f y$. This is how an algebraist would define a morphism, but we are interested in the computational aspects of PCAs, not the algebraic ones.
 
 \index{simulation!composition of}%
 \index{composition!simulations}%
@@ -63,7 +63,7 @@ If $\rho: (\EE, \subEE) \pcato (\FF, \subFF)$ and $\sigma: (\FF,
 The identity simulation $\id[(\EE, \subEE)]: (\EE,
 \subEE) \to (\EE, \subEE)$ is the identity relation on~$\EE$. It is realized by $\pcalam{x\,y} x \, y$.
 
-PCAs with subPCAs and simulations therefore form a category, which is preoder enriched\sidenote{A category $\mathcal{C}$ is \defemph{preorder enriched} if hom-sets $\mathcal{C}(X,Y)$ are equipped with preorders (reflexive and transitive relations) under which composition is monotone.}
+PCAs with subPCAs and simulations between them therefore form a category. We equip it with a preorder enrichment\sidenote{A category $\mathcal{C}$ is \defemph{preorder enriched} if hom-sets $\mathcal{C}(X,Y)$ are equipped with preorders (reflexive and transitive relations) under which composition is monotone.} $\preceq$ as follows.
 %
 \indexdef{category!of simulations}%
 \index{translation, of simulations}%
@@ -119,16 +119,17 @@ We identify several useful properties of simulations. These are related to the p
     \FF$,
     %
     \begin{align*}
-      x \in \rho[\combTrue_\EE] &\implies d \, x = \combTrue_\FF,
+      x \in \rho[\combTrue_\EE] &\lthen d \, x = \combTrue_\FF,
       \\
-      x \in \rho[\combFalse_\EE] &\implies d \, x = \combFalse_\FF.
+      x \in \rho[\combFalse_\EE] &\lthen d \, x = \combFalse_\FF.
     \end{align*}
   \end{enumerate}
 \end{definition}
 
-In words, a simulation $\rho$ is discrete when no two elements share a simulation, projective when it is equivalent to a function, and decidable when the boolean values are simulated by values that can ne decoded as booleans in the codomain.
+In words, a simulation $\rho$ is discrete when distinct elements are simulated by distinct elements, projective when it is equivalent to a function, and decidable when the boolean values are simulated by values that can ne decoded as booleans in the codomain.
 
 \begin{exercise}
+  \label{exc:simulation-numerals}%
   Say that a simulation $\rho: (\EE, \subEE) \to (\FF, \subFF)$ \defemph{preserves numerals}
   when there is $c \in \subFF$ such that, for all $n \in \NN$ and $x \in \FF$,
   %
@@ -136,10 +137,11 @@ In words, a simulation $\rho$ is discrete when no two elements share a simulatio
     x \in \rho[\overline{n}_\EE] \implies c \, x = \overline{n}_\FF.
   \end{equation*}
   %
-  Does a decidable simulation preserve numerals, and vice versa?
+  Prove that a simulation is decidable if, and only if, it preserves numerals.
 \end{exercise}
 
-The preorder enrichment induces a notion of adjunction of simulations.
+
+The preorder enrichment induces a notion of adjunction.
 
 \begin{definition}
   %
@@ -219,15 +221,65 @@ To show how the above definitions can be put to work, we recall several basic re
   \cref{th:simulation-properties2}.
 \end{proof}
 
-Let us now look at examples of simulations between PCAs.
+\subsection{Examples of simulations}
+\label{sec:examples-simulations}
 
+Armed with a rigorous and general notion of simulation, we can revisit the classic examples of simulations.
 
-\subsection{Applicative adjunction between $\klone$ and $\lambda$-calculus}
+\subsubsection{Initiality of $\klone$}
+\label{ex:intiality-K1}%
+
+Turing machines are distinguished by a universal property.
+
+\begin{theorem}
+  Up to equivalence, the first Kleene algebra~$\klone$ is initial in the category of PCAs and decidable simulations.
+\end{theorem}
+
+\begin{proof}
+  We sketch the proof from \cite[Theorem 2.4.18]{Longley:94}. Given any PCA~$\AA$, define $\kappa : \klone \pcato \AA$ by $\kappa[n] = \set{\numeral{n}_{\AA}}$. Because every partial computable function $\NN \times \NN \parto \NN$ can be represented in~$\AA$, there is $r \in \AA$ such that, for all $k, m, n \in \NN$,
+  %
+  \begin{equation*}
+    r \, \numeral{k} \, \numeral{m} = \numeral{n} \iff \pr{k}{m} = n.
+  \end{equation*}
+  %
+  Such an element~$r$ realizes~$\kappa$. Furthermore, $\kappa$ is decidable because it maps numbers to numerals.
+
+  Suppose $\mu : \klone \pcato \AA$ is another decidable simulation. Because $\mu$ preserve numerals there exists $f \in \AA$ such that if $a \in \mu[n]$ then $f \, a = \numeral{n} \in \kappa[n]$, therefore $\mu \preceq \kappa$. The relation $\kappa \preceq \mu$ holds by the exercise below, therefore $\kappa \sim \mu$.
+\end{proof}
+
+\begin{exercise}
+  Verify that for any simulation $\rho : (\EE, \subEE) \pcato (\FF, \subFF)$ there is $q \in \subFF$ such that $q \, \overline{n}_{\FF} \in \rho[\overline{n}_{\EE}]$ for all $n \in \NN$.
+\end{exercise}
+
+\subsubsection{Applicative retraction between $\Lambda$ and $\klone$}
 \label{ex:pcamorphism-K1-lambda}%
 
+Recall the first Kleene algebra $\klone$ from \cref{sec:first-kleene-pca} and the untyped $\lambda$-calculus presented as a pca $\Lambda$. The elements of $\klone$ are the natural numbers encoding, and the elements of $\Lambda$ the closed terms of the untyped $\lambda$-calculus, quotiented by the $\beta$-rule.
 
+Define $\delta : \klone \to \Lambda$ to be the map (and therefore also a total relation) which encodes numbers as Curry numerals,
+%
+\begin{equation*}
+  \delta(n) = \numeral{n}.
+\end{equation*}
+%
+This is a simulation because there is a closed $\lambda$-term $u$ such that $u \, \overline{m} \, \overline{n} = \overline{\pr{m}{m}}$ for all $m, n \in \NN$. The term $u$ is essentially an implementation of the universal Turing machine in the $\lambda$-calculus.
 
-\subsection{Applicative adjunction between $\klone$ and $\comp{\Scott}$}
+In the opposite direction, let $\gamma \subseteq \Lambda \times \NN$ be the total relation
+%
+\begin{equation*}
+  \gamma[t] = \set{ \code{t'} \such t' \in \Lambda \land t =_\beta t' }.
+\end{equation*}
+%
+That is, the equivalence class of a closed term $t \in \Lambda$ is the set of all codes of terms equal to~$t$.
+This is a simulation because there is a partial computable map~$f : \NN \times \NN \parto \NN$ which computes the code of the application $t \, u$ from the codes of~$t$ and~$u$,
+%
+$f(\code{t}, \code{u}) = \code{t \, u}$.
+
+We claim that $\gamma \circ \delta \sim \id[\klone]$.
+
+We claim that $\delta \circ \gamma \preceq \id[\Lambda]$.
+
+\subsubsection{Applicative adjunction between $\klone$ and $\comp{\Scott}$}
 \label{ex:pcamorphism_K1_RE}%
 
 \indexsee{applicative!adjunction}{adjunction, applicative}%
@@ -257,7 +309,7 @@ details.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\subsection{Applicative retraction from $(\Scott, \comp{\Scott})$ to
+\subsubsection{Applicative retraction from $(\Scott, \comp{\Scott})$ to
   $(\Baire, \comp{\Baire})$}
 \label{sec:applicative_retraction_PP_BB}%
 
@@ -361,7 +413,7 @@ effectively reconstruct $x$ from $y$, by
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Applicative Inclusion from $(\Scott, \comp{\Scott})$ to $(\UU,
+\subsubsection{Applicative Inclusion from $(\Scott, \comp{\Scott})$ to $(\UU,
   \comp{\UU})$}
 \label{sec:app_mor_PP_UU}%
 
@@ -477,7 +529,7 @@ $k = m$.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\subsection{Equivalence of Reflexive Continuous Lattices}
+\subsubsection{Equivalence of Reflexive Continuous Lattices}
 \label{sec:equivalence_reflexive_continuous_lattices}%
 
 \index{equivalence!applicative!of reflexive continuous lattices}%
