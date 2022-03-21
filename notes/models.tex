@@ -515,7 +515,7 @@ for $\alpha \in \Baire$, define $\ell(\gamma, \alpha) : \NN \parto \NN$ as
 %
 \begin{equation}
   \label{eq:type2-encoding}
-  \xfpr_\gamma(\alpha) =
+  \fpr{\gamma}{\alpha} =
   \begin{cases}
     \ell(\gamma, \alpha) & \text{if $\ell(\gamma, \alpha)$ is a total map,} \\
     \text{undefined} & \text{otherwise.}
@@ -1981,6 +1981,22 @@ $\pr{r(x,y)}{z} = g(x,y,z)$. Another application of the smn theorem
 yields a computable function $q : \NN \to \NN$ such that $\pr{q(x)}{y}
 = r(x,y)$. Take $\combS$ to be any number such that $q = \xpr_\combS$.
 
+\subsubsection[\texorpdfstring%
+{The first Kleene Algebra $\klone^A$ with an oracle}%
+{The first Kleene Algebra K1A with an oracle}%
+]{The first Kleene Algebra~$\klone^A$ with an oracle}
+\label{sec:first-kleene-pca-oracle}%
+
+When Turing machines are replaced with oracle Turing machines, we obtain a variant of $\klone$. More precisely, given any $A \subseteq \NN$, we let $\klone^A$ to be the pca whose underlying set is $\NN$, equipped with the application $\set{m}^A(n) = \xpr^A_m(n)$. Here $\xpr^A_m$ is the $m$-th Turing machine with oracle~$A$.
+
+\subsubsection[\texorpdfstring%
+{Hamkin's intfinite-time pca $\JJ$}%
+{Hamkin's infinite-time pca $\JJ$}%
+]{Hamkin's infinite-time pca $\JJ$}
+\label{sec:hamkins-pca-oracle}%
+
+We may similarly use infinite-time Turing machines from \cref{sec:iitm} to define a pca $\JJ$ (for ``Joel'') whose underlying set is $\NN$ and whose application is defined by $m \cdot n = \iitm{m}(n)$, where $\iitm{m}$ is the $m$-th infinite-time Turing machine.
+
 
 \subsubsection[\texorpdfstring%
 {The second Kleene Algebra $\Baire$}%
@@ -1988,13 +2004,13 @@ yields a computable function $q : \NN \to \NN$ such that $\pr{q(x)}{y}
 ]{The second Kleene Algebra~$\Baire$}
 \label{sec:second-kleene-pca}
 
-The Baire space~$\Baire$, is a pca $(\Baire, {\mid})$ whose application is $\alpha \mid \beta = \xfpr{\alpha}{\beta}$, as defined in~\eqref{eq:type2-encoding}. The combinators $\combK$ and $\combS$ exists by \cref{th:type-2-utm,th:type-2-smd}, analogously to the first Kleene algebra.
+The Baire space~$\Baire$, is a pca $(\Baire, {\mid})$ whose application is $\alpha \mid \beta = \fpr{\alpha}{\beta}$, as defined in~\eqref{eq:type2-encoding}. The combinators $\combK$ and $\combS$ exists by \cref{th:type-2-utm,th:type-2-smd}, analogously to the first Kleene algebra.
 
 There are actually two version of the second Kleene algebra, the \defemph{continuous} one
 with carrier~$\Baire$, and the \defemph{computable} one, whose carrier
 %
 \begin{equation*}
-  \comp{\Baire} = \set{\alpha \in \Baire \such \text{$\alpha$ is computable}}.a
+  \comp{\Baire} = \set{\alpha \in \Baire \such \text{$\alpha$ is computable}}.
 \end{equation*}
 %
 consists only of the computable sequences. Because $\combK$ and $\combS$ obtained above are computable, $\comp{\Baire}$ is a sub-pca of $\Baire$.

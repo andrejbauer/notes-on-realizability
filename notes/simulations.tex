@@ -13,7 +13,7 @@ We seize the opportunity and studu such a notion. An excellent one was provided 
   \indexdef{applicative!morphism}%
   \indexdef{simulation}%
   %
-  A \defemph{(pca) simulation}, originally an \defemph{applicative morphism}~\cite{Longley:94},
+  A \defemph{(pca) simulation}, originally called an \defemph{applicative morphism}~\cite{Longley:94},
   $\rho: \EE \pcato \FF$ between pcas~$\EE$ and~$\FF$ is a total relation $\rho
   \subseteq \EE \times \FF$ for which there exists a \defemph{realizer} $r \in \FF$
   %
@@ -37,9 +37,9 @@ We seize the opportunity and studu such a notion. An excellent one was provided 
   $\rho : \subEE \pcato \subFF$, with the same realizer~$r$.
 \end{definition}
 
-We defined a simulation $\rho : \EE \pcato \FF$ to be a total relation rather than a function because there might be many simulations an element of $\EE$ in $\FF$, without any one being canonical or preferred. The notation $\rho[u]$ suggests that~$\rho$ is construed as a multi-valued map rather than a mere relation.
+We defined a simulation $\rho : \EE \pcato \FF$ to be a total relation rather than a function because in~$\FF$ there might be many simulations of an element of $\EE$, without any one being preferred. The notation $\rho[u]$ suggests that~$\rho$ is construed as a multi-valued map rather than a relation.
 
-The realizer $r \in \FF$ for a simulation~$\rho$ is an $\FF$-implementation of the application in~$\EE$.
+The realizer $r \in \FF$ of a simulation~$\rho$ is an $\FF$-implementation of the application in~$\EE$.
 
 One might expect that a simulation ought to be a map $f : \EE \to \FF$ such that $f(\combK_\EE) = \combK_\FF$, $f(\combS_\FF) = \combS_\FF$, and $f (x \cdot_\EE y) \kleq f x \cdot_\FF f y$. This is how an algebraist would define a morphism, but we are interested in the computational aspects of pcas, not the algebraic ones.
 
@@ -62,102 +62,43 @@ If $\rho: (\EE, \subEE) \pcato (\FF, \subFF)$ and $\sigma: (\FF,
 \end{exercise}
 
 The identity simulation $\id[(\EE, \subEE)]: (\EE,
-\subEE) \to (\EE, \subEE)$ is the identity relation on~$\EE$. It is realized by $\pcalam{x\,y} x \, y$.
+\subEE) \pcato (\EE, \subEE)$ is the identity relation on~$\EE$. It is realized by $\pcalam{x\,y} x \, y$.
 
-pcas with sub-pcas and simulations between them therefore form a category. We equip it with a preorder enrichment\sidenote{A category $\mathcal{C}$ is \defemph{preorder enriched} if hom-sets $\mathcal{C}(X,Y)$ are equipped with preorders (reflexive and transitive relations) under which composition is monotone.} $\preceq$ as follows.
+Pcas with sub-pcas and simulations between them therefore form a category. We equip it with a \defemph{preorder enrichment}\sidenote{A category $\mathcal{C}$ is preorder enriched when hom-sets $\mathcal{C}(X,Y)$ are equipped with preorders (reflexive and transitive relations) under which composition is monotone.} $\preceq$ as follows.
 %
 \indexdef{category!of simulations}%
 \index{translation, of simulations}%
 \index{equivalence!of pcas}%
 %
 Given $\rho, \sigma : (\EE, \subEE) \pcato (\FF, \subFF)$, define $\rho \preceq \sigma$ to hold when
-there exists $t \in \subFF$ such that, for all $x \in \EE$ and $y \in \rho[x]$, $\defined{t \, x}$ and $\sigma(x, t \, y)$.
-Think of~$t$ as a \defemph{translation} of $\rho$-simulations to
-$\sigma$-simulations.
+there exists a \defemph{translation} $t \in \subFF$ such that, for all $x \in \EE$ and $y \in \rho[x]$, $\defined{t \, x}$ and $t \, y \in \sigma[x]$.
+
+We write $\rho \sim \sigma$ when $\rho \preceq \sigma$ and $\sigma \preceq \rho$.
 
 \begin{exercise}
   Given $\rho, \rho' : (\EE, \subEE) \pcato (\FF, \subFF)$ and $\sigma, \sigma' : (\FF, \subFF) \pcato (\GG, \subGG)$, show that if $\rho \preceq \rho'$ and $\sigma \preceq \sigma'$ then $\sigma \circ \rho \preceq \sigma' \circ \rho'$.
 \end{exercise}
 
-We write $\rho \sim \sigma$ when $\rho \preceq \sigma$ and $\sigma \preceq \rho$. An \defemph{equivalence of pcas}
-$(\EE, \subEE)$ and $(\FF, \subFF)$ is a pair of simulations
-%
-\begin{align*}
-  \delta &: (\EE, \subEE) \pcato (\FF, \subFF),
-  &
-  \gamma &: (\FF, \subFF) \pcato (\EE, \subEE),
-\end{align*}
-%
-such that $\gamma \circ \delta \sim \one_\EE$ and $\delta \circ \gamma
-\sim \one_\FF$.
+The preorder enrichment induces the notions of equivalence and adjunction of simulations.
 
-We identify several useful properties of simulations. These are related to the properties of functors induced by simulations, see~\cref{sec:applicative-functors}.
+\goodbreak
 
-
-\begin{definition}
-  A simulation $\rho: (\EE, \subEE) \to (\FF, \subFF)$ is
-  %
-  \indexdef{simulation!discrete}%
-  \indexdef{simulation!projective}%
-  \indexdef{simulation!decidable}%
-  \indexdef{discrete!simulation}%
-  \indexdef{projective!simulation}%
-  \indexdef{decidable!simulation}%
-  %
-  \begin{enumerate}
-  \item \defemph{discrete} when, for all $x, y \in \EE$ if $\rho[x] \cap \rho[y]$ is in inhabited then
-    $x = y$.
-
-  \item \defemph{projective} when there is a single-valued
-    simulation (a function) $\rho'$ such that $\rho' \sim \rho$.
-
-  \item \defemph{decidable} when there is $d \in \subFF$,
-    called the
-    %
-    \indexdef{decider}%
-    %
-    \defemph{decider} for~$\rho$, such that, for all $x \in
-    \FF$,
-    %
-    \begin{align*}
-      x \in \rho[\combTrue_\EE] &\lthen d \, x = \combTrue_\FF,
-      \\
-      x \in \rho[\combFalse_\EE] &\lthen d \, x = \combFalse_\FF.
-    \end{align*}
-  \end{enumerate}
-\end{definition}
-
-In words, a simulation $\rho$ is discrete when distinct elements are simulated by distinct elements, projective when it is equivalent to a function, and decidable when the boolean values are simulated by values that can ne decoded as booleans in the codomain.
-
-\begin{exercise}
-  \label{exc:simulation-numerals}%
-  Say that a simulation $\rho: (\EE, \subEE) \to (\FF, \subFF)$ \defemph{preserves numerals}
-  when there is $c \in \subFF$ such that, for all $n \in \NN$ and $x \in \FF$,
-  %
-  \begin{equation*}
-    x \in \rho[\overline{n}_\EE] \implies c \, x = \overline{n}_\FF.
-  \end{equation*}
-  %
-  Prove that a simulation is decidable if, and only if, it preserves numerals.
-\end{exercise}
-
-
-The preorder enrichment induces a notion of adjunction.
-
-\begin{definition}
+\begin{definition}%
   %
   \index{simulation!adjoint pair of}%
   \index{adjunction!simulation}%
   %
-  Simulations
+  Consider simulations
   %
   \begin{align*}
     \delta &: (\EE, \subEE) \pcato (\FF, \subFF),
     &
-    \gamma &: (\FF, \subFF) \pcato (\EE, \subEE),
+    \gamma &: (\FF, \subFF) \pcato (\EE, \subEE).
   \end{align*}
   %
-  form an \defemph{adjunction}, written $\gamma \dashv \delta$, when
+  They form an \defemph{equivalence} when $\gamma \circ \delta \sim \one_\EE$ and $\delta \circ \gamma \sim \one_\FF$.
+
+  They form an \defemph{adjunction}, written $\gamma \dashv \delta$, when
   %
   $\one_{\FF} \preceq \delta \circ \gamma$ and $\gamma \circ
   \delta \preceq \one_{\EE}$. We say that~$\gamma$ is \defemph{left
@@ -172,6 +113,82 @@ The preorder enrichment induces a notion of adjunction.
   Such an adjoint pair is an \defemph{inclusion} when $\gamma \circ \delta \sim \id[\EE]$, and a
   \defemph{retraction} when $\delta \circ \gamma \sim \one_\FF$.
 \end{definition}
+
+\subsection{Properties of simulations}
+\label{sec:prop-simul}
+
+Nothing prevents a simulation from being trivial. In fact, there always is the constant simulation $\tau : \EE \pcato \FF$, defined by $\tau[x] = \set{\combK_{\FF}}$ and realized by $\pcalam{x\,y} \combK$. We should identify further useful properties of simulations.
+
+Discreteness prevents a simulation from conflating simulated elements.
+
+\begin{definition}
+  A simulation $\rho: (\EE, \subEE) \pcato (\FF, \subFF)$ is
+  %
+  \indexdef{simulation!discrete}%
+  \indexdef{discrete!simulation}%
+  %
+  \defemph{discrete} when, for all $x, y \in \EE$ if $\rho[x] \cap \rho[y]$ is in inhabited then $x = y$.
+\end{definition}
+
+The next property is single-valuedness, up to equivalence.
+
+\begin{definition}
+  A simulation $\rho: (\EE, \subEE) \pcato (\FF, \subFF)$ is
+  %
+  \indexdef{simulation!projective}%
+  \indexdef{projective!simulation}%
+  %
+  \defemph{projective} when there is a single-valued simulation (a function) $\rho'$ such that $\rho' \sim \rho$.
+\end{definition}
+
+\begin{exercise}
+  Prove that a simulation $\rho : \EE \pcato \FF$ is projective if, and only if,
+  there is $t \in \subFF$ such that, for all $x \in \EE$ and $y, z \in \FF$:
+  %
+  \begin{itemize}
+  \item if $y \in \rho[x]$ then $\defined{t\,y}$ and $t\,y \in \rho[x]$,
+  \item if $y \in \rho[x]$ and $z \in \rho[x]$ then $t \, y = t \, z$.
+  \end{itemize}
+  %
+  Thus a simulation is projective if each element of $\EE$ has a canonically chosen simulation in~$\FF$.
+\end{exercise}
+
+
+For every simulation $\rho : \EE \pcato \FF$ it is the case that the Boolean values of~$\FF$ can be converted to the simulated Boolean values. Indeed, take any $a \in \rho[\combTrue_\EE]$ and $b \in \rho[\combFalse_\EE]$ and define $e \in \FF'$ to be
+$e = \pcalam{x} \combIf_\FF \, x \, a \, b$, so that $e \, \combTrue_\FF \in \rho[\combTrue_\EE]$ and $e \, \combFalse_\FF \in \rho[\combFalse_\EE]$. The converse translation does not come for free.
+
+\begin{definition}
+  A simulation $\rho: (\EE, \subEE) \pcato (\FF, \subFF)$ is
+  %
+  \indexdef{simulation!decidable}%
+  \indexdef{decidable!simulation}%
+  %
+  \defemph{decidable} when there is $d \in \subFF$,
+  called the
+  %
+  \indexdef{decider}%
+  %
+  \defemph{decider} for~$\rho$, such that, for all $x \in \FF$,
+  %
+  \begin{align*}
+    x \in \rho[\combTrue_\EE] &\lthen d \, x = \combTrue_\FF,
+    \\
+    x \in \rho[\combFalse_\EE] &\lthen d \, x = \combFalse_\FF.
+  \end{align*}
+\end{definition}
+
+\begin{exercise}
+  \label{exc:simulation-numerals}%
+  Say that a simulation $\rho: (\EE, \subEE) \pcato (\FF, \subFF)$ \defemph{preserves numerals}
+  when there is $c \in \subFF$ such that, for all $n \in \NN$ and $x \in \FF$,
+  %
+  \begin{equation*}
+    x \in \rho[\overline{n}_\EE] \implies c \, x = \overline{n}_\FF.
+  \end{equation*}
+  %
+  Prove that a simulation is decidable if, and only if, it preserves numerals.
+\end{exercise}
+
 
 To show how the above definitions can be put to work, we recall several basic results of John Longley's.
 
@@ -255,71 +272,94 @@ Turing machines are distinguished by a universal property.
 \subsubsection{Simulations and Turing degrees}
 \label{ex:pcamorphism-turing-degrees}%
 
+Recall that a \defemph{Turing reduction} of $A \subseteq \NN$ to $B \subseteq \NN$, written $A \leq_T B$ is a $B$-oracle Turing machine~$M$ which computes the characteristic function of~$A$.
 
-\subsubsection{Applicative retraction between $\Lambda$ and $\klone$}
+\begin{theorem}
+  Suppose $A, B \subseteq \NN$. Then $A \leq_T B$ if, and only if, there is a decidable simulation $\klone^A \pcato \klone^B$.
+\end{theorem}
+
+\begin{proof}
+  This is \cite[Proposition 3.1.6]{Longley:94}.
+\end{proof}
+
+\subsubsection{A retraction between $\Lambda$ and $\klone$}
 \label{ex:pcamorphism-K1-lambda}%
 
-Recall the first Kleene algebra $\klone$ from \cref{sec:first-kleene-pca} and the untyped $\lambda$-calculus presented as a pca $\Lambda$. The elements of $\klone$ are the natural numbers encoding, and the elements of $\Lambda$ the closed terms of the untyped $\lambda$-calculus, quotiented by the $\beta$-rule.
+We construct a retraction from the pca $\Lambda$ of the closed terms of the untyped $\lambda$-calculus, and first Kleene algebra~$\klone$.
 
-Define $\delta : \klone \to \Lambda$ to be the map (and therefore also a total relation) which encodes numbers as Curry numerals,
+Define $\delta : \klone \to \Lambda$ to be the map $\delta(n) = \numeral{n}$ which encodes numbers as Curry numerals.
 %
-\begin{equation*}
-  \delta(n) = \numeral{n}.
-\end{equation*}
-%
-This is a simulation because there is a closed $\lambda$-term $u$ such that $u \, \overline{m} \, \overline{n} = \overline{\pr{m}{m}}$ for all $m, n \in \NN$. The term $u$ is essentially an implementation of the universal Turing machine in the $\lambda$-calculus.
+It is a simulation because every partial computable map is $\lambda$-definable, and therefore so is Kleene application.
 
-In the opposite direction, let $\gamma \subseteq \Lambda \times \NN$ be the total relation
+In the opposite direction, let $\gamma \subseteq \Lambda \times \klone$ be the total relation (remember that $\Lambda$ is the set of closed terms quotiented by $\beta$-reduction),
 %
 \begin{equation*}
   \gamma[t] = \set{ \code{t'} \such t' \in \Lambda \land t =_\beta t' }.
 \end{equation*}
 %
 That is, the equivalence class of a closed term $t \in \Lambda$ is the set of all codes of terms equal to~$t$.
-This is a simulation because there is a partial computable map~$f : \NN \times \NN \parto \NN$ which computes the code of the application $t \, u$ from the codes of~$t$ and~$u$,
-%
-$f(\code{t}, \code{u}) = \code{t \, u}$.
+This is a simulation because there is a computable map~$f : \NN \times \NN \parto \NN$ satisfying $f(\code{t}, \code{u}) = \code{t \, u}$ for all $t, u \in \Lambda$.
 
-We claim that $\gamma \circ \delta \sim \id[\klone]$.
+It is not hard to see that $\gamma \circ \delta \sim \id[\klone]$. The relation $\id[\klone] \preceq \gamma \circ \delta$ holds because from $n \in \NN$ we can compute the code $\code{\numeral{n}}$. For the opposite relation $\gamma \circ \delta \preceq \id[\klone]$, we note that given any closed $\lambda$-term $t$ such that $t =_\beta \overline{n}$ for some $n \in \NN$, we can compute $n$ by computing the normal form of~$t$.
 
-We claim that $\delta \circ \gamma \preceq \id[\Lambda]$.
+Verifying $\delta \circ \gamma \preceq \id[\Lambda]$ is a simple matter of programming in the untyped $\lambda$-calculus a term $e$ such that $e \, \overline{\code{t}} =_\beta t$ for any closed term~$t$.
 
-\subsubsection{Applicative adjunction between $\klone$ and $\comp{\Scott}$}
+\begin{exercise}
+  Why is it \emph{not} the case that $\id[\Lambda] \preceq \delta \circ \gamma$?
+\end{exercise}
+
+
+\subsubsection{A retraction between $\comp{\Scott}$ and $\klone$}
 \label{ex:pcamorphism_K1_RE}%
 
-\indexsee{applicative!adjunction}{adjunction, applicative}%
-\index{adjunction!applicative!between N and P@{between~$\klone$ and~$\comp{\Scott}$}}%
+\index{retraction!between P and N@{between~$\comp{\Scott}$ and~$\klone$}}%
 
-There is an applicative retraction $(\delta \dashv \gamma): \comp{\Scott}
-\pcato \klone$. The inclusion $\delta: \klone \to \comp{\Scott}$ is defined
-by
-                                %
+Let us look at a retraction $(\delta \dashv \gamma): \comp{\Scott} \pcato \klone$ between computable graph model and the first Kleene algebra~\cite[Proposition 3.3.7]{Longley:94}.
+%
+The inclusion $\delta: \klone \to \comp{\Scott}$ is defined by
+% 
 \begin{equation*}
-  \delta n = \set{n},
+  \delta(n) = \set{n},
 \end{equation*}
-                                %
-and the retraction $\gamma: \comp{\Scott} \pcato \klone$ is defined by
-                                %
+% 
+and the retraction $\gamma: \comp{\Scott} \pcato \klone$ by
+% 
 \begin{equation*}
-  \gamma(U, n)
-  \iff
-  U = \im{\xpr{n}},
+  \gamma[A] = \set{n \in \NN \such \im{\xpr_n} = A}.
 \end{equation*}
-                                %
-where $\xpr{\place}$ is a standard enumeration of partial
-recursive functions. See~\cite[Proposition 3.3.7]{Longley:94} for
-details.
+%
+That is, a c.e.~set $A$ is simulated by the code of any partial computable map whose image is~$A$.
+
+\begin{exercise}
+  Verify that $\delta$ and $\gamma$ are simulations.
+\end{exercise}
+
+The relation $\gamma \circ \delta \preceq \id[\klone]$ holds because there is a partial computable map~$f : \NN \parto \NN$ which takes as input $k \in \NN$ such that $\im{\xpr_k} = \set{n}$ and outputs $n$. For example, $f$ can compute in parallel $\pr{k}{0}, \pr{k}{1}, \pr{k}{2}, \ldots$, and as soon as one of them terminates and outputs a number, $f$ terminates with the same number as its output.
+
+The relation $\id[\klone] \preceq \gamma \circ \delta$ holds because from $n \in \NN$ we can compute $k \in \NN$ such that $\xpr_k$ is the constantly~$n$ map.
+
+To establish $\delta \circ \gamma \preceq \id[\comp{\Scott}]$, note that $(\delta \circ \gamma)(A)$ is the index set of~$A$, i.e., the set of codes of those partial computable maps whose image is~$A$. The set
+%
+\begin{equation*}
+  S = \set{ \code{\pair{\code{\set{m}}, n}} \such \some{k \in \NN} \pr{m}{k} = n }
+\end{equation*}
+%
+is computably enumerable. The computable enumeration operator $\Lambda(S) : \comp{\Scott} \to \comp{\Scott}$, where $\Lambda$ is as in \eqref{eq:scott-section-retraction} is then a translation from $\delta \circ \gamma$ to $\id[\comp{\Scott}]$.
+
+\begin{exercise}
+  Why is it \emph{not} the case that $\id[\comp{\Scott}] \preceq \delta \circ \gamma$?
+\end{exercise}
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\subsubsection{Applicative retraction from $(\Scott, \comp{\Scott})$ to
+\subsubsection{A retraction from $(\Scott, \comp{\Scott})$ to
   $(\Baire, \comp{\Baire})$}
-\label{sec:applicative_retraction_PP_BB}%
+\label{sec:retraction-PP-BB}%
 
-\index{adjunction!applicative!between P and B@{between~$(\Scott, \comp{\Scott})$ and~$(\Baire, \comp{\Baire})$}}%
-\index{applicative!retraction!between P and B@{between~$(\Scott, \comp{\Scott})$ and~$(\Baire, \comp{\Baire})$}}%
+\index{retraction!between P and B@{between~$(\Scott, \comp{\Scott})$ and~$(\Baire, \comp{\Baire})$}}%
 
 Lietz~\cite{Lietz:99} compared realizability models over~$\Scott$ and
 over~$\Baire$ and observed that there is an applicative retraction
@@ -416,131 +456,14 @@ effectively reconstruct $x$ from $y$, by
   \some{n \in y} n = 1 + \code{a} \land \some{i < |a|} m = a_i.
 \end{equation*}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsubsection{Applicative Inclusion from $(\Scott, \comp{\Scott})$ to $(\UU,
-  \comp{\UU})$}
-\label{sec:app_mor_PP_UU}%
-
-\index{adjunction!applicative!between P and U@{between~$(\Scott, \comp{\Scott})$ and~$(\UU, \comp{\UU})$}}%
-\index{applicative!inclusion!between P and U@{between~$(\Scott, \comp{\Scott})$ and~$(\UU, \comp{\UU})$}}%
-
-We construct an applicative inclusion
-                                %
-\begin{equation*}
-  (\eta \dashv \zeta): (\Scott, \comp{\Scott}) \pcato (\UU, \comp{\UU}),
-\end{equation*}
-                                %
-with the additional property that~$\eta$ is discrete. The applicative
-morphism~$\zeta$ is discrete by
-Theorem~\ref{th:simulation-properties2}(1). By the Effective
-Embedding Theorem~\ref{th:effective_embedding_theorem} there exists a
-computable embedding $\eta: \UU \to \Scott$. Specifically,~$\eta$ is
-defined by
-%
-\begin{equation*}
-  \eta S = \set{ n \in \NN \such B_n \subseteq S },
-\end{equation*}
-%
-where $B : \NN \to \UU$ is an effective enumeration of the compact elements. For every $n \in \NN$, let $C_n$ be the clopen set
-%
-\begin{equation*}
-  C_n = \set{ \alpha \in \NN \such
-    \alpha 0 = \cdots = \alpha n = 0 \land \alpha (n+1) = 1
-    }.
-\end{equation*}
-%
-Note that whenever $n \neq m$ then $C_n$ and $C_m$ are disjoint. The
-family $\set{C_n \such n \in \NN}$ is a discrete subspace of~$\UU$.
-Because~$\UU$ is an effective universal domain and $\Scott$ is an
-effective domain, there exists a computable embedding-projection pair
-$(\zeta, \zeta^{-}): \UU \to \Scott$. In particular, we define
-$\zeta: \Scott \to \UU$ and $\zeta^{-}: \UU \to \Scott$ by
-%
-\begin{align*}
-  \zeta x &= \bigcup_{n \in x} C_n,
-  &
-  \zeta^{-} S &= \set{n \in \NN \such C_n \subseteq S}.
-\end{align*}
-%
-It is obvious that $\zeta^{-} \circ \zeta = \id[\Scott]$. Let us verify
-that $\eta$ is an applicative morphism. Because it is computable, it
-is the case that $\eta x \in \comp{\Scott}$ whenever $x \in \comp{\UU}$. The
-application on~$\UU$ is a computable map, therefore by the Effective
-Extension Theorem~\ref{th:effective_extension_theorem} there exists a
-computable map $\phi: \Scott \times \Scott \to \Scott$ such that, for all $S, T
-\in \UU$,
-                                %
-\begin{equation*}
-  \eta (S \cdot T) = \phi \pair{\eta S, \eta T}.
-\end{equation*}
-                                %
-There exists $f \in \comp{\Scott}$ such that $\phi \pair{\eta S, \eta T} = f
-\cdot (\eta S) \cdot (\eta T)$ for all $S, T \in \UU$.
-Therefore,~$\eta$ is an applicative morphism. We show next that
-$\zeta$ is an applicative morphism. Since it is computable, $\zeta a
-\in \comp{\UU}$ whenever $a \in \comp{\UU}$. Let $\gamma: \UU \times \UU \to
-\UU$ be defined by
-                                %
-\begin{equation*}
-  \gamma \pair{S, T} = \zeta ((\zeta^{-} S) \cdot (\zeta^{-} T)).
-\end{equation*}
-                                %
-Because $\gamma$ is a composition of computable maps, it is
-computable. There exists $g \in \comp{\UU}$ such that $\gamma \pair{S, T}
-= g \cdot S \cdot T$ for all $S, T \in \UU$. For all $x, y \in \Scott$,
-                                %
-\begin{equation*}
-  \zeta(x \cdot y) =
-  \zeta((\zeta^{-} (\zeta x)) \cdot (\zeta^{-} (\zeta x))) =
-  \gamma \pair{\zeta x, \zeta y} = g \cdot (\zeta x) \cdot (\zeta y).
-\end{equation*}
-                                %
-Therefore, $\zeta$ is an applicative morphism.
-
-The relations $\eta \circ \zeta \preceq \id[\Scott]$ and $\zeta \circ \eta 
-\preceq \id[\UU]$ hold because $\eta \circ \zeta$ and $\zeta \circ
-\eta$ are computable and realized in~$\Scott$ and~$\UU$, respectively.
-Lastly, we need to verify that $\id[\Scott] \preceq \eta \circ \zeta$,
-which amounts to checking that there exists a computable map $\rho:
-\Scott \to \Scott$ such that $\rho \circ \eta \circ \zeta = \id[\Scott]$.
-We define the graph of $\rho$ to be
-%
-\begin{equation*}
-  m \in \rho(\set{n_1, \ldots, n_k})
-  \iff
-  B_{n_1} \subseteq C_m \lor \cdots \lor B_{n_k} \subseteq C_m.
-\end{equation*}
-%
-The relation on the right-hand side is r.e.~in $m, n_1, \ldots, n_k$,
-hence~$\rho$ is computable. The map~$\rho$ is the left inverse of
-$\eta \circ \zeta$ because, for any $x \in \Scott$,
-%
-\begin{multline*}
-  m \in \rho(\eta(\zeta x)) \iff
-  \some{n \in \eta(\zeta x)} B_n \subseteq C_m \iff \\
-  \some{k \in x} \some{n \in \NN}
-      B_n \subseteq C_k \land B_n \subseteq C_m
-  \iff
-  m \in x.
-\end{multline*}
-%
-Here we used the property that $\some{n \in \NN} B_n \subseteq C_k \land
-  B_n \subseteq C_m$ is equivalent to $C_k \cap C_m \neq
-\emptyset$, which is equivalent to $C_k = C_m$, which is equivalent to
-$k = m$.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 
 \subsubsection{Equivalence of Reflexive Continuous Lattices}
 \label{sec:equivalence_reflexive_continuous_lattices}%
 
-\index{equivalence!applicative!of reflexive continuous lattices}%
+\index{equivalence!of reflexive continuous lattices}%
 \index{continuous!lattice}%
 
-In Subsection~\ref{sec:reflexive_cpo_model} we saw that a reflexive
+In Subsection~\cref{sec:reflexive_cpo_model} we saw that a reflexive
 CPO is a model of the untyped $\lambda$-calculus, hence a combinatory
 algebra. So far we have considered two reflexive CPOs, the graph
 model~$\Scott$ and the universal domain~$\UU$. In this subsection we show
@@ -674,7 +597,7 @@ of~$L$.
       }.
   \end{align*}
                                 %
-  The applicative equivalence $L \sim M$ is witnessed by the sections
+  The equivalence $L \sim M$ is witnessed by the sections
   $\lambda^{+}$ and $\mu^{+}$. We omit the details.
 \end{proof}
 
