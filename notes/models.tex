@@ -21,7 +21,7 @@ is given in \cref{sec:simulations}, it will turn out that there is more to equiv
 We begin our investigations with a review of models of computation other than Turing machines. After having seen several examples, we take \emph{(typed) partial combinatory algebras} as the common unifying notion that is well-suited for the later development.
 %
 There are of course interesting models of computation that fall oustide of our framework.
-For example, even though partical combinatory algebras can incorporate certain specific computational effects~\sidecite{longley99:_unify_typed_and_untyp_realiz,longley99:_match}, it is not clear how to give a systematic account of ``effectful TPCAs''. John Longley~\sidecite{longley14:_comput} investigated more general structures that do.
+For example, even though partical combinatory algebras can incorporate certain specific computational effects~\sidecite{longley99:_unify_typed_and_untyp_realiz,longley99:_match}, it is not clear how to give a systematic account of ``effectful tpcas''. John Longley~\sidecite{longley14:_comput} investigated more general structures that do.
 
 
 
@@ -1699,14 +1699,14 @@ is the Baire space.
   \indexdef{combinatory algebra!total}%
   \indexsee{partial!combinatory algebra}{combinatory algebra, partial}%
   \indexsee{total combinatory algebra}{combinatory algebra, total}%
-  \indexsee{PCA}{combinatory algebra, partial}%
+  \indexsee{pca}{combinatory algebra, partial}%
   \indexsee{CA}{combinatory algebra, total}%
                                 %
-  A \defemph{partial combinatory algebra (PCA)} $(\AA, {\cdot})$ is a
+  A \defemph{partial combinatory algebra (pca)} $(\AA, {\cdot})$ is a
   set~$\AA$ with a
                                 %
-  \index{application!partial in PCA}%
-  \indexsee{partial!application}{application, partial in PCA}%
+  \index{application!partial in pca}%
+  \indexsee{partial!application}{application, partial in pca}%
                                 %
   \emph{partial} binary operation ${\cdot} : \AA \times \AA \parto \AA$. We
   usually write $x\, y$ instead of $x \cdot y$, and recall that
@@ -1722,10 +1722,10 @@ is the Baire space.
     \defined{\combS \cdot x \cdot y}.
   \end{equation}
   %
-  A \defemph{total combinatory algebra (CA)} is a PCA whose application
+  A \defemph{total combinatory algebra (CA)} is a pca whose application
   is a total operation.
 
-  A \defemph{sub-PCA} of~$(\AA, {\cdot})$ is a subset $\subAA \subseteq \AA$
+  A \defemph{sub-pca} of~$(\AA, {\cdot})$ is a subset $\subAA \subseteq \AA$
   which is closed under application, and there exist $\combK, \combS
   \in \subAA$ such that~\eqref{eq:pca} is satisfied for all $x, y, z \in
   \AA$.\sidenote{Read that carefully: the combinators $\combK$ and
@@ -1740,7 +1740,7 @@ come from? \Cref{th:combinatory-completeness} below explains
 that the reason for this definition is a property called
 \defemph{combinatory completeness}.
 %
-For a PCA $\AA$ we define \defemph{expressions over~$\AA$} inductively as
+For a pca $\AA$ we define \defemph{expressions over~$\AA$} inductively as
 follows:
 %
 \begin{itemize}
@@ -1775,7 +1775,7 @@ a_n \in \AA$,
 
 \begin{theorem}[Combinatory completeness]
   \label{th:combinatory-completeness}
-  Let $(\AA, {\cdot})$ be a PCA. For every variable $x$ and expression
+  Let $(\AA, {\cdot})$ be a pca. For every variable $x$ and expression
   $e$ over $\AA$ there is an expression $e'$ over $\AA$ whose variables
   are those of~$e$ excluding~$x$ such that $\defined{e'}$ and $e'
   \cdot a \kleq \subst{e}{x \subto a}$ for all $a \in \AA$.
@@ -1886,7 +1886,7 @@ with successor, predecessor and zero-test
   \pcalam{x}{\combIf\, (\pcacomb{iszero}\, x)\, \numeral{0}\, (\combSnd\, x)}.
 \end{align*}
 %
-In a PCA we can define functions by recursion by using the
+In a pca we can define functions by recursion by using the
 %
 \index{combinator!Y@{$\combY$}}%
 \index{combinator!Z@{$\combZ$}}%
@@ -1919,7 +1919,7 @@ These combinators satisfy, for all $f, x \in \AA$,
 %
 The combinator $\combZ$ can be used to implement primitive recursion on natural numbers as
 %
-\index{primitive recursion, in a PCA}%
+\index{primitive recursion, in a pca}%
 %
 \begin{align*}
    R &= \pcalam{r x f m}{\combIf\, (\pcacomb{iszero}\, m)\, (\combK\, x)
@@ -1949,7 +1949,7 @@ It satisfies, for all $a, f \in \AA$ and $n \in \NN$,
   \end{equation*}
 \end{exercise}
 
-With these combinators every general recursive function may be implemented in a~PCA.
+With these combinators every general recursive function may be implemented in a~pca.
 
 
 \subsection{Examples of partial combinatory algebras}
@@ -1964,7 +1964,7 @@ examples of partial combinatory algebras.
 ]{The first Kleene Algebra~$\klone$}
 \label{sec:first-kleene-pca}%
 
-Turing machines, or more precisely their codes, form a PCA $\klone = (\NN, {\cdot})$ whose
+Turing machines, or more precisely their codes, form a pca $\klone = (\NN, {\cdot})$ whose
 application is defined as $m \cdot n = \pr{m}{n}$. Because $m \cdot n$ can be easily
 confused with multiplication, we also write application with Kleene's notation~$\set{m}(n)$.
 
@@ -1988,7 +1988,7 @@ yields a computable function $q : \NN \to \NN$ such that $\pr{q(x)}{y}
 ]{The second Kleene Algebra~$\Baire$}
 \label{sec:second-kleene-pca}
 
-The Baire space~$\Baire$, is a PCA $(\Baire, {\mid})$ whose application is $\alpha \mid \beta = \xfpr{\alpha}{\beta}$, as defined in~\eqref{eq:type2-encoding}. The combinators $\combK$ and $\combS$ exists by \cref{th:type-2-utm,th:type-2-smd}, analogously to the first Kleene algebra.
+The Baire space~$\Baire$, is a pca $(\Baire, {\mid})$ whose application is $\alpha \mid \beta = \xfpr{\alpha}{\beta}$, as defined in~\eqref{eq:type2-encoding}. The combinators $\combK$ and $\combS$ exists by \cref{th:type-2-utm,th:type-2-smd}, analogously to the first Kleene algebra.
 
 There are actually two version of the second Kleene algebra, the \defemph{continuous} one
 with carrier~$\Baire$, and the \defemph{computable} one, whose carrier
@@ -1997,7 +1997,7 @@ with carrier~$\Baire$, and the \defemph{computable} one, whose carrier
   \comp{\Baire} = \set{\alpha \in \Baire \such \text{$\alpha$ is computable}}.a
 \end{equation*}
 %
-consists only of the computable sequences. Because $\combK$ and $\combS$ obtained above are computable, $\comp{\Baire}$ is a sub-PCA of $\Baire$.
+consists only of the computable sequences. Because $\combK$ and $\combS$ obtained above are computable, $\comp{\Baire}$ is a sub-pca of $\Baire$.
 
 \subsubsection{Combinatory logic~$\CL$}
 \label{sec:combinatory-logic-pca}
@@ -2045,7 +2045,7 @@ The graph model comes in two versions. The \defemph{continuous graph model} has 
   \comp{\Scott} = \set{ A \in \Scott \mid \text{$A$ is computably enumerable} }.
 \end{equation*}
 %
-The latter is a sub-PCA of the former.
+The latter is a sub-pca of the former.
 
 \subsubsection{Other partial combinatory algebras}
 \label{sec:other-pcas}
@@ -2061,11 +2061,11 @@ There are still many more partial combinatory algebras, but we shall have to sto
 \section{Typed partial combinatory algebras}
 \label{sec:tpcas}
 
-PCAs and their models lack an important feature that most
+pcas and their models lack an important feature that most
 real-world programming languages have, namely \emph{types} that impose
 well-formedness restrictions on programs. For instance, in a typical programming language we cannot meaningfully apply an  expression to itself because the typing discipline prevents us from doing so.
 
-In this section we look at PCAs with types, which were defined by John
+In this section we look at pcas with types, which were defined by John
 Longley~\sidecite{longley99:_unify_typed_and_untyp_realiz}.
 His definition sets up a type system that limits the applicability of the basic combinators, which is offset by additional basic combinators. In the end we obtain a notion that is closer to a programming language than to magical incantations with~$\combK$ and~$\combS$.
 
@@ -2079,7 +2079,7 @@ The operation $\to$ associates to the right, $s \to t \to u = s \to (t \to u)$.
 
 \begin{definition}
   A \defemph{typed partial combinatory algebra
-    (TPCA)} $\AA$ over a type system $\mathcal{T}$ consists of
+    (tpca)} $\AA$ over a type system $\mathcal{T}$ consists of
   % 
   \begin{itemize}
   \item a non-empty set $\AA_t$ for each $t \in \mathcal{T}$, and
@@ -2112,16 +2112,16 @@ The operation $\to$ associates to the right, $s \to t \to u = s \to (t \to u)$.
   $\combPair_{s,t}$, $\combFst_{s,t}$, $\combSnd_{s,t}$ are
   \defemph{suitable} for~$\AA$ when they satisfy the above properties.
 
-  A \defemph{typed (total) combinatory algebra} is a TPCA whose application operations are total.
+  A \defemph{typed (total) combinatory algebra} is a tpca whose application operations are total.
 \end{definition}
 
 We have required the sets $\AA_t$ to be non-empty. While this is not
 strictly necessary, it simplifies several constructions.
 
-In a PCA the natural numbers may be encoded with the basic combinators as the Curry numerals. In a TPCA they are must be postulated separately.
+In a pca the natural numbers may be encoded with the basic combinators as the Curry numerals. In a tpca they are must be postulated separately.
 
 \begin{definition}
-  A \defemph{TPCA with numerals (N-TPCA)} is a TPCA $\AA$ in which there is a
+  A \defemph{tpca with numerals (n-tpca)} is a tpca $\AA$ in which there is a
   type $\ttnat$ and elements
   % 
   \begin{align*}
@@ -2143,11 +2143,11 @@ In a PCA the natural numbers may be encoded with the basic combinators as the Cu
 \end{definition}
 
 Note that $\AA_\ttnat$ may contain elements other than the numerals~$\numeral{n}$.
-An N-TPCA has primitive recursion but may lack general recursion, so we need one more definition.
+An n-tpca has primitive recursion but may lack general recursion, so we need one more definition.
 
 \begin{definition}
-  A \defemph{TPCA with numerals and general recursion (NR-TPCA)} is a
-  N-TPCA $\AA$ containing, for all types $s$ and $t$,
+  A \defemph{tpca with numerals and general recursion (nr-tpca)} is a
+  n-tpca $\AA$ containing, for all types $s$ and $t$,
   % 
   \begin{equation*}
     \combFix_{s,t} \in \AA_{((s \to t) \to (s \to t)) \to (s \to t)}
@@ -2167,18 +2167,18 @@ An N-TPCA has primitive recursion but may lack general recursion, so we need one
 The relevant notion of substructure is as follows.
 
 \begin{definition}
-  A \defemph{sub-TPCA} $\subAA$ of a TPCA~$\AA$ is a collection of non-empty
+  A \defemph{sub-tpca} $\subAA$ of a tpca~$\AA$ is a collection of non-empty
   subsets $\subAA_t \subseteq \AA_t$, for each $t \in \mathcal{T}$, such that
   applications in~$\AA$ restrict to~$\subAA$, and there exist elements
   $\combK_{s,t}$, $\combS_{s,t,u}$, $\combPair_{s,t}$, $\combFst_{s,t}$,
   and $\combSnd_{s,t}$ in~$\subAA$ of
   appropriate types which are suitable for~$\AA$.
 
-  The notions of \defemph{sub-N-TPCA}
-  and \defemph{sub-NR-TPCA} are defined analogously.
+  The notions of \defemph{sub-n-tpca}
+  and \defemph{sub-nr-tpca} are defined analogously.
 \end{definition}
 
-The basic theory of typed PCAs follows the theory of untyped PCAs.
+The basic theory of typed pcas follows the theory of untyped pcas.
 \defemph{Expressions over $\AA$} are defined inductively:
 %
 \begin{enumerate}
@@ -2202,7 +2202,7 @@ when $\subst{e}{x_1 \subto a_1, \ldots, x_n \subto a_n}$ is defined
 for all $a_1 \in \AA_{t_1}, \ldots, a_n \in \AA_{t_n}$.
 
 \begin{theorem}[Combinatory completeness]
-  Let $\AA$ be a TPCA. For every expression $e$ over~$\AA$ of type~$u$ and
+  Let $\AA$ be a tpca. For every expression $e$ over~$\AA$ of type~$u$ and
   every variable $\annot{x}{t}$ there is an expression $e'$ of type $t
   \to u$ whose variables are those of~$e$ excluding~$\annot{x}{t}$
   such that $\defined{e'}$ and $e' \cdot a \kleq \subst{e}{x \subto
@@ -2232,7 +2232,7 @@ for all $a_1 \in \AA_{t_1}, \ldots, a_n \in \AA_{t_n}$.
 
 \subsection{Partial combinatory algebras}
 
-Every PCA is an NR-TPCA if we enrich it with the trivial types system
+Every pca is an nr-tpca if we enrich it with the trivial types system
 that contains a single type, $\mathcal{T} = \set{\star}$ with (the
 only possible) operations $\star \times \star = \star \to \star =
 \star$, and $\AA_\star = \AA$. The required combinators are the ones we
@@ -2247,7 +2247,7 @@ $\combK$ and $\combS$ everywhere.
 \label{sec:typed-lambda-calculus}
 
 The simply typed $\lambda$-calculus is to the untyped $\lambda$-calculus as
-TPCA is to a PCA. The types are inductively generated from the
+tpca is to a pca. The types are inductively generated from the
 \defemph{unit type $\unit$}, a (possibly empty) collection of
 \defemph{ground types}, by using the type constructors $\times$ and
 $\to$. Expressions are built inductively as follows, where $s$ and $t$
@@ -2316,7 +2316,7 @@ There may be additional equations involving primitive constants.
 The \defemph{pure simply typed $\lambda$-calculus} has only a single ground
 type~$o$ and no primitive constants.
 
-The simply typed $\lambda$-calculus is a TPCA whose types are those of the
+The simply typed $\lambda$-calculus is a tpca whose types are those of the
 calculus. For a type $t$ we take $\AA_t$ to be the set of closed
 expressions of type~$t$, quotiented by the least equivalence relation
 generated by $\eta$- and $\beta$-reduction and the rules for the unit,
@@ -2324,8 +2324,8 @@ projections, pairing, and primitive constants.
 
 \subsection[\texorpdfstring{Gödel's $T$}{Gödel's T}]{Gödel's $T$}
 
-The pure simply typed $\lambda$-calculus is not an N-TPCA because it lacks the
-natural numbers. To make it into an N-TPCA, we
+The pure simply typed $\lambda$-calculus is not an n-tpca because it lacks the
+natural numbers. To make it into an n-tpca, we
 add a ground type $\ttnat$ and primitive constants
 %
 \begin{align*}
@@ -2344,16 +2344,16 @@ We also add two further equations
   e_2 \, e_3 \, (\combRec \, e_1 \, e_2 \, e_3).
 \end{align*}
 %
-This gives us an N-TPCA~$T$ with numerals defined by $\numeral{0} = 0$
+This gives us an n-tpca~$T$ with numerals defined by $\numeral{0} = 0$
 and $\numeral{n+1} = \combSucc \, \numeral{n}$. More precisely, the
 elements of $\AA_t$ are the closed expressions of type~$t$, quotiented by
 the equivalence relation generated by the equational rules of the simply typeda
 $\lambda$-calculus and primitive recursion.
 
-This N-TPCA goes by the name \defemph{Gödel's
+This n-tpca goes by the name \defemph{Gödel's
   $T$}~\sidecite{GoedelK:ubeefs}. It was defined by Kurt Gödel to give a
 proof of consistency of Peano arithmetic. It is not as powerful as a
-general PCA or type~1 machines because only the primitive recursive
+general pca or type~1 machines because only the primitive recursive
 functions are expressible in this system.
 
 \subsection{Plotkin's PCF}
@@ -2399,10 +2399,10 @@ The specific equations are:
 \end{align*}
 %
 
-To see that $\PCF$ is a an NR-TPCA, take $\PCF_t$ to be the programs of
+To see that $\PCF$ is a an nr-tpca, take $\PCF_t$ to be the programs of
 type~$t$, quotiented by the equations of the simply typed $\lambda$-calculus and the above equations.
 %
-The primitive recursion combinator $\combRec_t$ required by the definition of NR-TPCA is implemented as
+The primitive recursion combinator $\combRec_t$ required by the definition of nr-tpca is implemented as
 %
 \begin{equation*}  
   \combRec_t =
@@ -2425,7 +2425,7 @@ of type $\ttnat \to \ttnat$ to PCF, together with equations
 %
 We write $f$ instead of $\mathtt{func}_f$ when no confusion can arise.
 
-The resulting NR-TPCA is denoted as $\PCFinf$. The original $\PCF$ is a sub-NR-TPCA of~$\PCFinf$.
+The resulting nr-tpca is denoted as $\PCFinf$. The original $\PCF$ is a sub-nr-tpca of~$\PCFinf$.
 
 
 

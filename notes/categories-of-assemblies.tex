@@ -134,7 +134,7 @@ $\asm{S}$ the only map $S \to \one$ is realized. We denote the
 terminal assembly as $\one$.
 
 We may also ask whether $\AsmA$ has infinite products. The answer
-depends on the underlying TPCAs $(\AA, \compAA)$. We state without
+depends on the underlying tpcas $(\AA, \compAA)$. We state without
 proof that $\Asm{\Scott, \comp{\Scott}}$ and $\Asm{\Baire,
   \comp{\Baire}}$ have countable products, whereas $\Asm{\NN}$ does
 not.
@@ -374,10 +374,10 @@ as~$[f,g]$.
 
 Whether assemblies $\AsmA$ have binary coproducts is an interesting
 question. The answer seems to depend on the structure of the
-underlying TPCAs.
+underlying tpcas.
 
 \begin{definition}
-  A TPCA~$\AA$ with \defemph{sums} is a TPCA with a binary operation $+$
+  A tpca~$\AA$ with \defemph{sums} is a tpca with a binary operation $+$
   on the types such that, for all types $s$, $t$, and $u$ there exist
   constants
   %
@@ -399,20 +399,20 @@ underlying TPCAs.
   We say that the elements $\combLeft$, $\combRight$, and $\combCase$
   are \emph{suitable} for sums when they satisfy these properties.
 
-  A \defemph{sub-TPCA with sums} is a sub-TPCA $\compAA$ of~$\AA$ such
+  A \defemph{sub-tpca with sums} is a sub-tpca $\compAA$ of~$\AA$ such
   that there exists $\combLeft$, $\combRight$, $\combCase$
   in~$\compAA$ suitable for sums in $\AA$.
 \end{definition}
 
 \begin{proposition}
   \label{prop:asm-coproducts-iff-tpca-sums}
-  Suppose $\AA$ is a TPCA and $\compAA$ its sub-TPCA. The category
-  $\AsmA$ has binary coproducts if, and only if, $\AA$ is a TPCA with
-  sums and $\compAA$ is its sub-TPCA with sums.
+  Suppose $\AA$ is a tpca and $\compAA$ its sub-tpca. The category
+  $\AsmA$ has binary coproducts if, and only if, $\AA$ is a tpca with
+  sums and $\compAA$ is its sub-tpca with sums.
 \end{proposition}
 
 \begin{proof}
-  Suppose first that $\AA$ has sums and that $\compAA$ is a sub-TPCA
+  Suppose first that $\AA$ has sums and that $\compAA$ is a sub-tpca
   with sums. The coproduct of $\asm{S}$ and $\asm{T}$ is the assembly
   %
   \begin{equation*}
@@ -515,14 +515,14 @@ underlying TPCAs.
   as well.
 \end{proof}
 
-The obvious question to ask is when a TPCA has sums. We do not know
-whether there is a TPCA without sums, and we do not explore the
+The obvious question to ask is when a tpca has sums. We do not know
+whether there is a tpca without sums, and we do not explore the
 question further. We satisfying ourselves with a sufficient condition
 that covers the instances we care about.
 
 \begin{definition}
   \label{def:tpca-booleans}%
-  A TPCA $\AA$ has \defemph{booleans} when there is a type $\ttbool$, and
+  A tpca $\AA$ has \defemph{booleans} when there is a type $\ttbool$, and
   for each type~$t$ elements
   %
   \begin{equation*}
@@ -542,7 +542,7 @@ that covers the instances we care about.
   We say that $\combFalse$, $\combTrue$, $\combIf_t$ are
   \emph{suitable} for booleans in~$\AA$.
 
-  A sub-TPCA with booleans is a sub-TPCA $\compAA$ of~$\AA$ such that
+  A sub-tpca with booleans is a sub-tpca $\compAA$ of~$\AA$ such that
   there exists $\combFalse$, $\combTrue$, $\combIf_t$ in $\compAA$
   which are suitable for booleans in~$\AA$.
 \end{definition}
@@ -550,9 +550,9 @@ that covers the instances we care about.
 
 \begin{proposition}
   \label{prop:tpca-sums-iff-booleans}
-  A TPCA $\AA$ has sums if, and only if, it has booleans. Furthermore,
-  a sub-TPCA~$\compAA$ is a sub-TPCA with sums if, and only if, it is
-  a sub-TPCA with booleans.
+  A tpca $\AA$ has sums if, and only if, it has booleans. Furthermore,
+  a sub-tpca~$\compAA$ is a sub-tpca with sums if, and only if, it is
+  a sub-tpca with booleans.
 \end{proposition}
 
 \begin{proof}
@@ -596,12 +596,12 @@ that covers the instances we care about.
 
 \begin{proposition}
   \label{prop:n-tpca-booleans}
-  Every N-TPCA has booleans and every sub-N-TPCA is a sub-N-TPCA with
+  Every N-tpca has booleans and every sub-N-tpca is a sub-N-tpca with
   booleans.
 \end{proposition}
 
 \begin{proof}
-  Let $\AA$ be a N-TPCA and $\compAA$ its sub-N-TPCA. Define
+  Let $\AA$ be a N-tpca and $\compAA$ its sub-N-tpca. Define
   %
   \begin{align*}
     \ttbool &= \ttnat, \\
@@ -621,7 +621,7 @@ that covers the instances we care about.
 Finally, let us put all these together.
 
 \begin{proposition}
-  If $\AA$ is a N-TPCA and $\compAA$ its sub-N-TPCA then $\AsmA$ has
+  If $\AA$ is a N-tpca and $\compAA$ its sub-N-tpca then $\AsmA$ has
   binary coproducts.
 \end{proposition}
 
@@ -695,7 +695,7 @@ explicit description of pushouts as exercise.
   \label{prop:asm-cocartesian}%
   $\AsmA$ is cocartesian\sidenote{A category is \defemph{cocartesian} or
     \defemph{finitely cocomplete} if it has finite colimits.} if, and
-  only if, $\AA$ is a TPCA with sums and $\compAA$ a sub-TPCA with
+  only if, $\AA$ is a tpca with sums and $\compAA$ a sub-tpca with
   sums.
 \end{proposition}
 
@@ -704,7 +704,7 @@ explicit description of pushouts as exercise.
   finite colimits exist, provided binary coproducts do. By
   \cref{prop:asm-coproducts-iff-tpca-sums} this is
   equivalent to the condition that $\AA$ have sums and $\compAA$ be a
-  sub-TPCA with sums.
+  sub-tpca with sums.
 \end{proof}
 
 

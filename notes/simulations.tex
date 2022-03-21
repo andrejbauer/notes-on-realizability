@@ -1,9 +1,10 @@
 \section{Simulations}
 \label{sec:simulations}%
 
-If you open a book on computability theory, chances are that you will find a statement saying that ``models of computation are equivalent''. The claim refers to a collection of specific models of computation, such as variations of Turing machines, $\lambda$-calculi, recursive functions, and others.. The book supports the claim by describing ad hoc simulations between such models, with varying degrees of detail, after which it hurries on to core topics of computability theory. An opportunity is missed to ask about a general notion of computation, and the overall structure of models and simulations.
+If you open a book on computability theory, chances are that you will find a statement saying that ``models of computation are equivalent''. The claim refers to a collection of specific models of computation, such as variations of Turing machines, $\lambda$-calculi, and recursive functions. The book supports the claim by describing ad hoc simulations between such models, with varying degrees of detail, after which it hurries on to core topics of computability theory. An opportunity is missed to ask about a general notion of simulation, and a study of its structural properties.
 
-We seize the opportunity and do ask that such a notion be provided. An excellent one was given by John Longley~\sidecite{Longley:94}, namely \emph{applicative morphism} of PCAs. We extend his definition to account for PCAs with sub-PCAs, and dare rename it to \emph{simulation}. There are also applicative morphisms between TPCAs~\cite{longley99:_match}, but we stick to the untyped version for simplicity.
+
+We seize the opportunity and studu such a notion. An excellent one was provided by John Longley~\sidecite{Longley:94}, namely \emph{applicative morphism} of pcas. We extend his definition to account for pcas with sub-pcas, and dare rename the morphisms to \emph{simulations}. For simplicity we do not dwelve into the typed version of simulations, which can also be set up~\cite{longley99:_match}.
 
 \begin{definition}
   \label{def:simulation}%
@@ -12,8 +13,8 @@ We seize the opportunity and do ask that such a notion be provided. An excellent
   \indexdef{applicative!morphism}%
   \indexdef{simulation}%
   %
-  A \defemph{(PCA) simulation}, originally an \defemph{applicative morphism}~\cite{Longley:94},
-  $\rho: \EE \pcato \FF$ between PCAs~$\EE$ and~$\FF$ is a total relation $\rho
+  A \defemph{(pca) simulation}, originally an \defemph{applicative morphism}~\cite{Longley:94},
+  $\rho: \EE \pcato \FF$ between pcas~$\EE$ and~$\FF$ is a total relation $\rho
   \subseteq \EE \times \FF$ for which there exists a \defemph{realizer} $r \in \FF$
   %
   \indexdef{realizer!for applicative morphism}%
@@ -31,7 +32,7 @@ We seize the opportunity and do ask that such a notion be provided. An excellent
   %
   We write $\rho[u] = \set{x \in \FF \such \rho(u, x)}$.
 
-  A \defemph{(subPCA) simulation} $\rho: (\EE, \subEE) \pcato (\FF, \subFF)$ between PCAs with subPCAs is a simulation
+  A \defemph{(sub-pca) simulation} $\rho: (\EE, \subEE) \pcato (\FF, \subFF)$ between pcas with sub-pcas is a simulation
   $\rho : \EE \pcato \FF$ which has a realizer $r \in \subFF$, and which restricts to a simulation
   $\rho : \subEE \pcato \subFF$, with the same realizer~$r$.
 \end{definition}
@@ -40,7 +41,7 @@ We defined a simulation $\rho : \EE \pcato \FF$ to be a total relation rather th
 
 The realizer $r \in \FF$ for a simulation~$\rho$ is an $\FF$-implementation of the application in~$\EE$.
 
-One might expect that a simulation ought to be a map $f : \EE \to \FF$ such that $f(\combK_\EE) = \combK_\FF$, $f(\combS_\FF) = \combS_\FF$, and $f (x \cdot_\EE y) \kleq f x \cdot_\FF f y$. This is how an algebraist would define a morphism, but we are interested in the computational aspects of PCAs, not the algebraic ones.
+One might expect that a simulation ought to be a map $f : \EE \to \FF$ such that $f(\combK_\EE) = \combK_\FF$, $f(\combS_\FF) = \combS_\FF$, and $f (x \cdot_\EE y) \kleq f x \cdot_\FF f y$. This is how an algebraist would define a morphism, but we are interested in the computational aspects of pcas, not the algebraic ones.
 
 \index{simulation!composition of}%
 \index{composition!simulations}%
@@ -63,11 +64,11 @@ If $\rho: (\EE, \subEE) \pcato (\FF, \subFF)$ and $\sigma: (\FF,
 The identity simulation $\id[(\EE, \subEE)]: (\EE,
 \subEE) \to (\EE, \subEE)$ is the identity relation on~$\EE$. It is realized by $\pcalam{x\,y} x \, y$.
 
-PCAs with subPCAs and simulations between them therefore form a category. We equip it with a preorder enrichment\sidenote{A category $\mathcal{C}$ is \defemph{preorder enriched} if hom-sets $\mathcal{C}(X,Y)$ are equipped with preorders (reflexive and transitive relations) under which composition is monotone.} $\preceq$ as follows.
+pcas with sub-pcas and simulations between them therefore form a category. We equip it with a preorder enrichment\sidenote{A category $\mathcal{C}$ is \defemph{preorder enriched} if hom-sets $\mathcal{C}(X,Y)$ are equipped with preorders (reflexive and transitive relations) under which composition is monotone.} $\preceq$ as follows.
 %
 \indexdef{category!of simulations}%
 \index{translation, of simulations}%
-\index{equivalence!of PCAs}%
+\index{equivalence!of pcas}%
 %
 Given $\rho, \sigma : (\EE, \subEE) \pcato (\FF, \subFF)$, define $\rho \preceq \sigma$ to hold when
 there exists $t \in \subFF$ such that, for all $x \in \EE$ and $y \in \rho[x]$, $\defined{t \, x}$ and $\sigma(x, t \, y)$.
@@ -78,7 +79,7 @@ $\sigma$-simulations.
   Given $\rho, \rho' : (\EE, \subEE) \pcato (\FF, \subFF)$ and $\sigma, \sigma' : (\FF, \subFF) \pcato (\GG, \subGG)$, show that if $\rho \preceq \rho'$ and $\sigma \preceq \sigma'$ then $\sigma \circ \rho \preceq \sigma' \circ \rho'$.
 \end{exercise}
 
-We write $\rho \sim \sigma$ when $\rho \preceq \sigma$ and $\sigma \preceq \rho$. An \defemph{equivalence of PCAs}
+We write $\rho \sim \sigma$ when $\rho \preceq \sigma$ and $\sigma \preceq \rho$. An \defemph{equivalence of pcas}
 $(\EE, \subEE)$ and $(\FF, \subFF)$ is a pair of simulations
 %
 \begin{align*}
@@ -204,7 +205,7 @@ To show how the above definitions can be put to work, we recall several basic re
 
 \begin{corollary}
   \label{th:simulation-properties-more}%
-  If $(\EE, \subEE)$ and $(\FF, \subFF)$ are equivalent PCAs, then the 
+  If $(\EE, \subEE)$ and $(\FF, \subFF)$ are equivalent pcas, then the 
   there exist an equivalence
                                 %
   \begin{align*}
@@ -232,11 +233,11 @@ Armed with a rigorous and general notion of simulation, we can revisit the class
 Turing machines are distinguished by a universal property.
 
 \begin{theorem}
-  Up to equivalence, the first Kleene algebra~$\klone$ is initial in the category of PCAs and decidable simulations.
+  Up to equivalence, the first Kleene algebra~$\klone$ is initial in the category of pcas and decidable simulations.
 \end{theorem}
 
 \begin{proof}
-  We sketch the proof from \cite[Theorem 2.4.18]{Longley:94}. Given any PCA~$\AA$, define $\kappa : \klone \pcato \AA$ by $\kappa[n] = \set{\numeral{n}_{\AA}}$. Because every partial computable function $\NN \times \NN \parto \NN$ can be represented in~$\AA$, there is $r \in \AA$ such that, for all $k, m, n \in \NN$,
+  We sketch the proof from \cite[Theorem 2.4.18]{Longley:94}. Given any pca~$\AA$, define $\kappa : \klone \pcato \AA$ by $\kappa[n] = \set{\numeral{n}_{\AA}}$. Because every partial computable function $\NN \times \NN \parto \NN$ can be represented in~$\AA$, there is $r \in \AA$ such that, for all $k, m, n \in \NN$,
   %
   \begin{equation*}
     r \, \numeral{k} \, \numeral{m} = \numeral{n} \iff \pr{k}{m} = n.
@@ -250,6 +251,10 @@ Turing machines are distinguished by a universal property.
 \begin{exercise}
   Verify that for any simulation $\rho : (\EE, \subEE) \pcato (\FF, \subFF)$ there is $q \in \subFF$ such that $q \, \overline{n}_{\FF} \in \rho[\overline{n}_{\EE}]$ for all $n \in \NN$.
 \end{exercise}
+
+\subsubsection{Simulations and Turing degrees}
+\label{ex:pcamorphism-turing-degrees}%
+
 
 \subsubsection{Applicative retraction between $\Lambda$ and $\klone$}
 \label{ex:pcamorphism-K1-lambda}%

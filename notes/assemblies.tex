@@ -105,7 +105,7 @@ We now give a precise definition of the ideas presented in the
 previous section.
 
 \begin{definition}[Assemblies]
-  Let $\AA$ be a TPCA and $\compAA$ a sub-TPCA. An \defemph{assembly}
+  Let $\AA$ be a tpca and $\compAA$ a sub-tpca. An \defemph{assembly}
   over~$(\AA, \compAA)$ is a triple $\asm{S} = \xasm{S}$ where $S$ is
   a set, $|S|$ is a type, and $\rz_S$ is a relation between
   $\xAtyp{S}$ and~$S$ satisfying: for every $x \in S$ there is $\R{x}
@@ -121,27 +121,27 @@ previous section.
 There are many versions of realizability. Ours is known as \emph{typed
   relative realizability}. It is typed because we used typed PCAs
 rather than the ordinary ones. It is relative because we used one
-TPCA~$\AA$ for assemblies, and another for the realized maps. By this we
+tpca~$\AA$ for assemblies, and another for the realized maps. By this we
 are capturing the idea that computable functions may operate on
 potentially non-computable data, as was the case for type~2 machines
-and the graph model, cf.\ \cref{sec:type-2,sec:graph-model}. In the typical case the larger TPCA~$\AA$
-allows representation of arbitrary data, but the sub-TPCA $\compAA$
+and the graph model, cf.\ \cref{sec:type-2,sec:graph-model}. In the typical case the larger tpca~$\AA$
+allows representation of arbitrary data, but the sub-tpca $\compAA$
 consists only of the computable part of~$\AA$ which forces the realizers
 for maps to be computable. Thus it makes sense to say in the general
 case that the maps are realized \emph{relative} to the choice of a
-sub-TPCA~$\compAA$.
+sub-tpca~$\compAA$.
 
 When $\AA$ is not typed the definition of an assembly simplifies a bit
 because we need not keep mentioning the (trivial) types: an assembly
-over a PCA~$\AA$ is a pair $(S, {\rz_S})$ where $S$ is a set and $\rz_S$
+over a pca~$\AA$ is a pair $(S, {\rz_S})$ where $S$ is a set and $\rz_S$
 is a relation between~$\AA$ and~$S$, such that for every $x \in S$ there
 is $r \in A$ and $r \rz_S x$.
 
 Another special case occurs when $\compAA = \AA$. In this case we write
 $\Asm{\AA}$ instead of $\Asm{\AA,\AA}$.
 
-In most examples the TPCA $\AA$ is actually an NR-TPCA, and $\compAA$ a
-sub-NR-TPCA of~$\AA$.
+In most examples the tpca $\AA$ is actually an nr-tpca, and $\compAA$ a
+sub-nr-tpca of~$\AA$.
 
 \begin{proposition}
   Assemblies and realized maps form the \defemph{category $\AsmA$ of
@@ -345,7 +345,7 @@ The pair $(|S|, {\per_S})$ suffices for the reconstruction of the
 original modest set, up to isomorphism. Let us be a bit more precise
 about this.
 
-Let $\AA$ be a TPCA and $\comp{A}$ a sub-TPCA. A \defemph{partial
+Let $\AA$ be a tpca and $\comp{A}$ a sub-tpca. A \defemph{partial
   equivalence relation} on~$\AA$ is a pair $S = (|S|, {\per_S})$ where
 $|S|$ is a type and $\per_S$ is a transitive and antisymmetric
 relation on $\xAtyp{S}$. A realizer $r \in \xAtyp{S}$ is \defemph{total} if
@@ -437,7 +437,7 @@ Computable mathematics was developed by several ``schools'', mostly
 independent of each other, and each coming from its own tradition.
 Realizability covers most approaches to computable mathematics that
 have been proposed. To get a particular variation we just choose an
-appropriate TPCA with sub-TPCA. We look at some of them and relate the
+appropriate tpca with sub-tpca. We look at some of them and relate the
 traditional terminology and notions to ours.
 
 \subsection{Recursive Mathematics}
@@ -1109,7 +1109,7 @@ details.\sidenote{The general topic of comparing realizability models
 
 We would like to translate assemblies over $\Scott$ to asemblies over
 $\Baire$, and vice versa. This can be done systematically if can
-``simulate'' the PCA $\Baire$ within the PCA $\Scott$, and vice versa.
+``simulate'' the pca $\Baire$ within the pca $\Scott$, and vice versa.
 %
 Define the map $\iota : \Baire \to \Scott$ by
 %                                %
