@@ -105,13 +105,13 @@ The preorder enrichment induces the notions of equivalence and adjunction of sim
     adjoint} to~$\delta$, or that~$\delta$ is \defemph{right adjoint}
   to~$\gamma$.
 
-  \indexdef{simulation!inclusion}%
-  \indexdef{simulation!retraction}%
-  \indexsee{inclusion!simulation}{simulation, inclusion}%
-  \indexsee{retraction!simulation}{simulation, retraction}%
+  \indexdef{simulation!adjoint inclusion}%
+  \indexdef{simulation!adjoint retraction}%
+  \indexsee{adjoint inclusion!simulation}{simulation, inclusion}%
+  \indexsee{adjoint retraction!simulation}{simulation, retraction}%
   %
-  Such an adjoint pair is an \defemph{inclusion} when $\gamma \circ \delta \sim \id[\EE]$, and a
-  \defemph{retraction} when $\delta \circ \gamma \sim \one_\FF$.
+  Such an adjoint pair is an \defemph{adjoint inclusion} when $\gamma \circ \delta \sim \id[\EE]$, and a
+  \defemph{adjoint retraction} when $\delta \circ \gamma \sim \one_\FF$.
 \end{definition}
 
 \subsection{Properties of simulations}
@@ -212,7 +212,7 @@ To show how the above definitions can be put to work, we recall several basic re
 
 \begin{corollary}
   \label{th:simulation-properties}%
-  If $\gamma \dashv \delta$ is a retraction then both~$\delta$
+  If $\gamma \dashv \delta$ is an adjoint retraction then both~$\delta$
   and~$\gamma$ are discrete and decidable, and~$\gamma$ is projective.
 \end{corollary}
 
@@ -247,7 +247,7 @@ Armed with a rigorous and general notion of simulation, we can revisit the class
 \subsubsection{Initiality of $\klone$}
 \label{ex:intiality-K1}%
 
-Turing machines are distinguished by a universal property.
+Turing machines are distinguished by a universal property, so long as we require preservation of Booleans (and consequently the natural numbers).
 
 \begin{theorem}
   Up to equivalence, the first Kleene algebra~$\klone$ is initial in the category of pcas and decidable simulations.
@@ -262,7 +262,7 @@ Turing machines are distinguished by a universal property.
   %
   Such an element~$r$ realizes~$\kappa$. Furthermore, $\kappa$ is decidable because it maps numbers to numerals.
 
-  Suppose $\mu : \klone \pcato \AA$ is another decidable simulation. Because $\mu$ preserve numerals there exists $f \in \AA$ such that if $a \in \mu[n]$ then $f \, a = \numeral{n} \in \kappa[n]$, therefore $\mu \preceq \kappa$. The relation $\kappa \preceq \mu$ holds by the exercise below, therefore $\kappa \sim \mu$.
+  Suppose $\mu : \klone \pcato \AA$ is another decidable simulation. Because $\mu$ preserves numerals there exists $f \in \AA$ such that if $a \in \mu[n]$ then $f \, a = \numeral{n} \in \kappa[n]$, therefore $\mu \preceq \kappa$. The relation $\kappa \preceq \mu$ holds by the next exercise, therefore $\kappa \sim \mu$.
 \end{proof}
 
 \begin{exercise}
@@ -282,8 +282,56 @@ Recall that a \defemph{Turing reduction} of $A \subseteq \NN$ to $B \subseteq \N
   This is \cite[Proposition 3.1.6]{Longley:94}.
 \end{proof}
 
-\subsubsection{A retraction between $\Lambda$ and $\klone$}
+
+\subsubsection{Decidable bi-simulations}
+\label{sec:decid-bi-simul}
+
+Decidable simulations correpond to the kinds of simulations one finds in computability theory textbooks, which consider models to be equivalent when they compute the same functions $\NN \to \NN$. The details are left as an exercise.
+
+\begin{definition}
+  Say that a function $f : \NN \to \NN$ is \defemph{realizable} in a pca~$\AA$ when there exists $r \in \AA$ such that $\defined{a \, \numeral{n}}$ and $a \, \numeral{n} = \numeral{f(n)}$, for all $n \in \NN$.
+
+  Pcas $\EE$ and $\FF$ are \defemph{Turing equivalent} when they realize the same maps $\NN \to \NN$.
+\end{definition}
+
+\begin{exercise}
+  Suppose that
+  %
+  \begin{align*}
+    \delta &: \EE \pcato \FF
+    &
+      \gamma &: \FF \pcato \EE
+  \end{align*}
+  %
+  are decidable simulations. Show that~$\EE$ and~$\FF$ are Turing equivalent.
+\end{exercise}
+
+
+\subsubsection{Self-interpreters and retractions onto $\klone$}
 \label{ex:pcamorphism-K1-lambda}%
+
+There is more to be said about a pair of decidable simulations
+%
+\begin{align*}
+  \delta &: \EE \pcato \klone
+  &
+  \gamma &: \klone \pcato \EE.
+\end{align*}
+%
+Because $\klone$ is initial, $\gamma$ is equivalent to $n \mapsto \numeral{n}$, so we might as well assume that $\gamma[n] = \set{\numeral{n}}$. Initiality also implies that $\delta \circ \gamma \sim \id[\klone]$.
+
+Think of $n \in \delta[x]$ as the ``source code'' of~$x \in \EE$.
+%
+A translation $t \in \EE$ witnessing $\gama \circ \delta \preceq \id[\EE]$ is a \defemph{self-interpreter} for~$\EE$. Indeed, given $x \in \EE$ and $n \in \delta[x]$ we have $t \, \numeral{x} = x$, which says that $t$ evaluates the source code~$n$ to the value~$x$ represented by the source code.
+
+Therefore, an applicative retraction $\gamma \dashv \delta$ from $\EE$ onto~$\klone$ expresses the idea that $\EE$ has a self-interpreter and is Turing-equivalent
+
+ a computational model~$\EE$ which has a self-interpreter and 
+
+So suppose that $\gamma \circ \delta \preceq \id[\EE]$, which amounts to having an applicative retraction $\gamma \vdash \delta$.
+
+
+
 
 We construct a retraction from the pca $\Lambda$ of the closed terms of the untyped $\lambda$-calculus, and first Kleene algebra~$\klone$.
 
@@ -316,7 +364,7 @@ Verifying $\delta \circ \gamma \preceq \id[\Lambda]$ is a simple matter of progr
 
 Let us look at a retraction $(\delta \dashv \gamma): \comp{\Scott} \pcato \klone$ between computable graph model and the first Kleene algebra~\cite[Proposition 3.3.7]{Longley:94}.
 %
-The inclusion $\delta: \klone \to \comp{\Scott}$ is defined by
+The adjoing inclusion $\delta: \klone \to \comp{\Scott}$ is defined by
 % 
 \begin{equation*}
   \delta(n) = \set{n},
