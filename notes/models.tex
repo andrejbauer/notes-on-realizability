@@ -502,7 +502,7 @@ Think of $\gamma$ as a lookup table which maps a key $\cons{i}[n_0, \ldots, n_{k
 %
 Clearly, $\gamma$ can be computed from a description of~$M$.
 
-To decode the function $\xfpr_\gamma : \Baire \parto \Baire$ encoded by $\gamma \in \Baire$, we just have to devise a lookup procedure. Given input $\alpha \in \Baire$, we compute the value of the $i$-th output cell by successively looking up keys $\cons{i}{\seg{\alpha}{k}}$ for successively larger~$k$, until we find an answer~$j$. More precisely,
+To decode the function $\xfpr_\gamma : \Baire \parto \Baire$ encoded by $\gamma \in \Baire$, we just have to devise a lookup procedure. Given input $\alpha \in \Baire$, we compute the value of the $i$-th output cell by successively looking up keys $\cons{i}{\seg{\alpha}{k}}$ for ever larger~$k$, until we find an answer~$j$. More precisely,
 for $\alpha \in \Baire$, define $\ell(\gamma, \alpha) : \NN \parto \NN$ as
 %
 \begin{equation*}
@@ -1867,11 +1867,13 @@ Natural numbers are implemented as the
 %
 \defemph{Curry numerals}
 %
-\begin{equation*}
+\begin{equation}
+  \label{eq:curry-numeral}%
+  %
   \numeral{0} = \combI = \combS\, \combK\, \combK
   \qquad\text{and}\qquad
   \numeral{n+1} = \combPair \, \combFalse \, \numeral{n}.
-\end{equation*}
+\end{equation}
 %
 with successor, predecessor and zero-test
 %

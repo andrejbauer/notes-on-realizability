@@ -1,10 +1,10 @@
 \section{Simulations}
 \label{sec:simulations}%
 
-If you open a book on computability theory, chances are that you will find a statement saying that ``models of computation are equivalent''. The claim refers to a collection of specific models of computation, such as variations of Turing machines, $\lambda$-calculi, and recursive functions. The book supports the claim by describing ad hoc simulations between such models, with varying degrees of detail, after which it hurries on to core topics of computability theory. An opportunity is missed to ask about a general notion of simulation, and a study of its structural properties.
+If you open a book on computability theory, chances are that you will find a statement saying that ``models of computation are equivalent''. The claim refers to a collection of specific models of computation, such as variations of Turing machines, $\lambda$-calculi, and recursive functions. The book supports the claim by describing simulations between such models, with varying degrees of detail, after which it hurries on to core topics of computability theory. An opportunity is missed to ask about a general notion of simulation, and a study of its structural properties.
 
 
-We seize the opportunity and studu such a notion. An excellent one was provided by John Longley~\sidecite{Longley:94}, namely \emph{applicative morphism} of pcas. We extend his definition to account for pcas with sub-pcas, and dare rename the morphisms to \emph{simulations}. For simplicity we do not dwelve into the typed version of simulations, which can also be set up~\cite{longley99:_match}.
+We seize the opportunity and study a notion of simulation between pcas. An excellent one is John Longley's \emph{applicative morphism}~\sidecite{Longley:94}. His definition extends easily to account for pcas with sub-pcas. We dare rename applicative morphisms to \emph{simulations}, and consider only the untyped simulations. The typed version of simulations can also be set up as well, see~\sidecite{longley99:_match}.
 
 \begin{definition}
   \label{def:simulation}%
@@ -33,13 +33,13 @@ We seize the opportunity and studu such a notion. An excellent one was provided 
   We write $\rho[u] = \set{x \in \FF \such \rho(u, x)}$.
 
   A \defemph{(sub-pca) simulation} $\rho: (\EE, \subEE) \pcato (\FF, \subFF)$ between pcas with sub-pcas is a simulation
-  $\rho : \EE \pcato \FF$ which has a realizer $r \in \subFF$, and which restricts to a simulation
-  $\rho : \subEE \pcato \subFF$, with the same realizer~$r$.
+  $\rho : \EE \pcato \FF$ which has a realizer $r \in \subFF$, and such that $\rho$ restricted to $\subEE \times \subFF$ is a simulation $\subEE \pcato \subFF$ realized by~$r$.
 \end{definition}
 
-We defined a simulation $\rho : \EE \pcato \FF$ to be a total relation rather than a function because in~$\FF$ there might be many simulations of an element of $\EE$, without any one being preferred. The notation $\rho[u]$ suggests that~$\rho$ is construed as a multi-valued map rather than a relation.
+A realizer $r \in \FF$ of a simulation is of course precisely an implementation in~$\FF$ of the applicative structure of~$\EE$.
 
-The realizer $r \in \FF$ of a simulation~$\rho$ is an $\FF$-implementation of the application in~$\EE$.
+We defined a simulation to be a total relation rather than a function because an element of the domain may be simulated by many elements of the codomain, without any one being preferred or distinguished. The notation $\rho[u]$ 
+suggests that~$\rho$ is construed as a multi-valued map rather than a relation.
 
 One might expect that a simulation ought to be a map $f : \EE \to \FF$ such that $f(\combK_\EE) = \combK_\FF$, $f(\combS_\FF) = \combS_\FF$, and $f (x \cdot_\EE y) \kleq f x \cdot_\FF f y$. This is how an algebraist would define a morphism, but we are interested in the computational aspects of pcas, not the algebraic ones.
 
@@ -117,7 +117,7 @@ The preorder enrichment induces the notions of equivalence and adjunction of sim
 \subsection{Properties of simulations}
 \label{sec:prop-simul}
 
-Nothing prevents a simulation from being trivial. In fact, there always is the constant simulation $\tau : \EE \pcato \FF$, defined by $\tau[x] = \set{\combK_{\FF}}$ and realized by $\pcalam{x\,y} \combK$. We should identify further useful properties of simulations.
+Nothing prevents a simulation from being trivial. In fact, there always is the constant simulation $\tau : \EE \pcato \FF$, defined by $\tau[x] = \set{\combK_{\FF}}$ and realized by $\pcalam{x\,y} \combK$. To avoid such examples, we should identify further useful properties of simulations.
 
 Discreteness prevents a simulation from conflating simulated elements.
 
@@ -189,13 +189,11 @@ $e = \pcalam{x} \combIf_\FF \, x \, a \, b$, so that $e \, \combTrue_\FF \in \rh
   Prove that a simulation is decidable if, and only if, it preserves numerals.
 \end{exercise}
 
-
-To show how the above definitions can be put to work, we recall several basic results of John Longley's.
+We recall several basic results of John Longley's.
 
 \begin{theorem}
   \label{th:simulation-properties2}%
-  For $\delta: (\EE, \subEE) \pcato (\FF, \subFF)$ and
-  $\gamma: (\FF, \subFF) \pcato (\EE, \subEE)$:
+  For $\delta: \EE \pcato \FF$ and $\gamma: \FF \pcato \EE$:
   %
   \begin{enumerate}
   \item
@@ -222,13 +220,12 @@ To show how the above definitions can be put to work, we recall several basic re
 
 \begin{corollary}
   \label{th:simulation-properties-more}%
-  If $(\EE, \subEE)$ and $(\FF, \subFF)$ are equivalent pcas, then the 
-  there exist an equivalence
+  If $\EE$ and $\FF$ are equivalent pcas, then the there exist an equivalence
                                 %
   \begin{align*}
-    \delta &: (\EE, \subEE) \pcato (\FF, \subFF),
+    \delta &: \EE \pcato \FF,
     &
-    \gamma &: (\FF, \subFF) \pcato (\EE, \subEE),
+    \gamma &: \FF \pcato \EE,
   \end{align*}
                                 %
   such that $\gamma$ and $\delta$ are single-valued.
@@ -239,15 +236,14 @@ To show how the above definitions can be put to work, we recall several basic re
   \cref{th:simulation-properties2}.
 \end{proof}
 
-\subsection{Examples of simulations}
-\label{sec:examples-simulations}
+\subsection[\texorpdfstring{Decidable simulations and $\klone$}{Decidable simulations and K1}]
+{Decidable simulations and $\klone$}
+\label{sec:decidable-simulations}
 
-Armed with a rigorous and general notion of simulation, we can revisit the classic examples of simulations.
+Decidable simulations are the kind of simulations that arise in computability theory.
+We investigate them a bit, especially in relation to the first Kleene algebra~$\klone$.
 
-\subsubsection{Initiality of $\klone$}
-\label{ex:intiality-K1}%
-
-Turing machines are distinguished by a universal property, so long as we require preservation of Booleans (and consequently the natural numbers).
+Turing machines, embodied as Kleene's first algebra~$\klone$, are distinguished by a universal property.
 
 \begin{theorem}
   Up to equivalence, the first Kleene algebra~$\klone$ is initial in the category of pcas and decidable simulations.
@@ -266,11 +262,8 @@ Turing machines are distinguished by a universal property, so long as we require
 \end{proof}
 
 \begin{exercise}
-  Verify that for any simulation $\rho : (\EE, \subEE) \pcato (\FF, \subFF)$ there is $q \in \subFF$ such that $q \, \overline{n}_{\FF} \in \rho[\overline{n}_{\EE}]$ for all $n \in \NN$.
+  Verify that for any $\rho : \EE \pcato \FF$ there is $q \in \FF$ such that $q \, \overline{n}_{\FF} \in \rho[\overline{n}_{\EE}]$ for all $n \in \NN$.
 \end{exercise}
-
-\subsubsection{Simulations and Turing degrees}
-\label{ex:pcamorphism-turing-degrees}%
 
 Recall that a \defemph{Turing reduction} of $A \subseteq \NN$ to $B \subseteq \NN$, written $A \leq_T B$ is a $B$-oracle Turing machine~$M$ which computes the characteristic function of~$A$.
 
@@ -282,16 +275,13 @@ Recall that a \defemph{Turing reduction} of $A \subseteq \NN$ to $B \subseteq \N
   This is \cite[Proposition 3.1.6]{Longley:94}.
 \end{proof}
 
-
-\subsubsection{Decidable bi-simulations}
-\label{sec:decid-bi-simul}
-
-Decidable simulations correpond to the kinds of simulations one finds in computability theory textbooks, which consider models to be equivalent when they compute the same functions $\NN \to \NN$. The details are left as an exercise.
+The following definition and exercise verify that having decidable simulations between~$\EE$ and~$\FF$ implies that they both compute the same number-theoretic functions, which is sometimes taken to be a notion of equivalence of computational models.
 
 \begin{definition}
   Say that a function $f : \NN \to \NN$ is \defemph{realizable} in a pca~$\AA$ when there exists $r \in \AA$ such that $\defined{a \, \numeral{n}}$ and $a \, \numeral{n} = \numeral{f(n)}$, for all $n \in \NN$.
 
-  Pcas $\EE$ and $\FF$ are \defemph{Turing equivalent} when they realize the same maps $\NN \to \NN$.
+  Pcas $\EE$ and $\FF$ are \defemph{Turing-equivalent} when they realize the same maps $\NN \to \NN$.
+  A pca is \defemph{Turing-complete} when it is Turing-equivalent to~$\klone$.
 \end{definition}
 
 \begin{exercise}
@@ -303,14 +293,10 @@ Decidable simulations correpond to the kinds of simulations one finds in computa
       \gamma &: \FF \pcato \EE
   \end{align*}
   %
-  are decidable simulations. Show that~$\EE$ and~$\FF$ are Turing equivalent.
+  are decidable simulations. Show that~$\EE$ and~$\FF$ are Turing-equivalent.
 \end{exercise}
 
-
-\subsubsection{Self-interpreters and retractions onto $\klone$}
-\label{ex:pcamorphism-K1-lambda}%
-
-There is more to be said about a pair of decidable simulations
+Consider again decidable simulations
 %
 \begin{align*}
   \delta &: \EE \pcato \klone
@@ -322,71 +308,66 @@ Because $\klone$ is initial, $\gamma$ is equivalent to $n \mapsto \numeral{n}$, 
 
 Think of $n \in \delta[x]$ as the ``source code'' of~$x \in \EE$.
 %
-A translation $t \in \EE$ witnessing $\gama \circ \delta \preceq \id[\EE]$ is a \defemph{self-interpreter} for~$\EE$. Indeed, given $x \in \EE$ and $n \in \delta[x]$ we have $t \, \numeral{x} = x$, which says that $t$ evaluates the source code~$n$ to the value~$x$ represented by the source code.
+A translation $t \in \EE$ witnessing $\gamma \circ \delta \preceq \id[\EE]$ is a \defemph{self-interpreter} for~$\EE$. Indeed, given $x \in \EE$ and $n \in \delta[x]$ we have $t \, \numeral{n} = x$, which says that $t$ evaluates the source code~$n$ to the value~$x$ represented by the source code.
+%
+Therefore, an adjoint retraction $\gamma \dashv \delta$ from $\EE$ onto~$\klone$ encompasses two features of~$\EE$, a self-interpreter and Turing-completeness.
 
-Therefore, an applicative retraction $\gamma \dashv \delta$ from $\EE$ onto~$\klone$ expresses the idea that $\EE$ has a self-interpreter and is Turing-equivalent
+\subsubsection{An adjoint retraction from $\Lambda$ to $\klone$}
+\label{sec:adjo-retr-from}
 
- a computational model~$\EE$ which has a self-interpreter and 
+We construct an adjoint retraction from the pca $\Lambda$ of the closed terms of the untyped $\lambda$-calculus, and first Kleene algebra~$\klone$.
 
-So suppose that $\gamma \circ \delta \preceq \id[\EE]$, which amounts to having an applicative retraction $\gamma \vdash \delta$.
-
-
-
-
-We construct a retraction from the pca $\Lambda$ of the closed terms of the untyped $\lambda$-calculus, and first Kleene algebra~$\klone$.
-
-Define $\delta : \klone \to \Lambda$ to be the map $\delta(n) = \numeral{n}$ which encodes numbers as Curry numerals.
+Define $\delta : \klone \pcato \Lambda$ to be the simulation $\delta[n] = \set{\numeral{n}}$ which encodes numbers as Curry numerals.
 %
 It is a simulation because every partial computable map is $\lambda$-definable, and therefore so is Kleene application.
 
-In the opposite direction, let $\gamma \subseteq \Lambda \times \klone$ be the total relation (remember that $\Lambda$ is the set of closed terms quotiented by $\beta$-reduction),
+In the opposite direction, let $\gamma : \Lambda \pcato \klone$ be the total relation (remember that $\Lambda$ is the set of closed terms quotiented by $\beta$-reduction),
 %
 \begin{equation*}
   \gamma[t] = \set{ \code{t'} \such t' \in \Lambda \land t =_\beta t' }.
 \end{equation*}
 %
-That is, the equivalence class of a closed term $t \in \Lambda$ is the set of all codes of terms equal to~$t$.
-This is a simulation because there is a computable map~$f : \NN \times \NN \parto \NN$ satisfying $f(\code{t}, \code{u}) = \code{t \, u}$ for all $t, u \in \Lambda$.
+That is, an equivalence class of a closed terms is simulated by the codes of its members.
+The simulation is realized because there is a computable map~$f : \NN \times \NN \parto \NN$ satisfying $f(\code{t}, \code{u}) = \code{t \, u}$ for all $t, u \in \Lambda$.
 
-It is not hard to see that $\gamma \circ \delta \sim \id[\klone]$. The relation $\id[\klone] \preceq \gamma \circ \delta$ holds because from $n \in \NN$ we can compute the code $\code{\numeral{n}}$. For the opposite relation $\gamma \circ \delta \preceq \id[\klone]$, we note that given any closed $\lambda$-term $t$ such that $t =_\beta \overline{n}$ for some $n \in \NN$, we can compute $n$ by computing the normal form of~$t$.
-
-Verifying $\delta \circ \gamma \preceq \id[\Lambda]$ is a simple matter of programming in the untyped $\lambda$-calculus a term $e$ such that $e \, \overline{\code{t}} =_\beta t$ for any closed term~$t$.
+Verifying $\delta \circ \gamma \preceq \id[\Lambda]$ is a simple matter of programming a self-interpreter for the untyped $\lambda$-calculus. From a conceptual point of view it is clear that this can be done: the syntax of a term~$t$ can be discerned from the numeral $\numeral{\code{t}}$, so one just has to recursively traverse syntax tree of~$t$ and interpret it into $\lambda$-calculus.
 
 \begin{exercise}
   Why is it \emph{not} the case that $\id[\Lambda] \preceq \delta \circ \gamma$?
 \end{exercise}
 
-
-\subsubsection{A retraction between $\comp{\Scott}$ and $\klone$}
+\subsubsection{An adjoint retraction from $\comp{\Scott}$ to $\klone$}
 \label{ex:pcamorphism_K1_RE}%
 
 \index{retraction!between P and N@{between~$\comp{\Scott}$ and~$\klone$}}%
+%
+Here is one more example, an adjoint retraction from the computable graph model~$\comp{\Scott}$ and the first Kleene algebra~\cite[Proposition 3.3.7]{Longley:94}.
+%
+In one direction we define $\delta: \klone \pcato \comp{\Scott}$ by
+%
+\begin{equation*}
+  \delta[n] = \set{\set{n}}.
+\end{equation*}
+%
+Careful with the nested singletons: the number~$n$ is simulated by the singleton $\set{n}$.
 
-Let us look at a retraction $(\delta \dashv \gamma): \comp{\Scott} \pcato \klone$ between computable graph model and the first Kleene algebra~\cite[Proposition 3.3.7]{Longley:94}.
-%
-The adjoing inclusion $\delta: \klone \to \comp{\Scott}$ is defined by
+\begin{exercise}
+  Above we used singletons $\set{n}$ as numerals, but in~\eqref{eq:curry-numeral} we defined the Curry numerals $\overline{n}$. Verify that in $\comp{\Scott}$ we can translate between these, i.e., that there are computable enumeration operators $f : \comp{\Scott} \to \comp{\Scott}$ and $g : \comp{\Scott} \to \comp{\Scott}$ such that $f(\set{n}) = \overline{n}_{\comp{\Scott}}$ and $g(\overline{n}_{\comp{\Scott}}) = \set{n}$, for all $n \in \NN$.
+\end{exercise}
+
+In the other direction we define $\gamma: \comp{\Scott} \pcato \klone$ by taking
 % 
 \begin{equation*}
-  \delta(n) = \set{n},
-\end{equation*}
-% 
-and the retraction $\gamma: \comp{\Scott} \pcato \klone$ by
-% 
-\begin{equation*}
-  \gamma[A] = \set{n \in \NN \such \im{\xpr_n} = A}.
+  \gamma[A] = \set{n \in \NN \such \im{\xpr_n} = A}
 \end{equation*}
 %
-That is, a c.e.~set $A$ is simulated by the code of any partial computable map whose image is~$A$.
+to be the index set\sidenote{In computability theory, the \defemph{index set} of a set $A$ is the set of all numbers (the indices) that encode elements of~$A$.} of~$A$, i.e., the codes of partial computable maps whose image is~$A$.
 
 \begin{exercise}
   Verify that $\delta$ and $\gamma$ are simulations.
 \end{exercise}
 
-The relation $\gamma \circ \delta \preceq \id[\klone]$ holds because there is a partial computable map~$f : \NN \parto \NN$ which takes as input $k \in \NN$ such that $\im{\xpr_k} = \set{n}$ and outputs $n$. For example, $f$ can compute in parallel $\pr{k}{0}, \pr{k}{1}, \pr{k}{2}, \ldots$, and as soon as one of them terminates and outputs a number, $f$ terminates with the same number as its output.
-
-The relation $\id[\klone] \preceq \gamma \circ \delta$ holds because from $n \in \NN$ we can compute $k \in \NN$ such that $\xpr_k$ is the constantly~$n$ map.
-
-To establish $\delta \circ \gamma \preceq \id[\comp{\Scott}]$, note that $(\delta \circ \gamma)(A)$ is the index set of~$A$, i.e., the set of codes of those partial computable maps whose image is~$A$. The set
+To establish $\delta \circ \gamma \preceq \id[\comp{\Scott}]$, observe that
 %
 \begin{equation*}
   S = \set{ \code{\pair{\code{\set{m}}, n}} \such \some{k \in \NN} \pr{m}{k} = n }
@@ -398,256 +379,143 @@ is computably enumerable. The computable enumeration operator $\Lambda(S) : \com
   Why is it \emph{not} the case that $\id[\comp{\Scott}] \preceq \delta \circ \gamma$?
 \end{exercise}
 
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-\subsubsection{A retraction from $(\Scott, \comp{\Scott})$ to
-  $(\Baire, \comp{\Baire})$}
+\subsection[\texorpdfstring{An adjoint retraction from $(\Scott, \comp{\Scott})$ to $(\Baire, \comp{\Baire})$}{An adjoint retraction from P to B}]
+{An adjoint retraction from $(\Scott, \comp{\Scott})$ to $(\Baire, \comp{\Baire})$}
 \label{sec:retraction-PP-BB}%
 
 \index{retraction!between P and B@{between~$(\Scott, \comp{\Scott})$ and~$(\Baire, \comp{\Baire})$}}%
+%
 
-Lietz~\cite{Lietz:99} compared realizability models over~$\Scott$ and
-over~$\Baire$ and observed that there is an applicative retraction
-$(\iota \dashv \delta): PP \pcato BB$. In this subsection we
-describe it explicitly and show that it is in fact a retraction from
-$(\Scott, \comp{\Scott})$ to $(\Baire, \comp{\Baire})$,
+To give at least one example of simulations between pcas with sub-pcas, we review the adjoint retraction between the graph model and Kleene's second algebra, which was first given by Peter Lietz~\cite{Lietz:04}.
+
+The map $\iota: \Baire \to \Scott$, defined by
                                 %
 \begin{equation*}
-  (\iota \dashv \delta): (\Scott, \comp{\Scott}) \pcato (\Baire, \comp{\Baire}).
-\end{equation*}
-                                %
-Given a finite sequence of natural numbers $a = \seq{a_0, \ldots,
-  a_{k-1}}$, let $\code{a}$ be the encoding of~$a$ as a natural
-number, as defined in Section~\ref{sec:second_kleene}. Define the
-embedding $\iota: \Baire \to \Scott$ by
-                                %
-\begin{equation*}
-  \iota \alpha =
+  \iota \, \alpha =
   \set{ \code{a} \such
-    a \in \NN^{*} \land a  \sqsubseteq \alpha 
-    }.
-\end{equation*}
-                                %
-Observe that if $\alpha \in \comp{\Baire}$ then $\iota \alpha \in \comp{\Scott}$.
-Let $\Baire' = \im{\iota}$ and define $p: \Baire' \times \Baire' \to \Scott$
-by
-                                %
-\begin{equation*}
-  p \pair{\iota \alpha, \iota \beta} =
-  \begin{cases}
-    \iota (\alpha \mid \beta) 
-    & \text{if $\alpha \mid \beta$ defined} \,\\
-    \emptyset
-    & \text{otherwise}.
-  \end{cases}
-\end{equation*}
-                                %
-The map $p$ is continuous and it can be extended to an
-r.e.~enumeration operator $p: \Scott \times \Scott \to \Scott$. Thus, $p$
-realizes~$\iota$, which is therefore an applicative morphism.
-
-Let $\delta: \Scott \pcato \Baire$ be the applicative morphism defined,
-for  $x \in \Scott$, $\alpha \in \Baire$, by
-                                %
-\begin{equation*}
-  \delta(x, \alpha)
-  \iff
-  x = \set{n \in \NN \such \some{k \in \NN} \alpha k = n + 1}.
-\end{equation*}
-                                %
-In words, $\alpha$ is a $\delta$-implementation of~$x$ when it
-enumerates~$x$. We added~$1$ to~$n$ in the above definition so that
-the empty set is enumerated as well. Clearly, if $\alpha \in \comp{\Baire}$
-then~$x \in \comp{\Scott}$. In order for~$\delta$ to be an applicative
-morphism, it must have a realizer~$\rho \in \comp{\Baire}$ such that
-                                %
-\begin{equation*}
-  \delta(x, \alpha) \land
-  \delta(y, \beta)
-  \lthen
-  \delta(x \cdot y, \rho \mid \alpha \mid \beta).
-\end{equation*}
-                                %
-Equivalently, we may require that $\delta(x \cdot y, \rho \mid
-\pair{\alpha, \beta})$. Such a~$\rho$ can be obtained as follows.
-To determine the value $(\rho \mid \pair{\alpha, \beta})
-(\code{(m, n)})$, let $A = \set{\alpha_0, \ldots, \alpha_{m-1}}$
-and $B = \set{\beta_0, \ldots, \beta_{m-1}}$. If there exists $k
-\in B$ such that $k = 1 + \code{(n, j)}$ and $\mathsf{finset}(j) \subseteq
-A$ then the value is~$n+1$, otherwise it is~$0$. Clearly, this is an
-effective procedure, therefore it is continuous and realized by an
-element~$\rho \in \comp{\Baire}$. If we compare the definition of~$\rho$ to
-the definition of application in~$\Scott$, we see that they match.
-
-Let us show that $\iota \dashv \delta$ is an applicative retraction.
-Suppose $\alpha \in \Baire$, $x = \iota(\alpha)$, and $\delta(x,
-\beta)$. We can effectively reconstruct $\alpha$ from~$\beta$,
-because $\beta$ enumerates the initial segments of~$\alpha$. This
-shows that $\delta \circ \iota \preceq \id[\Baire]$. Also, given
-$\alpha$ we can easily construct a sequence~$\beta$ which enumerates
-the initial segments of~$\alpha$, therefore $\id[\Baire] \preceq
-\delta \circ \iota$, and we conclude that $\delta \circ \iota \sim
-\id[\Baire]$.
-
-To see that $\iota \circ \delta \preceq \id[\Scott]$, consider $x, y \in
-\Scott$ and $\alpha \in \Baire$ such that $\delta(x, \alpha)$ and $y =
-\iota(\alpha)$. The sequence~$\alpha$ enumerates~$x$, and $y$
-consists of the initial segments of~$\alpha$. Hence, we can
-effectively reconstruct $x$ from $y$, by
-                                %
-\begin{equation*}
-  m \in x
-  \iff
-  \some{n \in y} n = 1 + \code{a} \land \some{i < |a|} m = a_i.
-\end{equation*}
-
-
-\subsubsection{Equivalence of Reflexive Continuous Lattices}
-\label{sec:equivalence_reflexive_continuous_lattices}%
-
-\index{equivalence!of reflexive continuous lattices}%
-\index{continuous!lattice}%
-
-In Subsection~\cref{sec:reflexive_cpo_model} we saw that a reflexive
-CPO is a model of the untyped $\lambda$-calculus, hence a combinatory
-algebra. So far we have considered two reflexive CPOs, the graph
-model~$\Scott$ and the universal domain~$\UU$. In this subsection we show
-that every countably based reflexive continuous lattice is equivalent
-to~$\Scott$. Thus, as far as categories of modest sets on countably based
-reflexive continuous lattices are concerned, we do not lose any
-generality by considering only the graph model~$\Scott$.
-
-We only consider countably based continuous lattices.
-%
-\index{reflexive!continuous lattice}%
-\index{continuous!reflexive lattice}%
-%
-A continuous lattice~$L$ is \emph{reflexive} if it contains at least
-two elements and its continuous function space~$L^L$ is a retract
-of~$L$.
-
-\begin{proposition}
-  \label{th:PP_retract_of_reflexive_lattice}%
-  The graph model is a continuous retract of every reflexive
-  continuous lattice.
-\end{proposition}
-
-\begin{proof}
-  \newcommand{\retr}[1]{\mathscr{R}(#1)}
-  %
-  Let $L$ be a reflexive continuous lattice. Then we have a
-  section-retraction pair
-  %
-  \begin{equation*}
-    \xymatrix@+1.5em{
-      {L^L} \ar@<0.5ex>[r]^{\Gamma} &
-      {L} \ar@<0.5ex>[l]^{\Lambda}.
-      }
-  \end{equation*}
-  %
-  The lattice~$L$ is a model of the untyped $\lambda$-calculus.
-  The product $L \times L$ is a retract of~$L$. The section $p^{+}: L
-  \times L \to L$ and the retraction $p^{-}: L \to L \times L$ can
-  be most conveniently expressed as the untyped $\lambda$-terms as
-  %
-  \begin{align*}
-    p^{+} \pair{x, y} &= \lam{z}{z x y},
-    &
-    p^{-} z &= \pair{\fst{z}, \snd{z}},
-  \end{align*}
-  %
-  where $\fst{z} = z (\lam{x \, y} x)$ and $\snd{z} = z (\lam{x \,
-    y} y)$. Let $p = p^{+} \circ p^{-}$.
-  
-  Let $\retr{L}$ be the continuous lattice of retractions on~$L$.
-  There is a continuous pairing operation on~$\retr{L}$, defined by
-  %
-  \begin{equation*}
-    A \times B =
-    \lam{\annot{z}{L}} p^{+} \pair{
-       A (\fst{(p z)}),
-       B (\snd{(p z)})}.
-  \end{equation*}
-  %
-  The Sierpinski space $\Sierpinski$ is a retract of~$L$, with the
-  corresponding retraction $S: L \to L$
-  %
-  \begin{equation*}
-    S x = 
-    \begin{cases}
-      \bot & \text{if $x = \bot$} \\
-      \top & \text{if $x \neq \bot$}
-    \end{cases}
-  \end{equation*}
-  %
-  Let $P$ be the least retraction on $L$ satisfying the recursive
-  equation
-  %
-  \begin{equation*}
-    P = S \times P.
-  \end{equation*}
-  %
-  The retraction $P$ is the directed supremum of the chain of
-  retractions $P_0 \leq P_1 \leq \cdots$, defined by
-  %
-  \begin{align*}
-    P_0 &= \bot,
-    &
-    P_{k+1} &= S \times P_k.
-  \end{align*}
-  %
-  We abuse notation slightly and denote a retraction and its lattice
-  of fixed points with the same letter. Clearly $P_k \cong
-  \Sierpinski^k$ for every $k \in \NN$. Thus,~$P$ is isomorphic to the
-  limit/colimit of the chain
-  %
-  \begin{equation*}
-    \xymatrix@+1.5em{
-      {\bot} \ar@<0.5ex>[r] &
-      {\Sierpinski} \ar@<0.5ex>[l] \ar@<0.5ex>[r] &
-      {\Sierpinski^2} \ar@<0.5ex>[l] \ar@<0.5ex>[r] &
-      {\Sierpinski^3} \ar@<0.5ex>[l] \ar@<0.5ex>[r] &
-      {\cdots} \ar@<0.5ex>[l],
+    a \in \NN^{*} \land a \sqsubseteq \alpha
     }
-  \end{equation*}
-  %
-  where the pairs of arrows between the stages are the canonical
-  section-retraction pairs between $\Sierpinski^k$ and
-  $\Sierpinski^{k+1}$.  The limit/colimit is the
-  lattice~$\Sierpinski^{\NN}$, which is isomorphic to~$\Scott$.
-\end{proof}
+\end{equation*}
+%
+represents a sequence $\alpha$ with the set (of codes) of its initial segments. It restricts to a map $\comp{\Baire} \to \comp{\Scott}$. Let us show that it is a simulation.
 
-\begin{corollary}
-  \label{th:reflexive_lattices_equivalent}%
-  Every two countably based reflexive continuous lattices are retracts 
-  of each other, hence they are equivalent as combinatory algebras.
-\end{corollary}
+In \cref{sec:type-2}  we defined the application $\alpha \cdot_{\Baire} \beta$ in $\Baire$ by a lookup procedure, by which every initial segment of $\alpha \cdot_{\Baire} \beta$ is determined by sufficiently long initial segments of~$\alpha$ and~$\beta$. Thus the relation $R \subseteq \NN^{*} \times \NN^{*} \times \NN^{*}$ defined by
+%
+\begin{multline*}
+  (a, b, c) \in R \iff \\
+  \all{\alpha, \beta, \gamma \in \Baire}
+  \defined{(\alpha \cdot_{\Baire} \beta)} \land
+  a \sqsubseteq \alpha \land
+  b \sqsubseteq \beta
+  \lthen
+  c \sqsubseteq \alpha \cdot_{\Baire} \beta
+\end{multline*}
+%
+is computable. The enumeration operator $p : \Scott \times \Scott \to \Scott$, defined by
+% 
+\begin{equation*}
+  p (A, B) =
+  \set{ \code{c} \such
+        \some{a, b \in \NN^{*}}
+          \code{a} \in A \land \code{b} \in B \land (a, b, c) \in R },
+\end{equation*}
+% 
+is computable and is (the curried form of) a realizer for~$\iota$.
 
-\begin{proof}
-  If $L$ and $M$ are reflexive continuous lattices, then they are
-  retracts of each other because each is a retract of~$\Scott$, and $\Scott$
-  is a retract of each of them by
-  Proposition~\ref{th:PP_retract_of_reflexive_lattice}.  There are
-  section-retraction pairs
-                                %
-  \begin{align*}
-    &\xymatrix@+1.5em{
-      L \ar@<0.5ex>[r]^{\lambda^{+}} &
-      M \ar@{->>}@<0.5ex>[l]^{\lambda^{-}}
-      },
+Let $\delta: \Scott \pcato \Baire$ be the applicative morphism defined by
+%
+\begin{equation*}
+  \delta[A] =
+  \set{ \alpha \in \Baire \such
+        A = \set{n \in \NN \such \some{k \in \NN} \alpha\,k = n + 1}
+  }.
+\end{equation*}
+%
+In words, $\alpha$ is a $\delta$-simulation of~$A$ when it
+enumerates~$A$, where the trick with adding~$1$ to~$n$ in the above definition makes it possible to enumerate the empty set. Clearly, if $\alpha \in \comp{\Baire}$
+then~$A \in \comp{\Scott}$. In order for~$\delta$ to be an applicative
+morphism, it suffices to find a partial computable map $f : \Baire \times \Baire \parto \Baire$ such that,
+for all $A, B \in \Scott$,
+% 
+\begin{equation*}
+  \alpha \in \delta[A] \land
+  \beta \in \delta[B]
+  \lthen
+  f (\alpha, \beta) \in \delta[A \cdot_{\Scott} B].
+\end{equation*}
+% 
+To determine $f (\alpha, \beta) \, \code{(m, n)}$, we look for $j < m$ such that $\alpha \, j = 1 + \code{(\code{C}, n)}$ and $C \wayb A$. If there is one, we set $f (\alpha, \beta) \, \code{(m, n)} = n + 1$, otherwise we set it to~$0$.
+Clearly, this is an effective procedure. If we compare the definition of~$f$ to the definition of application in~$\Scott$, we see that they match.
+
+Let us show that $\iota \dashv \delta$ is an adjoint retraction.
+%
+Suppose $\alpha \in \Baire$ and $\beta \in \delta[\iota(\alpha)]$.
+%
+We can computably reconstruct~$\alpha$ from~$\beta$, because $\beta$ enumerates the initial
+segments of~$\alpha$. This shows that $\delta \circ \iota \preceq \id[\Baire]$. Also, given $\alpha$ we can easily
+construct a sequence~$\beta$ which enumerates the initial segments of~$\alpha$, therefore
+$\id[\Baire] \preceq \delta \circ \iota$, and we conclude that $\delta \circ \iota \sim \id[\Baire]$.
+
+To see that $\iota \circ \delta \preceq \id[\Scott]$, consider $A, B \in \Scott$ and $\alpha \in \Baire$ such that $\alpha in \delta[A]$ and $B = \iota(\alpha)$. The sequence~$\alpha$ enumerates~$A$, and $B$ consists of the initial segments of~$\alpha$. Hence, we can effectively reconstruct $A$ from $B$, by
+%
+\begin{equation*}
+  m \in A
+  \iff
+  \some{n \in B} n = 1 + \code{a} \land \some{i < |a|} m = a_i.
+\end{equation*}
+
+
+\subsubsection{Equivalence of Reflexive Domains}
+\label{sec:equivalence_reflexive_domains}%
+
+Consider reflexive domains
+%
+\begin{equation*}
+  \xymatrix{
+    **[l]{\mathcal{C}(D, D)}
+    \ar@<+0.25em>[r]^{\Gamma_D}
     &
-    &\xymatrix@+1.5em{
-      M \ar@<0.5ex>[r]^{\mu^{+}} &
-      L \ar@{->>}@<0.5ex>[l]^{\mu^{-}}
-      }.
-  \end{align*}
-                                %
-  The equivalence $L \sim M$ is witnessed by the sections
-  $\lambda^{+}$ and $\mu^{+}$. We omit the details.
-\end{proof}
+    {D}
+    \ar@<+0.25em>[l]^{\Lambda_D}
+  }
+  \qquad\qquad
+  \xymatrix{
+    **[l]{\mathcal{C}(E, E)}
+    \ar@<+0.25em>[r]^{\Gamma_E}
+    &
+    {D}
+    \ar@<+0.25em>[l]^{\Lambda_E}
+  }
+\end{equation*}
+%
+which are also retracts of each other,
+%
+\begin{equation*}
+  \xymatrix{
+    {D}
+    \ar@<+0.25em>[r]^{s_D}
+    &
+    {E}
+    \ar@<+0.25em>[l]^{r_D}
+  }
+  \qquad\qquad
+  \xymatrix{
+    {E}
+    \ar@<+0.25em>[r]^{s_E}
+    &
+    {D}
+    \ar@<+0.25em>[l]^{r_E}
+  } 
+\end{equation*}
+%
+so $r_D \circ s_D = \id[D]$ and $r_E \circ s_E = \id[E]$. Then $D$ and $E$ are equivalent as pcas.
+
+\begin{exercise}
+  Verify the claim by constructing an equivalence $D \sim E$ from the given section-retraction pairs.
+\end{exercise}
+
 
 
 %%% Local Variables:
