@@ -24,6 +24,9 @@
 \usepackage{makeidx}
 \usepackage[all]{xypic}
 
+\usepackage{tikz}
+\usetikzlibrary{graphs}
+
 \usepackage[english]{babel} % Load characters and hyphenation
 \usepackage[english=american]{csquotes}  % English quotes
 
@@ -241,10 +244,11 @@ Pull requests with corrections and improvements are welcome!
 \mainmatter % Denotes the start of the main document content, resets page numbering and uses arabic numbers
 \setchapterstyle{kao} % Choose the default chapter heading style
 
-\input{introduction.tex}
-\input{models.tex}
-\input{simulations.tex}
-%\input{assemblies.tex}
+%\input{introduction.tex}
+%\input{models.tex}
+%\input{simulations.tex}
+\input{assemblies.tex}
+\input{schools.tex}
 %\input{categories-of-assemblies.tex}
 %\input{realizability-logic.tex}
 %\input{type-theory.tex}
@@ -288,7 +292,7 @@ Pull requests with corrections and improvements are welcome!
 
 % The bibliography needs to be compiled with biber using your LaTeX editor, or on the command line with 'biber main' from the template directory
 
-\defbibnote{bibnote}{Here are the references in citation order.\par\bigskip} % Prepend this text to the bibliography
+\defbibnote{bibnote}{} % Prepend this text to the bibliography
 \printbibliography[heading=bibintoc, title=Bibliography, prenote=bibnote] % Add the bibliography heading to the ToC, set the title of the bibliography and output the bibliography note
 
 %----------------------------------------------------------------------------------------
