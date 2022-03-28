@@ -8,7 +8,7 @@ Realizability was introduced by Stephen Kleene~\sidecite{KleeneSC:intint} who us
 
 For simple cases, the answer is obvious. A group is implemented by a type whose values represent its elements, a value
 representing the neutral element, and functions which compute the group operation and inverses.
-But for more interesting structures, especially those arising in mathematical analysis, the answer is less clear. How do we implement the real numbers? Which operations on a compact metric space can be implemented? How do we implement a space of smooth functions? Significant research goes into finding satisfactory answers to such questions~\sidecite{Wei00,TZ98,Bla97}.
+But for more interesting structures, especially those arising in mathematical analysis, the answer is less clear. How do we implement the real numbers? Which operations on a compact metric space can be implemented? How do we implement a space of smooth functions? Significant research goes into finding satisfactory answers to such questions~\sidecite{Bla97,Wei00,TZ98,bauer00,bauer10:_canon_effec_subal_class_algeb}.
 
 To explain the basic idea behind realizability we consider a small real-world programming example. Suppose we are asked to design a data structure for the set $\mathsf{Graphs}$ of all finite simple\sidenote{A graph is \defemph{simple} when there is at most one edge between any two vertices.} directed graphs with vertices labeled by distinct integers, such at the graph $G$ shown below:
 %
@@ -26,7 +26,7 @@ To explain the basic idea behind realizability we consider a small real-world pr
   \end{tikzpicture}
 \end{center}
 %
-A common representation of graphs uses a pair of lists $(\ell_V, \ell_A)$, where $\ell_V$ is the list of vertex labels and $\ell_A$ the \emph{adjacency list} representing the arrows as pairs of labels. For the above graph these would be $\ell_V = [1, 2, 3, 4]$ and $\ell_A = [(1,2), (2,2), (2,3), (3,2), (3,1)]$.
+A common representation of graphs uses a pair of lists $(\ell_V, \ell_A)$, where $\ell_V$ is the list of vertex labels and $\ell_A$ the \emph{adjacency list} representing the edges as pairs of labels. For the above graph these would be $\ell_V = [1, 2, 3, 4]$ and $\ell_A = [(1,2), (2,2), (2,3), (3,2), (3,1)]$.
 %
 Thus we define the datatype of graphs as\sidenote{We use Haskell notation in which $[t]$ is the type of lists of
   elements of type~$t$, and $(t_1, t_2)$ is the cartesian product of types~$t_1$ and~$t_2$.}
@@ -35,23 +35,23 @@ Thus we define the datatype of graphs as\sidenote{We use Haskell notation in whi
 type Graph = ([Int], [(Int, Int)])
 \end{lstlisting}
 %
-However, this is not a complete description of the intended representation, as there are representation invariants and conditions not expressed by the type:
+This is not yet a complete description of the intended representation, as there are representation invariants and conditions not expressed by the type:
 %
 \begin{itemize}
-\item the order in which the vertices and arrows are listed is not
+\item the order in which the vertices and edges are listed is not
   important,
-\item each vertex and arrow must be listed exactly once, and
-\item the source and target of each arrow must appear in the list of vertices.
+\item every vertex and edge must be listed exactly once, and
+\item the source and target of each edge must appear in the list of vertices.
 \end{itemize}
 %
-A complete implementation of $\mathsf{Graphs}$ must not only specify the underlying
-datatype $\mathtt{graph}$, but also relate its values to the elements of~$\mathsf{Graphs}$, which can be expressed with a \defemph{realizability relation}
-%
+Such conditions can be expressed in terms of a \defemph{realizability relation}
 \begin{equation*}
   r \rz x
 \end{equation*}
 %
-read as ``datum~$r$ realizes (implements, represents) element~$x$''. In the above example we would write
+which tells which values~$r$ of the datatype correspond to which elements~$x$ of the set.
+%
+We read $r \rz x$ as ``$r$ realizes (implements, represents, witnesses) $x$''. In the above example we would write
 %
 \begin{equation*}
 ([1, 2, 3, 4], [(1,2), (2,2), (2,3), (3,2), (3,1)]) \rz G,
@@ -63,9 +63,9 @@ and also
 ([3, 2, 1, 4], [(2,2), (1,2), (2,3), (3,2), (3,1)]) \rz G.
 \end{equation*}
 %
-Once the set $\mathsf{Graphs}$ is implemented as a datatype, we would like to compute with it.
+We also want to compute with the elements of $\mathsf{Graphs}$.
 %
-Programmers know what it means to implement, or realize, a map $f : \mathsf{Graphs} \to \mathsf{Graphs}$, namely to give a program $p : \mathtt{graph} \to \mathtt{graph}$ which does to realizers what~$f$ does to elements: if $r \rz G$ then $p \, r \rz f(G)$. We say that~$f$ is \defemph{realized} or \defemph{tracked} by~$p$.
+Programmers intuitively know what this mean, namely to implement, or realize, a map $f : \mathsf{Graphs} \to \mathsf{Graphs}$, is to give a program $p : \mathtt{graph} \to \mathtt{graph}$ which does to realizers what~$f$ does to elements: if $r \rz G$ then $p \, r \rz f(G)$. We say that~$f$ is \defemph{realized} or \defemph{tracked} by~$p$.
 
 \section{Assemblies}
 \label{sec:assemblies}
@@ -73,22 +73,21 @@ Programmers know what it means to implement, or realize, a map $f : \mathsf{Grap
 We now give a precise definition of the ideas presented in the previous section.
 
 \begin{definition}
-  Let $\AA$ be a tpca and $\subAA$ a sub-tpca. An \defemph{assembly} over~$(\AA, \subAA)$ is a triple
-  $\asm{S} = \xasm{S}$ where $S$ is a set, $|S|$ is a type, and $\rz_S$ is a relation between $\xAtyp{S}$ and~$S$
+  An \defemph{assembly} over~$(\AA, \subAA)$ a tpca with a sub-tpca is a triple
+  $\asm{S} = \xasm{S}$ where $S$ is a set, $|S|$ is a type in~$\AA$, and $\rz_S$ is a relation between $\xAtyp{S}$ and~$S$
   satisfying: for every $x \in S$ there is $\R{x} \in \xAtyp{S}$ such that $\R{x} \rz_S x$.
 
   An \defemph{assembly map} $f : \asm{S} \to \asm{T}$ between assemblies $\asm{S}$ and $\asm{T}$ is a map $f : S \to T$
-  between the underlying sets for which there exists $\R{f} \in \compAtyp{|S| \to |T|}$, called a \defemph{realizer}
+  between the underlying sets for which there exists $\R{f} \in \subAtyp{|S| \to |T|}$, called a \defemph{realizer}
   of~$f$, satisfying: if $\R{x} \rz_S x$ then $\defined{\R{f} \, \R{x}}$ and $\R{f} \, \R{x} \rz_T f(x)$.
 \end{definition}
 
-We adopt the notational convention that a realizer for an element or a function is denoted by the same letter in
-fixed-width font. Thus realizers for $x$, $y$, $f$, $g$ are denoted by $\R{x}$, $\R{y}$, $\R{f}$, $\R{g}$, respectively.
+We often use the same letter for an element and its realizer, but differentiate between them by using different fonts, for instance the elements $x$, $y$, $f$, $g$ would have realizers $\R{x}$, $\R{y}$, $\R{f}$, $\R{g}$, respectively.
 
 There are many versions of realizability. Ours is known as \defemph{typed relative realizability}. It is \emph{typed}
 because we used typed pcas. It is \emph{relative} because maps are realized relative to a choice of a sub-pca. In
 typical cases, such as type~2 machines and the graph model from \cref{sec:type-2,sec:graph-model}, $\subAA$ is the
-computable part of~$\AA$. Thus relative realizability formalizes the slogan
+computable part of a topological pca~$\AA$, in accordance with the slogan
 %
 \begin{center}
   \emph{``Continuous data -- computable functions!''}
@@ -104,70 +103,80 @@ When $\AA$ is untyped the definition of an assembly simplifies a bit because we 
 
 Assemblies and maps over $(\AA, \subAA)$ form a \defemph{category $\AsmA$}.
 %
-Indeed, if $f : \asm{S} \to \asm{T}$ and $g : \asm{T} \to \asm{U}$ are realized by $\R{f} \in \compAtyp{|S| \to |T|}$
-and $\R{g} \in \compAtyp{|T| \to |U|}$, respectively, then their composition $g \circ f$ is realized by
+Indeed, if $f : \asm{S} \to \asm{T}$ and $g : \asm{T} \to \asm{U}$ are realized by $\R{f} \in \subAtyp{|S| \to |T|}$
+and $\R{g} \in \subAtyp{|T| \to |U|}$, respectively, then their composition $g \circ f$ is realized by
 $\tpcalam{x}{|S|}{r\,(q\,x)} = \combS\,(\combK\,r)\,(\combS\,(\combK\,q)\,(\combS\,\combK\,\combK))$.
 %
 The identity map $\id[S] : \asm{S} \to \asm{S}$ is realized by $\tpcalam{x}{|S|}{x} = \combS\,\combK\,\combK$. 
 %
 Composition is associative because it is just composition of maps.
 
-
-\section{Modest sets}
+\subsection{Modest sets}
 \label{sec:modest-sets}
 
 In the definition of assemblies, nothing prevents several elements from sharing a common realizer. We sometimes want
 to prohibit such anomalies.
 
 \begin{definition}
-  An assembly $\asm{S}$ is \defemph{modest} when each $r \in \xAtyp{S}$
-  realizes at most one element of~$S$. A modest assembly is also
-  called a \defemph{modest set}.
+  An \defemph{modest} assembly $\asm{S}$, also called a \defemph{modest set},\sidenote{The terminology was suggested by Dana Scott. It refers to the fact that the cardinality of a modest set~$\asm{S}$ does not exceed the cardinality of $\xAtyp{S}$.} is an assembly in which elements do not share realizers:
+  %
+  \begin{equation*}
+    \all{r}{\xAtyp{S}}{
+      \all{x,y \in S}
+      (r \rz_S x \land r \rz_S y \implies x = y)
+    }.
+  \end{equation*}
+  %
+  We let $\ModA$ be the full subcategory of $\AsmA$ on the modest sets.
 \end{definition}
 
-\noindent
-In symbols, modesty\sidenote{The terminology ``modest'' was suggested by Dana Scott. It refers to the fact that the cardinality of a modest~$S$ set does not exceed the cardinality of $\xAtyp{S}$.} is the property
-%
-\begin{equation*}
-  \all{r}{\xAtyp{S}}{
-    \all{x,y \in S}
-      (r \rz_S x \land r \rz_S y \implies x = y)
-  }.
-\end{equation*}
-%
-We let $\ModA$ be the full subcategory of $\AsmA$ on the modest sets is.
+Most structures in computable mathematics turn out to be modest, but assemblies are needed also, and they form a richer category than the modest sets.
 
-Most structures in computable mathematics turn out to be modest. However, sometimes assemblies are needed, and they form a slightly nicer category than the modest sets.
-
-\section{Examples of assemblies}
+\subsection{First examples of assemblies}
 \label{sec:examples-assemblies}
 
+To gain a bit of intuitioni about assemblies, we look at several concrete examples.
 
-\subsection{Natural numbers}
+\subsubsection{Natural numbers}
 \label{sec:asm-natural-numbers}
 
+Suppose $(\AA, \subAA)$ is an n-tpca. The assembly $\asm{N} = (\NN, \ttnat, {\rz_{\NN}})$ on the set of natural numbers~$\NN$ has the realizability relation given by
+%
+\begin{equation*}
+  r \rz_N n \iff
+  r = \overline{n}.
+\end{equation*}
+%
+That is, the number $n \in \NN$ is realized by the corresponding numeral $\overline{n}$.
 
-\subsection{Real numbers}
+
+
+\subsubsection{Assemblies with two elements}
+\label{sec:asm-two-element}
+
+
+\subsubsection{Real numbers}
 \label{sec:asm-real-numbers}
 
 
-\subsection{Constant assemblies}
+\subsection{The constant assemblies}
 \label{sec:nabla}
 
 The extreme case of elements sharing the same realizer happens when
 all elements of a set share all realizers. Assemblies with this
-property are called \defemph{constant assemblies}. They give us a way of
-representing arbitrary sets.
+property are called the \defemph{constant assemblies}.
 
-Let $t$ be a type such that $\Atyp{t}$ is inhabited. Such a type
+Let $t$ be a type such that $\subAtyp{t}$ is inhabited. Such a type
 always exists, because there is at least one type $s$, and then
 $\Atyp{s \to s \to s}$ contains $\combK_{s,s}$. Given any set $X$, let
-$\nabla X = (X, t, {\rz_{\nabla X}})$ be the assembly whose underlying
-set is~$X$ and the realizability relation is trivial, i.e., $r
-\rz_{\nabla X} x$ for all $x \in X$ and $r \in A_t$. If $f : X \to Y$
-is any map between sets~$X$ and~$Y$ then~$f$ is a morphism $\nabla f :
-\nabla X \to \nabla Y$ because it is tracked by
-$\tpcalam{x}{t}{x}$. This defines a functor
+%
+\begin{equation*}
+  \nabla X = (X, t, {\rz_{\nabla X}})
+\end{equation*}
+%
+be the assembly whose underlying set is~$X$ and the realizability relation is trivial, i.e., $r \rz_{\nabla X} x$ for all $x \in X$ and $r \in A_t$.
+
+If $f : X \to Y$ is any map between sets~$X$ and~$Y$ then~$f$ is a morphism $\nabla f : \nabla X \to \nabla Y$ because it is tracked by $\tpcalam{x}{t}{x}$. Thus~$\nabla$ is a functor
 %
 \begin{equation*}
   \nabla : \Set \to \AsmA.
@@ -189,7 +198,6 @@ the realizers we cannot compute anything interesting regarding~$X$.
   aseembly map the underlying set-theoretic function. Show that~$\Gamma$ is left adjoint to~$\Delta$.
 \end{exercise}
 
-
 \section{Equivalent formulations}
 \label{sec:equivalent-formulations}
 
@@ -209,7 +217,7 @@ Because every $x$ is realized by something, $\Ex_S(x)$ always contains at least 
 
 An assembly $S$ is modest if, and only if, $\Ex_S(x) \cap \Ex_S(y) \neq \emptyset$ implies $x = y$.
 
-Under this formulation a map $f : \asm{S} \to \asm{T}$ is realized if there exists $\R{f} \in \compAtyp{|S| \to |T|}$ such that, for all $x \in S$ and $\R{x} \in \Ex_S(x)$, $\defined{\R{f}\,\R{x}}$ and $\R{f}\,\R{x} \in \Ex_T(f(x))$.
+Under this formulation a map $f : \asm{S} \to \asm{T}$ is realized if there exists $\R{f} \in \subAtyp{|S| \to |T|}$ such that, for all $x \in S$ and $\R{x} \in \Ex_S(x)$, $\defined{\R{f}\,\R{x}}$ and $\R{f}\,\R{x} \in \Ex_T(f(x))$.
 
 \subsection{Representations}
 \label{sec:representations}
@@ -222,7 +230,7 @@ By transposing $\rz_S$ the other way around we obtain \defemph{representations}.
 %
 The map $\delta_S$ is surjective because every $x \in S$ is realized, but it need not be defined everywhere. The triple $(S, |S|, \delta_S)$ uniquely describes the modest set~$S$. The map $\delta_S$ is called a \defemph{representation} of~$S$.
 
-A map $f : S \to T$ is realized or tracked by $\R{f} \in \compAtyp{|S| \to |T|}$ when, for all $\R{x} \in \dom{\delta_S}$, $\defined{\R{f}\,\R{x}}$ and $\delta_T(\R{f}\,\R{x}) = f(\delta_S(x))$.
+A map $f : S \to T$ is realized or tracked by $\R{f} \in \subAtyp{|S| \to |T|}$ when, for all $\R{x} \in \dom{\delta_S}$, $\defined{\R{f}\,\R{x}}$ and $\delta_T(\R{f}\,\R{x}) = f(\delta_S(x))$.
 
 Representations and realized maps form a category~$\Rep{\AA,\subAA}$, which is equivalent to $\Mod{\AA, \subAA}$.
 
@@ -268,7 +276,7 @@ $r \per_S r$. The set of total realizers is denoted by $\|S\| = \set{r
 the equivalence class $[r]_S = \set{q \in \xAtyp{S} \such r \per_S q}$.
 
 An \defemph{extensional realizer} between pers $S$ and $T$ is $p \in
-\compAtyp{|S| \to |T|}$ such that, for all $q, r \in \xAtyp{S}$, if $q
+\subAtyp{|S| \to |T|}$ such that, for all $q, r \in \xAtyp{S}$, if $q
 \per_S r$ then $\defined{p\,q}$, $\defined{p\,r}$, and $p\,q \per_T
 p\,r$. Extensional realizers $p$ and $p'$ are \defemph{equivalent} when
 $q \per_S r$ implies $p\,q \per_T p'\,r$.
@@ -284,7 +292,7 @@ is easy to check that this forms a category.
 Let $S$ and $T$ be pers over $(\AA, \subAA)$. A morphism between them
 may be alternatively described as a function $f : \|S\|/{\per_S} \to
 \|T\|/{\per_T}$ between the equivalence classes for which there exists
-a realizer $p \in \compAtyp{|S| \to |T|}$ that tracks it: for every
+a realizer $p \in \subAtyp{|S| \to |T|}$ that tracks it: for every
 equivalence class $[r]_S$, $\defined{p\,r}$ and $[p\,r]_T = f([r]_S)$.
 
 \begin{lemma}
@@ -311,7 +319,7 @@ equivalence class $[r]_S$, $\defined{p\,r}$ and $[p\,r]_T = f([r]_S)$.
 \begin{proof}
   A modest set $\xasm{S}$ determines a per $(S, {\per_S})$,
   as described above. A morphism $f : S \to T$ which is tracked by $p
-  \in \compAtyp{|S| \to |T|}$ determines a morphism of pers $[p] : (S,
+  \in \subAtyp{|S| \to |T|}$ determines a morphism of pers $[p] : (S,
   {\per_S}) \to (T, {\per_T})$. This defines a functor $F : \Mod{\AA,
     \subAA} \to \Per{\AA, \subAA}$.
 
@@ -348,7 +356,7 @@ equivalence relations.
 The category $\Er{\AA, \subAA}$ of equivalence relations has as objects triples $(S, |S|, {\equiv_S})$ where $|S|$ is a
 type, $S \subseteq \xAtyp{S}$, and $\equiv_S$ is an equivalence relation on~$S$. As in the case of pers, a morphism
 $(S, |S|, {\equiv_S}) \to (T, |T|, {\equiv_T})$ is represented by an extensional realizer
-$p \in \compAtyp{|S| \to |T|}$.
+$p \in \subAtyp{|S| \to |T|}$.
 
 The difference between pers and equivalence relations is mostly a
 bureaucratic one. Nevertheless, it is useful to know about $\Er{\AA,
