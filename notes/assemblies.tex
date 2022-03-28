@@ -135,29 +135,97 @@ Most structures in computable mathematics turn out to be modest, but assemblies 
 \subsection{First examples of assemblies}
 \label{sec:examples-assemblies}
 
-To gain a bit of intuitioni about assemblies, we look at several concrete examples.
+To gain a bit of intuition about assemblies, we look at several concrete examples. Unless stated otherise, we assume that all assemblies are constructed over a chosen pca with sub-pca $(\AA, \subAA)$.
+
+\subsubsection{The unit assembly}
+\label{sec:asm-unit}
+
+Let $\unit$ be a type such that $\subAtyp{\unit}$ is inhabited.
+It always exists, because there is at least one type $s$, and then
+$\Atyp{s \to s \to s}$ contains $\combK_{s,s}$.
+%
+The \defemph{terminal assembly} $\one = (\set{\star}, \unit, {\rz_\one})$ has the trivial realizability relation, $r \rz_\one \star$ for all $r \in \subAtyp{t}$.
+
+\begin{exercise}
+  Show that $\one$ is the terminal object\sidenote{An object $T$ in a category is \defemph{terminal} when there is precisely one morphism to $T$ from every object.}
+  in $\AsmA$. Conclude from this that a different choice of $\unit$ results in an isomorphic copy of~$\one$.
+\end{exercise}
+
+The morphisms $\one \to \asm{S}$ corresponds to those elements of~$S$ that are realized by elements of $\subAtyp{|S|}$. Indeed, if $f : \star \to S$ is realized by $\R{f} \in \subAtyp{\unit \to |S|}$ then $f \, \star$ is realized by $\R{f} \, t \in \subAtyp{|S|}$, for any $t \in \subAtyp{\unit}$. Conversely, if $a \in S$ is realized by $\R{a} \in \subAtyp{|S|}$ then $\star \mapsto a$ is $\tpcalam{x}{\unit}{\R{a}}$.
+
+This may be a good moment to point out the difference between the \defemph{global points} of~$\asm{S}$, which is the set of morphisms $\one \to \asm{S}$, and the \defemph{underlying set~$S$} of~$\asm{S}$. Both induce functors $\AsmA \to \Set$, which need not be equivalent, unless $\AA = \subAA$.
+
 
 \subsubsection{Natural numbers}
 \label{sec:asm-natural-numbers}
 
-Suppose $(\AA, \subAA)$ is an n-tpca. The assembly $\asm{N} = (\NN, \ttnat, {\rz_{\NN}})$ on the set of natural numbers~$\NN$ has the realizability relation given by
+Suppose $(\AA, \subAA)$ is an n-tpca. Let $\asm{N} = (\NN, \ttnat, {\rz_N})$ be the set of natural numbers~$\NN$ realized by the numerals, for all $r \in \Atyp{\ttnat}$ and $n \in \NN$,
 %
 \begin{equation*}
   r \rz_N n \iff
   r = \overline{n}.
 \end{equation*}
 %
-That is, the number $n \in \NN$ is realized by the corresponding numeral $\overline{n}$.
+The successor $n \mapsto n + 1$ is realized by~$\combSucc$, and $0 \in \mathbb{N}$ is a global point because $\numeral{0} \in \subAtyp{\ttnat}$.
+
+The assembly $\mathbb{N}$ is the natural numbers object. Indeed, given an assembly $\asm{S}$ with $z \in \asm{S}$ realized by $\mathtt{z} \in \subAtyp{|S|}$, and $f : \asm{S} \to \asm{S}$, the unique map $\overline{f} : \asm{N} \to \asm{S}$ satisfying, for all $n \in \NN$,
+%
+\begin{equation*}
+  \overline{f} \, 0 = 0
+  \qquad\text{and}\qquad
+  \overline{f} \, (n + 1) = f (\overline{f} n)
+\end{equation*}
+%
+is realized by $\combRec \, \mathtt{z} \, \mathtt{f}$.
 
 
-
-\subsubsection{Assemblies with two elements}
+\subsubsection{Boolean, semidecidable, and classical truth values}
 \label{sec:asm-two-element}
+
+Let us work in the category $\Asm{\klone}$ over Kleene's first algebra and look at assembly structures on the set $2 = \set{0, 1}$.
+
+First, we have the trivial structure, namely the assembly of \defemph{classical truth values} $\nabla 2 = (2, {\rz_{\nabla 2}})$ -- the notation will become clear in \cref{sec:nabla}, and the nomenclature a bit later -- with the trivial realizability relation $n \rz_{\nabla \two} b$ for all $k \in \NN$ and $b \in 2$.
+
+Second, we have the assembly of \defemph{Boolean values} $\two = (2, {\rz_{2}})$ where $n \rz_2 b$ if, and only if $n = b$.
+
+The assemblies $\nabla 2$ and $\two$ are \emph{not} isomorphic because every assembly map $\nabla 2 \to \two$ is constant, although the identity map is an assembly map $\two \to \nabla 2$.
+
+There are still more two-element assemblies, for instance the assembly of \defemph{semidecidable values} $\asm{S} = (2, {\rz_S})$ given by
+%
+\begin{equation*}
+  n \rz b \iff
+  (\divergent{\pr{n}{n}} \land b = 0) \lor (\defined{\pr{n}{n}} \land b = 1).
+\end{equation*}
+%
+Again, the identity map is realized as an assembly map $\two \to \asm{S}$, but not the other way around.
+
+\begin{exercise}
+  Why is identity not realized as a map $\asm{S} \to \two$?
+\end{exercise}
 
 
 \subsubsection{Real numbers}
 \label{sec:asm-real-numbers}
 
+As our third example we ask how to equip the real numbers with a realizability structure. Here we give the correct answer, but leave it unexplained for the time being.
+
+We work with an nr-tpca $\AA$ with a sub-n-tpca $\subAA$. Intuitively speaking, a realizer for $x \in \RR$ should allow us to compute arbitrarily good approximations of~$x$, so we define the relation $\rz_R$ between $\Atyp{\ttnat \to \ttnat \times \ttnat \times \ttnat}$ by stipulating that $\R{x} \rz_R x$ holds if, and only if,
+%
+\begin{equation*}
+  \all{k \in \NN} \some{a, b, c \in \NN}
+  \R{x} \, \overline{k} = (\overline{a}, \overline{b}, \overline{c})
+  \land |x - \frac{a - b}{1 + b}| < 2^{-k}.
+\end{equation*}
+%
+The triple of numbers $(a, b, c)$ is just a clumsy way of encoding the rational $\frac{a - b}{c}$, so in essence $\R{x}$ computes a sequence of rationals such that the $k$-th term is within~$2^{-k}$ of~$x$.
+
+The assembly of real numbers $\asm{R} = (R, \ttnat \to \ttnat \times \ttnat \times \ttnat, {\rz_R})$ has as its underlying set the realized reals
+%
+\begin{equation*}
+  R = \set{x \in \RR \such \some{\R{x} \in \Atyp{\ttnat \to \ttnat \times \ttnat \times \ttnat}} \R{x} \rz_R x}.
+\end{equation*}
+%
+Which reals are so realized depends on the choice of~$\AA$. For example, first Kleene algebra realizes the \defemph{Turing computable reals}, whereas the second Kleene algebra realizes all reals.
 
 \subsection{The constant assemblies}
 \label{sec:nabla}
@@ -234,13 +302,15 @@ A map $f : S \to T$ is realized or tracked by $\R{f} \in \subAtyp{|S| \to |T|}$ 
 
 Representations and realized maps form a category~$\Rep{\AA,\subAA}$, which is equivalent to $\Mod{\AA, \subAA}$.
 
-When we transpose $\rz_S$ for a a general assembly $\asm{S}$ the result is a \defemph{multi-valued representation}, which is a map $\delta_S : \xAtyp{S} \to \pow{S}$ characterized by
+When we transpose $\rz_S$ for a a general assembly $\asm{S}$ the result is a \defemph{multi-valued representation}, which is a map $\delta_S : \xAtyp{S} \multito \pow{S}$ that takes each $r \in \xAtyp{S}$ to the (possibly empty) set of elements it realizes,
 %
 \begin{equation*}
   \delta_S(r) = \set{ x \in S \such r \rz_S x}.
 \end{equation*}
 %
-To summarize, the realizability relation $\rz_S$, the existence predicate $\Ex_s$, and the multi-valued representation $\delta_S$ are related as
+The map is surjective in the sense that for every $x \in S$ there is $r \in \xAtyp{S}$ such that $x \in \delta_S(r)$.
+
+To summarize, there are three ways of specifying the realizability structure of an assembly: with a realizability relation $\rz_S$, an existence predicate~$\Ex_s$, and a multi-valued representation $\delta_S$. Each determines the other two by
 %
 \begin{equation*}
   r \rz_S x \iff
@@ -252,12 +322,7 @@ To summarize, the realizability relation $\rz_S$, the existence predicate $\Ex_s
 \subsection{Partial equivalence relations}
 \label{sec:pers}
 
-This formulation only works for modest sets, not for general
-assemblies. With each modest set~$S$ we may associate a partial
-equivalence relation\sidenote{A \defemph{partial equivalence relation} is
-  a transitive symmetric relation.} (per) $\per_S$ on
-$\xAtyp{S}$ which relates~$q$ and~$r$ when they realize the same
-element:
+This formulation only works for modest sets. With each modest set~$S$ we may associate a partial equivalence relation\sidenote{A \defemph{partial equivalence relation} is a transitive symmetric relation.} (per) $\per_S$ on $\xAtyp{S}$ which relates~$q$ and~$r$ when they realize the same element:
 %
 \begin{equation*}
   q \per_S r \iff
@@ -302,6 +367,7 @@ equivalence class $[r]_S$, $\defined{p\,r}$ and $[p\,r]_T = f([r]_S)$.
   a bijection. Then $\asm{S}$ is isomorphic to $\asm{T} = (T, |S|,
   {\rz_T})$ where $r \rz_T x$ is defined as $r \rz_S f(x)$.
 \end{lemma}
+
 
 \begin{proof}
   The map $f$ is a morphism from $\asm{S}$ to $\asm{T}$ because it is
@@ -360,7 +426,7 @@ $p \in \subAtyp{|S| \to |T|}$.
 
 The difference between pers and equivalence relations is mostly a
 bureaucratic one. Nevertheless, it is useful to know about $\Er{\AA,
-  \subAA}$ because sometimes we can describe it in useful
+  \subAA}$ because sometimes we can describe it in enlightening
 alternative ways, e.g., in \cref{sec:equilogical-spaces} we
 describe pers on the graph model as equivalence relations on
 topological spaces.
