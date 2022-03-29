@@ -106,7 +106,7 @@ property, suppose $f : \asm{U} \to \asm{S}$ and $g : \asm{U} \to
 \asm{T}$ are realized by $\R{f} \in \subAtyp{|U| \to |S|}$ and $\R{g}
 \in \subAtyp{|U| \to |T|}$, respectively. There is a unique map $h :
 U \to S \times T$ for which $f = \pi_1 \circ h$ and $g = \pi_2 \circ g$,
-namely $h(u) = \pair{f,g}(u) = (f(u), g(u))$. We only need a realizer
+namely $h(u) = \pair{f,g}(u) = (f\,u, g\,u)$. We only need a realizer
 for~$h$, and $\R{h} =
 \tpcalam{u}{|U|}{\combPair\,(\R{f}\,u)\,(\R{g}\,u)}$ does the
 job:
@@ -114,11 +114,11 @@ job:
 \begin{align*}
   \R{u} \rz_U u
   &\implies
-  \R{f}\,\R{u} \rz_S f(u)
+  \R{f}\,\R{u} \rz_S f\,u
   \land
-  \R{g}\,\R{u} \rz_T g(u) \\
+  \R{g}\,\R{u} \rz_T g\,u \\
   &\implies
-  \combPair\, (\R{f}\,\R{u})\, (\R{g}\,\R{u}) \rz_{S \times T} (f(u), g(u)) \\
+  \combPair\, (\R{f}\,\R{u})\, (\R{g}\,\R{u}) \rz_{S \times T} (f\,u, g\,u) \\
   &\iff
   \R{h}\,\R{u} \rz_{S \times T} h(u).
 \end{align*}
@@ -159,14 +159,11 @@ exists a unique morphism $i : K \to E$ such that $k = e \circ i$:
   }
 \end{equation*}
 %
-Think of $E$ as the solution-set of equation $f(x) =
-g(x)$.\sidenote{If we have a system of equations $f_i(x) = g_i(x)$, $i
-  = 1, \ldots, n$, then we may express them as a single vector
-  equation $f(x) = g(x)$ where $f(x) = (f_1(x), \ldots, f_n(x))$ and
-  $g(x) = (g_1(x), \ldots, g_n(x))$. Equalizers are thus an abstract
-  formulation of the notion ``solution of a system of equations''.}
+Think of $E$ as the solution-set of equation $f\,x =
+g\,x$.
+%
 Indeed, in the category of sets the equalizer of functions $f, g : S
-\to T$ is the subset $E = \set{x \in S \such f(x) = g(x)}$ and $e : E
+\to T$ is the subset $E = \set{x \in S \such f\,x = g\,x}$ and $e : E
 \to S$ is the subset inclusion. In the category of assemblies we need
 to augment this with realizers. The equalizer of $f, g : \asm{S} \to
 \asm{T}$ is
@@ -174,15 +171,18 @@ to augment this with realizers. The equalizer of $f, g : \asm{S} \to
 \begin{equation}
   \label{eq:asm-equalizer}%
   \asm{E} =
-  (\set{x \in S \such f(x) = g(x)},
+  (\set{x \in S \such f\,x = g\,x},
    |S|,
    {\rz_E})
 \end{equation}
 %
 where $\R{x} \rz_E x$ if, and only if, $\R{x} \rz_S x$. The map $e : E
 \to S$ is the subset inclusion, $e(x) = x$. It is realized by
-$\tpcalam{x}{|S|} x$. Clearly, $e$ equalizes~$f$ and~$g$. We
-leave the verification of the universal property as exercise.
+$\tpcalam{x}{|S|} x$. Clearly, $e$ equalizes~$f$ and~$g$.
+
+\begin{exercise}
+  Verify that the above alleged equalizer has the correct universal property.
+\end{exercise}
 
 A \defemph{pullback}, sometimes called \defemph{fibered product}, is a
 combination of product and equalizer. Given morphisms $f : S \to U$
@@ -223,12 +223,12 @@ of $f : \asm{S} \to \asm{U}$ and $g : \asm{T} \to \asm{U}$ is the
 assembly
 %
 \begin{equation*}
-  \asm{P} = (\set{(x,y) \in S \times T \such f(x) = g(y)}, |S| \times
+  \asm{P} = (\set{(x,y) \in S \times T \such f\,x = g(y)}, |S| \times
   |T|, {\rz_P})
 \end{equation*}
 %
-where $\combPair\,\R{x}\,\R{y} \rz_P (x,y)$ if, and only if, $\R{x}
-\rz_S x$ and $\R{y} \rz_T y$.
+where $p \rz_P (x,y)$ if, and only if, $\combFst\,p
+\rz_S x$ and $\combSnd\,p \rz_T y$.
 
 Finite products, the terminal object, equalizers, and pullbacks are
 special cases of \defemph{finite limits}. A category which has all finite
@@ -277,7 +277,7 @@ define a map $f : S + T \to U$ by cases $f_1 : S \to U$ and $f_2 : T
 \to U$. One possibility is to write
 %
 \begin{equation*}
-  f(u) =
+  f\,u =
   \begin{cases}
     f_1(x) & \text{if $u = (0,x)$,}\\
     f_2(y) & \text{if $u = (1,y)$,}
@@ -290,24 +290,15 @@ and just write $S + T = S \cup T$. This allows us to get rid of the
 encoding by pairs,
 %
 \begin{equation*}
-  f(u) =
+  f\,u =
   \begin{cases}
     f_1(u) & \text{if $u \in S$,}\\
    f_2(u) & \text{if $u \in T$.}
   \end{cases}
 \end{equation*}
 %
-Unlike people, computers do not pretend, and so as computer scientists
-we need notation that is actually correct. However, it is unnecessary
-to write the elements of a disjoint sum as uninformative pairs $(0,x)$
-and $(1,y)$. Instead, we simply take the injections $\iota_1$ and
-$\iota_2$ as \emph{labels} that indicate which part of a disjoint sum
-we are referring to. Thus, every element of $S + T$ is either of the
-form $\iota_1(x)$ for a unique $x \in S$, or $\iota_2(y)$ for a unique
-$y \in T$.\sidenote{If you feel the urge to really encode everything
-  with sets, you can still define $\iota_1(x) = (0, x)$ and
-  $\iota_2(y) = (1, y)$ but then forget the definition.} In a specific
-case we may choose different, descriptive names for the injections.
+Unlike people, computers do not pretend, and so as computer scientists we need notation that is actually correct. However, it is unnecessary encode the elements of a disjoin sum as pairs $(0,x)$ and $(1,y)$. Instead, we simply take the injections $\iota_1$ and
+$\iota_2$ as primitive \emph{labels} that indicate which part of a disjoint sum we are referring to.\sidenote{If you feel the urge to really encode everything with sets, you can still define $\iota_1(x) = (0, x)$ and $\iota_2(y) = (1, y)$ but then forget the definition.}  Thus, every element of $S + T$ is either of the form $\iota_1(x)$ for a unique $x \in S$, or $\iota_2(y)$ for a unique $y \in T$. In a specific case we may choose different, descriptive names for the injections.
 
 Definition by cases is a primitive concept involving disjoint sums
 which deserves its own notation, preferably one that fits on a single
@@ -323,13 +314,13 @@ $y$ are bound in $e_1$ and $e_2$, respectively. The definition of $f$
 above would be written as
 %
 \begin{equation*}
-  f(u) = \case{u}{\iota_1(x)}{f_1(x)}{\iota_2(y)}{f_2(y)},
+  f\,u = \case{u}{\iota_1(x)}{f_1(x)}{\iota_2(y)}{f_2(y)},
 \end{equation*}
 %
 or spanning several lines
 %
 \begin{equation*}
-  f(u) = \xcase{u}{\iota_1(x)}{f_1(x)}{\iota_2(y)}{f_2(y).}
+  f\,u = \xcase{u}{\iota_1(x)}{f_1(x)}{\iota_2(y)}{f_2(y).}
 \end{equation*}
 %
 We shall use this notation. Let us mention that in Haskell $\iota_1$
@@ -436,7 +427,7 @@ underlying tpcas.
   S + T \to U$, defined by
   %
   \begin{equation*}
-    h(u) = \case{u}{\iota_1(x)}{f(x)}{\iota_2(y)}{g(y)},
+    h(u) = \case{u}{\iota_1(x)}{f\,x}{\iota_2(y)}{g(y)},
   \end{equation*}
   %
   is realized by
@@ -571,18 +562,20 @@ that covers the instances we care about.
   \Atyp{t}$. Define
   %
   \begin{align*}
-    s + t &= \ttbool \times (s \times t),\\
+    s + t &= \ttbool \times (s \times t)\\
     \combLeft_{s,t} &=
       \tpcalam{x}{s}{\combPair\,\combTrue\,(\combPair\,x \, \omega_t)} \\
     \combRight_{s,t} &=
       \tpcalam{y}{t}{\combPair\,\combFalse\,(\combPair \, \omega_s \, y)} \\
     \combCase_{s,t,u} &=
-      \tpcalam{z}{s+t}
+     \begin{aligned}[t]
+      &\tpcalam{z}{s+t}
       \tpcalam{f}{s \to u}
-      \tpcalam{g}{s \to u}
-      \combIf\,(\combFst\,z)\,
+      \tpcalam{g}{s \to u} \\
+      &\quad \combIf\,(\combFst\,z)\,
                (f\,(\combFst\,(\combFst\,z)))\,
                (g\,(\combSnd\,(\combFst\,z)))
+      \end{aligned}
   \end{align*}
   %
   These have the required properties, as is easily checked.
@@ -630,8 +623,8 @@ object is the \defemph{empty assembly}
   \zero = (\emptyset, o, \rz_\zero)
 \end{equation*}
 %
-where $o$ is any type.\sidenote{If you are wondering what $\rz_\zero$
-  is, ask yourself how many relations there are between $\Atyp{o}$ and
+where $o$ is any type.\sidenote{We need not specify $\rz_\zero$
+  because there is only one relation between $\Atyp{o}$ and
   $\emptyset$.} Its universal property is that there is exactly one
 morphism $\zero \to \asm{S}$ for every assembly~$\asm{S}$. The
 property holds because there is a unique map $\emptyset \to S$, which
@@ -663,7 +656,7 @@ $k : T \to K$ equalizes~$f$ and~$g$ then there is a unique morphism $i
 %
 In the category of sets the coequalizer is the quotient $Q =
 T/{\equiv}$ of~$T$ by the least equivalence relation~$\equiv$
-satisfying $f(x) \equiv g(x)$ for all $x \in S$. The map $q : T \to
+satisfying $f\,x \equiv g\,x$ for all $x \in S$. The map $q : T \to
 T/{\equiv}$ is the canonical quotient map which takes $y \in T$ to its
 equivalence class $[y]_{\equiv}$.
 
@@ -682,8 +675,12 @@ $\tpcalam{y}{|T|} y$.
 
 Pushouts, which are dual to pullbacks, exist in~$\AsmA$ if coproducts
 do, because every finite colimit is a coequalizer of a finite
-coproduct, as recorded in the following proposition. We leave an
-explicit description of pushouts as exercise.
+coproduct, as recorded in the following proposition.
+
+\begin{exercise}
+  Give an explicit description of the pushout of assemblies.
+\end{exercise}
+
 
 \begin{proposition}
   \label{prop:asm-cocartesian}%
@@ -725,8 +722,8 @@ are precisely the injective and surjective maps, respectively.
   |S|, {\rz_U})$ with the realizability relation
   % 
   \begin{equation*}
-    \combPair\,\R{x}\,\R{y} \rz_U u
-    \iff \R{x} \rz_S f(u) \land \R(y) \rz_S g(u).
+    p \rz_U u
+    \iff \combFst\,p \rz_S f\,u \land \combSnd\,p \rz_S g\,u.
   \end{equation*}
   % 
   The maps $g$ and $h$ are morphisms from $\asm{U}$ to $\asm{S}$
@@ -750,8 +747,8 @@ example, a continuous bijection between topological spaces need not be
 a homeomorphism.
 
 \begin{corollary}
-  A realized map $f : \asm{S} \to \asm{T}$ is mono-epi if, and only
-  if, it is is bijective.
+  An assembly map $f : \asm{S} \to \asm{T}$ is mono-epi if, and only
+  if, its underlying map is a bijection.
 \end{corollary}
 
 \begin{proof}
@@ -779,7 +776,7 @@ $\tpcalam{x}{|T|} x$, and it is a regular mono because it is
 the equalizer of the maps $g, h : T \to \nabla \two$, defined by
 %
 \begin{equation*}
-  g(x) = 1
+  g\,x = 1
   \qquad\text{and}\qquad
   h(x) =
   \begin{cases}
@@ -797,7 +794,7 @@ recipe~\eqref{eq:asm-equalizer} from
 restriction of $\asm{T}$ to the subset
 % 
 \begin{equation*}
-  T' = \set{x \in T \such g(x) = h(x)}.
+  T' = \set{x \in T \such g\,x = h(x)}.
 \end{equation*}
 % 
 Since both $\iota : \asm{T}' \to \asm{T}$ and $f : \asm{S} \to
@@ -810,7 +807,7 @@ The following characterization of regular monos is often useful.
   A realized map $f : \asm{S} \to \asm{T}$ is a regular mono if, and
   only if, $f$ is injective and there exists $\R{i} \in \subAtyp{|T|
     \to |S|}$ such that, for all $x \in S$ and $\R{y} \in \Atyp{|T|}$,
-  if $\R{y} \rz_T f(x)$ then $\R{i}\,\R{y}$ is defined and
+  if $\R{y} \rz_T f\,x$ then $\R{i}\,\R{y}$ is defined and
   $\R{i}\,\R{y} \rz_S x$.
 \end{proposition}
 
@@ -830,19 +827,19 @@ The following characterization of regular monos is often useful.
   \asm{E} \to \asm{S}$ such that $e = f \circ i$. We claim that any
   realizer $\R{i} \in \subAtyp{|T| \to |S|}$ of~$i$ has the desired
   property. Suppose $x \in S$, $\R{y} \in \Atyp{|T|}$, and $\R{y}
-  \rz_T f(x)$. Because $g(f(x)) = h(f(x))$, $f(x) \in E$ and so $\R{y}
-  \rz_E f(x)$. Then $\R{i}\,\R{y}$ is defined and $\R{i}\,\R{y} \rz_S
-  i(f(x))$. This is what we want because $f(i(f(x))) = e(f(x)) =
-  f(x)$, from which $i(f(x)) = x$ follows by injectivity of~$f$.
+  \rz_T f\,x$. Because $g(f\,x) = h(f\,x)$, $f\,x \in E$ and so $\R{y}
+  \rz_E f\,x$. Then $\R{i}\,\R{y}$ is defined and $\R{i}\,\R{y} \rz_S
+  i(f\,x)$. This is what we want because $f(i(f\,x)) = e(f\,x) =
+  f\,x$, from which $i(f\,x) = x$ follows by injectivity of~$f$.
 
   Conversely, suppose $f : \asm{S} \to \asm{T}$ is injective, realized
   by~$\R{f}$, and $\R{i}$ is as in statement of the proposition. Let
-  $T' = \set{y \in T \such \some{x}{S}{f(x) = y}}$. It suffices to
+  $T' = \set{y \in T \such \some{x}{S}{f\,x = y}}$. It suffices to
   show that $f$ is isomorphic to the inclusion $\iota : \asm{T}' \to
   \asm{T}$, where $\asm{T}'$ is the restriction of~$\asm{T}$ to $T'$.
-  The map $j : \asm{S} \to \asm{T}'$ defined by $j(x) = f(x)$ is
+  The map $j : \asm{S} \to \asm{T}'$ defined by $j(x) = f\,x$ is
   realized by $\R{f}$. The map $i : \asm{T}' \to \asm{S}$, defined by
-  $i(f(x)) = x$, is well defined because~$f$ is injective, and is
+  $i(f\,x) = x$, is well defined because~$f$ is injective, and is
   realized by $\R{i}$. Clearly, $j$ and $i$ are inverses of each other
   and $f = \iota \circ j$.
 \end{proof}
@@ -869,8 +866,8 @@ h : \asm{V} \to \asm{T}$ where\sidenote{You should convince yourself
 \begin{align*}
   \asm{V} &= (\set{(x,y) \in T \times T \such x \equiv y},
              |T| \times |T|, {\rz_V}),\\
-  \combPair\,\R{x}\,\R{y} \rz_V (x,y) &\iff
-  \R{x} \rz_T x \land \R{y} \rz_T y, \\
+  p \rz_V (x,y) &\iff
+  \combFst\,p \rz_T x \land \combSnd\,p \rz_T y, \\
   g (x, y) &= x,\\
   h (x, y) &= y.
 \end{align*}
@@ -878,7 +875,7 @@ h : \asm{V} \to \asm{T}$ where\sidenote{You should convince yourself
 Every regular epi is isomorphic to one of this form. To see this,
 suppose $f : \asm{T} \to \asm{U}$ is a coequalizer of $g, h : \asm{U}
 \to \asm{T}$. Let $\equiv$ be the least equivalence relation on~$T$
-such that $g(x) = h(x)$ for all $x \in U$. Then $f$ is isomorphic to
+such that $g\,x = h(x)$ for all $x \in U$. Then $f$ is isomorphic to
 $q : \asm{T} \to \asm{T}/{\equiv}$ because $g : \asm{T} \to
 \asm{T}/{\equiv}$ is the coequalizer of $g$ and $h$ according to
 \cref{sec:cocartesian-structure}.
@@ -894,13 +891,13 @@ There is another characterization of regular epis which is used often.
 \end{proposition}
 
 \begin{proof}
-  In \cref{sec:multi-valued-functions} we will see that $\R{i}$
-  is a realizer for a multi-valued right inverse of~$f$, while
-  in \cref{sec:logical-reg-epi} we will see that $\R{i}$ is a
-  realizer for the internal statement
-  $\all{y}{\asm{S}}{\some{x}{\asm{T}}{f(x) = y}}$. For the moment we
-  just concentrate on the proof.
-
+  % In \cref{sec:multi-valued-functions} we will see that $\R{i}$
+  % is a realizer for a multi-valued right inverse of~$f$, while
+  % in \cref{sec:logical-reg-epi} we will see that $\R{i}$ is a
+  % realizer for the internal statement
+  % $\all{y}{\asm{S}}{\some{x}{\asm{T}}{f\,x = y}}$. For the moment we
+  % just concentrate on the proof.
+  %
   Suppose first that we have a regular epi $f : \asm{T} \to \asm{U}$
   which is a coequalizer of~$g, h : \asm{S} \to \asm{T}$. Let $q :
   \asm{T} \to \asm{T}/{\equiv}$ be the coequalizer of~$g$ and~$h$, as
@@ -914,7 +911,7 @@ There is another characterization of regular epis which is used often.
   y$, from which we get $i(y) = i(f(x')) = q(x') = [x']$. Since
   $\R{i}\,\R{y} \rz_{T/{\equiv}} [x']$ there is $x \in T$ such that
   $\R{i}\,\R{y} \rz_T x$ and $x \equiv x'$. The element~$x$ is the one
-  we are looking for because $x \equiv x'$ implies $f(x) = f(x') = y$.
+  we are looking for because $x \equiv x'$ implies $f\,x = f(x') = y$.
 
   Conversely, suppose $\R{i}$ is as in the statement of the
   proposition, and let $\R{f}$ be a realizer for~$f$. To show that $f
@@ -922,13 +919,13 @@ There is another characterization of regular epis which is used often.
   relation $\equiv$ on~$T$ by
   %
   \begin{equation*}
-    x \equiv y \iff f(x) = f(y).
+    x \equiv y \iff f\,x = f(y).
   \end{equation*}
   %
   It suffices to show that~$f$ is isomorphic to $q : \asm{T} \to
   \asm{T}/{\equiv}$. In one direction we have the map $j : T/{\equiv}
-  \to U$ defined by $j([x]) = f(x)$, realized by $\R{f}$. In the other
-  direction we have $i : U \to T/{\equiv}$ defined by $i(f(x)) = [x]$,
+  \to U$ defined by $j([x]) = f\,x$, realized by $\R{f}$. In the other
+  direction we have $i : U \to T/{\equiv}$ defined by $i(f\,x) = [x]$,
   which is well defined because~$f$ is surjective. The map $i$ is
   realized by~$\R{i}$. It is obvious that $i$ and $j$ are inverses of
   each other and that $q = i \circ f$ holds.
@@ -966,12 +963,12 @@ In assemblies a realized map $f : \asm{S} \to \asm{T}$ factors as
 %
 where $q$ is a regular epi, $b$ is a mono-epi and $i$ is a regular
 mono. Indeed, we may take $\asm{U} = \asm{S}/{\equiv}$, where $x
-\equiv y \iff f(x) = f(y)$, and $q : \asm{S} \to \asm{S}/{\equiv}$ the
+\equiv y \iff f\,x = f(y)$, and $q : \asm{S} \to \asm{S}/{\equiv}$ the
 canonical quotient map. The assembly $\asm{V}$ is the restriction
-of~$\asm{T}$ to the subset $V = \set{y \in T \such \some{x}{S}{f(x) =
+of~$\asm{T}$ to the subset $V = \set{y \in T \such \some{x}{S}{f\,x =
     y}}$ so that $|V| = |T|$ and $\R{y} \rz_V y \iff \R{y} \rz_T y$
 for all $y \in V$. The map $i : V \to T$ is the subset inclusion.
-Finally, $b : U \to V$ is characterized by $b([x]_{\equiv}) = f(x)$.
+Finally, $b : U \to V$ is characterized by $b([x]_{\equiv}) = f\,x$.
 It is realized by the same realizers as~$f$.
 
 In the above factorization we call $\asm{U}$ the \defemph{image} of~$f$
@@ -1022,16 +1019,16 @@ relation~$\equiv'$ on~$S$, and that $i' : V' \to T$ is a subset
 inclusion.
 
 First we show that $\equiv$ and $\equiv'$ coincide. If $x \equiv y$
-then $i'(b'(q'(x))) = f(x) = f(y) = i'(b'(q'(y)))$, and since $i'
+then $i'(b'(q'(x))) = f\,x = f(y) = i'(b'(q'(y)))$, and since $i'
 \circ b'$ is a mono $q'(x) = q'(y)$ and $x \equiv' y$ follows.
-Conversely, if $x \equiv' y$ then $q'(x) = q'(y)$ and $f(x) =
+Conversely, if $x \equiv' y$ then $q'(x) = q'(y)$ and $f\,x =
 i'(b'(q'(x))) = i'(b'(q'(y))) = f(y)$, hence $x \equiv y$.
 
-Next we verify that $V$ and $V'$ are equal. If $y \in V$ then $f(x) =
-y$ for some $x \in S$. Because $y = f(x) = i'(b'(q'(x)))$ and $i'$ is
-a subset inclusion, $b'(q'(x)) = f(x) = y$, which shows that $y \in
+Next we verify that $V$ and $V'$ are equal. If $y \in V$ then $f\,x =
+y$ for some $x \in S$. Because $y = f\,x = i'(b'(q'(x)))$ and $i'$ is
+a subset inclusion, $b'(q'(x)) = f\,x = y$, which shows that $y \in
 V'$. Conversely, if $y \in V'$ then there is $x \in S$ such that $y =
-i'(b'(q'(x))) = f(x)$, but then $y \in V$.
+i'(b'(q'(x))) = f\,x$, but then $y \in V$.
 
 Good factorization properties of $\AsmA$ lead to another important
 feature of assemblies.
@@ -1080,7 +1077,7 @@ feature of assemblies.
   where
   %
   \begin{equation*}
-    \asm{P} = (\set{(x,y) \in S \times T \such f(x) \equiv y},
+    \asm{P} = (\set{(x,y) \in S \times T \such f\,x \equiv y},
                |S| \times |T|, {\rz_P}),
   \end{equation*}
   %
@@ -1091,7 +1088,7 @@ feature of assemblies.
   \tpcalam{x}{|S|}{\combPair\,x\,(\R{f}\,x)}$ satisfies the
   conditions of the proposition: if $x \in S$ and $\R{x} \rz_S x$ then
   $\R{i}\,\R{x} = \combPair\,\R{x}\,(\R{f}\,\R{x})$ is defined. There
-  is $y \in T$ such that $f(x) = [y]_{\equiv}$, hence $r (x, y) = x$,
+  is $y \in T$ such that $f\,x = [y]_{\equiv}$, hence $r (x, y) = x$,
   and also $\R{i}\,\R{x} \rz_P (x, y)$.
 \end{proof}
 
@@ -1111,7 +1108,7 @@ $\Hom{S, T}$ carries additional structure that turns it into an object
 of the category. For example, in the category of partially ordered
 sets and monotone maps, the set $\Hom{P,Q}$ of monotone maps between
 $(P, {\leq_P})$ and $(Q, {\leq_Q})$ is partially ordered by $f \leq g
-\iff \all{x}{P}{f(x) \leq_Q g(x)}$. The following definition explains
+\iff \all{x}{P}{f\,x \leq_Q g\,x}$. The following definition explains
 what it means for an object to correspond to the the set of morphisms.
 
 \begin{definition}
@@ -1153,7 +1150,7 @@ exponential of sets $S$ and $T$ is the set
   T^S = \set{f \such \text{$f$ is a function from $S$ to $T$}}
 \end{equation*}
 %
-and the evaluation map is $e(f,x) = f(x)$. The transpose of $f : U
+and the evaluation map is $e(f,x) = f\,x$. The transpose of $f : U
 \times S \to T$ is $\curry{f}(z)(x) = f (z, x)$. This way the diagram
 commutes because $e((\curry{f} \times \id[S])(z, x)) = e(\curry{f}(z),
 x) = \curry{f}(z)(x) = f(z,x)$. The transpose $\curry{f}$ is the only
@@ -1184,13 +1181,13 @@ map satisfying this property.
       \all{\R{x} \in |S|}
           (\R{x} \rz_S x \implies
           \defined{\R{f}\,\R{x}} \land
-          \R{f}\,\R{x} \rz_T f(x))
+          \R{f}\,\R{x} \rz_T f\,x)
       }.
   \end{equation*}
   %
   None of this is surprising because we just copied the definition of
   realized maps. The evaluation map $e : \asm{T}^{\asm{S}} \times
-  \asm{S} \to \asm{T}$ is $e(f, x) = f(x)$, which is realized by
+  \asm{S} \to \asm{T}$ is $e(f, x) = f\,x$, which is realized by
   %
   \begin{equation*}
     \R{e} = \tpcalam{p}{(|S| \to |T|) \times |S| \to
@@ -1202,7 +1199,8 @@ map satisfying this property.
   by
   %
   \begin{equation*}
-    \R{\curry{f}} = \tpcalam{z}{|U|} \tpcalam{x}{|S|} \R{f}\,(\combPair\,z\,x).
+    \curry{\R{f}} = \tpcalam{z}{|U|} \tpcalam{x}{|S|} \R{f}\,(\combPair\,z\,x).
+    \qedhere
   \end{equation*}
 \end{proof}
 
@@ -1216,6 +1214,9 @@ $\uncurry{g}$ is realized by $\uncurry{\R{g}} = \tpcalam{p}{|U|
 check that $\uncurry{\curry{f}} = f$ and $\curry{\uncurry{g}} = g$.
 The operation $f \mapsto \curry{f}$ is also known as \defemph{currying}
 and its inverse $g \mapsto \uncurry{g}$ as \defemph{uncurrying}.
+
+\subsection{The interpretation of $\lambda$-calculus in assemblies}
+\label{sec:interpr-lambda-calc}
 
 Currying and uncurrying are useful operations, but the above notation
 with ``hats and checks'' is not very practical. We may take better
@@ -1331,7 +1332,7 @@ S_n$:
   The second projection $\pi_2$ is treated analogously.
 \end{enumerate}
 %
-This definition shows that we may freely use $\lambda$-calculus to
+This definition shows that we may freely use the $\lambda$-calculus to
 define realized maps. Although the definition tells us exactly how to
 compute the realizers from the expressions, the idea is to \emph{not}
 do that. We have verified once and for all that any map defined by
@@ -1451,7 +1452,8 @@ The following equations hold:
   {\iota_1(x)}{\subst{e_2}{z \subto \iota_1(x)}}
   {\iota_2(y)}{\subst{e_2}{z \subto \iota_2(y)}}
   ) &= \subst{e_2}{z \subto e_1}, \\
-  \subst{e}{z \subto (\case{e_1}{\iota_1(x)}{e_2}{\iota_2(y)}{e_3})} &=
+  \subst{e}{z \subto (\case{e_1}{\iota_1(x)}{e_2}{\iota_2(y)}{e_3})} &= \\
+  \qquad
   \xcase{e_1}
   {\iota_1(x)}{\subst{e}{z \subto e_2}}
   {\iota_2(y)}{\subst{e}{z \subto e_3}}
@@ -1533,16 +1535,6 @@ worry about the underlying realizers for the isomorphisms $f$ and $g$.
 You are invited to redo the proof by drawing the relevant commutative
 diagrams and using the universal properties of products, coproducts,
 and exponentials.
-
-\section{The natural numbers object}
-\label{sec:natur-numb-object}
-
-
-% When is a numbered set total
-
-
-
-
 
 \section{Projective assemblies}
 \label{sec:projective-assemblies}
