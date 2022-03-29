@@ -24,12 +24,12 @@ assemblies $\asm{S}_i$.
 \begin{definition}
   A \defemph{uniform family} of assemblies $(\asm{S}_i)_{i \in \asm{I}}$
   is given by an \defemph{index assembly~$\asm{I}$}, and for each $i \in
-  I$ an assembly $\asm{S}_i = \xasm{S_i}$, such that $|S_i| = |S_j|$
+  I$ an assembly $\asm{S}_i = \xasm{S_i}$, such that $\T{S_i} = \T{S_j}$
   for all $i, j \in I$.
 \end{definition}
 
 We only consider uniform families $(\asm{S}_i)_{i \in \asm{I}}$, and
-write the underlying type of $\asm{S}_i$'s as $|S|$. From an
+write the underlying type of $\asm{S}_i$'s as $\T{S}$. From an
 implementation point of view uniformity is a reasonable condition.
 
 
@@ -42,7 +42,7 @@ Given a uniform family $(\asm{S}_i)_{i \in \asm{I}}$, we may form the
 %
 \begin{equation*}
   \dsum_{i \in \asm{I}} \asm{S}_i =
-  (\dsum_{i \in I} S_i, |I| \times |S|, \rz[\dsum_{i \in I S_i}])
+  (\dsum_{i \in I} S_i, \T{I} \times \T{S}, \rz[\dsum_{i \in I S_i}])
 \end{equation*}
 %
 where $\dsum_{i \in I} S_i = \set{(i,x) \such i \in I \land x \in
@@ -70,13 +70,13 @@ is
   }.
 \end{equation*}
 %
-Let $\rz[\dprod_{i \in I S_i}]$ be the relation between $\Atyp{|I|
-  \to |S|}$ and $\dprod_{i \in I} S_i$, defined by
+Let $\rz[\dprod_{i \in I S_i}]$ be the relation between $\Atyp{\T{I}
+  \to \T{S}}$ and $\dprod_{i \in I} S_i$, defined by
 %
 \begin{equation*}
   \R{f} \rz[\dprod_{i \in I S_i}] f
   \iff
-  \all{\R{i}}{\Atyp{|I|}}{
+  \all{\R{i}}{\Atyp{\T{I}}}{
     \all{i \in I}
       (\R{i} \rz[I] i
       \implies
@@ -90,9 +90,9 @@ Finally, define the dependent product of the family to be the assembly
 \begin{equation*}
   \dprod_{i \in \asm{I}} \asm{S}_i =
   (\set{f \in \dprod_{i \in I} S_i \such
-    \some{\R{f}}{\Atyp{|I| \to |S|}}{\R{f} \rz[\dprod_{i \in I S_i}]
+    \some{\R{f}}{\Atyp{\T{I} \to \T{S}}}{\R{f} \rz[\dprod_{i \in I S_i}]
       f}},
-  |I| \to |S|, {\rz[\dprod_{i \in I S_i}]}).
+  \T{I} \to \T{S}, {\rz[\dprod_{i \in I S_i}]}).
 \end{equation*}
 %
 Notice how at the level of underlying types the dependency on the

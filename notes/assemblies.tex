@@ -74,11 +74,11 @@ We now give a precise definition of the ideas presented in the previous section.
 
 \begin{definition}
   An \defemph{assembly} over~$(\AA, \subAA)$ a tpca with a sub-tpca is a triple
-  $\asm{S} = \xasm{S}$ where $S$ is a set, $|S|$ is a type in~$\AA$, and $\rz[S]$ is a relation between $\xAtyp{S}$ and~$S$
+  $\asm{S} = \xasm{S}$ where $S$ is a set, $\T{S}$ is a type in~$\AA$, and $\rz[S]$ is a relation between $\xAtyp{S}$ and~$S$
   satisfying: for every $x \in S$ there is $\R{x} \in \xAtyp{S}$ such that $\R{x} \rz[S] x$.
 
   An \defemph{assembly map} $f : \asm{S} \to \asm{T}$ between assemblies $\asm{S}$ and $\asm{T}$ is a map $f : S \to T$
-  between the underlying sets for which there exists $\R{f} \in \subAtyp{|S| \to |T|}$, called a \defemph{realizer}
+  between the underlying sets for which there exists $\R{f} \in \subAtyp{\T{S} \to \T{T}}$, called a \defemph{realizer}
   of~$f$, satisfying: if $\R{x} \rz[S] x$ then $\defined{\R{f} \, \R{x}}$ and $\R{f} \, \R{x} \rz[T] f(x)$.
 \end{definition}
 
@@ -103,11 +103,11 @@ When $\AA$ is untyped the definition of an assembly simplifies a bit because we 
 
 Assemblies and maps over $(\AA, \subAA)$ form a \defemph{category $\AsmA$}.
 %
-Indeed, if $f : \asm{S} \to \asm{T}$ and $g : \asm{T} \to \asm{U}$ are realized by $\R{f} \in \subAtyp{|S| \to |T|}$
-and $\R{g} \in \subAtyp{|T| \to |U|}$, respectively, then their composition $g \circ f$ is realized by
-$\tpcalam{x}{|S|}{r\,(q\,x)} = \combS\,(\combK\,r)\,(\combS\,(\combK\,q)\,(\combS\,\combK\,\combK))$.
+Indeed, if $f : \asm{S} \to \asm{T}$ and $g : \asm{T} \to \asm{U}$ are realized by $\R{f} \in \subAtyp{\T{S} \to \T{T}}$
+and $\R{g} \in \subAtyp{\T{T} \to \T{U}}$, respectively, then their composition $g \circ f$ is realized by
+$\tpcalam{x}{\T{S}}{r\,(q\,x)} = \combS\,(\combK\,r)\,(\combS\,(\combK\,q)\,(\combS\,\combK\,\combK))$.
 %
-The identity map $\id[S] : \asm{S} \to \asm{S}$ is realized by $\tpcalam{x}{|S|}{x} = \combS\,\combK\,\combK$. 
+The identity map $\id[S] : \asm{S} \to \asm{S}$ is realized by $\tpcalam{x}{\T{S}}{x} = \combS\,\combK\,\combK$. 
 %
 Composition is associative because it is just composition of maps.
 
@@ -151,7 +151,7 @@ The \defemph{terminal assembly} $\one = (\set{\star}, \unit, {\rz[\one]})$ has t
   in $\AsmA$. Conclude from this that a different choice of $\unit$ results in an isomorphic copy of~$\one$.
 \end{exercise}
 
-The morphisms $\one \to \asm{S}$ corresponds to those elements of~$S$ that are realized by elements of $\subAtyp{|S|}$. Indeed, if $f : \star \to S$ is realized by $\R{f} \in \subAtyp{\unit \to |S|}$ then $f \, \star$ is realized by $\R{f} \, t \in \subAtyp{|S|}$, for any $t \in \subAtyp{\unit}$. Conversely, if $a \in S$ is realized by $\R{a} \in \subAtyp{|S|}$ then $\star \mapsto a$ is $\tpcalam{x}{\unit}{\R{a}}$.
+The morphisms $\one \to \asm{S}$ corresponds to those elements of~$S$ that are realized by elements of $\subAtyp{\T{S}}$. Indeed, if $f : \star \to S$ is realized by $\R{f} \in \subAtyp{\unit \to \T{S}}$ then $f \, \star$ is realized by $\R{f} \, t \in \subAtyp{\T{S}}$, for any $t \in \subAtyp{\unit}$. Conversely, if $a \in S$ is realized by $\R{a} \in \subAtyp{\T{S}}$ then $\star \mapsto a$ is $\tpcalam{x}{\unit}{\R{a}}$.
 
 This may be a good moment to point out the difference between the \defemph{global points} of~$\asm{S}$, which is the set of morphisms $\one \to \asm{S}$, and the \defemph{underlying set~$S$} of~$\asm{S}$. Both induce functors $\AsmA \to \Set$, which need not be equivalent, unless $\AA = \subAA$.
 
@@ -168,7 +168,7 @@ Suppose $(\AA, \subAA)$ is an n-tpca. Let $\asm{N} = (\NN, \ttnat, {\rz[N]})$ be
 %
 The successor $n \mapsto n + 1$ is realized by~$\combSucc$, and $0 \in \mathbb{N}$ is a global point because $\numeral{0} \in \subAtyp{\ttnat}$.
 
-The assembly $\mathbb{N}$ is the natural numbers object. Indeed, given an assembly $\asm{S}$ with $z \in \asm{S}$ realized by $\mathtt{z} \in \subAtyp{|S|}$, and $f : \asm{S} \to \asm{S}$, the unique map $\overline{f} : \asm{N} \to \asm{S}$ satisfying, for all $n \in \NN$,
+The assembly $\mathbb{N}$ is the natural numbers object. Indeed, given an assembly $\asm{S}$ with $z \in \asm{S}$ realized by $\mathtt{z} \in \subAtyp{\T{S}}$, and $f : \asm{S} \to \asm{S}$, the unique map $\overline{f} : \asm{N} \to \asm{S}$ satisfying, for all $n \in \NN$,
 %
 \begin{equation*}
   \overline{f} \, 0 = 0
@@ -281,11 +281,11 @@ as a map $\Ex_S : S \to \pow{\xAtyp{S}}$. The correspondence is
   \R{x} \rz[S] x \iff \R{x} \in \Ex_S(x).
 \end{equation*}
 %
-Because every $x$ is realized by something, $\Ex_S(x)$ always contains at least one element. Thus an assembly $\xasm{S}$ may be equivalently presented as a triple $(S, |S|, \Ex_S)$ where $\Ex_S : S \to \pow{\xAtyp{S}}$ is a map, called the \defemph{existence predicate}, such that $\Ex_S(x)$ contains at least one element for every $x \in S$. The name suggests that the elements of $\Ex_S(x)$ are computational witnesses for ``existence of~$x$''.
+Because every $x$ is realized by something, $\Ex_S(x)$ always contains at least one element. Thus an assembly $\xasm{S}$ may be equivalently presented as a triple $(S, \T{S}, \Ex_S)$ where $\Ex_S : S \to \pow{\xAtyp{S}}$ is a map, called the \defemph{existence predicate}, such that $\Ex_S(x)$ contains at least one element for every $x \in S$. The name suggests that the elements of $\Ex_S(x)$ are computational witnesses for ``existence of~$x$''.
 
 An assembly $S$ is modest if, and only if, $\Ex_S(x) \cap \Ex_S(y) \neq \emptyset$ implies $x = y$.
 
-Under this formulation a map $f : \asm{S} \to \asm{T}$ is realized if there exists $\R{f} \in \subAtyp{|S| \to |T|}$ such that, for all $x \in S$ and $\R{x} \in \Ex_S(x)$, $\defined{\R{f}\,\R{x}}$ and $\R{f}\,\R{x} \in \Ex_T(f(x))$.
+Under this formulation a map $f : \asm{S} \to \asm{T}$ is realized if there exists $\R{f} \in \subAtyp{\T{S} \to \T{T}}$ such that, for all $x \in S$ and $\R{x} \in \Ex_S(x)$, $\defined{\R{f}\,\R{x}}$ and $\R{f}\,\R{x} \in \Ex_T(f(x))$.
 
 \subsection{Representations}
 \label{sec:representations}
@@ -296,9 +296,9 @@ By transposing $\rz[S]$ the other way around we obtain \defemph{representations}
   \delta_S(r) = x \iff r \rz[S] x.
 \end{equation*}
 %
-The map $\delta_S$ is surjective because every $x \in S$ is realized, but it need not be defined everywhere. The triple $(S, |S|, \delta_S)$ uniquely describes the modest set~$S$. The map $\delta_S$ is called a \defemph{representation} of~$S$.
+The map $\delta_S$ is surjective because every $x \in S$ is realized, but it need not be defined everywhere. The triple $(S, \T{S}, \delta_S)$ uniquely describes the modest set~$S$. The map $\delta_S$ is called a \defemph{representation} of~$S$.
 
-A map $f : S \to T$ is realized or tracked by $\R{f} \in \subAtyp{|S| \to |T|}$ when, for all $\R{x} \in \dom{\delta_S}$, $\defined{\R{f}\,\R{x}}$ and $\delta_T(\R{f}\,\R{x}) = f(\delta_S(x))$.
+A map $f : S \to T$ is realized or tracked by $\R{f} \in \subAtyp{\T{S} \to \T{T}}$ when, for all $\R{x} \in \dom{\delta_S}$, $\defined{\R{f}\,\R{x}}$ and $\delta_T(\R{f}\,\R{x}) = f(\delta_S(x))$.
 
 Representations and realized maps form a category~$\Rep{\AA,\subAA}$, which is equivalent to $\Mod{\AA, \subAA}$.
 
@@ -329,19 +329,19 @@ This formulation only works for modest sets. With each modest set~$S$ we may ass
   \some{x \in S} q \rz[S] x \land r \rz[S] x.
 \end{equation*}
 %
-The pair $(|S|, {\per_S})$ suffices for the reconstruction of the
+The pair $(\T{S}, {\per_S})$ suffices for the reconstruction of the
 original modest set, up to isomorphism, which we show next.
 
 Let $(\AA, \subAA)$ be a tpca with a sub-tpca. A \defemph{partial
-  equivalence relation} on~$\AA$ is a pair $S = (|S|, {\per_S})$ where
-$|S|$ is a type and $\per_S$ is a transitive and symmetric
+  equivalence relation} on~$\AA$ is a pair $S = (\T{S}, {\per_S})$ where
+$\T{S}$ is a type and $\per_S$ is a transitive and symmetric
 relation on $\xAtyp{S}$. A realizer $r \in \xAtyp{S}$ is \defemph{total} if
 $r \per_S r$. The set of total realizers is denoted by $\|S\| = \set{r
   \in \xAtyp{S} \such r \per_S r}$. Each $r \in \|S\|$ determines
 the equivalence class $[r]_S = \set{q \in \xAtyp{S} \such r \per_S q}$.
 
 An \defemph{extensional realizer} between pers $S$ and $T$ is $p \in
-\subAtyp{|S| \to |T|}$ such that, for all $q, r \in \xAtyp{S}$, if $q
+\subAtyp{\T{S} \to \T{T}}$ such that, for all $q, r \in \xAtyp{S}$, if $q
 \per_S r$ then $\defined{p\,q}$, $\defined{p\,r}$, and $p\,q \per_T
 p\,r$. Extensional realizers $p$ and $p'$ are \defemph{equivalent} when
 $q \per_S r$ implies $p\,q \per_T p'\,r$.
@@ -350,28 +350,28 @@ Pers and equivalence classes of extensional realizers form a category
 $\Per{\AA, \subAA}$ whose objects are pers on~$\AA$ and morphisms are
 equivalence classes of extensional realizers. The composition of $[p]
 : S \to T$ and $[q] : T \to U$ is $[q \circ p] : S \to U$ where $q
-\circ p = \tpcalam{x}{|S|}{q\,(p\,x)}$. The identity morphism
-$\id[S] : S \to S$ is represented by $\tpcalam{x}{|S|} x$. It
+\circ p = \tpcalam{x}{\T{S}}{q\,(p\,x)}$. The identity morphism
+$\id[S] : S \to S$ is represented by $\tpcalam{x}{\T{S}} x$. It
 is easy to check that this forms a category.
 
 Let $S$ and $T$ be pers over $(\AA, \subAA)$. A morphism between them
 may be alternatively described as a function $f : \|S\|/{\per_S} \to
 \|T\|/{\per_T}$ between the equivalence classes for which there exists
-a realizer $p \in \subAtyp{|S| \to |T|}$ that tracks it: for every
+a realizer $p \in \subAtyp{\T{S} \to \T{T}}$ that tracks it: for every
 equivalence class $[r]_S$, $\defined{p\,r}$ and $[p\,r]_T = f([r]_S)$.
 
 \begin{lemma}
   \label{lemma:iso-assembly}
   %
   Suppose $\asm{S}$ is an assembly, $T$ is a set, and $f : T \to S$ is
-  a bijection. Then $\asm{S}$ is isomorphic to $\asm{T} = (T, |S|,
+  a bijection. Then $\asm{S}$ is isomorphic to $\asm{T} = (T, \T{S},
   {\rz[T]})$ where $r \rz[T] x$ is defined as $r \rz[S] f(x)$.
 \end{lemma}
 
 
 \begin{proof}
   The map $f$ is a morphism from $\asm{S}$ to $\asm{T}$ because it is
-  tracked by~$\tpcalam{x}{|S|}{x}$. Similarly, $\inv{f}$ is a
+  tracked by~$\tpcalam{x}{\T{S}}{x}$. Similarly, $\inv{f}$ is a
   morphism because it is also tracked by the same realizer. Obviously,
   $f$ and $\inv{f}$ are inverses of each other.
 \end{proof}
@@ -385,13 +385,13 @@ equivalence class $[r]_S$, $\defined{p\,r}$ and $[p\,r]_T = f([r]_S)$.
 \begin{proof}
   A modest set $\xasm{S}$ determines a per $(S, {\per_S})$,
   as described above. A morphism $f : S \to T$ which is tracked by $p
-  \in \subAtyp{|S| \to |T|}$ determines a morphism of pers $[p] : (S,
+  \in \subAtyp{\T{S} \to \T{T}}$ determines a morphism of pers $[p] : (S,
   {\per_S}) \to (T, {\per_T})$. This defines a functor $F : \Mod{\AA,
     \subAA} \to \Per{\AA, \subAA}$.
 
   In the other direction the functor $G : \Per{\AA, \subAA} \to
-  \Mod{\AA, \subAA}$ sends a per $(|T|, {\per_T})$ to the modest set
-  $(\|T\|/{\per_T}, |T|, {\rz[T]})$ whose realizability relation is
+  \Mod{\AA, \subAA}$ sends a per $(\T{T}, {\per_T})$ to the modest set
+  $(\|T\|/{\per_T}, \T{T}, {\rz[T]})$ whose realizability relation is
   %
   \begin{equation*}
     r \rz[T] [q] \iff r \per_T q.
@@ -414,15 +414,15 @@ equivalence class $[r]_S$, $\defined{p\,r}$ and $[p\,r]_T = f([r]_S)$.
 \subsection{Equivalence relations}
 \label{sec:ers}
 
-A per $(|S|, {\per_S})$ may be viewed as an equivalence relation on
+A per $(\T{S}, {\per_S})$ may be viewed as an equivalence relation on
 $\|S\| = \set{r \in \xAtyp{S} \such r \per_S r}$. This gives us yet
 another equivalent formulation of modest sets, this time in terms of
 equivalence relations.
 
-The category $\Er{\AA, \subAA}$ of equivalence relations has as objects triples $(S, |S|, {\equiv_S})$ where $|S|$ is a
+The category $\Er{\AA, \subAA}$ of equivalence relations has as objects triples $(S, \T{S}, {\equiv_S})$ where $\T{S}$ is a
 type, $S \subseteq \xAtyp{S}$, and $\equiv_S$ is an equivalence relation on~$S$. As in the case of pers, a morphism
-$(S, |S|, {\equiv_S}) \to (T, |T|, {\equiv_T})$ is represented by an extensional realizer
-$p \in \subAtyp{|S| \to |T|}$.
+$(S, \T{S}, {\equiv_S}) \to (T, \T{T}, {\equiv_T})$ is represented by an extensional realizer
+$p \in \subAtyp{\T{S} \to \T{T}}$.
 
 The difference between pers and equivalence relations is mostly a
 bureaucratic one. Nevertheless, it is useful to know about $\Er{\AA,

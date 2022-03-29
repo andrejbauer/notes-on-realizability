@@ -84,7 +84,7 @@ $\asm{S}$ and~$\asm{T}$ is the assembly
 %
 \begin{equation*}
   \asm{S} \times \asm{T} =
-  (S \times T, |S| \times |T|, {\rz[S \times T]})
+  (S \times T, \T{S} \times \T{T}, {\rz[S \times T]})
 \end{equation*}
 %
 with the realizability relation
@@ -103,12 +103,12 @@ which are realized by $\combFst$ and $\combSnd$, respectively.
 %
 To see that $(\asm{S} \times \asm{T}, \pi_1, \pi_2)$ has the universal
 property, suppose $f : \asm{U} \to \asm{S}$ and $g : \asm{U} \to
-\asm{T}$ are realized by $\R{f} \in \subAtyp{|U| \to |S|}$ and $\R{g}
-\in \subAtyp{|U| \to |T|}$, respectively. There is a unique map $h :
+\asm{T}$ are realized by $\R{f} \in \subAtyp{\T{U} \to \T{S}}$ and $\R{g}
+\in \subAtyp{\T{U} \to \T{T}}$, respectively. There is a unique map $h :
 U \to S \times T$ for which $f = \pi_1 \circ h$ and $g = \pi_2 \circ g$,
 namely $h(u) = \pair{f,g}(u) = (f\,u, g\,u)$. We only need a realizer
 for~$h$, and $\R{h} =
-\tpcalam{u}{|U|}{\combPair\,(\R{f}\,u)\,(\R{g}\,u)}$ does the
+\tpcalam{u}{\T{U}}{\combPair\,(\R{f}\,u)\,(\R{g}\,u)}$ does the
 job:
 %
 \begin{align*}
@@ -172,13 +172,13 @@ to augment this with realizers. The equalizer of $f, g : \asm{S} \to
   \label{eq:asm-equalizer}%
   \asm{E} =
   (\set{x \in S \such f\,x = g\,x},
-   |S|,
+   \T{S},
    {\rz[E]})
 \end{equation}
 %
 where $\R{x} \rz[E] x$ if, and only if, $\R{x} \rz[S] x$. The map $e : E
 \to S$ is the subset inclusion, $e(x) = x$. It is realized by
-$\tpcalam{x}{|S|} x$. Clearly, $e$ equalizes~$f$ and~$g$.
+$\tpcalam{x}{\T{S}} x$. Clearly, $e$ equalizes~$f$ and~$g$.
 
 \begin{exercise}
   Verify that the above alleged equalizer has the correct universal property.
@@ -223,8 +223,8 @@ of $f : \asm{S} \to \asm{U}$ and $g : \asm{T} \to \asm{U}$ is the
 assembly
 %
 \begin{equation*}
-  \asm{P} = (\set{(x,y) \in S \times T \such f\,x = g(y)}, |S| \times
-  |T|, {\rz[P]})
+  \asm{P} = (\set{(x,y) \in S \times T \such f\,x = g(y)}, \T{S} \times
+  \T{T}, {\rz[P]})
 \end{equation*}
 %
 where $p \rz[P] (x,y)$ if, and only if, $\combFst\,p
@@ -401,7 +401,7 @@ underlying tpcas.
   with sums. The coproduct of $\asm{S}$ and $\asm{T}$ is the assembly
   %
   \begin{equation*}
-    \asm{S} + \asm{T} = (S + T, |S| + |T|, \rz[S + T])
+    \asm{S} + \asm{T} = (S + T, \T{S} + \T{T}, \rz[S + T])
   \end{equation*}
   %
   where $\rz[S+T]$ is most easily defined in terms of the existence
@@ -418,8 +418,8 @@ underlying tpcas.
   $\combLeft\,\R{x}$ where $\R{x} \rz[S] x$, and the realizers for
   $\iota_2(y)$ are of the form $\combRight\,\R{y}$ where $\R{y} \rz[T]
   y$. The canonical inclusions $\iota_1 : S \to S + T$ and $\iota_2 :
-  T \to S + T$ are realized by $\combLeft_{|S|,|T|}$ and
-  $\combRight_{|S|,|T|}$, respectively.
+  T \to S + T$ are realized by $\combLeft_{\T{S},\T{T}}$ and
+  $\combRight_{\T{S},\T{T}}$, respectively.
   %
   To see that $\asm{S} + \asm{T}$ has the required universal property,
   consider $f : \asm{S} \to \asm{U}$ and $g : \asm{T} \to \asm{U}$,
@@ -431,7 +431,7 @@ underlying tpcas.
   \end{equation*}
   %
   is realized by
-  $\tpcalam{u}{|S|+|T|}{\combCase\,u\,\R{f}\,\R{g}}$. It is the
+  $\tpcalam{u}{\T{S}+\T{T}}{\combCase\,u\,\R{f}\,\R{g}}$. It is the
   unique morphism satisfying $h \circ \iota_1 = f$ and $h \circ
   \iota_2 = g$.
 
@@ -446,7 +446,7 @@ underlying tpcas.
   underlying type of the coproduct $\asm{A}_s + \asm{A}_t$,
   %
   \begin{equation*}
-    s + t = |\asm{A}_s + \asm{A}_t|.
+    s + t = \T{\asm{A}_s + \asm{A}_t}.
   \end{equation*}
   %
   Let $\combLeft_{s,t}$ and $\combRight_{s,t}$ be a realizers for the
@@ -628,7 +628,7 @@ where $o$ is any type.\sidenote{We need not specify $\rz[\zero]$
   $\emptyset$.} Its universal property is that there is exactly one
 morphism $\zero \to \asm{S}$ for every assembly~$\asm{S}$. The
 property holds because there is a unique map $\emptyset \to S$, which
-is realized by $\combK_{|S|,o}\,a$, where $a \in \subAtyp{o}$.
+is realized by $\combK_{\T{S},o}\,a$, where $a \in \subAtyp{o}$.
 
 A \defemph{coequalizer} of morphisms $f, g : S \to T$ is an object $Q$
 with a morphism $q : T \to Q$ that equalizes~$f$ and $g$, which means
@@ -662,8 +662,8 @@ equivalence class $[y]_{\equiv}$.
 
 In $\AsmA$ the coequalizer of $f, g : \asm{S} \to \asm{T}$ is the
 assembly $\asm{T}/{\equiv}$ where $T/{\equiv}$ is the coequalizer of
-$f$ and $g$ computed in sets, as described above, $|\asm{T}/{\equiv}|
-= |T|$, and $\rz[T/{\equiv}]$ is defined by
+$f$ and $g$ computed in sets, as described above, $\T{\asm{T}/{\equiv}}
+= \T{T}$, and $\rz[T/{\equiv}]$ is defined by
 %
 \begin{equation*}
   \R{y} \rz[X] [z]_{\equiv} \iff
@@ -671,7 +671,7 @@ $f$ and $g$ computed in sets, as described above, $|\asm{T}/{\equiv}|
 \end{equation*}
 %
 The canonical quotient map $q : T \to T/{\equiv}$ is realized by
-$\tpcalam{y}{|T|} y$.
+$\tpcalam{y}{\T{T}} y$.
 
 Pushouts, which are dual to pullbacks, exist in~$\AsmA$ if coproducts
 do, because every finite colimit is a coequalizer of a finite
@@ -718,8 +718,8 @@ are precisely the injective and surjective maps, respectively.
   It is obvious that a morphism $f : \asm{S} \to \asm{T}$ is a mono in
   $\AsmA$ if it is mono in $\Set$. Conversely, suppose $f$ is mono in
   $\AsmA$, and consider maps $g, h : U \to T$ in $\Set$ such that $f
-  \circ g = f \circ h$. Define the assembly $\asm{U} = (U, |S| \times
-  |S|, {\rz[U]})$ with the realizability relation
+  \circ g = f \circ h$. Define the assembly $\asm{U} = (U, \T{S} \times
+  \T{S}, {\rz[U]})$ with the realizability relation
   % 
   \begin{equation*}
     p \rz[U] u
@@ -736,8 +736,8 @@ are precisely the injective and surjective maps, respectively.
   suppose~$f$ is epi in $\AsmA$ and consider maps $g, h : T \to U$
   in~$\Set$ such that $g \circ f = h \circ f$. The maps $g$ and $h$
   are morphisms $T \to \nabla U$ because they are realized by
-  $\combK_{|S|,|\nabla U|} a$ respectively, where $a \in
-  \subAtyp{|\nabla U|}$. Since $f$ is epi in $\AsmA$, we may cancel
+  $\combK_{\T{S},\T{\nabla U}} a$ respectively, where $a \in
+  \subAtyp{\T{\nabla U}}$. Since $f$ is epi in $\AsmA$, we may cancel
   it and obtain $g = h$. This shows that $f$ is epi in~$\Set$.
 \end{proof}
 
@@ -768,11 +768,11 @@ Recall that $f : \asm{S} \to \asm{T}$ is a \defemph{regular mono} if
 there are $g, h : \asm{T} \to \asm{U}$ such that~$f$ is their
 equalizer. Regular monos are well behaved, and we can think of them as
 subspace embeddings. Given an assembly $\asm{T}$ and a subset $T'
-\subseteq T$, define the assembly $\asm{T}' = (T', |T|, {\rz[T']})$
+\subseteq T$, define the assembly $\asm{T}' = (T', \T{T}, {\rz[T']})$
 as the restriction of $\asm{T}$, i.e., $\R{x} \rz[T'] x$ if, and only
 if $x \in T'$ and $\R{x} \rz[T] x$. The subset inclusion $\iota : T'
 \to T$ is a morphism of assemblies because it is realized by
-$\tpcalam{x}{|T|} x$, and it is a regular mono because it is
+$\tpcalam{x}{\T{T}} x$, and it is a regular mono because it is
 the equalizer of the maps $g, h : T \to \nabla \two$, defined by
 %
 \begin{equation*}
@@ -805,8 +805,8 @@ The following characterization of regular monos is often useful.
 \begin{proposition}
   \label{prop:reg-mono-when}%
   A realized map $f : \asm{S} \to \asm{T}$ is a regular mono if, and
-  only if, $f$ is injective and there exists $\R{i} \in \subAtyp{|T|
-    \to |S|}$ such that, for all $x \in S$ and $\R{y} \in \Atyp{|T|}$,
+  only if, $f$ is injective and there exists $\R{i} \in \subAtyp{\T{T}
+    \to \T{S}}$ such that, for all $x \in S$ and $\R{y} \in \Atyp{\T{T}}$,
   if $\R{y} \rz[T] f\,x$ then $\R{i}\,\R{y}$ is defined and
   $\R{i}\,\R{y} \rz[S] x$.
 \end{proposition}
@@ -818,15 +818,15 @@ The following characterization of regular monos is often useful.
   equalizer of~$g$ and~$h$, as computed in~\eqref{eq:asm-equalizer}:
   %
   \begin{align*}
-    \asm{E} &= (\set{y \in T \such g(y) = h(y)}, |T|, {\rz[E]}), \\
+    \asm{E} &= (\set{y \in T \such g(y) = h(y)}, \T{T}, {\rz[E]}), \\
     \R{y} \rz[E] y &\iff \R{y} \rz[T] y, \\
     e(y) &= y.
   \end{align*}
   %
   Because $e$ equalizes $g$ and $h$, there is a realized map $i :
   \asm{E} \to \asm{S}$ such that $e = f \circ i$. We claim that any
-  realizer $\R{i} \in \subAtyp{|T| \to |S|}$ of~$i$ has the desired
-  property. Suppose $x \in S$, $\R{y} \in \Atyp{|T|}$, and $\R{y}
+  realizer $\R{i} \in \subAtyp{\T{T} \to \T{S}}$ of~$i$ has the desired
+  property. Suppose $x \in S$, $\R{y} \in \Atyp{\T{T}}$, and $\R{y}
   \rz[T] f\,x$. Because $g(f\,x) = h(f\,x)$, $f\,x \in E$ and so $\R{y}
   \rz[E] f\,x$. Then $\R{i}\,\R{y}$ is defined and $\R{i}\,\R{y} \rz[S]
   i(f\,x)$. This is what we want because $f(i(f\,x)) = e(f\,x) =
@@ -854,18 +854,18 @@ The match between regular epis and quotients is precise in $\AsmA$.
 Note that that in the construction of coequalizers, as described
 above, we may start with an arbitrary equivalence relation: given an
 assembly $\asm{T}$ and an equivalence relation $\equiv$ on~$T$, define
-the \defemph{quotient assembly} $\asm{T}/{\equiv} = (T/{\equiv}, |T|,
+the \defemph{quotient assembly} $\asm{T}/{\equiv} = (T/{\equiv}, \T{T},
 \rz[T/{\equiv}])$ whose realizability relation satisfies $\R{x}
 \rz[T/{\equiv}] [y]$ if, and only if, $\R{x} \rz[T] x$ and $x \equiv
 y$ for some $x \in T$. The quotient map $q : T \to T/{\equiv}$ is
-realized by $\tpcalam{x}{|T|} x$, and is a coequalizer of $g,
+realized by $\tpcalam{x}{\T{T}} x$, and is a coequalizer of $g,
 h : \asm{V} \to \asm{T}$ where\sidenote{You should convince yourself
   that $\asm{V}$ is the \defemph{kernel pair} of~$q$, i.e., the pullback
   of $q$ with itself.}
 %
 \begin{align*}
   \asm{V} &= (\set{(x,y) \in T \times T \such x \equiv y},
-             |T| \times |T|, {\rz[V]}),\\
+             \T{T} \times \T{T}, {\rz[V]}),\\
   p \rz[V] (x,y) &\iff
   \combFst\,p \rz[T] x \land \combSnd\,p \rz[T] y, \\
   g (x, y) &= x,\\
@@ -885,7 +885,7 @@ There is another characterization of regular epis which is used often.
 \begin{proposition}
   \label{prop:reg-epi-when}%
   in $\AsmA$ a morphism $f : \asm{T} \to \asm{U}$ is a regular epi
-  if, and only if, there exists $\R{i} \in \subAtyp{|U| \to |T|}$
+  if, and only if, there exists $\R{i} \in \subAtyp{\T{U} \to \T{T}}$
   such that, whenever $\R{y} \rz[U] y$ then $\defined{\R{i}\,\R{y}}$
   and there is $x \in f^{-1}(y)$ such that $\R{i}\,\R{y} \rz[T] x$.
 \end{proposition}
@@ -904,7 +904,7 @@ There is another characterization of regular epis which is used often.
   computed in \cref{sec:cocartesian-structure}. Because~$f$ and
   $q$ both equalize $g$ and $h$, there exists a unique isomorphism $i
   : \asm{U} \to \asm{T}/{\equiv}$ such that $q = i \circ f$. Let
-  $\R{i} \in \subAtyp{|U| \to |T|}$ be a realizer for~$i$. We claim
+  $\R{i} \in \subAtyp{\T{U} \to \T{T}}$ be a realizer for~$i$. We claim
   that it has the required properties. If $\R{y} \rz[U] y$ then
   $\defined{\R{i}\,\R{y}}$ and $\R{i}\,\R{y} \rz[T/{\equiv}] i(y)$.
   Because $f$ is surjective there exists $x' \in T$ such that $f(x') =
@@ -966,7 +966,7 @@ mono. Indeed, we may take $\asm{U} = \asm{S}/{\equiv}$, where $x
 \equiv y \iff f\,x = f(y)$, and $q : \asm{S} \to \asm{S}/{\equiv}$ the
 canonical quotient map. The assembly $\asm{V}$ is the restriction
 of~$\asm{T}$ to the subset $V = \set{y \in T \such \some{x}{S}{f\,x =
-    y}}$ so that $|V| = |T|$ and $\R{y} \rz[V] y \iff \R{y} \rz[T] y$
+    y}}$ so that $\T{V} = \T{T}$ and $\R{y} \rz[V] y \iff \R{y} \rz[T] y$
 for all $y \in V$. The map $i : V \to T$ is the subset inclusion.
 Finally, $b : U \to V$ is characterized by $b([x]_{\equiv}) = f\,x$.
 It is realized by the same realizers as~$f$.
@@ -1054,7 +1054,7 @@ feature of assemblies.
   mono. Lastly, suppose $q : \asm{T} \to \asm{T}/{\equiv}$ is a
   regular epi, where we assumed without loss of generality that it is
   a quotient by an equivalence relation. Let $f : \asm{S} \to
-  \asm{T}/{\equiv}$ be realized by~$\R{f} \in \subAtyp{|S| \to |T|}$.
+  \asm{T}/{\equiv}$ be realized by~$\R{f} \in \subAtyp{\T{S} \to \T{T}}$.
   The pullback of~$q$ is the map $r : \asm{P} \to \asm{S}$, as in the
   diagram
   %
@@ -1078,14 +1078,14 @@ feature of assemblies.
   %
   \begin{equation*}
     \asm{P} = (\set{(x,y) \in S \times T \such f\,x \equiv y},
-               |S| \times |T|, {\rz[P]}),
+               \T{S} \times \T{T}, {\rz[P]}),
   \end{equation*}
   %
   $\combPair\,\R{x}\,\R{y} \rz[P] (x,y)$ if, and only if, $\R{x} \rz[S]
   x$ and $\R{y} \rz[T] y$ and $r : (x,y) \mapsto x$. Let us use
   \cref{prop:reg-epi-when} to show that~$r$ is regular epi.
   The realizer $\R{i} =
-  \tpcalam{x}{|S|}{\combPair\,x\,(\R{f}\,x)}$ satisfies the
+  \tpcalam{x}{\T{S}}{\combPair\,x\,(\R{f}\,x)}$ satisfies the
   conditions of the proposition: if $x \in S$ and $\R{x} \rz[S] x$ then
   $\R{i}\,\R{x} = \combPair\,\R{x}\,(\R{f}\,\R{x})$ is defined. There
   is $y \in T$ such that $f\,x = [y]_{\equiv}$, hence $r (x, y) = x$,
@@ -1169,7 +1169,7 @@ map satisfying this property.
   \begin{equation*}
     \asm{T}^{\asm{S}} =
     (\set{f : S \to T \such \text{$f$ is realized}},
-     |S| \to |T|, {\rz[S \to T]})
+     \T{S} \to \T{T}, {\rz[S \to T]})
   \end{equation*}
   %
   where
@@ -1178,7 +1178,7 @@ map satisfying this property.
     \R{f} \rz[S \to T] f
     \iff
     \all{x}{S}{
-      \all{\R{x} \in |S|}
+      \all{\R{x} \in \T{S}}
           (\R{x} \rz[S] x \implies
           \defined{\R{f}\,\R{x}} \land
           \R{f}\,\R{x} \rz[T] f\,x)
@@ -1190,8 +1190,8 @@ map satisfying this property.
   \asm{S} \to \asm{T}$ is $e(f, x) = f\,x$, which is realized by
   %
   \begin{equation*}
-    \R{e} = \tpcalam{p}{(|S| \to |T|) \times |S| \to
-      |T|}{(\combFst\,p)\,(\combSnd\,p)}.
+    \R{e} = \tpcalam{p}{(\T{S} \to \T{T}) \times \T{S} \to
+      \T{T}}{(\combFst\,p)\,(\combSnd\,p)}.
   \end{equation*}
   %
   The transpose of $f : \asm{U} \times \asm{S} \to \asm{T}$, realized
@@ -1199,7 +1199,7 @@ map satisfying this property.
   by
   %
   \begin{equation*}
-    \curry{\R{f}} = \tpcalam{z}{|U|} \tpcalam{x}{|S|} \R{f}\,(\combPair\,z\,x).
+    \curry{\R{f}} = \tpcalam{z}{\T{U}} \tpcalam{x}{\T{S}} \R{f}\,(\combPair\,z\,x).
     \qedhere
   \end{equation*}
 \end{proof}
@@ -1209,8 +1209,8 @@ transpose $\curry{f} : \asm{U} \to \asm{T}^{\asm{S}}$ has an inverse.
 To every $g : \asm{U} \to \asm{T}^{\asm{S}}$ we may assign
 $\uncurry{g} : \asm{U} \times \asm{S} \to \asm{T}$, defined by
 $\uncurry{g}(z,x) = g(z)(x)$. If $g$ is realized by $\R{g}$ then
-$\uncurry{g}$ is realized by $\uncurry{\R{g}} = \tpcalam{p}{|U|
-    \times |S|}{\R{g}\,(\combFst\,p)\,(\combSnd\,p)}$. It is easy to
+$\uncurry{g}$ is realized by $\uncurry{\R{g}} = \tpcalam{p}{\T{U}
+    \times \T{S}}{\R{g}\,(\combFst\,p)\,(\combSnd\,p)}$. It is easy to
 check that $\uncurry{\curry{f}} = f$ and $\curry{\uncurry{g}} = g$.
 The operation $f \mapsto \curry{f}$ is also known as \defemph{currying}
 and its inverse $g \mapsto \uncurry{g}$ as \defemph{uncurrying}.
@@ -1228,7 +1228,7 @@ type is the terminal assembly~$\one$. The expressions are those of the
 $\lambda$-calculus, except that we write the projections as $\pi_1$
 and $\pi_2$ instead of $\combFst$ and $\combSnd$, respectively. In
 addition if $\asm{T}$ is an assembly and $a \in T$ is an element for
-which there exits a realizer $\R{a} \in \subAtyp{|T|}$ then~$a$ is a
+which there exits a realizer $\R{a} \in \subAtyp{\T{T}}$ then~$a$ is a
 primitive constant of type~$\asm{T}$.
 
 Suppose $e$ is an expression of type~$\asm{T}$ and the freely
@@ -1251,7 +1251,7 @@ S_n$:
 %
 \begin{enumerate}
 \item A primitive constant $b \in \asm{T}$ which is realized by $\R{b}
-  \in \subAtyp{|T|}$ is interpreted as the constant map
+  \in \subAtyp{\T{T}}$ is interpreted as the constant map
   %
   \begin{equation*}
     \sem{\overline{x} : \overline{\asm{S}} \ctx b : \asm{T}}(a) = b,
@@ -1260,8 +1260,8 @@ S_n$:
   which is realized\sidenote{Had we allowed as primitive constants
     \emph{all} elements of~$\asm{T}$, we would face a difficulty here,
     because we could not exhibit a computable realizer for the
-    constant map.} by $\tpcalam{x}{|S_1| \times \cdots \times
-      |S_n|} \R{b}$.
+    constant map.} by $\tpcalam{x}{\T{S_1} \times \cdots \times
+      \T{S_n}} \R{b}$.
 \item A variable $\annot{x_i}{\asm{S}_i}$ is interpreted as the $i$-th
   projection
   %
@@ -1348,7 +1348,7 @@ meaning of $e$ is a realized map
 \end{equation*}
 %
 which amounts to the same thing as an element of $\asm{T}$. This
-element has a computable realizer, i.e., one in $\subAtyp{|T|}$,
+element has a computable realizer, i.e., one in $\subAtyp{\T{T}}$,
 because the corresponding realized map does.
 
 We may further simplify the notation by allowing \emph{patterns} in
@@ -1548,7 +1548,7 @@ and exponentials.
 
 \noindent
 In symbols, an assembly $S$ is canonically projective when, for all
-$x, y \in S$, $r \in A_{|S|}$,
+$x, y \in S$, $r \in A_{\T{S}}$,
 %
 \begin{equation*}
   r \rz[S] x \land r \rz[S] y \implies x = y.
@@ -1557,7 +1557,7 @@ $x, y \in S$, $r \in A_{|S|}$,
 The canonically projective assemblies are, up to isomorphism,
 precisely the projective objects of the category of assemblies.
 
-A canonically projective modest set $(S, |S|, {\rz[S]})$ is determined,
+A canonically projective modest set $(S, \T{S}, {\rz[S]})$ is determined,
 up to isomorphism, by the set of the total realizers~$\|S\|$. This
 follows from \cref{lemma:iso-assembly} and the fact that
 projectivity ensures that $S$ and $\|S\|$ are in bijective
@@ -1566,9 +1566,9 @@ quotient of a canonically projective one leads to the following
 definition.
 
 Let $\subcat{\AA, \subAA}$ be the category whose objects are pairs
-$(S, |S|)$ where $|S|$ is a type and $S \subseteq \Atyp{|S|}$. A morphism
-$f : (S, |S|) \to (T, |T|)$ is a map $f : S \to T$ which is tracked by
-some $p \in \subAtyp{|S| \to |T|}$, i.e., for all $p \in S$,
+$(S, \T{S})$ where $\T{S}$ is a type and $S \subseteq \Atyp{\T{S}}$. A morphism
+$f : (S, \T{S}) \to (T, \T{T})$ is a map $f : S \to T$ which is tracked by
+some $p \in \subAtyp{\T{S} \to \T{T}}$, i.e., for all $p \in S$,
 $\defined{p\,r}$ and $p\,r \in T$. This category is equivalent to the
 full subcategory of $\Mod{\AA, \subAA}$ on the canonically projective
 modest sets.

@@ -111,11 +111,11 @@ quantifiers may be interpreted too.
 
 We would like the interpretation of logic in $\AsmA$ to be in specific
 form, for which we first need to focus on a particular kind of monos.
-Let $\asm{S}$ be an assembly, $|p|$ a type, and $p : S \to
-\pow{\Atyp{|p|}}$ a function. We call $p$ a \defemph{realizability
-  predicate} on $\asm{S}$ and $|p|$ its \defemph{underlying type}. The
+Let $\asm{S}$ be an assembly, $\T{p}$ a type, and $p : S \to
+\pow{\Atyp{\T{p}}}$ a function. We call $p$ a \defemph{realizability
+  predicate} on $\asm{S}$ and $\T{p}$ its \defemph{underlying type}. The
 map $p$ is equivalently given as a relation ${-} \rz p({-})$ between
-$\Atyp{|p|}$ and $S$. The correspondence between the map and the
+$\Atyp{\T{p}}$ and $S$. The correspondence between the map and the
 relation is
 %
 \begin{equation*}
@@ -126,8 +126,8 @@ Read $\R{r} \rz p(x)$ as ``$\R{r}$ realizes $p(x)$''. Now define the
 assembly $\asm{S}_p$ by
 %
 \begin{align*}
-  S_p &= \set{x \in S \such \some{\R{r}}{\Atyp{|p|}}{\R{r} \in p(x)}}, \\
-  |S_p| &= |S| \times |p|, \\
+  S_p &= \set{x \in S \such \some{\R{r}}{\Atyp{\T{p}}}{\R{r} \in p(x)}}, \\
+  \T{S_p} &= \T{S} \times \T{p}, \\
   \combPair\;\R{x}\;\R{r} \rz[S_p] x &\iff
   \R{r} \in p(x) \land \R{x} \rz[S] x.
 \end{align*}
@@ -142,18 +142,18 @@ The mono $\iota_p : \asm{S}_p \to \asm{S}$ is called a \defemph{standard
 
 \begin{proof}
   Let $u : \asm{U} \monoto \asm{S}$ be a mono, realized by $\R{u}$.
-  Let $|p| = |U|$ and
+  Let $\T{p} = \T{U}$ and
   %
   \begin{equation*}
     p(x) = \tbigcup_{y \in \inv{u}(x)} \Ex_U(y) =
-    \set{\R{y} \in \Atyp{|p|} \such \some{y}{U}{u(y) = x \land \R{y} \rz[U] y}}.
+    \set{\R{y} \in \Atyp{\T{p}} \such \some{y}{U}{u(y) = x \land \R{y} \rz[U] y}}.
   \end{equation*}
   %
   We claim that the standard mono $\iota_p : \asm{S}_p \to \asm{S}$ is
   isomorphic to~$u$. The function $u : U \to S$ restricts to a
   bijection $u : U \to S_p$, which is realized as a map from $\asm{U}$
   to $\asm{S}_p$ by
-  $\tpcalam{y}{|U|} \combPair\;(\R{u}\;y)\;y$. The inverse
+  $\tpcalam{y}{\T{U}} \combPair\;(\R{u}\;y)\;y$. The inverse
   $\inv{u} : S_p \to U$ is realized as a map from $\asm{S}_p$ to
   $\asm{U}$ by $\combSnd$.
 \end{proof}
@@ -162,7 +162,7 @@ For the purposes of logic we may limit attention to standard monos,
 because the interpretation of a predicate is determined only up to
 isomorphism of monos. Furthermore, since a standard mono $\asm{S}_p
 \to \asm{S}$ is uniquely determined by the corresponding realizability
-predicate $p : S \to \pow{\Atyp{|p|}}$, we may express the
+predicate $p : S \to \pow{\Atyp{\T{p}}}$, we may express the
 realizability intepretation of logic directly in terms of
 realizability predicates.
 
@@ -174,8 +174,8 @@ $\iota_p \leq \iota_q$.
 \begin{lemma}
   \label{lemma:realizability-predicate-leq}%
   For realizability predicates $p$ and $q$ on an assembly $\asm{S}$,
-  $p \leq q$ if, and only if, there exists $\R{f} \in \subAtyp{|S|
-    \to |p| \to |q|}$ such that, for all $x \in S$, whenever $\R{x}
+  $p \leq q$ if, and only if, there exists $\R{f} \in \subAtyp{\T{S}
+    \to \T{p} \to \T{q}}$ such that, for all $x \in S$, whenever $\R{x}
   \rz[S] x$ and $\R{r} \rz p(x)$ then $\defined{\R{f}\;\R{x}\;\R{r}}$
   and $\R{f}\;\R{x}\;\R{r} \rz q(x)$. We say that $\R{f}$
   \defemph{witnesses} $p \leq q$.
@@ -184,10 +184,10 @@ $\iota_p \leq \iota_q$.
 \begin{proof}
   Suppose first that $p \leq q$. Then $\iota_p \leq \iota_q$, which
   means that $S_p \subseteq S_q$ and that the subset inclusion $i :
-  S_p \to S_q$ is realized, say by $\R{i} \in \subAtyp{|S| \times |p|
-    \to |S| \times |q|}$. Let $\R{f} = \tpcalam{x}{|S|}
-    \tpcalam{r}{|p|}{\combSnd\;(\R{i}\;(\combPair\;x\;r))}$. Suppose $x
-  \in S$, $\R{x} \in \Atyp{|S|}$, $\R{r} \rz p(x)$, and $\R{x} \rz[S]
+  S_p \to S_q$ is realized, say by $\R{i} \in \subAtyp{\T{S} \times \T{p}
+    \to \T{S} \times \T{q}}$. Let $\R{f} = \tpcalam{x}{\T{S}}
+    \tpcalam{r}{\T{p}}{\combSnd\;(\R{i}\;(\combPair\;x\;r))}$. Suppose $x
+  \in S$, $\R{x} \in \Atyp{\T{S}}$, $\R{r} \rz p(x)$, and $\R{x} \rz[S]
   x$. Then $\combPair\;\R{x}\;\R{r} \rz[S_p] x$, therefore
   $\R{i}\;(\combPair\;\R{x}\;\R{r}) \rz[S_q] x$, which implies
   $\R{f}\;\R{x}\;\R{r} \rz q(x)$ because $\R{f}\;\R{x}\;\R{r} =
@@ -197,8 +197,8 @@ $\iota_p \leq \iota_q$.
   lemma, and suppose $\R{x} \rz[S] x$ and $\R{r} \rz p(x)$. Because
   $\R{f}\;\R{x}\;\R{r} \rz q(x)$, we see that $x \in S_q$. Hence $S_p
   \subseteq S_q$. A realizer for the inclusion map $i : S_p \to S_q$
-  is $\R{i} = \tpcalam{u}{|S| \times
-      |p|}{\combPair\;(\combFst\;u)\;(\R{f}\;(\combFst\;u)\;(\combSnd\;u))}$,
+  is $\R{i} = \tpcalam{u}{\T{S} \times
+      \T{p}}{\combPair\;(\combFst\;u)\;(\R{f}\;(\combFst\;u)\;(\combSnd\;u))}$,
   as is easily verified.
 \end{proof}
 
@@ -206,10 +206,10 @@ The lemma is our main tool for analyzing the preorder $\leq$. For
 example, let us show that it is reflexive and transitive, i.e., that
 the family $\Pred{\asm{S}}$ of all realizability predicates on
 $\asm{S}$ is a \emph{preorder}. Reflexivity $p \leq p$ is witnessed by
-the realizer $\tpcalam{x}{|S|} \tpcalam{u}{|p|}{u}$. For
+the realizer $\tpcalam{x}{\T{S}} \tpcalam{u}{\T{p}}{u}$. For
 transitivity, suppose $p \leq q$ and $q \leq r$ are witnessed by
 $\R{f}$ and $\R{g}$. Then $p \leq r$ is witnessed by
-$\tpcalam{x}{|S|} \tpcalam{u}{|p|}{\R{g}\;x\;(\R{f}\;x\;u))}$.
+$\tpcalam{x}{\T{S}} \tpcalam{u}{\T{p}}{\R{g}\;x\;(\R{f}\;x\;u))}$.
 
 
 \section{The Heyting prealgebra of realizability predicates}
@@ -273,8 +273,8 @@ equivalent ones.
   \Pred{\asm{S}}$.
 
   For predicates $p$ and $q$ on $\asm{S}$, let $p \land q$ be the
-  predicate whose realizers have the type $|p \land q| = |p| \times
-  |q|$ and
+  predicate whose realizers have the type $\T{p \land q} = \T{p} \times
+  \T{q}$ and
   %
   \begin{equation*}
     p(x) \land q(x) = \set{\combPair\;\R{u}\;\R{v} \such
@@ -284,15 +284,15 @@ equivalent ones.
   Here we wrote $p(x) \land q(x)$ instead of $(p \land q)(x)$. Let us
   verify that $p \land q$ is the infimum of $p$ and $q$. The
   inequalities $p \land q \leq p$ and $p \land q \leq q$ are witnessed
-  by $\tpcalam{x}{|S|} \tpcalam{u}{|p| \times |q|}{\combFst\;u}$
-  and $\tpcalam{x}{|S|} \tpcalam{u}{|p| \times
-      |q|}{\combSnd\;u}$, respectively. Suppose $r \leq p$ and $r
+  by $\tpcalam{x}{\T{S}} \tpcalam{u}{\T{p} \times \T{q}}{\combFst\;u}$
+  and $\tpcalam{x}{\T{S}} \tpcalam{u}{\T{p} \times
+      \T{q}}{\combSnd\;u}$, respectively. Suppose $r \leq p$ and $r
   \leq q$ are witnessed by $\R{f}$ and $\R{g}$, respectively. Then $r
-  \leq p \land q$ is witnessed by $\tpcalam{x}{|S|}
-    \tpcalam{u}{|r|}{\combPair\; (\R{f}\;x\;u)\; (\R{g}\;x\;u)}$.
+  \leq p \land q$ is witnessed by $\tpcalam{x}{\T{S}}
+    \tpcalam{u}{\T{r}}{\combPair\; (\R{f}\;x\;u)\; (\R{g}\;x\;u)}$.
 
   Next we consider suprema. Define $p \lor q$ to be the predicate
-  whose realizers have the type $|p \land q| = |p| + |q|$. There are
+  whose realizers have the type $\T{p \land q} = \T{p} + \T{q}$. There are
   two ways to realize $p(x) \lor q(x)$:
   %
   \begin{equation*}
@@ -302,24 +302,24 @@ equivalent ones.
   \end{equation*}
   %
   The inequalities $p \leq p \lor q$ and $q \leq p \lor q$ are
-  witnessed by $\tpcalam{x}{|S|} \tpcalam{u}{|p|}{\combLeft\;u}$
-  and $\tpcalam{x}{|S|} \tpcalam{v}{|q|}{\combRight\;v}$,
+  witnessed by $\tpcalam{x}{\T{S}} \tpcalam{u}{\T{p}}{\combLeft\;u}$
+  and $\tpcalam{x}{\T{S}} \tpcalam{v}{\T{q}}{\combRight\;v}$,
   respectively. If $p \leq r$ and $q \leq r$ are witnessed by $\R{f}$
   and $\R{g}$ then $p \lor q \leq r$ is witnessed by
   %
   \begin{equation*}
-    \tpcalam{x}{|S|} \tpcalam{w}{|p|+|q|}{
+    \tpcalam{x}{\T{S}} \tpcalam{w}{\T{p}+\T{q}}{
       \combCase\;w\;(\R{f}\;x)\;(\R{g}\;x)
     }.
   \end{equation*}
   
   Finally, define $p \lthen q$ to be the predicate whose realizers have
-  the type $|p \lthen q| = |p| \to |q|$ and
+  the type $\T{p \lthen q} = \T{p} \to \T{q}$ and
   %
   \begin{equation*}
     p(x) \lthen q(x) = \set{
-      \R{f} \in \Atyp{|p| \to |q|} \such
-      \all{\R{u} \in \Atyp{|p|}}
+      \R{f} \in \Atyp{\T{p} \to \T{q}} \such
+      \all{\R{u} \in \Atyp{\T{p}}}
         (\R{u} \rz p(x)
         \implies
         \defined{\R{f}\;\R{u}} \land
@@ -330,11 +330,11 @@ equivalent ones.
   That is, $\R{f}$ maps realizers for $p(x)$ to realizers for $q(x)$.
   Note that $\R{f}$ need not be computable. Let us show that $p \lthen
   q$ has the desired properties. The inequality $(p \lthen q) \land p
-  \leq q$ is witnessed by $\tpcalam{x}{|S|} \tpcalam{w}{(|p| \to
-      |q|) \times |p|}{(\combFst\;w)\; (\combSnd\;w)}$. If $r \land p
+  \leq q$ is witnessed by $\tpcalam{x}{\T{S}} \tpcalam{w}{(\T{p} \to
+      \T{q}) \times \T{p}}{(\combFst\;w)\; (\combSnd\;w)}$. If $r \land p
   \leq q$ is witnessed by $\R{f}$ then $r \leq p \lthen q$ is witnessed
-  by $\tpcalam{x}{|S|} \tpcalam{w}{|r|}
-    \tpcalam{u}{|p|} \R{f}\;(\combPair\;w\;u)$.
+  by $\tpcalam{x}{\T{S}} \tpcalam{w}{\T{r}}
+    \tpcalam{u}{\T{p}} \R{f}\;(\combPair\;w\;u)$.
 \end{proof}
 
 \section{Quantifiers}
@@ -376,7 +376,7 @@ Weakening along $\pi_1 : \asm{S} \times \asm{T} \to \asm{S}$ takes $p
 \Pred{\asm{S} \times \asm{T}}$ defined by
 %
 \begin{equation*}
-  |p \times \asm{T}| = |p|
+  \T{p \times \asm{T}} = \T{p}
   \qquad\text{and}\qquad
   (p \times \asm{T})(x,y) = p(x),
 \end{equation*}
@@ -386,9 +386,9 @@ $\exists_{\asm{T}}$ maps $q \in \Pred{\asm{S} \times \asm{T}}$ to
 $\exists_{\asm{T}} q \in \Pred{\asm{S}}$ defined by
 %
 \begin{align*}
-  |\exists_{\asm{T}} q| &= |T| \times |q| \\
+  \T{\exists_{\asm{T}} q} &= \T{T} \times \T{q} \\
   (\exists_{\asm{T}} q)(x) &=
-  \set{ \combPair\;\R{y}\;\R{r} \in \Atyp{|T| \times |q|} \such
+  \set{ \combPair\;\R{y}\;\R{r} \in \Atyp{\T{T} \times \T{q}} \such
     \some{y}{T}{\R{y} \rz[T] y \land \R{r} \rz q(x,y)}
   }.
 \end{align*}
@@ -396,11 +396,11 @@ $\exists_{\asm{T}} q \in \Pred{\asm{S}}$ defined by
 Let us verify that we have a left adjoint to weakening. Suppose $p \in
 \Pred{\asm{S} \times \asm{T}}$ and $q \in \Pred{\asm{S}}$. If $p \leq
 q \times \asm{T}$ is witnessed by $\R{f}$ then $\exists_{\asm{T}} p
-\leq q$ is witnessed by $\tpcalam{x}{|S|} \tpcalam{e}{|T| \times
-    |p|}{\R{f}\; (\combPair \; x \; (\combFst\; e)) \; (\combSnd \; e)}$.
+\leq q$ is witnessed by $\tpcalam{x}{\T{S}} \tpcalam{e}{\T{T} \times
+    \T{p}}{\R{f}\; (\combPair \; x \; (\combFst\; e)) \; (\combSnd \; e)}$.
 Conversely, if $\exists_{\asm{T}} p \leq q$ is witnessed by $\R{g}$
-then $p \leq q \times \asm{T}$ is witnessed by $\tpcalam{r}{|S|
-    \times |T|} \tpcalam{s}{|p|}{\R{g} \;
+then $p \leq q \times \asm{T}$ is witnessed by $\tpcalam{r}{\T{S}
+    \times \T{T}} \tpcalam{s}{\T{p}}{\R{g} \;
   (\combFst\;r)\; (\combPair \; (\combSnd \; r) \; s)}$.
 
 Similarly, the universal quantifier $\forall_{\asm{T}}$ maps $q \in
@@ -408,10 +408,10 @@ Similarly, the universal quantifier $\forall_{\asm{T}}$ maps $q \in
 \Pred{\asm{S}}$ defined by
 %
 \begin{align*}
-  |\forall_{\asm{T}} q| &= |T| \to |q| \\
+  \T{\forall_{\asm{T}} q} &= \T{T} \to \T{q} \\
   (\forall_{\asm{T}} q)(x) &=
-  \set{ \R{r} \in \Atyp{|T| \to |q|} \such
-    \all{\R{y}}{\Atyp{|T|}}{
+  \set{ \R{r} \in \Atyp{\T{T} \to \T{q}} \such
+    \all{\R{y}}{\Atyp{\T{T}}}{
       \all{y \in T}
         (\R{y} \rz[T] y \implies
         \defined{\R{r}\;\R{y}} \land
@@ -423,11 +423,11 @@ Similarly, the universal quantifier $\forall_{\asm{T}}$ maps $q \in
 To verify that this is the right adjoint, suppose $p \in \Pred{\asm{S}
   \times \asm{T}}$ and $q \in \Pred{\asm{S}}$. If $q \times \asm{T}
 \leq p$ is witnessed by $\R{f}$ then $q \leq \forall_{\asm{T}} p$ is
-witnessed by $\tpcalam{x}{|S|} \tpcalam{r}{|q|}
-  \tpcalam{y}{|T|}{\R{f} \; (\combPair \; x \; y) \; r}$. Conversely,
+witnessed by $\tpcalam{x}{\T{S}} \tpcalam{r}{\T{q}}
+  \tpcalam{y}{\T{T}}{\R{f} \; (\combPair \; x \; y) \; r}$. Conversely,
 if $q \leq \forall_{\asm{T}} p$ is witnessed by $\R{g}$ then $q \times
-\asm{T} \leq p$ is witnessed by $\tpcalam{s}{|S| \times |T|}
-  \tpcalam{r}{|q|}{\R{g} \; (\combFst \; s) \; r \; (\combSnd \; s)}$.
+\asm{T} \leq p$ is witnessed by $\tpcalam{s}{\T{S} \times \T{T}}
+  \tpcalam{r}{\T{q}}{\R{g} \; (\combFst \; s) \; r \; (\combSnd \; s)}$.
 
 It is customary to write $\some{y}{T}{q(x,y)}$ and
 $\all{y}{T}{q(x,y)}$ instead of $\exists_{\asm{T}} q$ and
@@ -514,7 +514,7 @@ The realizability predicate $\invim{t}(p) \in \Pred{\asm{S}}$ which
 determined the mono $\invim{t}(\asm{T}_p) \monoto \asm{S}$ is given by
 %
 \begin{equation*}
-  |\invim{t}(p)| = |p|
+  \T{\invim{t}(p)} = \T{p}
   \qquad\text{and}\qquad
   \invim{t}(p)(x) = p(t(x)).
 \end{equation*}
@@ -570,21 +570,21 @@ remaining equations must be checked by hand. [NOT FINISHED.]
 
 Let us summarize the realizability interpretation of first-order
 intuitionistic logic. For each formula $\phi$ we define its underlying
-type $|\phi|$ as follows:
+type $\T{\phi}$ as follows:
 %
 \begin{align*}
-  |\bot| &= \unit \\
-  |\top| &= \unit \\
-  |t_1 = t_2| &= \unit \\
-  |\phi_1 \land \phi_2| &= |\phi_1| \times |\phi_2|\\
-  |\phi_1 \lor \phi_2| &= |\phi_1| + |\phi_2|\\
-  |\phi_1 \implies \phi_2| &= |\phi_1| \to |\phi_2|\\
-  |\all{x}{\asm{T}}{\phi}| &= |T| \to |\phi| \\
-  |\some{x}{\asm{T}}{\phi}| &= |T| \times |\phi|.
+  \T{\bot} &= \unit \\
+  \T{\top} &= \unit \\
+  \T{t_1 = t_2} &= \unit \\
+  \T{\phi_1 \land \phi_2} &= \T{\phi_1} \times \T{\phi_2}\\
+  \T{\phi_1 \lor \phi_2} &= \T{\phi_1} + \T{\phi_2}\\
+  \T{\phi_1 \implies \phi_2} &= \T{\phi_1} \to \T{\phi_2}\\
+  \T{\all{x}{\asm{T}}{\phi}} &= \T{T} \to \T{\phi} \\
+  \T{\some{x}{\asm{T}}{\phi}} &= \T{T} \times \T{\phi}.
 \end{align*}
 %
 The realizability relation $\R{r} \rz \phi$, where $\R{r} \in
-\Atyp{|\phi|}$ is defined inductively as follows:
+\Atyp{\T{\phi}}$ is defined inductively as follows:
 %
 \begin{align*}
   \R{r} \rz \bot &\iff \bot\\
@@ -595,14 +595,14 @@ The realizability relation $\R{r} \rz \phi$, where $\R{r} \in
   \combLeft\;\R{r} \rz \phi_1 \lor \phi_2 &\iff \R{r} \rz \phi_1\\
   \combRight\;\R{r} \rz \phi_1 \lor \phi_2 &\iff \R{r} \rz \phi_2\\
   \R{r} \rz \phi_1 \implies \phi_2 &\iff
-  \all{\R{s} \in \Atyp{|\phi_1|}} (\R{s} \rz \phi_1 \implies
+  \all{\R{s} \in \Atyp{\T{\phi_1}}} (\R{s} \rz \phi_1 \implies
     \defined{\R{r}\;\R{s}} \land \R{r}\;\R{s} \rz \phi_2)
   \\
   \combPair\;\R{u}\;\R{r} \rz \some{x}{\asm{T}}{\phi} &\iff
   \some{u \in T} \R{u} \rz[T] u \land \R{r} \rz \subst{\phi}{x \subto u}
   \\
   \R{r} \rz \all{x}{\asm{T}}{\phi} &\iff
-  \all{\R{u}}{\Atyp{|T|}}{
+  \all{\R{u}}{\Atyp{\T{T}}}{
     \all{u \in T}
       (\R{u} \rz[T] u \implies
       \defined{\R{r}\;\R{u}} \land \R{r}\;\R{u} \rz \subst{\phi}{x \subto u})
