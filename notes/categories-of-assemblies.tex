@@ -80,11 +80,11 @@ $h$ determined by $f$ and $g$ is denoted by $\pair{f,g}$.
 In the category~$\Set$ the product is just the usual cartesian product
 of sets. In assemblies we need to worry about the underlying types and
 realizability relations. Let us verify that the product of assemblies
-$\asm{S}$ and~$\asm{T}$ is the assembly
+$S$ and~$T$ is the assembly
 %
 \begin{equation*}
-  \asm{S} \times \asm{T} =
-  (S \times T, \T{S} \times \T{T}, {\rz[S \times T]})
+  S \times T =
+  (\S{S} \times \S{T}, \T{S} \times \T{T}, {\rz[S \times T]})
 \end{equation*}
 %
 with the realizability relation
@@ -97,15 +97,15 @@ with the realizability relation
   \combSnd\,q \rz[T] y.
 \end{equation*}
 %
-and the projection maps $\pi_1 : S \times T \to S$, $\pi_1 : (x,y)
-\mapsto x$, and $\pi_2 : S \times T \to T$, $\pi_2 : (x,y) \mapsto y$,
+and the projection maps $\pi_1 : \S{S} \times \S{T} \to \S{S}$, $\pi_1 : (x,y)
+\mapsto x$, and $\pi_2 : \S{S} \times \S{T} \to \S{T}$, $\pi_2 : (x,y) \mapsto y$,
 which are realized by $\combFst$ and $\combSnd$, respectively.
 %
-To see that $(\asm{S} \times \asm{T}, \pi_1, \pi_2)$ has the universal
-property, suppose $f : \asm{U} \to \asm{S}$ and $g : \asm{U} \to
-\asm{T}$ are realized by $\R{f} \in \subAtyp{\T{U} \to \T{S}}$ and $\R{g}
+To see that $(S \times T, \pi_1, \pi_2)$ has the universal
+property, suppose $f : U \to S$ and $g : U \to
+T$ are realized by $\R{f} \in \subAtyp{\T{U} \to \T{S}}$ and $\R{g}
 \in \subAtyp{\T{U} \to \T{T}}$, respectively. There is a unique map $h :
-U \to S \times T$ for which $f = \pi_1 \circ h$ and $g = \pi_2 \circ g$,
+\S{U} \to \S{S} \times \S{T}$ for which $f = \pi_1 \circ h$ and $g = \pi_2 \circ g$,
 namely $h(u) = \pair{f,g}(u) = (f\,u, g\,u)$. We only need a realizer
 for~$h$, and $\R{h} =
 \tpcalam{u}{\T{U}}{\combPair\,(\R{f}\,u)\,(\R{g}\,u)}$ does the
@@ -125,7 +125,7 @@ job:
 
 We may form $n$-ary products $S_1 \times \cdots \times S_n$ for $n \geq 1$ as nested binary products. The case $n = 0$ corresponds to the \defemph{terminal object},
 which is an object $\one$ such that for every object~$S$ there is exactly one morphism $S \to \one$. In the category of sets the terminal object is (any) singleton set, say $\one = \set{\star}$. Then $\nabla \one$ is the terminal assembly, since for any assembly
-$\asm{S}$ the only map $S \to \one$ is realized. We denote the terminal assembly as $\one$.
+$S$ the only map $S \to \one$ is realized. We denote the terminal assembly as $\one$.
 
 We may also ask whether $\AsmA$ has infinite products. The answer depends on the underlying tpcas $(\AA, \subAA)$. We state without proof that $\Asm{\Scott, \comp{\Scott}}$ and $\Asm{\Baire, \comp{\Baire}}$ have countable products, whereas $\Asm{\klone}$ does not.
 
@@ -165,19 +165,19 @@ g\,x$.
 Indeed, in the category of sets the equalizer of functions $f, g : S
 \to T$ is the subset $E = \set{x \in S \such f\,x = g\,x}$ and $e : E
 \to S$ is the subset inclusion. In the category of assemblies we need
-to augment this with realizers. The equalizer of $f, g : \asm{S} \to
-\asm{T}$ is
+to augment this with realizers. The equalizer of $f, g : S \to
+T$ is
 %
 \begin{equation}
   \label{eq:asm-equalizer}%
-  \asm{E} =
+  E =
   (\set{x \in S \such f\,x = g\,x},
    \T{S},
    {\rz[E]})
 \end{equation}
 %
-where $\R{x} \rz[E] x$ if, and only if, $\R{x} \rz[S] x$. The map $e : E
-\to S$ is the subset inclusion, $e(x) = x$. It is realized by
+where $\R{x} \rz[E] x$ if, and only if, $\R{x} \rz[S] x$. The map $e : \S{E}
+\to \S{S}$ is the subset inclusion, $e(x) = x$. It is realized by
 $\tpcalam{x}{\T{S}} x$. Clearly, $e$ equalizes~$f$ and~$g$.
 
 \begin{exercise}
@@ -219,11 +219,11 @@ such that $f \circ q_1 = g \circ q_2$ then there is a unique $i : Q
 %
 The fact that $P$ is a pullback is traditionally marked in a diagram
 with the ``corner'' symbol. In the category of assemblies the pullback
-of $f : \asm{S} \to \asm{U}$ and $g : \asm{T} \to \asm{U}$ is the
+of $f : S \to U$ and $g : T \to U$ is the
 assembly
 %
 \begin{equation*}
-  \asm{P} = (\set{(x,y) \in S \times T \such f\,x = g(y)}, \T{S} \times
+  P = (\set{(x,y) \in S \times T \such f\,x = g(y)}, \T{S} \times
   \T{T}, {\rz[P]})
 \end{equation*}
 %
@@ -398,10 +398,10 @@ underlying tpcas.
 
 \begin{proof}
   Suppose first that $\AA$ has sums and that $\subAA$ is a sub-tpca
-  with sums. The coproduct of $\asm{S}$ and $\asm{T}$ is the assembly
+  with sums. The coproduct of $S$ and $T$ is the assembly
   %
   \begin{equation*}
-    \asm{S} + \asm{T} = (S + T, \T{S} + \T{T}, \rz[S + T])
+    S + T = (\S{S} + \S{T}, \T{S} + \T{T}, \rz[S + T])
   \end{equation*}
   %
   where $\rz[S+T]$ is most easily defined in terms of the existence
@@ -417,14 +417,14 @@ underlying tpcas.
   That is, the realizers for $\iota_1(x)$ are of the form
   $\combLeft\,\R{x}$ where $\R{x} \rz[S] x$, and the realizers for
   $\iota_2(y)$ are of the form $\combRight\,\R{y}$ where $\R{y} \rz[T]
-  y$. The canonical inclusions $\iota_1 : S \to S + T$ and $\iota_2 :
-  T \to S + T$ are realized by $\combLeft_{\T{S},\T{T}}$ and
+  y$. The canonical inclusions $\iota_1 : \S{S} \to \S{S} + \S{T}$ and $\iota_2 :
+  \S{T} \to \S{S} + \S{T}$ are realized by $\combLeft_{\T{S},\T{T}}$ and
   $\combRight_{\T{S},\T{T}}$, respectively.
   %
-  To see that $\asm{S} + \asm{T}$ has the required universal property,
-  consider $f : \asm{S} \to \asm{U}$ and $g : \asm{T} \to \asm{U}$,
+  To see that $S + T$ has the required universal property,
+  consider $f : S \to U$ and $g : T \to U$,
   realized by $\R{f}$ and $\R{g}$, respectively. The map $h = [f,g] :
-  S + T \to U$, defined by
+  \S{S} + \S{T} \to \S{U}$, defined by
   %
   \begin{equation*}
     h(u) = \case{u}{\iota_1(x)}{f\,x}{\iota_2(y)}{g(y)},
@@ -439,19 +439,19 @@ underlying tpcas.
   $t$, define the assembly
   %
   \begin{equation*}
-    \asm{A}_t = (\Atyp{t}, t, {\rz[t]})
+    A_t = (\Atyp{t}, t, {\rz[t]})
   \end{equation*}
   %
   with $r \rz[t] q \iff r = q$. For types $s$ and $t$ let $s+t$ be the
-  underlying type of the coproduct $\asm{A}_s + \asm{A}_t$,
+  underlying type of the coproduct $A_s + A_t$,
   %
   \begin{equation*}
-    s + t = \T{\asm{A}_s + \asm{A}_t}.
+    s + t = \T{A_s + A_t}.
   \end{equation*}
   %
   Let $\combLeft_{s,t}$ and $\combRight_{s,t}$ be a realizers for the
-  canonical inclusions $\iota_1 : \asm{A}_s \to \asm{A}_s + \asm{A}_t$
-  and $\iota_2 : \asm{A}_t \to \asm{A}_s + \asm{A}_t$, respectively.
+  canonical inclusions $\iota_1 : A_s \to A_s + A_t$
+  and $\iota_2 : A_t \to A_s + A_t$, respectively.
 
   Suppose $s$, $t$, and $u$ are types. Define $a \in \subAA_{s \to (s
     \to u) \to (t \to u) \to u}$ and $b \in \subAA_{t \to (s \to u)
@@ -469,14 +469,14 @@ underlying tpcas.
         g\,x.
   \end{equation*}
   %
-  The map $x \mapsto a\,x$ is a morphism from $\asm{A}_s$ to
-  $\asm{A}_{(s \to u) \to (t \to u) \to u}$ because it is realized
+  The map $x \mapsto a\,x$ is a morphism from $A_s$ to
+  $A_{(s \to u) \to (t \to u) \to u}$ because it is realized
   by~$a$. Similarly, the map $y \mapsto b\,y$ is a morphism from
-  $\asm{A}_t$ to $\asm{A}_{(s \to u) \to (t \to u) \to u}$, realized
-  by~$b$. There is a unique morphism $h : \asm{A}_s + \asm{A}_t \to
-  \asm{A}_{(s \to u) \to (t \to u) \to u}$ such that $h(\iota(x)) =
-  a\,x$ and $h(\iota(y)) = b\,y$ for all $x \in \asm{A}_s$ and $y \in
-  \asm{A}_t$. There exists
+  $A_t$ to $A_{(s \to u) \to (t \to u) \to u}$, realized
+  by~$b$. There is a unique morphism $h : A_s + A_t \to
+  A_{(s \to u) \to (t \to u) \to u}$ such that $h(\iota(x)) =
+  a\,x$ and $h(\iota(y)) = b\,y$ for all $x \in A_s$ and $y \in
+  A_t$. There exists
   %
   \begin{equation*}
     \combCase_{s,t,u} \in \subAtyp{(s+t) \to (s \to u) \to (t \to u) \to u}
@@ -626,7 +626,7 @@ object is the \defemph{empty assembly}
 where $o$ is any type.\sidenote{We need not specify $\rz[\zero]$
   because there is only one relation between $\Atyp{o}$ and
   $\emptyset$.} Its universal property is that there is exactly one
-morphism $\zero \to \asm{S}$ for every assembly~$\asm{S}$. The
+morphism $\zero \to S$ for every assembly~$S$. The
 property holds because there is a unique map $\emptyset \to S$, which
 is realized by $\combK_{\T{S},o}\,a$, where $a \in \subAtyp{o}$.
 
@@ -660,9 +660,9 @@ satisfying $f\,x \equiv g\,x$ for all $x \in S$. The map $q : T \to
 T/{\equiv}$ is the canonical quotient map which takes $y \in T$ to its
 equivalence class $[y]_{\equiv}$.
 
-In $\AsmA$ the coequalizer of $f, g : \asm{S} \to \asm{T}$ is the
-assembly $\asm{T}/{\equiv}$ where $T/{\equiv}$ is the coequalizer of
-$f$ and $g$ computed in sets, as described above, $\T{\asm{T}/{\equiv}}
+In $\AsmA$ the coequalizer of $f, g : S \to T$ is the
+assembly $T/{\equiv}$ where $T/{\equiv}$ is the coequalizer of
+$f$ and $g$ computed in sets, as described above, $\T{T/{\equiv}}
 = \T{T}$, and $\rz[T/{\equiv}]$ is defined by
 %
 \begin{equation*}
@@ -715,10 +715,10 @@ are precisely the injective and surjective maps, respectively.
 \end{proposition}
 
 \begin{proof}
-  It is obvious that a morphism $f : \asm{S} \to \asm{T}$ is a mono in
+  It is obvious that a morphism $f : S \to T$ is a mono in
   $\AsmA$ if it is mono in $\Set$. Conversely, suppose $f$ is mono in
   $\AsmA$, and consider maps $g, h : U \to T$ in $\Set$ such that $f
-  \circ g = f \circ h$. Define the assembly $\asm{U} = (U, \T{S} \times
+  \circ g = f \circ h$. Define the assembly $U = (U, \T{S} \times
   \T{S}, {\rz[U]})$ with the realizability relation
   % 
   \begin{equation*}
@@ -726,19 +726,17 @@ are precisely the injective and surjective maps, respectively.
     \iff \combFst\,p \rz[S] f\,u \land \combSnd\,p \rz[S] g\,u.
   \end{equation*}
   % 
-  The maps $g$ and $h$ are morphisms from $\asm{U}$ to $\asm{S}$
+  The maps $g$ and $h$ are morphisms from $U$ to $S$
   because they are realized by $\combFst$ and $\combSnd$,
   respectively. Since $f$ is mono as a morphism of assemblies, it
   follows that $g = h$.
 
-  Next we consider epis. Again, it is easy to see that a morphism $f :
-  \asm{S} \to \asm{T}$ is epi if it is epi in $\Set$. Conversely,
-  suppose~$f$ is epi in $\AsmA$ and consider maps $g, h : T \to U$
-  in~$\Set$ such that $g \circ f = h \circ f$. The maps $g$ and $h$
-  are morphisms $T \to \nabla U$ because they are realized by
-  $\combK_{\T{S},\T{\nabla U}} a$ respectively, where $a \in
-  \subAtyp{\T{\nabla U}}$. Since $f$ is epi in $\AsmA$, we may cancel
-  it and obtain $g = h$. This shows that $f$ is epi in~$\Set$.
+  Next we consider epis. Again, it is easy to see that a morphism
+  $f : S \to T$ is epi if it is epi in $\Set$. Conversely, suppose~$f$ is epi
+  in $\AsmA$ and consider maps $g, h : T \to U$ in~$\Set$ such that
+  $g \circ f = h \circ f$. The maps $g$ and $h$ are morphisms $T \to \nabla U$ because
+  they are both trivially realized. Since $f$ is epi in $\AsmA$, we may cancel it and
+  obtain $g = h$. This shows that $f$ is epi in~$\Set$.
 \end{proof}
 
 A \defemph{mono-epi} is a morphism $f : S \to T$ which is both mono and
@@ -747,7 +745,7 @@ example, a continuous bijection between topological spaces need not be
 a homeomorphism.
 
 \begin{corollary}
-  An assembly map $f : \asm{S} \to \asm{T}$ is mono-epi if, and only
+  An assembly map $f : S \to T$ is mono-epi if, and only
   if, its underlying map is a bijection.
 \end{corollary}
 
@@ -758,18 +756,18 @@ a homeomorphism.
 \end{proof}
 
 It is easy to provide an epi-mono which is not an isomorphism. For
-example if $\asm{S}$ is a modest set with at least two different
+example if $S$ is a modest set with at least two different
 elements, then $\id[S] : S \to S$ is realized as a morphism $\id[S] :
-\asm{S} \to \nabla S$, hence it is an epi-mono in $\AsmA$. However,
-every morphism $\nabla S \to \asm{S}$ is a constant map, therefore
-$\asm{S}$ is not isomorphic to~$\nabla{S}$.
+S \to \nabla S$, hence it is an epi-mono in $\AsmA$. However,
+every morphism $\nabla S \to S$ is a constant map, therefore
+$S$ is not isomorphic to~$\nabla{S}$.
 
-Recall that $f : \asm{S} \to \asm{T}$ is a \defemph{regular mono} if
-there are $g, h : \asm{T} \to \asm{U}$ such that~$f$ is their
+Recall that $f : S \to T$ is a \defemph{regular mono} if
+there are $g, h : T \to U$ such that~$f$ is their
 equalizer. Regular monos are well behaved, and we can think of them as
-subspace embeddings. Given an assembly $\asm{T}$ and a subset $T'
-\subseteq T$, define the assembly $\asm{T}' = (T', \T{T}, {\rz[T']})$
-as the restriction of $\asm{T}$, i.e., $\R{x} \rz[T'] x$ if, and only
+subspace embeddings. Given an assembly $T$ and a subset $T'
+\subseteq T$, define the assembly $T' = (T', \T{T}, {\rz[T']})$
+as the restriction of $T$, i.e., $\R{x} \rz[T'] x$ if, and only
 if $x \in T'$ and $\R{x} \rz[T] x$. The subset inclusion $\iota : T'
 \to T$ is a morphism of assemblies because it is realized by
 $\tpcalam{x}{\T{T}} x$, and it is a regular mono because it is
@@ -786,25 +784,25 @@ the equalizer of the maps $g, h : T \to \nabla \two$, defined by
 \end{equation*}
 %
 Even more, every regular mono is of this form, up to isomorphism. To
-see this, suppose $f : \asm{S} \to \asm{T}$ is a regular mono, thus an
-equalizer of morphisms $g, h : \asm{T} \to \asm{U}$. If we simply
+see this, suppose $f : S \to T$ is a regular mono, thus an
+equalizer of morphisms $g, h : T \to U$. If we simply
 compute the equalizer of $g$ and $h$ again according to the
 recipe~\eqref{eq:asm-equalizer} from
 \cref{sec:cartesian-structure}, we see that it is precisely the
-restriction of $\asm{T}$ to the subset
+restriction of $T$ to the subset
 % 
 \begin{equation*}
   T' = \set{x \in T \such g\,x = h(x)}.
 \end{equation*}
 % 
-Since both $\iota : \asm{T}' \to \asm{T}$ and $f : \asm{S} \to
-\asm{T}$ are equalizers of $g$ and $h$, they are isomorphic.
+Since both $\iota : T' \to T$ and $f : S \to
+T$ are equalizers of $g$ and $h$, they are isomorphic.
 
 The following characterization of regular monos is often useful.
 
 \begin{proposition}
   \label{prop:reg-mono-when}%
-  A realized map $f : \asm{S} \to \asm{T}$ is a regular mono if, and
+  A realized map $f : S \to T$ is a regular mono if, and
   only if, $f$ is injective and there exists $\R{i} \in \subAtyp{\T{T}
     \to \T{S}}$ such that, for all $x \in S$ and $\R{y} \in \Atyp{\T{T}}$,
   if $\R{y} \rz[T] f\,x$ then $\R{i}\,\R{y}$ is defined and
@@ -812,19 +810,19 @@ The following characterization of regular monos is often useful.
 \end{proposition}
 
 \begin{proof}
-  A regular mono $f : \asm{S} \to \asm{T}$ is injective because it is
-  mono. There exist realized maps $g, h : \asm{T} \to \asm{U}$ such
-  that~$f$ is their equalizer. Let $e : \asm{E} \to \asm{T}$ be the
+  A regular mono $f : S \to T$ is injective because it is
+  mono. There exist realized maps $g, h : T \to U$ such
+  that~$f$ is their equalizer. Let $e : E \to T$ be the
   equalizer of~$g$ and~$h$, as computed in~\eqref{eq:asm-equalizer}:
   %
   \begin{align*}
-    \asm{E} &= (\set{y \in T \such g(y) = h(y)}, \T{T}, {\rz[E]}), \\
+    E &= (\set{y \in T \such g(y) = h(y)}, \T{T}, {\rz[E]}), \\
     \R{y} \rz[E] y &\iff \R{y} \rz[T] y, \\
     e(y) &= y.
   \end{align*}
   %
   Because $e$ equalizes $g$ and $h$, there is a realized map $i :
-  \asm{E} \to \asm{S}$ such that $e = f \circ i$. We claim that any
+  E \to S$ such that $e = f \circ i$. We claim that any
   realizer $\R{i} \in \subAtyp{\T{T} \to \T{S}}$ of~$i$ has the desired
   property. Suppose $x \in S$, $\R{y} \in \Atyp{\T{T}}$, and $\R{y}
   \rz[T] f\,x$. Because $g(f\,x) = h(f\,x)$, $f\,x \in E$ and so $\R{y}
@@ -832,13 +830,13 @@ The following characterization of regular monos is often useful.
   i(f\,x)$. This is what we want because $f(i(f\,x)) = e(f\,x) =
   f\,x$, from which $i(f\,x) = x$ follows by injectivity of~$f$.
 
-  Conversely, suppose $f : \asm{S} \to \asm{T}$ is injective, realized
+  Conversely, suppose $f : S \to T$ is injective, realized
   by~$\R{f}$, and $\R{i}$ is as in statement of the proposition. Let
   $T' = \set{y \in T \such \some{x}{S}{f\,x = y}}$. It suffices to
-  show that $f$ is isomorphic to the inclusion $\iota : \asm{T}' \to
-  \asm{T}$, where $\asm{T}'$ is the restriction of~$\asm{T}$ to $T'$.
-  The map $j : \asm{S} \to \asm{T}'$ defined by $j(x) = f\,x$ is
-  realized by $\R{f}$. The map $i : \asm{T}' \to \asm{S}$, defined by
+  show that $f$ is isomorphic to the inclusion $\iota : T' \to
+  T$, where $T'$ is the restriction of~$T$ to $T'$.
+  The map $j : S \to T'$ defined by $j(x) = f\,x$ is
+  realized by $\R{f}$. The map $i : T' \to S$, defined by
   $i(f\,x) = x$, is well defined because~$f$ is injective, and is
   realized by $\R{i}$. Clearly, $j$ and $i$ are inverses of each other
   and $f = \iota \circ j$.
@@ -847,24 +845,24 @@ The following characterization of regular monos is often useful.
 
 We repeat the story for \defemph{regular epis}, which are those morphisms
 that are coequalizers. They are the well behaved epis which can be
-thought of as quotient maps. In fact, if $f : \asm{S} \to \asm{T}$ is
-a regular epi, we say that $\asm{T}$ is a \defemph{quotient} of~$\asm{S}$.
+thought of as quotient maps. In fact, if $f : S \to T$ is
+a regular epi, we say that $T$ is a \defemph{quotient} of~$S$.
 
 The match between regular epis and quotients is precise in $\AsmA$.
 Note that that in the construction of coequalizers, as described
 above, we may start with an arbitrary equivalence relation: given an
-assembly $\asm{T}$ and an equivalence relation $\equiv$ on~$T$, define
-the \defemph{quotient assembly} $\asm{T}/{\equiv} = (T/{\equiv}, \T{T},
+assembly $T$ and an equivalence relation $\equiv$ on~$T$, define
+the \defemph{quotient assembly} $T/{\equiv} = (T/{\equiv}, \T{T},
 \rz[T/{\equiv}])$ whose realizability relation satisfies $\R{x}
 \rz[T/{\equiv}] [y]$ if, and only if, $\R{x} \rz[T] x$ and $x \equiv
 y$ for some $x \in T$. The quotient map $q : T \to T/{\equiv}$ is
 realized by $\tpcalam{x}{\T{T}} x$, and is a coequalizer of $g,
-h : \asm{V} \to \asm{T}$ where\sidenote{You should convince yourself
-  that $\asm{V}$ is the \defemph{kernel pair} of~$q$, i.e., the pullback
+h : V \to T$ where\sidenote{You should convince yourself
+  that $V$ is the \defemph{kernel pair} of~$q$, i.e., the pullback
   of $q$ with itself.}
 %
 \begin{align*}
-  \asm{V} &= (\set{(x,y) \in T \times T \such x \equiv y},
+  V &= (\set{(x,y) \in T \times T \such x \equiv y},
              \T{T} \times \T{T}, {\rz[V]}),\\
   p \rz[V] (x,y) &\iff
   \combFst\,p \rz[T] x \land \combSnd\,p \rz[T] y, \\
@@ -873,18 +871,18 @@ h : \asm{V} \to \asm{T}$ where\sidenote{You should convince yourself
 \end{align*}
 %
 Every regular epi is isomorphic to one of this form. To see this,
-suppose $f : \asm{T} \to \asm{U}$ is a coequalizer of $g, h : \asm{U}
-\to \asm{T}$. Let $\equiv$ be the least equivalence relation on~$T$
+suppose $f : T \to U$ is a coequalizer of $g, h : U
+\to T$. Let $\equiv$ be the least equivalence relation on~$T$
 such that $g\,x = h(x)$ for all $x \in U$. Then $f$ is isomorphic to
-$q : \asm{T} \to \asm{T}/{\equiv}$ because $g : \asm{T} \to
-\asm{T}/{\equiv}$ is the coequalizer of $g$ and $h$ according to
+$q : T \to T/{\equiv}$ because $g : T \to
+T/{\equiv}$ is the coequalizer of $g$ and $h$ according to
 \cref{sec:cocartesian-structure}.
 
 There is another characterization of regular epis which is used often.
 
 \begin{proposition}
   \label{prop:reg-epi-when}%
-  in $\AsmA$ a morphism $f : \asm{T} \to \asm{U}$ is a regular epi
+  in $\AsmA$ a morphism $f : T \to U$ is a regular epi
   if, and only if, there exists $\R{i} \in \subAtyp{\T{U} \to \T{T}}$
   such that, whenever $\R{y} \rz[U] y$ then $\defined{\R{i}\,\R{y}}$
   and there is $x \in f^{-1}(y)$ such that $\R{i}\,\R{y} \rz[T] x$.
@@ -895,15 +893,15 @@ There is another characterization of regular epis which is used often.
   % is a realizer for a multi-valued right inverse of~$f$, while
   % in \cref{sec:logical-reg-epi} we will see that $\R{i}$ is a
   % realizer for the internal statement
-  % $\all{y}{\asm{S}}{\some{x}{\asm{T}}{f\,x = y}}$. For the moment we
+  % $\all{y}{S}{\some{x}{T}{f\,x = y}}$. For the moment we
   % just concentrate on the proof.
   %
-  Suppose first that we have a regular epi $f : \asm{T} \to \asm{U}$
-  which is a coequalizer of~$g, h : \asm{S} \to \asm{T}$. Let $q :
-  \asm{T} \to \asm{T}/{\equiv}$ be the coequalizer of~$g$ and~$h$, as
+  Suppose first that we have a regular epi $f : T \to U$
+  which is a coequalizer of~$g, h : S \to T$. Let $q :
+  T \to T/{\equiv}$ be the coequalizer of~$g$ and~$h$, as
   computed in \cref{sec:cocartesian-structure}. Because~$f$ and
   $q$ both equalize $g$ and $h$, there exists a unique isomorphism $i
-  : \asm{U} \to \asm{T}/{\equiv}$ such that $q = i \circ f$. Let
+  : U \to T/{\equiv}$ such that $q = i \circ f$. Let
   $\R{i} \in \subAtyp{\T{U} \to \T{T}}$ be a realizer for~$i$. We claim
   that it has the required properties. If $\R{y} \rz[U] y$ then
   $\defined{\R{i}\,\R{y}}$ and $\R{i}\,\R{y} \rz[T/{\equiv}] i(y)$.
@@ -915,15 +913,15 @@ There is another characterization of regular epis which is used often.
 
   Conversely, suppose $\R{i}$ is as in the statement of the
   proposition, and let $\R{f}$ be a realizer for~$f$. To show that $f
-  : \asm{T} \to \asm{U}$ is a coequalizer, define the equivalence
+  : T \to U$ is a coequalizer, define the equivalence
   relation $\equiv$ on~$T$ by
   %
   \begin{equation*}
     x \equiv y \iff f\,x = f(y).
   \end{equation*}
   %
-  It suffices to show that~$f$ is isomorphic to $q : \asm{T} \to
-  \asm{T}/{\equiv}$. In one direction we have the map $j : T/{\equiv}
+  It suffices to show that~$f$ is isomorphic to $q : T \to
+  T/{\equiv}$. In one direction we have the map $j : T/{\equiv}
   \to U$ defined by $j([x]) = f\,x$, realized by $\R{f}$. In the other
   direction we have $i : U \to T/{\equiv}$ defined by $i(f\,x) = [x]$,
   which is well defined because~$f$ is surjective. The map $i$ is
@@ -939,40 +937,40 @@ as $f = e \circ m$ where $e$ is epi and $m$ is mono. Similarly, a
 continuous map between topological spaces may be factored into a
 regular epi and a mono.
 
-In assemblies a realized map $f : \asm{S} \to \asm{T}$ factors as
+In assemblies a realized map $f : S \to T$ factors as
 %
 \begin{equation*}
   \xymatrix{
-    {\asm{S}}
+    {S}
     \ar[rrr]^{f}
     \ar[rd]_{q}
     &
     &
     &
-    {\asm{T}}
+    {T}
     \\
     &
-    {\asm{U}}
+    {U}
     \ar[r]_{b}
     &
-    {\asm{V}}
+    {V}
     \ar[ru]_{i}
     &
   }
 \end{equation*}
 %
 where $q$ is a regular epi, $b$ is a mono-epi and $i$ is a regular
-mono. Indeed, we may take $\asm{U} = \asm{S}/{\equiv}$, where $x
-\equiv y \iff f\,x = f(y)$, and $q : \asm{S} \to \asm{S}/{\equiv}$ the
-canonical quotient map. The assembly $\asm{V}$ is the restriction
-of~$\asm{T}$ to the subset $V = \set{y \in T \such \some{x}{S}{f\,x =
+mono. Indeed, we may take $U = S/{\equiv}$, where $x
+\equiv y \iff f\,x = f(y)$, and $q : S \to S/{\equiv}$ the
+canonical quotient map. The assembly $V$ is the restriction
+of~$T$ to the subset $V = \set{y \in T \such \some{x}{S}{f\,x =
     y}}$ so that $\T{V} = \T{T}$ and $\R{y} \rz[V] y \iff \R{y} \rz[T] y$
 for all $y \in V$. The map $i : V \to T$ is the subset inclusion.
 Finally, $b : U \to V$ is characterized by $b([x]_{\equiv}) = f\,x$.
 It is realized by the same realizers as~$f$.
 
-In the above factorization we call $\asm{U}$ the \defemph{image} of~$f$
-and $\asm{V}$ the \defemph{stable image} of~$f$. The reason for the
+In the above factorization we call $U$ the \defemph{image} of~$f$
+and $V$ the \defemph{stable image} of~$f$. The reason for the
 terminology is revealed in \cref{internal-epi-reg-epi}, where
 the stable image is related to stable propositions.
 
@@ -984,37 +982,37 @@ diagram commute:
 %
 \begin{equation*}
   \xymatrix{
-    {\asm{S}}
+    {S}
     \ar[rrr]^{f}
     \ar[rd]^{q}
     \ar[rdd]_{q'}
     &
     &
     &
-    {\asm{T}}
+    {T}
     \\
     &
-    {\asm{U}}
+    {U}
     \ar[r]^{b}
     \ar[d]^{j}
     &
-    {\asm{V}}
+    {V}
     \ar[ru]^{i}
     \ar[d]_{k}
     &
     \\
     &
-    {\asm{U}'}
+    {U'}
     \ar[r]_{b'}
     &
-    {\asm{V}'}
+    {V'}
     \ar[ruu]_{i'}
     &    
   }
 \end{equation*}
 %
 Without loss of generality we may assume that $q'$ is a canonical
-quotient map $q' : \asm{S} \to \asm{S}/{\equiv'}$ for an equivalence
+quotient map $q' : S \to S/{\equiv'}$ for an equivalence
 relation~$\equiv'$ on~$S$, and that $i' : V' \to T$ is a subset
 inclusion.
 
@@ -1035,9 +1033,7 @@ feature of assemblies.
 
 \begin{proposition}
   \label{prop:asm-regular}%
-  The category $\AsmA$ is \defemph{regular},\sidenote{Note that there are
-    several definitions of ``regular category'', but they all agree
-    once we assume the existence of finite limits.} which means that
+  The category $\AsmA$ is \defemph{regular} which means that
   %
   \begin{enumerate}
   \item it is cartesian,
@@ -1051,33 +1047,33 @@ feature of assemblies.
   The first item was proved in \cref{prop:asm-cartesian}.
   For the second item, take the above factorization $f = i \circ b
   \circ q$ and notice that $q$ is a regular epi and $i \circ b$ a
-  mono. Lastly, suppose $q : \asm{T} \to \asm{T}/{\equiv}$ is a
+  mono. Lastly, suppose $q : T \to T/{\equiv}$ is a
   regular epi, where we assumed without loss of generality that it is
-  a quotient by an equivalence relation. Let $f : \asm{S} \to
-  \asm{T}/{\equiv}$ be realized by~$\R{f} \in \subAtyp{\T{S} \to \T{T}}$.
-  The pullback of~$q$ is the map $r : \asm{P} \to \asm{S}$, as in the
+  a quotient by an equivalence relation. Let $f : S \to
+  T/{\equiv}$ be realized by~$\R{f} \in \subAtyp{\T{S} \to \T{T}}$.
+  The pullback of~$q$ is the map $r : P \to S$, as in the
   diagram
   %
   \begin{equation*}
     \xymatrix{
-      {\asm{P}} \pbcorner
+      {P} \pbcorner
       \ar[r]
       \ar[d]_{r}
       &
-      {\asm{T}}
+      {T}
       \ar[d]^{q}
       \\
-      {\asm{S}}
+      {S}
       \ar[r]_{f}
       &
-      **[r]{\asm{T}/{\equiv}}
+      **[r]{T/{\equiv}}
       }
   \end{equation*}
   %
   where
   %
   \begin{equation*}
-    \asm{P} = (\set{(x,y) \in S \times T \such f\,x \equiv y},
+    P = (\set{(x,y) \in S \times T \such f\,x \equiv y},
                \T{S} \times \T{T}, {\rz[P]}),
   \end{equation*}
   %
@@ -1163,11 +1159,11 @@ map satisfying this property.
 
 \begin{proof}
   We prove that $\AsmA$ has exponentials. The same construction works
-  for modest sets. Suppose~$\asm{S}$ and~$\asm{T}$ are assemblies.
+  for modest sets. Suppose~$S$ and~$T$ are assemblies.
   Define the assembly
   %
   \begin{equation*}
-    \asm{T}^{\asm{S}} =
+    T^{S} =
     (\set{f : S \to T \such \text{$f$ is realized}},
      \T{S} \to \T{T}, {\rz[S \to T]})
   \end{equation*}
@@ -1186,15 +1182,15 @@ map satisfying this property.
   \end{equation*}
   %
   None of this is surprising because we just copied the definition of
-  realized maps. The evaluation map $e : \asm{T}^{\asm{S}} \times
-  \asm{S} \to \asm{T}$ is $e(f, x) = f\,x$, which is realized by
+  realized maps. The evaluation map $e : T^{S} \times
+  S \to T$ is $e(f, x) = f\,x$, which is realized by
   %
   \begin{equation*}
     \R{e} = \tpcalam{p}{(\T{S} \to \T{T}) \times \T{S} \to
       \T{T}}{(\combFst\,p)\,(\combSnd\,p)}.
   \end{equation*}
   %
-  The transpose of $f : \asm{U} \times \asm{S} \to \asm{T}$, realized
+  The transpose of $f : U \times S \to T$, realized
   by $\R{f}$, is the map $\curry{f}(z)(x) = f(z,x)$, which is realized
   by
   %
@@ -1204,10 +1200,10 @@ map satisfying this property.
   \end{equation*}
 \end{proof}
 
-The passage from $f : \asm{U} \times \asm{S} \to \asm{T}$ to its
-transpose $\curry{f} : \asm{U} \to \asm{T}^{\asm{S}}$ has an inverse.
-To every $g : \asm{U} \to \asm{T}^{\asm{S}}$ we may assign
-$\uncurry{g} : \asm{U} \times \asm{S} \to \asm{T}$, defined by
+The passage from $f : U \times S \to T$ to its
+transpose $\curry{f} : U \to T^{S}$ has an inverse.
+To every $g : U \to T^{S}$ we may assign
+$\uncurry{g} : U \times S \to T$, defined by
 $\uncurry{g}(z,x) = g(z)(x)$. If $g$ is realized by $\R{g}$ then
 $\uncurry{g}$ is realized by $\uncurry{\R{g}} = \tpcalam{p}{\T{U}
     \times \T{S}}{\R{g}\,(\combFst\,p)\,(\combSnd\,p)}$. It is easy to
@@ -1227,21 +1223,21 @@ as products and exponentials of assemblies, respectively. The unit
 type is the terminal assembly~$\one$. The expressions are those of the
 $\lambda$-calculus, except that we write the projections as $\pi_1$
 and $\pi_2$ instead of $\combFst$ and $\combSnd$, respectively. In
-addition if $\asm{T}$ is an assembly and $a \in T$ is an element for
+addition if $T$ is an assembly and $a \in T$ is an element for
 which there exits a realizer $\R{a} \in \subAtyp{\T{T}}$ then~$a$ is a
-primitive constant of type~$\asm{T}$.
+primitive constant of type~$T$.
 
-Suppose $e$ is an expression of type~$\asm{T}$ and the freely
-occurring variables of~$e$ are among $\annot{x_1}{\asm{S}_1}, \ldots,
-\annot{x_n}{\asm{S}_n}$. We prefer to write the list of variables as
-$x_1 : \asm{S}_1, \ldots, x_n : \asm{S}_n$, which we abbreviate as
-$\overline{x} : \overline{\asm{S}}$, and call it a \defemph{typing
+Suppose $e$ is an expression of type~$T$ and the freely
+occurring variables of~$e$ are among $\annot{x_1}{S_1}, \ldots,
+\annot{x_n}{S_n}$. We prefer to write the list of variables as
+$x_1 : S_1, \ldots, x_n : S_n$, which we abbreviate as
+$\overline{x} : \overline{S}$, and call it a \defemph{typing
   context} for~$e$. The expression with the typing context determines
 a realized map
 %
 \begin{equation*}
-  \sem{\overline{x} : \overline{\asm{S}} \ctx e : \asm{T}} :
-  \asm{S}_1 \times \cdots \times \asm{S}_n \to \asm{T},
+  \sem{\overline{x} : \overline{S} \ctx e : T} :
+  S_1 \times \cdots \times S_n \to T,
 \end{equation*}
 %
 which we abbreviate to $\sem{e}$ when no confusion may arise. We
@@ -1250,82 +1246,82 @@ follows, where $a = (a_1, \ldots, a_n) \in S_1 \times \cdots \times
 S_n$:
 %
 \begin{enumerate}
-\item A primitive constant $b \in \asm{T}$ which is realized by $\R{b}
+\item A primitive constant $b \in T$ which is realized by $\R{b}
   \in \subAtyp{\T{T}}$ is interpreted as the constant map
   %
   \begin{equation*}
-    \sem{\overline{x} : \overline{\asm{S}} \ctx b : \asm{T}}(a) = b,
+    \sem{\overline{x} : \overline{S} \ctx b : T}(a) = b,
   \end{equation*}
   %
   which is realized\sidenote{Had we allowed as primitive constants
-    \emph{all} elements of~$\asm{T}$, we would face a difficulty here,
+    \emph{all} elements of~$T$, we would face a difficulty here,
     because we could not exhibit a computable realizer for the
     constant map.} by $\tpcalam{x}{\T{S_1} \times \cdots \times
       \T{S_n}} \R{b}$.
-\item A variable $\annot{x_i}{\asm{S}_i}$ is interpreted as the $i$-th
+\item A variable $\annot{x_i}{S_i}$ is interpreted as the $i$-th
   projection
   %
   \begin{equation*}
-    \sem{\overline{x} : \overline{\asm{S}} \ctx x_i : \asm{S}_i}(a) = a_i.
+    \sem{\overline{x} : \overline{S} \ctx x_i : S_i}(a) = a_i.
   \end{equation*}
   %
   which of course is realized.
-\item A $\lambda$-abstraction $\lam{y \of \asm{U}}{e}$ of type $\asm{U}
-  \to \asm{T}$ is interpreted as the realized map
-  $\sem{\lam{y \of \asm{U}}{e}} : \asm{S}_1 \times \cdots \times
-  \asm{S}_n \to \asm{T}^{\asm{U}}$ that is obtained as the transpose
+\item A $\lambda$-abstraction $\lam{y \of U}{e}$ of type $U
+  \to T$ is interpreted as the realized map
+  $\sem{\lam{y \of U}{e}} : S_1 \times \cdots \times
+  S_n \to T^{U}$ that is obtained as the transpose
   of
   %
   \begin{equation*}
     \xymatrix@+2em{
-      **[l]{\asm{S}_1 \times \cdots \times \asm{S}_n \times \asm{U}}
-      \ar[r]^{\sem{\overline{x}:\overline{\asm{S}}, y : \asm{U} \ctx e
-        : \asm{T}}}
+      **[l]{S_1 \times \cdots \times S_n \times U}
+      \ar[r]^{\sem{\overline{x}:\overline{S}, y : U \ctx e
+        : T}}
       &
-      {\asm{T}}
+      {T}
     }
   \end{equation*}
   %
 \item The interpretation of an application $e_1\,e_2$, where $e_1$ has
-  type $\asm{U} \to \asm{T}$ and $e_2$ has type $\asm{U}$, is the map
+  type $U \to T$ and $e_2$ has type $U$, is the map
   %
   \begin{equation*}
     \xymatrix@+2em{
-      **[l]{\asm{S}_1 \times \cdots \times \asm{S}_n}
+      **[l]{S_1 \times \cdots \times S_n}
       \ar[r]^{\pair{\sem{e_1}, \sem{e_2}}}
       &
-      {\asm{T}^{\asm{U}} \times \asm{U}}
+      {T^{U} \times U}
       \ar[r]^{\mathsf{ev}}
       &
-      {\asm{T}}      
+      {T}      
     }
   \end{equation*}
   %
   where $\mathsf{ev}$ is the evaluation map.
-\item The interpretation of a pair $(e_1, e_2)$ of type $\asm{T}
-  \times \asm{U}$ is the map
+\item The interpretation of a pair $(e_1, e_2)$ of type $T
+  \times U$ is the map
   %
   \begin{equation*}
     \xymatrix@+2em{
-      **[l]{\asm{S}_1 \times \cdots \times \asm{S}_n}
+      **[l]{S_1 \times \cdots \times S_n}
       \ar[r]^{\pair{\sem{e_1}, \sem{e_2}}}
       &
-      {\asm{T} \times \asm{U}}
+      {T \times U}
     }
   \end{equation*}
   %
-\item A projection $\pi_1(e)$ of type $\asm{T}$, where $e$ has type
-  $\asm{T} \times \asm{U}$, is the map
+\item A projection $\pi_1(e)$ of type $T$, where $e$ has type
+  $T \times U$, is the map
   %
   \begin{equation*}
     \xymatrix@+2em{
-      **[l]{\asm{S}_1 \times \cdots \times \asm{S}_n}
+      **[l]{S_1 \times \cdots \times S_n}
       \ar[r]^{\sem{e}}
       &
-      {\asm{T} \times \asm{U}}
+      {T \times U}
       \ar[r]^{\pi_1}
       &
-      {\asm{T}}
+      {T}
     }
   \end{equation*}
   %
@@ -1339,15 +1335,15 @@ do that. We have verified once and for all that any map defined by
 $\lambda$-calculus is realized, and in most cases we do not care which
 specific realizer is used.
 
-When $e$ is a closed expression of type $\asm{S}$ and the typing
-context $\overline{x} : \overline{\asm{S}}$ is an empty list, the
+When $e$ is a closed expression of type $S$ and the typing
+context $\overline{x} : \overline{S}$ is an empty list, the
 meaning of $e$ is a realized map
 %
 \begin{equation*}
-  \sem{{\cdot} \ctx e : \one \to \asm{T}}
+  \sem{{\cdot} \ctx e : \one \to T}
 \end{equation*}
 %
-which amounts to the same thing as an element of $\asm{T}$. This
+which amounts to the same thing as an element of $T$. This
 element has a computable realizer, i.e., one in $\subAtyp{\T{T}}$,
 because the corresponding realized map does.
 
@@ -1356,13 +1352,13 @@ $\lambda$-abstraction, a technique commonly used in functional
 programming languages. Instead of
 %
 \begin{equation*}
-  \lam{p \of \asm{S} \times \asm{T}}{\ldots}
+  \lam{p \of S \times T}{\ldots}
 \end{equation*}
 %
 we write
 %
 \begin{equation*}
-  \lam{(x,y) \of \asm{S} \times \asm{T}}{\ldots}
+  \lam{(x,y) \of S \times T}{\ldots}
 \end{equation*}
 %
 and replace each occurrence of $\combFst\,p$ by $x$, of $\combSnd\,p$
@@ -1370,15 +1366,15 @@ by $y$, and all other occurrences of~$p$ by $(x,y)$. For instance, we
 would write
 %
 \begin{equation*}
-  \lam{(f,g) \of (\asm{T} \to \asm{U}) \times (\asm{S} \to \asm{T})}{
-    \lam{x \of \asm{S}}{f\,(g\,x)}}
+  \lam{(f,g) \of (T \to U) \times (S \to T)}{
+    \lam{x \of S}{f\,(g\,x)}}
 \end{equation*}
 %
 instead of
 %
 \begin{equation*}
-  \lam{p \of (\asm{T} \to \asm{U}) \times (\asm{S} \to \asm{T})}{
-    \lam{x \of \asm{S}}{(\combFst\,p)\,(\combSnd\,p)\,x}}.
+  \lam{p \of (T \to U) \times (S \to T)}{
+    \lam{x \of S}{(\combFst\,p)\,(\combSnd\,p)\,x}}.
 \end{equation*}
 %
 It is also useful to write the definition of a function as
@@ -1395,48 +1391,48 @@ instead of
 
 When $\AsmA$ has coproducts, and in most cases of interest it does,
 the $\lambda$-calculus may be extended further to encompass binary
-sums. If $\asm{S}$ and $\asm{T}$ are assemblies, viewed as types, then
+sums. If $S$ and $T$ are assemblies, viewed as types, then
 we have the following expressions:
 %
 \begin{enumerate}
-\item If $e$ is an expressions of type $\asm{S}$ then
-  $\iota_1^{\asm{S},\asm{T}}(e)$ is an expression of type $\asm{S} +
-  \asm{T}$. It is interpreted as the composition
+\item If $e$ is an expressions of type $S$ then
+  $\iota_1^{S,T}(e)$ is an expression of type $S +
+  T$. It is interpreted as the composition
   %
   \begin{equation*}
     \xymatrix{
-      **[l]{\asm{S}_1 \times \cdots \times \asm{S}_n}
+      **[l]{S_1 \times \cdots \times S_n}
       \ar[r]^{\sem{e}}
       &
-      {\asm{S}}
+      {S}
       \ar[r]^{\iota_1}
       &
-     **[r]{\asm{S} + \asm{T}}
+     **[r]{S + T}
     }
   \end{equation*}
   %
   where $\iota_1$ is the canonical inclusion. The expression
-  $\iota_2^{\asm{S},\asm{T}}(e)$ is treated similarly. We usually omit
-  supscripts $\asm{S}, \asm{T}$ on $\iota_1$ and $\iota_2$.
-\item If $e_1$ has type $\asm{S} + \asm{T}$, and $e_2$ and $e_3$ have
-  type $\asm{U}$, then
+  $\iota_2^{S,T}(e)$ is treated similarly. We usually omit
+  supscripts $S, T$ on $\iota_1$ and $\iota_2$.
+\item If $e_1$ has type $S + T$, and $e_2$ and $e_3$ have
+  type $U$, then
   %
   \begin{equation*}
     \case{e_1}{\iota_1(x)}{e_2}{\iota_2(y)}{e_3}
   \end{equation*}
   %
-  is an expression of type $\asm{U}$, with $x$ bound in $e_2$ and
+  is an expression of type $U$, with $x$ bound in $e_2$ and
   $y$ bound in $e_3$. It is interpreted as the composition
   %
   \begin{equation*}
     \xymatrix@+3em{
-      **[l]{\asm{S}_1 \times \cdots \times \asm{S}_n}
+      **[l]{S_1 \times \cdots \times S_n}
       \ar[r]^{\sem{e_1}}
       &
-      {\asm{S} + \asm{T}}
+      {S + T}
       \ar[r]^{[\sem{e_2}, \sem{e_3}]}
       &
-      {\asm{U}}
+      {U}
     }
   \end{equation*}
 \end{enumerate}
@@ -1463,15 +1459,15 @@ We conclude by using the cartesian closed structure of $\AsmA$ to
 derive the distributive law
 %
 \begin{equation*}
-  (\asm{S} + \asm{T}) \times \asm{U} \cong
-  \asm{S} \times \asm{U} + \asm{T} \times \asm{U}.
+  (S + T) \times U \cong
+  S \times U + T \times U.
 \end{equation*}
 %
 Let us use the $\lambda$-calculus to write down the isomorphisms
 explicitly. The isomorphism from left to right is
 %
 \begin{equation*}
-  f = \lam{(a,b) \of (\asm{S} + \asm{T}) \times \asm{U}}{
+  f = \lam{(a,b) \of (S + T) \times U}{
     \xcase{a}
     {\iota_1(x)}{\iota_1(x, b)}
     {\iota_2(y)}{\iota_2(y, b)}
@@ -1481,7 +1477,7 @@ explicitly. The isomorphism from left to right is
 and its inverse is
 %
 \begin{equation*}
-  g = \lam{c \of (\asm{S} \times \asm{U}) + (\asm{T} \times \asm{U})}{
+  g = \lam{c \of (S \times U) + (T \times U)}{
     \xcase{c}
     {\iota_1(x,b)}{(\iota_1(x), b)}
     {\iota_2(y,b)}{(\iota_2(y), b)}

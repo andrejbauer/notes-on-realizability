@@ -74,13 +74,17 @@ We now give a precise definition of the ideas presented in the previous section.
 
 \begin{definition}
   An \defemph{assembly} over~$(\AA, \subAA)$ a tpca with a sub-tpca is a triple
-  $\asm{S} = \xasm{S}$ where $S$ is a set, $\T{S}$ is a type in~$\AA$, and $\rz[S]$ is a relation between $\xAtyp{S}$ and~$S$
-  satisfying: for every $x \in S$ there is $\R{x} \in \xAtyp{S}$ such that $\R{x} \rz[S] x$.
+  $S = \xasm{S}$ where $\S{S}$ is its \defemph{underlying set}, $\T{S}$ its \defemph{underlying type} from~$\AA$, and $\rz[S]$ is a relation between $\xAtyp{S}$ and~$\S{S}$
+  satisfying: for every $x \in \S{S}$ there is $\R{x} \in \xAtyp{S}$ such that $\R{x} \rz[S] x$.
 
-  An \defemph{assembly map} $f : \asm{S} \to \asm{T}$ between assemblies $\asm{S}$ and $\asm{T}$ is a map $f : S \to T$
+  An \defemph{assembly map} $f : S \to T$ between assemblies $S$ and $T$ is a map $f : \S{S} \to \S{T}$
   between the underlying sets for which there exists $\R{f} \in \subAtyp{\T{S} \to \T{T}}$, called a \defemph{realizer}
-  of~$f$, satisfying: if $\R{x} \rz[S] x$ then $\defined{\R{f} \, \R{x}}$ and $\R{f} \, \R{x} \rz[T] f(x)$.
+  of~$f$, satisfying for all $\R{x}, x$: if $\R{x} \rz[S] x$ then $\defined{\R{f} \, \R{x}}$ and $\R{f} \, \R{x} \rz[T] f(x)$.
 \end{definition}
+
+\noindent
+%
+We sometimes indulge in writing the underlying set $\S{S}$ of an assembly~$S$ simply as~$S$.
 
 We often use the same letter for an element and its realizer, but differentiate between them by using different fonts, for instance the elements $x$, $y$, $f$, $g$ would have realizers $\R{x}$, $\R{y}$, $\R{f}$, $\R{g}$, respectively.
 
@@ -98,16 +102,16 @@ When $\subAA = \AA$ we write $\Asm{\AA}$ instead of $\Asm{\AA,\AA}$.
 When $\AA$ is untyped the definition of an assembly simplifies a bit because we need mention the (trivial) types.
 
 \begin{definition}
-  An \defemph{assembly} over an untyped pca~$\AA$ is a pair $\asm{S} = (S, {\rz[S]})$ where $S$ is a set and $\rz[S]$ is a relation between~$\AA$ and~$S$, such that for every $x \in S$ there is $r \in A$ and $r \rz[S] x$.
+  An \defemph{assembly} over an untyped pca~$\AA$ is a pair $S = (\S{S}, {\rz[S]})$ where $\S{S}$ is a set and $\rz[S]$ is a relation between~$\AA$ and~$\S{S}$, such that for every $x \in \S{S}$ there is $r \in A$ and $r \rz[S] x$.
 \end{definition}
 
 Assemblies and maps over $(\AA, \subAA)$ form a \defemph{category $\AsmA$}.
 %
-Indeed, if $f : \asm{S} \to \asm{T}$ and $g : \asm{T} \to \asm{U}$ are realized by $\R{f} \in \subAtyp{\T{S} \to \T{T}}$
+Indeed, if $f : S \to T$ and $g : T \to U$ are realized by $\R{f} \in \subAtyp{\T{S} \to \T{T}}$
 and $\R{g} \in \subAtyp{\T{T} \to \T{U}}$, respectively, then their composition $g \circ f$ is realized by
 $\tpcalam{x}{\T{S}}{r\,(q\,x)} = \combS\,(\combK\,r)\,(\combS\,(\combK\,q)\,(\combS\,\combK\,\combK))$.
 %
-The identity map $\id[S] : \asm{S} \to \asm{S}$ is realized by $\tpcalam{x}{\T{S}}{x} = \combS\,\combK\,\combK$. 
+The identity map $\id[S] : \S{S} \to \S{S}$ is realized by $\tpcalam{x}{\T{S}}{x} = \combS\,\combK\,\combK$. 
 %
 Composition is associative because it is just composition of maps.
 
@@ -118,11 +122,11 @@ In the definition of assemblies, nothing prevents several elements from sharing 
 to prohibit such anomalies.
 
 \begin{definition}
-  An \defemph{modest} assembly $\asm{S}$, also called a \defemph{modest set},\sidenote{The terminology was suggested by Dana Scott. It refers to the fact that the cardinality of a modest set~$\asm{S}$ does not exceed the cardinality of $\xAtyp{S}$.} is an assembly in which elements do not share realizers:
+  An \defemph{modest} assembly $S$, also called a \defemph{modest set},\sidenote{The terminology was suggested by Dana Scott. It refers to the fact that the cardinality of a modest set~$S$ does not exceed the cardinality of $\xAtyp{S}$.} is an assembly in which elements do not share realizers:
   %
   \begin{equation*}
     \all{r}{\xAtyp{S}}{
-      \all{x,y \in S}
+      \all{x,y \in \S{S}}
       (r \rz[S] x \land r \rz[S] y \implies x = y)
     }.
   \end{equation*}
@@ -151,15 +155,15 @@ The \defemph{terminal assembly} $\one = (\set{\star}, \unit, {\rz[\one]})$ has t
   in $\AsmA$. Conclude from this that a different choice of $\unit$ results in an isomorphic copy of~$\one$.
 \end{exercise}
 
-The morphisms $\one \to \asm{S}$ corresponds to those elements of~$S$ that are realized by elements of $\subAtyp{\T{S}}$. Indeed, if $f : \star \to S$ is realized by $\R{f} \in \subAtyp{\unit \to \T{S}}$ then $f \, \star$ is realized by $\R{f} \, t \in \subAtyp{\T{S}}$, for any $t \in \subAtyp{\unit}$. Conversely, if $a \in S$ is realized by $\R{a} \in \subAtyp{\T{S}}$ then $\star \mapsto a$ is $\tpcalam{x}{\unit}{\R{a}}$.
+The morphisms $\one \to S$ corresponds to those elements of~$\S{S}$ that are realized by elements of $\subAtyp{\T{S}}$. Indeed, if $f : \star \to S$ is realized by $\R{f} \in \subAtyp{\unit \to \T{S}}$ then $f \, \star$ is realized by $\R{f} \, t \in \subAtyp{\T{S}}$, for any $t \in \subAtyp{\unit}$. Conversely, if $a \in \S{S}$ is realized by $\R{a} \in \subAtyp{\T{S}}$ then $\star \mapsto a$ is $\tpcalam{x}{\unit}{\R{a}}$.
 
-This may be a good moment to point out the difference between the \defemph{global points} of~$\asm{S}$, which is the set of morphisms $\one \to \asm{S}$, and the \defemph{underlying set~$S$} of~$\asm{S}$. Both induce functors $\AsmA \to \Set$, which need not be equivalent, unless $\AA = \subAA$.
+This may be a good moment to point out the difference between the \defemph{global points} of~$S$, which is the set of morphisms $\one \to S$, and the \defemph{underlying set~$\S{S}$} of~$S$. Both induce functors $\AsmA \to \Set$, which need not be equivalent, unless $\AA = \subAA$.
 
 
 \subsubsection{Natural numbers}
 \label{sec:asm-natural-numbers}
 
-Suppose $(\AA, \subAA)$ is an n-tpca. Let $\asm{N} = (\NN, \ttnat, {\rz[N]})$ be the set of natural numbers~$\NN$ realized by the numerals, for all $r \in \Atyp{\ttnat}$ and $n \in \NN$,
+Suppose $(\AA, \subAA)$ is an n-tpca. Let $N = (\NN, \ttnat, {\rz[N]})$ be the set of natural numbers~$\NN$ realized by the numerals, for all $r \in \Atyp{\ttnat}$ and $n \in \NN$,
 %
 \begin{equation*}
   r \rz[N] n \iff
@@ -168,7 +172,7 @@ Suppose $(\AA, \subAA)$ is an n-tpca. Let $\asm{N} = (\NN, \ttnat, {\rz[N]})$ be
 %
 The successor $n \mapsto n + 1$ is realized by~$\combSucc$, and $0 \in \mathbb{N}$ is a global point because $\numeral{0} \in \subAtyp{\ttnat}$.
 
-The assembly $\mathbb{N}$ is the natural numbers object. Indeed, given an assembly $\asm{S}$ with $z \in \asm{S}$ realized by $\mathtt{z} \in \subAtyp{\T{S}}$, and $f : \asm{S} \to \asm{S}$, the unique map $\overline{f} : \asm{N} \to \asm{S}$ satisfying, for all $n \in \NN$,
+The assembly $\mathbb{N}$ is the natural numbers object. Indeed, given an assembly $S$ with $z \in \S{S}$ realized by $\mathtt{z} \in \subAtyp{\T{S}}$, and $f : \S{S} \to \S{S}$, the unique map $\overline{f} : \mathbb{N} \to \S{S}$ satisfying, for all $n \in \NN$,
 %
 \begin{equation*}
   \overline{f} \, 0 = 0
@@ -190,17 +194,17 @@ Second, we have the assembly of \defemph{Boolean values} $\two = (2, {\rz[2]})$ 
 
 The assemblies $\nabla 2$ and $\two$ are \emph{not} isomorphic because every assembly map $\nabla 2 \to \two$ is constant, although the identity map is an assembly map $\two \to \nabla 2$.
 
-There are still more two-element assemblies, for instance the assembly of \defemph{semidecidable values} $\asm{S} = (2, {\rz[S]})$ given by
+There are still more two-element assemblies, for instance the assembly of \defemph{semidecidable values} $\mathbb{S} = (2, {\rz[S]})$ given by
 %
 \begin{equation*}
   n \rz b \iff
   (\divergent{\pr{n}{n}} \land b = 0) \lor (\defined{\pr{n}{n}} \land b = 1).
 \end{equation*}
 %
-Again, the identity map is realized as an assembly map $\two \to \asm{S}$, but not the other way around.
+Again, the identity map is realized as an assembly map $\two \to \mathbb{S}$, but not the other way around.
 
 \begin{exercise}
-  Why is identity not realized as a map $\asm{S} \to \two$?
+  Why is identity not an assembly map $\mathbb{S} \to \two$?
 \end{exercise}
 
 
@@ -219,10 +223,11 @@ We work with an nr-tpca $\AA$ with a sub-n-tpca $\subAA$. Intuitively speaking, 
 %
 The triple of numbers $(a, b, c)$ is just a clumsy way of encoding the rational $\frac{a - b}{c}$, so in essence $\R{x}$ computes a sequence of rationals such that the $k$-th term is within~$2^{-k}$ of~$x$.
 
-The assembly of real numbers $\asm{R} = (R, \ttnat \to \ttnat \times \ttnat \times \ttnat, {\rz[R]})$ has as its underlying set the realized reals
+The assembly of real numbers $R = (\RR_{\mathrm{rz}}, \ttnat \to \ttnat \times \ttnat \times \ttnat, {\rz[R]})$ has as its underlying set the realized reals
 %
 \begin{equation*}
-  R = \set{x \in \RR \such \some{\R{x} \in \Atyp{\ttnat \to \ttnat \times \ttnat \times \ttnat}} \R{x} \rz[R] x}.
+  \RR^{\mathrm{rz}}
+  = \set{x \in \RR \such \some{\R{x} \in \Atyp{\ttnat \to \ttnat \times \ttnat \times \ttnat}} \R{x} \rz[R] x}.
 \end{equation*}
 %
 Which reals are so realized depends on the choice of~$\AA$. For example, first Kleene algebra realizes the \defemph{Turing computable reals}, whereas the second Kleene algebra realizes all reals.
@@ -266,6 +271,7 @@ the realizers we cannot compute anything interesting regarding~$X$.
   aseembly map the underlying set-theoretic function. Show that~$\Gamma$ is left adjoint to~$\Delta$.
 \end{exercise}
 
+
 \section{Equivalent formulations}
 \label{sec:equivalent-formulations}
 
@@ -274,41 +280,41 @@ Assemblies and modest sets have several equivalent formulations, which were form
 \subsection{Existence predicates}
 \label{sec:existence-predicates}
 
-A realizability relation $\rz[S]$ is a subset of $\xAtyp{S} \times S$. By transposition it may be equivalently expressed
-as a map $\Ex_S : S \to \pow{\xAtyp{S}}$. The correspondence is
+A realizability relation $\rz[S]$ is a subset of $\xAtyp{S} \times \S{S}$. By transposition it may be equivalently expressed
+as a map $\Ex_S : \S{S} \to \pow{\xAtyp{S}}$. The correspondence is
 %
 \begin{equation*}
   \R{x} \rz[S] x \iff \R{x} \in \Ex_S(x).
 \end{equation*}
 %
-Because every $x$ is realized by something, $\Ex_S(x)$ always contains at least one element. Thus an assembly $\xasm{S}$ may be equivalently presented as a triple $(S, \T{S}, \Ex_S)$ where $\Ex_S : S \to \pow{\xAtyp{S}}$ is a map, called the \defemph{existence predicate}, such that $\Ex_S(x)$ contains at least one element for every $x \in S$. The name suggests that the elements of $\Ex_S(x)$ are computational witnesses for ``existence of~$x$''.
+Because every $x$ is realized by something, $\Ex_S(x)$ always contains at least one element. Thus an assembly $\xasm{S}$ may be equivalently presented as a triple $(\S{S}, \T{S}, \Ex_S)$ where $\Ex_S : S \to \pow{\xAtyp{S}}$ is a map, called the \defemph{existence predicate}, such that $\Ex_S(x)$ contains at least one element for every $x \in \S{S}$. The name suggests that the elements of $\Ex_S(x)$ are computational witnesses for ``existence of~$x$''.
 
 An assembly $S$ is modest if, and only if, $\Ex_S(x) \cap \Ex_S(y) \neq \emptyset$ implies $x = y$.
 
-Under this formulation a map $f : \asm{S} \to \asm{T}$ is realized if there exists $\R{f} \in \subAtyp{\T{S} \to \T{T}}$ such that, for all $x \in S$ and $\R{x} \in \Ex_S(x)$, $\defined{\R{f}\,\R{x}}$ and $\R{f}\,\R{x} \in \Ex_T(f(x))$.
+Under this formulation a map $f : S \to T$ is realized if there exists $\R{f} \in \subAtyp{\T{S} \to \T{T}}$ such that, for all $x \in \S{S}$ and $\R{x} \in \Ex_S(x)$, $\defined{\R{f}\,\R{x}}$ and $\R{f}\,\R{x} \in \Ex_T(f(x))$.
 
 \subsection{Representations}
 \label{sec:representations}
 
-By transposing $\rz[S]$ the other way around we obtain \defemph{representations}. Suppose first that $S$ is a modest set. Since every realizer $r \in \xAtyp{S}$ realizes at most one $x \in S$, we may define a partial map $\delta_S : \xAtyp{S} \parto S$ by
+By transposing $\rz[S]$ the other way around we obtain \defemph{representations}. Suppose first that $S$ is a modest set. Since every realizer $r \in \xAtyp{S}$ realizes at most one $x \in \S{S}$, we may define a partial map $\delta_S : \xAtyp{S} \parto \S{S}$ by
 %
 \begin{equation*}
   \delta_S(r) = x \iff r \rz[S] x.
 \end{equation*}
 %
-The map $\delta_S$ is surjective because every $x \in S$ is realized, but it need not be defined everywhere. The triple $(S, \T{S}, \delta_S)$ uniquely describes the modest set~$S$. The map $\delta_S$ is called a \defemph{representation} of~$S$.
+The map $\delta_S$ is surjective because element is realized, but it need not be defined everywhere. The triple $(\S{S}, \T{S}, \delta_S)$ uniquely describes the modest set~$S$. The map $\delta_S$ is called a \defemph{representation} of~$S$.
 
 A map $f : S \to T$ is realized or tracked by $\R{f} \in \subAtyp{\T{S} \to \T{T}}$ when, for all $\R{x} \in \dom{\delta_S}$, $\defined{\R{f}\,\R{x}}$ and $\delta_T(\R{f}\,\R{x}) = f(\delta_S(x))$.
 
 Representations and realized maps form a category~$\Rep{\AA,\subAA}$, which is equivalent to $\Mod{\AA, \subAA}$.
 
-When we transpose $\rz[S]$ for a a general assembly $\asm{S}$ the result is a \defemph{multi-valued representation}, which is a map $\delta_S : \xAtyp{S} \multito \pow{S}$ that takes each $r \in \xAtyp{S}$ to the (possibly empty) set of elements it realizes,
+When we transpose $\rz[S]$ for a a general assembly $S$ the result is a \defemph{multi-valued representation}, which is a map $\delta_S : \xAtyp{S} \multito \pow{\S{S}}$ that takes each $r \in \xAtyp{S}$ to the (possibly empty) set of elements it realizes,
 %
 \begin{equation*}
-  \delta_S(r) = \set{ x \in S \such r \rz[S] x}.
+  \delta_S(r) = \set{ x \in \S{S} \such r \rz[S] x}.
 \end{equation*}
 %
-The map is surjective in the sense that for every $x \in S$ there is $r \in \xAtyp{S}$ such that $x \in \delta_S(r)$.
+The map is surjective in the sense that for every $x \in \S{S}$ there is $r \in \xAtyp{S}$ such that $x \in \delta_S(r)$.
 
 To summarize, there are three ways of specifying the realizability structure of an assembly: with a realizability relation $\rz[S]$, an existence predicate~$\Ex_s$, and a multi-valued representation $\delta_S$. Each determines the other two by
 %
@@ -326,7 +332,7 @@ This formulation only works for modest sets. With each modest set~$S$ we may ass
 %
 \begin{equation*}
   q \per_S r \iff
-  \some{x \in S} q \rz[S] x \land r \rz[S] x.
+  \some{x \in \S{S}} q \rz[S] x \land r \rz[S] x.
 \end{equation*}
 %
 The pair $(\T{S}, {\per_S})$ suffices for the reconstruction of the
@@ -363,14 +369,14 @@ equivalence class $[r]_S$, $\defined{p\,r}$ and $[p\,r]_T = f([r]_S)$.
 \begin{lemma}
   \label{lemma:iso-assembly}
   %
-  Suppose $\asm{S}$ is an assembly, $T$ is a set, and $f : T \to S$ is
-  a bijection. Then $\asm{S}$ is isomorphic to $\asm{T} = (T, \T{S},
+  Suppose $S$ is an assembly, $T$ is a set, and $f : T \to S$ is
+  a bijection. Then $S$ is isomorphic to $T = (T, \T{S},
   {\rz[T]})$ where $r \rz[T] x$ is defined as $r \rz[S] f(x)$.
 \end{lemma}
 
 
 \begin{proof}
-  The map $f$ is a morphism from $\asm{S}$ to $\asm{T}$ because it is
+  The map $f$ is a morphism from $S$ to $T$ because it is
   tracked by~$\tpcalam{x}{\T{S}}{x}$. Similarly, $\inv{f}$ is a
   morphism because it is also tracked by the same realizer. Obviously,
   $f$ and $\inv{f}$ are inverses of each other.
@@ -405,7 +411,7 @@ equivalence class $[r]_S$, $\defined{p\,r}$ and $[p\,r]_T = f([r]_S)$.
   composition $F \circ G$ is actually equal to identity, as is easily
   verified. A modest set~$\xasm{S}$ is isomorphic to
   $G(F(S))$ by \cref{lemma:iso-assembly} applied to the bijection
-  which takes an $x \in S$ to $[r]_{G(F(S))}$, where $r \in \xAtyp{S}$
+  which takes an $x \in \S{S}$ to $[r]_{G(F(S))}$, where $r \in \xAtyp{S}$
   is any realizer such that $r \rz[S] x$. We leave the verification
   that the isomorphisms are natural as exercise.
 \end{proof}
@@ -446,17 +452,17 @@ A simulation $\rho: (\EE, \subEE) \pcato (\FF, \subFF)$ induces an \defemph{appl
   \ff{\rho}: \Asm{\EE, \subEE} \longrightarrow \Asm{\FF, \subFF}
 \end{equation*}
 %
-which maps an assembly $\asm{S} = (S, {\rz[S]})$ over $(\EE, \subEE)$ to the assembly
-$\ff{\rho} \, \asm{S}$ over $(\FF, \subFF)$, whose underlying set is $S$ and
+which maps an assembly $S = (S, {\rz[S]})$ over $(\EE, \subEE)$ to the assembly
+$\ff{\rho} \, S$ over $(\FF, \subFF)$, whose underlying set is $S$ and
 %
 \begin{align*}
-  q \rz[\ff{\rho \asm{S}}] x
+  q \rz[\ff{\rho S}] x
   \iff \some{r \in \EE} q \in \rho[r] \land r \rz[S] x.
 \end{align*}
 %
 That is, $\ff{\rho}$ replaces realizers in~$\EE$ with their simulations in~$\FF$.
 
-Suppose $r \in \subFF$ is a realizer for~$\rho$. An assembly map $f: \asm{S} \to \asm{T}$, realized by $\mathtt{f} \in \subEE$, is mapped by $\ff{\rho}$ to the same underlying map $\ff{\rho}\,f = f$, which is realized by $r \, \mathtt{g}$ for any $\mathtt{g} \in \rho[\mathtt{f}]$.
+Suppose $r \in \subFF$ is a realizer for~$\rho$. An assembly map $f: S \to T$, realized by $\mathtt{f} \in \subEE$, is mapped by $\ff{\rho}$ to the same underlying map $\ff{\rho}\,f = f$, which is realized by $r \, \mathtt{g}$ for any $\mathtt{g} \in \rho[\mathtt{f}]$.
 
 \begin{exercise}
   Prove that and applicative functor induced by a \emph{discrete} simulation restricts to modest sets.
@@ -525,10 +531,10 @@ Adjunctions and equivalences between simulations carry over to the induced morph
 The construction of assemblies and induced applicative functors extends to a 2-functor between 2-categories. Indeed, given $\gamma, \delta : (\EE, \subEE) \pcato (\FF, \subFF)$ such that $\gamma \preceq \delta$, there is an induced natural transformation $\zeta : \ff{\gamma} \natto \ff{\delta}$ defined by
 %
 \begin{equation*}
-  \zeta_{\asm{S}} = \id[S] : \ff{\gamma}\,\asm{S} \to \ff{\delta}\,\asm{S}.
+  \zeta_{S} = \id[S] : \ff{\gamma}\,S \to \ff{\delta}\,S.
 \end{equation*}
 %
-This is a valid definition, for if $t \in \subFF$ is a translation witnessing $\gamma \preceq \delta$, then $t$ tracks every $\zeta_{\asm{S}}$, and the naturality condition is trivial.
+This is a valid definition, for if $t \in \subFF$ is a translation witnessing $\gamma \preceq \delta$, then $t$ tracks every $\zeta_{S}$, and the naturality condition is trivial.
 
 An applicative functor induced by $\rho : (\EE, \subEE) \pcato (\FF, \subFF)$ commutes up to natural isomorphism with the constant assembly functor~$\nabla$ from \cref{sec:nabla},
 %

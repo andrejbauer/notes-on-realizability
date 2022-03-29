@@ -71,23 +71,23 @@ of realizability.
 
 The interpretation of logic in the category of assemblies goes much
 along the same lines, except that we use monos instead of subsets. For
-monos $u : \asm{U} \monoto \asm{S}$ and $t : \asm{T} \monoto \asm{S}$,
-write $u \leq t$, or somewhat less precisely $\asm{U} \leq \asm{T}$,
-if $u$ factors through $t$, i.e., there exists a realized $f : \asm{U}
-\to \asm{T}$ such that
+monos $u : U \monoto S$ and $t : T \monoto S$,
+write $u \leq t$, or somewhat less precisely $U \leq T$,
+if $u$ factors through $t$, i.e., there exists a realized $f : U
+\to T$ such that
 %
 \begin{equation*}
   \xymatrix{
     &
-    {\asm{S}}
+    {S}
     &
     \\
-    {\asm{U}}
+    {U}
     \ar@{ >->}[ur]^{u}
     \ar[rr]_{f}
     &
     &
-    {\asm{T}}
+    {T}
     \ar[ul]_{t}
   }
 \end{equation*}
@@ -96,24 +96,24 @@ commutes. If~$f$ exists then it is unique and is a mono.\sidenote{Such
   basic category-theoretic observations are excellent exercises. You
   should prove them yourself.} If $u \leq t$ and $t \leq u$ we say
 that $u$ and $t$ are \emph{isomorphic} and write $u \equiv t$. The
-collection $\Mono{\asm{S}}$ of all monos with codomain~$\asm{S}$ is a
+collection $\Mono{S}$ of all monos with codomain~$S$ is a
 preorder because $\leq$ is reflexive and transitive.\sidenote{By
-  quotienting $\Mono{\asm{S}}$ by $\equiv$ we get the partial order
-  $\Sub{\asm{S}} = \Mono{\asm{S}}/{\cong}$ of \emph{subobjects}
-  of~$\asm{S}$, but we shall not do that because it is cumbersome to
+  quotienting $\Mono{S}$ by $\equiv$ we get the partial order
+  $\Sub{S} = \Mono{S}/{\cong}$ of \emph{subobjects}
+  of~$S$, but we shall not do that because it is cumbersome to
   work with equivalence classes.}
 
 While the powerset $\pow{S}$ is a complete Boolean algebra,
-$\Mono{\asm{S}}$ is neither complete nor Boolean. However, it is a
+$\Mono{S}$ is neither complete nor Boolean. However, it is a
 \emph{Heyting prealgebra}, which is enough to interpret
 \emph{intuitionistic} propositional calculus, and as we shall see, the
 quantifiers may be interpreted too.
 
 We would like the interpretation of logic in $\AsmA$ to be in specific
 form, for which we first need to focus on a particular kind of monos.
-Let $\asm{S}$ be an assembly, $\T{p}$ a type, and $p : S \to
+Let $S$ be an assembly, $\T{p}$ a type, and $p : S \to
 \pow{\Atyp{\T{p}}}$ a function. We call $p$ a \defemph{realizability
-  predicate} on $\asm{S}$ and $\T{p}$ its \defemph{underlying type}. The
+  predicate} on $S$ and $\T{p}$ its \defemph{underlying type}. The
 map $p$ is equivalently given as a relation ${-} \rz p({-})$ between
 $\Atyp{\T{p}}$ and $S$. The correspondence between the map and the
 relation is
@@ -123,7 +123,7 @@ relation is
 \end{equation*}
 %
 Read $\R{r} \rz p(x)$ as ``$\R{r}$ realizes $p(x)$''. Now define the
-assembly $\asm{S}_p$ by
+assembly $S_p$ by
 %
 \begin{align*}
   S_p &= \set{x \in S \such \some{\R{r}}{\Atyp{\T{p}}}{\R{r} \in p(x)}}, \\
@@ -133,7 +133,7 @@ assembly $\asm{S}_p$ by
 \end{align*}
 %
 The subset inclusion $\iota_p : S_p \to S$ is realized by $\combFst$.
-The mono $\iota_p : \asm{S}_p \to \asm{S}$ is called a \defemph{standard
+The mono $\iota_p : S_p \to S$ is called a \defemph{standard
   mono}.
 
 \begin{proposition}
@@ -141,7 +141,7 @@ The mono $\iota_p : \asm{S}_p \to \asm{S}$ is called a \defemph{standard
 \end{proposition}
 
 \begin{proof}
-  Let $u : \asm{U} \monoto \asm{S}$ be a mono, realized by $\R{u}$.
+  Let $u : U \monoto S$ be a mono, realized by $\R{u}$.
   Let $\T{p} = \T{U}$ and
   %
   \begin{equation*}
@@ -149,31 +149,31 @@ The mono $\iota_p : \asm{S}_p \to \asm{S}$ is called a \defemph{standard
     \set{\R{y} \in \Atyp{\T{p}} \such \some{y}{U}{u(y) = x \land \R{y} \rz[U] y}}.
   \end{equation*}
   %
-  We claim that the standard mono $\iota_p : \asm{S}_p \to \asm{S}$ is
+  We claim that the standard mono $\iota_p : S_p \to S$ is
   isomorphic to~$u$. The function $u : U \to S$ restricts to a
-  bijection $u : U \to S_p$, which is realized as a map from $\asm{U}$
-  to $\asm{S}_p$ by
+  bijection $u : U \to S_p$, which is realized as a map from $U$
+  to $S_p$ by
   $\tpcalam{y}{\T{U}} \combPair\;(\R{u}\;y)\;y$. The inverse
-  $\inv{u} : S_p \to U$ is realized as a map from $\asm{S}_p$ to
-  $\asm{U}$ by $\combSnd$.
+  $\inv{u} : S_p \to U$ is realized as a map from $S_p$ to
+  $U$ by $\combSnd$.
 \end{proof}
 
 For the purposes of logic we may limit attention to standard monos,
 because the interpretation of a predicate is determined only up to
-isomorphism of monos. Furthermore, since a standard mono $\asm{S}_p
-\to \asm{S}$ is uniquely determined by the corresponding realizability
+isomorphism of monos. Furthermore, since a standard mono $S_p
+\to S$ is uniquely determined by the corresponding realizability
 predicate $p : S \to \pow{\Atyp{\T{p}}}$, we may express the
 realizability intepretation of logic directly in terms of
 realizability predicates.
 
-Let $p$ and $q$ be realizability predicates on $\asm{S}$, with the
-corresponding monos $\iota_p : \asm{S}_p \monoto \asm{S}$ and $\iota_q
-: \asm{S}_q \monoto \asm{S}$. We define $p \leq q$ to mean that
+Let $p$ and $q$ be realizability predicates on $S$, with the
+corresponding monos $\iota_p : S_p \monoto S$ and $\iota_q
+: S_q \monoto S$. We define $p \leq q$ to mean that
 $\iota_p \leq \iota_q$.
 
 \begin{lemma}
   \label{lemma:realizability-predicate-leq}%
-  For realizability predicates $p$ and $q$ on an assembly $\asm{S}$,
+  For realizability predicates $p$ and $q$ on an assembly $S$,
   $p \leq q$ if, and only if, there exists $\R{f} \in \subAtyp{\T{S}
     \to \T{p} \to \T{q}}$ such that, for all $x \in S$, whenever $\R{x}
   \rz[S] x$ and $\R{r} \rz p(x)$ then $\defined{\R{f}\;\R{x}\;\R{r}}$
@@ -204,8 +204,8 @@ $\iota_p \leq \iota_q$.
 
 The lemma is our main tool for analyzing the preorder $\leq$. For
 example, let us show that it is reflexive and transitive, i.e., that
-the family $\Pred{\asm{S}}$ of all realizability predicates on
-$\asm{S}$ is a \emph{preorder}. Reflexivity $p \leq p$ is witnessed by
+the family $\Pred{S}$ of all realizability predicates on
+$S$ is a \emph{preorder}. Reflexivity $p \leq p$ is witnessed by
 the realizer $\tpcalam{x}{\T{S}} \tpcalam{u}{\T{p}}{u}$. For
 transitivity, suppose $p \leq q$ and $q \leq r$ are witnessed by
 $\R{f}$ and $\R{g}$. Then $p \leq r$ is witnessed by
@@ -216,8 +216,8 @@ $\tpcalam{x}{\T{S}} \tpcalam{u}{\T{p}}{\R{g}\;x\;(\R{f}\;x\;u))}$.
 \label{sec:heyting-prealgebra}
 
 We would like to give an interpretation of the intuitionistic
-propositional calculus in the preorder $\Pred{\asm{S}}$. Such an
-interpretation is sound only if $\Pred{\asm{S}}$ is a Heyting
+propositional calculus in the preorder $\Pred{S}$. Such an
+interpretation is sound only if $\Pred{S}$ is a Heyting
 prealgebra. Let us recall the definition.
 
 \begin{definition}
@@ -253,14 +253,14 @@ actually worry about choosing the most efficient realizer among many
 equivalent ones.
 
 \begin{proposition}
-  The preorder $\Pred{\asm{S}}$ of realizability predicates on an
-  assembly $\asm{S}$ is a Heyting prealgebra.
+  The preorder $\Pred{S}$ of realizability predicates on an
+  assembly $S$ is a Heyting prealgebra.
 \end{proposition}
 
 \begin{proof}
-  Let $\asm{S}$ be an assembly and $\unit$ any type with an element
+  Let $S$ be an assembly and $\unit$ any type with an element
   $\ttunit \in \subAtyp{\unit}$. Define the predicates $\bot, \top :
-  \asm{S} \to \pow{\Atyp{\unit}}$ by
+  S \to \pow{\Atyp{\unit}}$ by
   % 
   \begin{equation*}
     \bot(x) = \emptyset
@@ -270,9 +270,9 @@ equivalent ones.
   % 
   That is, $\bot$ is realized by nothing and $\top$ by everything. It is
   easy to check that $\bot \leq p \leq \top$ for all $p \in
-  \Pred{\asm{S}}$.
+  \Pred{S}$.
 
-  For predicates $p$ and $q$ on $\asm{S}$, let $p \land q$ be the
+  For predicates $p$ and $q$ on $S$, let $p \land q$ be the
   predicate whose realizers have the type $\T{p \land q} = \T{p} \times
   \T{q}$ and
   %
@@ -345,71 +345,71 @@ categorical logic. In general the existential and universal
 quantifiers are defined as left and right adjoints to weakening. Let
 us explain what this means.
 
-Weakening along the projection $\pi_1 : \asm{S} \times \asm{T} \to
-\asm{S}$ is an operation which maps a mono $\asm{V} \monoto \asm{S}$
-to the mono $\asm{V} \times \asm{T} \monoto \asm{S} \times \asm{T}$.
-This is a monotone map from $\Mono{\asm{S}}$ to $\Mono{\asm{S} \times
-  \asm{T}}$. Existential quantification is its left adjoint, i.e., a
-monotone map $\exists_{\asm{T}} : \Mono{\asm{S} \times \asm{T}} \to
-\Mono{\asm{S}}$ such that, for all monos $\asm{U} \monoto \asm{S}
-\times \asm{T}$ and $\asm{V} \monoto \asm{S}$,
+Weakening along the projection $\pi_1 : S \times T \to
+S$ is an operation which maps a mono $V \monoto S$
+to the mono $V \times T \monoto S \times T$.
+This is a monotone map from $\Mono{S}$ to $\Mono{S \times
+  T}$. Existential quantification is its left adjoint, i.e., a
+monotone map $\exists_{T} : \Mono{S \times T} \to
+\Mono{S}$ such that, for all monos $U \monoto S
+\times T$ and $V \monoto S$,
 %
 \begin{equation*}
-  \asm{U} \leq \asm{V} \times \asm{T}
+  U \leq V \times T
   \iff
-  \exists_{\asm{T}} \asm{U} \leq \asm{V}.
+  \exists_{T} U \leq V.
 \end{equation*}
 %
 Similarly, universal quantification is the right adjoint:
 %
 \begin{equation*}
-  \asm{V} \times \asm{T} \leq \asm{U}
+  V \times T \leq U
   \iff
-  \asm{V} \leq \forall_{\asm{T}} \asm{U}.
+  V \leq \forall_{T} U.
 \end{equation*}
 %
 We verify that such adjoints really exist in $\AsmA$ but work with
 realizability predicates instead of monos.
 
-Weakening along $\pi_1 : \asm{S} \times \asm{T} \to \asm{S}$ takes $p
-\in \Pred{\asm{S}}$ to the predicate $p \times \asm{T} \in
-\Pred{\asm{S} \times \asm{T}}$ defined by
+Weakening along $\pi_1 : S \times T \to S$ takes $p
+\in \Pred{S}$ to the predicate $p \times T \in
+\Pred{S \times T}$ defined by
 %
 \begin{equation*}
-  \T{p \times \asm{T}} = \T{p}
+  \T{p \times T} = \T{p}
   \qquad\text{and}\qquad
-  (p \times \asm{T})(x,y) = p(x),
+  (p \times T)(x,y) = p(x),
 \end{equation*}
 %
 where $x \in S$ and $y \in T$. We claim that the left adjoint
-$\exists_{\asm{T}}$ maps $q \in \Pred{\asm{S} \times \asm{T}}$ to
-$\exists_{\asm{T}} q \in \Pred{\asm{S}}$ defined by
+$\exists_{T}$ maps $q \in \Pred{S \times T}$ to
+$\exists_{T} q \in \Pred{S}$ defined by
 %
 \begin{align*}
-  \T{\exists_{\asm{T}} q} &= \T{T} \times \T{q} \\
-  (\exists_{\asm{T}} q)(x) &=
+  \T{\exists_{T} q} &= \T{T} \times \T{q} \\
+  (\exists_{T} q)(x) &=
   \set{ \combPair\;\R{y}\;\R{r} \in \Atyp{\T{T} \times \T{q}} \such
     \some{y}{T}{\R{y} \rz[T] y \land \R{r} \rz q(x,y)}
   }.
 \end{align*}
 %
 Let us verify that we have a left adjoint to weakening. Suppose $p \in
-\Pred{\asm{S} \times \asm{T}}$ and $q \in \Pred{\asm{S}}$. If $p \leq
-q \times \asm{T}$ is witnessed by $\R{f}$ then $\exists_{\asm{T}} p
+\Pred{S \times T}$ and $q \in \Pred{S}$. If $p \leq
+q \times T$ is witnessed by $\R{f}$ then $\exists_{T} p
 \leq q$ is witnessed by $\tpcalam{x}{\T{S}} \tpcalam{e}{\T{T} \times
     \T{p}}{\R{f}\; (\combPair \; x \; (\combFst\; e)) \; (\combSnd \; e)}$.
-Conversely, if $\exists_{\asm{T}} p \leq q$ is witnessed by $\R{g}$
-then $p \leq q \times \asm{T}$ is witnessed by $\tpcalam{r}{\T{S}
+Conversely, if $\exists_{T} p \leq q$ is witnessed by $\R{g}$
+then $p \leq q \times T$ is witnessed by $\tpcalam{r}{\T{S}
     \times \T{T}} \tpcalam{s}{\T{p}}{\R{g} \;
   (\combFst\;r)\; (\combPair \; (\combSnd \; r) \; s)}$.
 
-Similarly, the universal quantifier $\forall_{\asm{T}}$ maps $q \in
-\Pred{\asm{S} \times \asm{T}}$ to $\forall_{\asm{T}} q \in
-\Pred{\asm{S}}$ defined by
+Similarly, the universal quantifier $\forall_{T}$ maps $q \in
+\Pred{S \times T}$ to $\forall_{T} q \in
+\Pred{S}$ defined by
 %
 \begin{align*}
-  \T{\forall_{\asm{T}} q} &= \T{T} \to \T{q} \\
-  (\forall_{\asm{T}} q)(x) &=
+  \T{\forall_{T} q} &= \T{T} \to \T{q} \\
+  (\forall_{T} q)(x) &=
   \set{ \R{r} \in \Atyp{\T{T} \to \T{q}} \such
     \all{\R{y}}{\Atyp{\T{T}}}{
       \all{y \in T}
@@ -420,29 +420,29 @@ Similarly, the universal quantifier $\forall_{\asm{T}}$ maps $q \in
   }.
 \end{align*}
 %
-To verify that this is the right adjoint, suppose $p \in \Pred{\asm{S}
-  \times \asm{T}}$ and $q \in \Pred{\asm{S}}$. If $q \times \asm{T}
-\leq p$ is witnessed by $\R{f}$ then $q \leq \forall_{\asm{T}} p$ is
+To verify that this is the right adjoint, suppose $p \in \Pred{S
+  \times T}$ and $q \in \Pred{S}$. If $q \times T
+\leq p$ is witnessed by $\R{f}$ then $q \leq \forall_{T} p$ is
 witnessed by $\tpcalam{x}{\T{S}} \tpcalam{r}{\T{q}}
   \tpcalam{y}{\T{T}}{\R{f} \; (\combPair \; x \; y) \; r}$. Conversely,
-if $q \leq \forall_{\asm{T}} p$ is witnessed by $\R{g}$ then $q \times
-\asm{T} \leq p$ is witnessed by $\tpcalam{s}{\T{S} \times \T{T}}
+if $q \leq \forall_{T} p$ is witnessed by $\R{g}$ then $q \times
+T \leq p$ is witnessed by $\tpcalam{s}{\T{S} \times \T{T}}
   \tpcalam{r}{\T{q}}{\R{g} \; (\combFst \; s) \; r \; (\combSnd \; s)}$.
 
 It is customary to write $\some{y}{T}{q(x,y)}$ and
-$\all{y}{T}{q(x,y)}$ instead of $\exists_{\asm{T}} q$ and
-$\forall_{\asm{T}} q$.
+$\all{y}{T}{q(x,y)}$ instead of $\exists_{T} q$ and
+$\forall_{T} q$.
 
 \begin{proposition}
-  The operations $\exists_{\asm{T}}$ and $\forall_{\asm{T}}$
+  The operations $\exists_{T}$ and $\forall_{T}$
   respectively give a sound interpretation of the existential and
   universal quantifier with respect to first-order intuitionistic
   logic.
 \end{proposition}
 
 \begin{proof}
-  This follows from the fact that $\exists_{\asm{T}}$ and
-  $\forall_{\asm{T}}$ are the left and the right adjoint to weakening.
+  This follows from the fact that $\exists_{T}$ and
+  $\forall_{T}$ are the left and the right adjoint to weakening.
 \end{proof}
 
 \section{Substitution and the Beck-Chevalley condition}
@@ -453,20 +453,20 @@ is \emph{substitution}. There are two kinds of substitution in
 first-order logic: of terms into terms and of terms into formulas.
 
 Substitution of terms into terms is interpreted as composition.
-Suppose $s$ is a term of type $\asm{T}$ with a free variable $x$ of
-type $\asm{S}$, and $t$ is a term of type $\asm{U}$ with a free
-varaible $y$ of type $\asm{U}$. The terms $s$ and $t$ determine
+Suppose $s$ is a term of type $T$ with a free variable $x$ of
+type $S$, and $t$ is a term of type $U$ with a free
+varaible $y$ of type $U$. The terms $s$ and $t$ determine
 realized maps
 %
 \begin{equation*}
   \xymatrix{
-    {\asm{S}}
+    {S}
     \ar[r]^{\sem{s}}
     &
-    {\asm{T}}
+    {T}
     \ar[r]^{\sem{t}}
     &
-    {\asm{U}}
+    {U}
   }
 \end{equation*}
 %
@@ -484,34 +484,34 @@ $P(t(x))$ should be a subset of $S$. A moment's thought shows that it
 is the inverse image $\invim{t}(P) = \set{x \in S \such t(x) \in P}$.
 The category-theoretic equivalent of inverse image is pullback.
 
-Now let $p \in \Pred{\asm{T}}$ be a realizability predicate, $\iota_p
-: \asm{T}_p \monoto \asm{T}$ the corresponding mono, and $t : \asm{S}
-\to \asm{T}$ a realized map. If we think of~$p$ as a formula $p(y)$
-with variable $y : \asm{T}$ and $t(x)$ as a term with a variable $x :
-\asm{S}$ then the substitution of $t(x)$ for $y$ gives us a formula
-$p(t(x))$ with variable $x : \asm{S}$. As in the case of sets,
-$p(t(x))$ corresponds the pullback $\invim{t}(\asm{T}_p) \monoto
-\asm{S}$, as in the diagram
+Now let $p \in \Pred{T}$ be a realizability predicate, $\iota_p
+: T_p \monoto T$ the corresponding mono, and $t : S
+\to T$ a realized map. If we think of~$p$ as a formula $p(y)$
+with variable $y : T$ and $t(x)$ as a term with a variable $x :
+S$ then the substitution of $t(x)$ for $y$ gives us a formula
+$p(t(x))$ with variable $x : S$. As in the case of sets,
+$p(t(x))$ corresponds the pullback $\invim{t}(T_p) \monoto
+S$, as in the diagram
 %
 \begin{equation*}
   \xymatrix{
-    {\invim{t}(\asm{T}_p)}
+    {\invim{t}(T_p)}
     \pbcorner
     \ar[r]
     \ar@{ >->}[d]
     &
-    {\asm{T}_p}
+    {T_p}
     \ar@{ >->}[d]
     \\
-    {\asm{S}}
+    {S}
     \ar[r]_{t}
     &
-    {\asm{T}}
+    {T}
   }
 \end{equation*}
 %
-The realizability predicate $\invim{t}(p) \in \Pred{\asm{S}}$ which
-determined the mono $\invim{t}(\asm{T}_p) \monoto \asm{S}$ is given by
+The realizability predicate $\invim{t}(p) \in \Pred{S}$ which
+determined the mono $\invim{t}(T_p) \monoto S$ is given by
 %
 \begin{equation*}
   \T{\invim{t}(p)} = \T{p}
@@ -537,10 +537,10 @@ structure of the formula:
   (\subst{\phi}{\xtot}) \lor (\subst{\psi}{\xtot}), \\
   \subst{(\phi \implies \psi)}{\xtot} &= 
   (\subst{\phi}{\xtot}) \implies (\subst{\psi}{\xtot}), \\
-  \subst{(\some{y}{\asm{T}}{\phi})}{\xtot} &= 
-  \some{y \in \asm{T}} \subst{\phi}{\xtot},\\
-  \subst{(\all{y}{\asm{T}}{\phi})}{\xtot} &= 
-  \all{y \in \asm{T}} \subst{\phi}{\xtot}.
+  \subst{(\some{y}{T}{\phi})}{\xtot} &= 
+  \some{y \in T} \subst{\phi}{\xtot},\\
+  \subst{(\all{y}{T}{\phi})}{\xtot} &= 
+  \all{y \in T} \subst{\phi}{\xtot}.
 \end{align*}
 %
 In the last two cases we assume that $x_1, \ldots, x_n$ and the free
@@ -556,8 +556,8 @@ substitution along a realized map $t$:
   \invim{t}(p \land q) &\equiv \invim{t}(p) \land \invim{t}(q),\\
   \invim{t}(p \lor q) &\equiv \invim{t}(p) \lor \invim{t}(q),\\
   \invim{t}(p \implies q) &\equiv \invim{t}(p) \implies \invim{t}(q),\\
-  \invim{t}(\exists_{\asm{T}} p) &\equiv \exists_{\asm{T}} \invim{t}(p),\\
-  \invim{t}(\forall_{\asm{T}} p) &\equiv \forall_{\asm{T}} \invim{t}(p).
+  \invim{t}(\exists_{T} p) &\equiv \exists_{T} \invim{t}(p),\\
+  \invim{t}(\forall_{T} p) &\equiv \forall_{T} \invim{t}(p).
 \end{align*}
 %
 Pullback is a finite limit, hence it commutes with those operations
@@ -579,8 +579,8 @@ type $\T{\phi}$ as follows:
   \T{\phi_1 \land \phi_2} &= \T{\phi_1} \times \T{\phi_2}\\
   \T{\phi_1 \lor \phi_2} &= \T{\phi_1} + \T{\phi_2}\\
   \T{\phi_1 \implies \phi_2} &= \T{\phi_1} \to \T{\phi_2}\\
-  \T{\all{x}{\asm{T}}{\phi}} &= \T{T} \to \T{\phi} \\
-  \T{\some{x}{\asm{T}}{\phi}} &= \T{T} \times \T{\phi}.
+  \T{\all{x}{T}{\phi}} &= \T{T} \to \T{\phi} \\
+  \T{\some{x}{T}{\phi}} &= \T{T} \times \T{\phi}.
 \end{align*}
 %
 The realizability relation $\R{r} \rz \phi$, where $\R{r} \in
@@ -598,10 +598,10 @@ The realizability relation $\R{r} \rz \phi$, where $\R{r} \in
   \all{\R{s} \in \Atyp{\T{\phi_1}}} (\R{s} \rz \phi_1 \implies
     \defined{\R{r}\;\R{s}} \land \R{r}\;\R{s} \rz \phi_2)
   \\
-  \combPair\;\R{u}\;\R{r} \rz \some{x}{\asm{T}}{\phi} &\iff
+  \combPair\;\R{u}\;\R{r} \rz \some{x}{T}{\phi} &\iff
   \some{u \in T} \R{u} \rz[T] u \land \R{r} \rz \subst{\phi}{x \subto u}
   \\
-  \R{r} \rz \all{x}{\asm{T}}{\phi} &\iff
+  \R{r} \rz \all{x}{T}{\phi} &\iff
   \all{\R{u}}{\Atyp{\T{T}}}{
     \all{u \in T}
       (\R{u} \rz[T] u \implies
