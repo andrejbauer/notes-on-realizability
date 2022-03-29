@@ -74,12 +74,12 @@ We now give a precise definition of the ideas presented in the previous section.
 
 \begin{definition}
   An \defemph{assembly} over~$(\AA, \subAA)$ a tpca with a sub-tpca is a triple
-  $\asm{S} = \xasm{S}$ where $S$ is a set, $|S|$ is a type in~$\AA$, and $\rz_S$ is a relation between $\xAtyp{S}$ and~$S$
-  satisfying: for every $x \in S$ there is $\R{x} \in \xAtyp{S}$ such that $\R{x} \rz_S x$.
+  $\asm{S} = \xasm{S}$ where $S$ is a set, $|S|$ is a type in~$\AA$, and $\rz[S]$ is a relation between $\xAtyp{S}$ and~$S$
+  satisfying: for every $x \in S$ there is $\R{x} \in \xAtyp{S}$ such that $\R{x} \rz[S] x$.
 
   An \defemph{assembly map} $f : \asm{S} \to \asm{T}$ between assemblies $\asm{S}$ and $\asm{T}$ is a map $f : S \to T$
   between the underlying sets for which there exists $\R{f} \in \subAtyp{|S| \to |T|}$, called a \defemph{realizer}
-  of~$f$, satisfying: if $\R{x} \rz_S x$ then $\defined{\R{f} \, \R{x}}$ and $\R{f} \, \R{x} \rz_T f(x)$.
+  of~$f$, satisfying: if $\R{x} \rz[S] x$ then $\defined{\R{f} \, \R{x}}$ and $\R{f} \, \R{x} \rz[T] f(x)$.
 \end{definition}
 
 We often use the same letter for an element and its realizer, but differentiate between them by using different fonts, for instance the elements $x$, $y$, $f$, $g$ would have realizers $\R{x}$, $\R{y}$, $\R{f}$, $\R{g}$, respectively.
@@ -98,7 +98,7 @@ When $\subAA = \AA$ we write $\Asm{\AA}$ instead of $\Asm{\AA,\AA}$.
 When $\AA$ is untyped the definition of an assembly simplifies a bit because we need mention the (trivial) types.
 
 \begin{definition}
-  An \defemph{assembly} over an untyped pca~$\AA$ is a pair $\asm{S} = (S, {\rz_S})$ where $S$ is a set and $\rz_S$ is a relation between~$\AA$ and~$S$, such that for every $x \in S$ there is $r \in A$ and $r \rz_S x$.
+  An \defemph{assembly} over an untyped pca~$\AA$ is a pair $\asm{S} = (S, {\rz[S]})$ where $S$ is a set and $\rz[S]$ is a relation between~$\AA$ and~$S$, such that for every $x \in S$ there is $r \in A$ and $r \rz[S] x$.
 \end{definition}
 
 Assemblies and maps over $(\AA, \subAA)$ form a \defemph{category $\AsmA$}.
@@ -123,7 +123,7 @@ to prohibit such anomalies.
   \begin{equation*}
     \all{r}{\xAtyp{S}}{
       \all{x,y \in S}
-      (r \rz_S x \land r \rz_S y \implies x = y)
+      (r \rz[S] x \land r \rz[S] y \implies x = y)
     }.
   \end{equation*}
   %
@@ -144,7 +144,7 @@ Let $\unit$ be a type such that $\subAtyp{\unit}$ is inhabited.
 It always exists, because there is at least one type $s$, and then
 $\Atyp{s \to s \to s}$ contains $\combK_{s,s}$.
 %
-The \defemph{terminal assembly} $\one = (\set{\star}, \unit, {\rz_\one})$ has the trivial realizability relation, $r \rz_\one \star$ for all $r \in \subAtyp{t}$.
+The \defemph{terminal assembly} $\one = (\set{\star}, \unit, {\rz[\one]})$ has the trivial realizability relation, $r \rz[\one] \star$ for all $r \in \subAtyp{t}$.
 
 \begin{exercise}
   Show that $\one$ is the terminal object\sidenote{An object $T$ in a category is \defemph{terminal} when there is precisely one morphism to $T$ from every object.}
@@ -159,10 +159,10 @@ This may be a good moment to point out the difference between the \defemph{globa
 \subsubsection{Natural numbers}
 \label{sec:asm-natural-numbers}
 
-Suppose $(\AA, \subAA)$ is an n-tpca. Let $\asm{N} = (\NN, \ttnat, {\rz_N})$ be the set of natural numbers~$\NN$ realized by the numerals, for all $r \in \Atyp{\ttnat}$ and $n \in \NN$,
+Suppose $(\AA, \subAA)$ is an n-tpca. Let $\asm{N} = (\NN, \ttnat, {\rz[N]})$ be the set of natural numbers~$\NN$ realized by the numerals, for all $r \in \Atyp{\ttnat}$ and $n \in \NN$,
 %
 \begin{equation*}
-  r \rz_N n \iff
+  r \rz[N] n \iff
   r = \overline{n}.
 \end{equation*}
 %
@@ -184,13 +184,13 @@ is realized by $\combRec \, \mathtt{z} \, \mathtt{f}$.
 
 Let us work in the category $\Asm{\klone}$ over Kleene's first algebra and look at assembly structures on the set $2 = \set{0, 1}$.
 
-First, we have the trivial structure, namely the assembly of \defemph{classical truth values} $\nabla 2 = (2, {\rz_{\nabla 2}})$ -- the notation will become clear in \cref{sec:nabla}, and the nomenclature a bit later -- with the trivial realizability relation $n \rz_{\nabla \two} b$ for all $k \in \NN$ and $b \in 2$.
+First, we have the trivial structure, namely the assembly of \defemph{classical truth values} $\nabla 2 = (2, {\rz[\nabla 2]})$ -- the notation will become clear in \cref{sec:nabla}, and the nomenclature a bit later -- with the trivial realizability relation $n \rz[\nabla \two] b$ for all $k \in \NN$ and $b \in 2$.
 
-Second, we have the assembly of \defemph{Boolean values} $\two = (2, {\rz_{2}})$ where $n \rz_2 b$ if, and only if $n = b$.
+Second, we have the assembly of \defemph{Boolean values} $\two = (2, {\rz[2]})$ where $n \rz[2] b$ if, and only if $n = b$.
 
 The assemblies $\nabla 2$ and $\two$ are \emph{not} isomorphic because every assembly map $\nabla 2 \to \two$ is constant, although the identity map is an assembly map $\two \to \nabla 2$.
 
-There are still more two-element assemblies, for instance the assembly of \defemph{semidecidable values} $\asm{S} = (2, {\rz_S})$ given by
+There are still more two-element assemblies, for instance the assembly of \defemph{semidecidable values} $\asm{S} = (2, {\rz[S]})$ given by
 %
 \begin{equation*}
   n \rz b \iff
@@ -209,7 +209,7 @@ Again, the identity map is realized as an assembly map $\two \to \asm{S}$, but n
 
 As our third example we ask how to equip the real numbers with a realizability structure. Here we give the correct answer, but leave it unexplained for the time being.
 
-We work with an nr-tpca $\AA$ with a sub-n-tpca $\subAA$. Intuitively speaking, a realizer for $x \in \RR$ should allow us to compute arbitrarily good approximations of~$x$, so we define the relation $\rz_R$ between $\Atyp{\ttnat \to \ttnat \times \ttnat \times \ttnat}$ by stipulating that $\R{x} \rz_R x$ holds if, and only if,
+We work with an nr-tpca $\AA$ with a sub-n-tpca $\subAA$. Intuitively speaking, a realizer for $x \in \RR$ should allow us to compute arbitrarily good approximations of~$x$, so we define the relation $\rz[R]$ between $\Atyp{\ttnat \to \ttnat \times \ttnat \times \ttnat}$ by stipulating that $\R{x} \rz[R] x$ holds if, and only if,
 %
 \begin{equation*}
   \all{k \in \NN} \some{a, b, c \in \NN}
@@ -219,10 +219,10 @@ We work with an nr-tpca $\AA$ with a sub-n-tpca $\subAA$. Intuitively speaking, 
 %
 The triple of numbers $(a, b, c)$ is just a clumsy way of encoding the rational $\frac{a - b}{c}$, so in essence $\R{x}$ computes a sequence of rationals such that the $k$-th term is within~$2^{-k}$ of~$x$.
 
-The assembly of real numbers $\asm{R} = (R, \ttnat \to \ttnat \times \ttnat \times \ttnat, {\rz_R})$ has as its underlying set the realized reals
+The assembly of real numbers $\asm{R} = (R, \ttnat \to \ttnat \times \ttnat \times \ttnat, {\rz[R]})$ has as its underlying set the realized reals
 %
 \begin{equation*}
-  R = \set{x \in \RR \such \some{\R{x} \in \Atyp{\ttnat \to \ttnat \times \ttnat \times \ttnat}} \R{x} \rz_R x}.
+  R = \set{x \in \RR \such \some{\R{x} \in \Atyp{\ttnat \to \ttnat \times \ttnat \times \ttnat}} \R{x} \rz[R] x}.
 \end{equation*}
 %
 Which reals are so realized depends on the choice of~$\AA$. For example, first Kleene algebra realizes the \defemph{Turing computable reals}, whereas the second Kleene algebra realizes all reals.
@@ -239,10 +239,10 @@ always exists, because there is at least one type $s$, and then
 $\Atyp{s \to s \to s}$ contains $\combK_{s,s}$. Given any set $X$, let
 %
 \begin{equation*}
-  \nabla X = (X, t, {\rz_{\nabla X}})
+  \nabla X = (X, t, {\rz[\nabla X]})
 \end{equation*}
 %
-be the assembly whose underlying set is~$X$ and the realizability relation is trivial, i.e., $r \rz_{\nabla X} x$ for all $x \in X$ and $r \in A_t$.
+be the assembly whose underlying set is~$X$ and the realizability relation is trivial, i.e., $r \rz[\nabla X] x$ for all $x \in X$ and $r \in A_t$.
 
 If $f : X \to Y$ is any map between sets~$X$ and~$Y$ then~$f$ is a morphism $\nabla f : \nabla X \to \nabla Y$ because it is tracked by $\tpcalam{x}{t}{x}$. Thus~$\nabla$ is a functor
 %
@@ -274,11 +274,11 @@ Assemblies and modest sets have several equivalent formulations, which were form
 \subsection{Existence predicates}
 \label{sec:existence-predicates}
 
-A realizability relation $\rz_S$ is a subset of $\xAtyp{S} \times S$. By transposition it may be equivalently expressed
+A realizability relation $\rz[S]$ is a subset of $\xAtyp{S} \times S$. By transposition it may be equivalently expressed
 as a map $\Ex_S : S \to \pow{\xAtyp{S}}$. The correspondence is
 %
 \begin{equation*}
-  \R{x} \rz_S x \iff \R{x} \in \Ex_S(x).
+  \R{x} \rz[S] x \iff \R{x} \in \Ex_S(x).
 \end{equation*}
 %
 Because every $x$ is realized by something, $\Ex_S(x)$ always contains at least one element. Thus an assembly $\xasm{S}$ may be equivalently presented as a triple $(S, |S|, \Ex_S)$ where $\Ex_S : S \to \pow{\xAtyp{S}}$ is a map, called the \defemph{existence predicate}, such that $\Ex_S(x)$ contains at least one element for every $x \in S$. The name suggests that the elements of $\Ex_S(x)$ are computational witnesses for ``existence of~$x$''.
@@ -290,10 +290,10 @@ Under this formulation a map $f : \asm{S} \to \asm{T}$ is realized if there exis
 \subsection{Representations}
 \label{sec:representations}
 
-By transposing $\rz_S$ the other way around we obtain \defemph{representations}. Suppose first that $S$ is a modest set. Since every realizer $r \in \xAtyp{S}$ realizes at most one $x \in S$, we may define a partial map $\delta_S : \xAtyp{S} \parto S$ by
+By transposing $\rz[S]$ the other way around we obtain \defemph{representations}. Suppose first that $S$ is a modest set. Since every realizer $r \in \xAtyp{S}$ realizes at most one $x \in S$, we may define a partial map $\delta_S : \xAtyp{S} \parto S$ by
 %
 \begin{equation*}
-  \delta_S(r) = x \iff r \rz_S x.
+  \delta_S(r) = x \iff r \rz[S] x.
 \end{equation*}
 %
 The map $\delta_S$ is surjective because every $x \in S$ is realized, but it need not be defined everywhere. The triple $(S, |S|, \delta_S)$ uniquely describes the modest set~$S$. The map $\delta_S$ is called a \defemph{representation} of~$S$.
@@ -302,18 +302,18 @@ A map $f : S \to T$ is realized or tracked by $\R{f} \in \subAtyp{|S| \to |T|}$ 
 
 Representations and realized maps form a category~$\Rep{\AA,\subAA}$, which is equivalent to $\Mod{\AA, \subAA}$.
 
-When we transpose $\rz_S$ for a a general assembly $\asm{S}$ the result is a \defemph{multi-valued representation}, which is a map $\delta_S : \xAtyp{S} \multito \pow{S}$ that takes each $r \in \xAtyp{S}$ to the (possibly empty) set of elements it realizes,
+When we transpose $\rz[S]$ for a a general assembly $\asm{S}$ the result is a \defemph{multi-valued representation}, which is a map $\delta_S : \xAtyp{S} \multito \pow{S}$ that takes each $r \in \xAtyp{S}$ to the (possibly empty) set of elements it realizes,
 %
 \begin{equation*}
-  \delta_S(r) = \set{ x \in S \such r \rz_S x}.
+  \delta_S(r) = \set{ x \in S \such r \rz[S] x}.
 \end{equation*}
 %
 The map is surjective in the sense that for every $x \in S$ there is $r \in \xAtyp{S}$ such that $x \in \delta_S(r)$.
 
-To summarize, there are three ways of specifying the realizability structure of an assembly: with a realizability relation $\rz_S$, an existence predicate~$\Ex_s$, and a multi-valued representation $\delta_S$. Each determines the other two by
+To summarize, there are three ways of specifying the realizability structure of an assembly: with a realizability relation $\rz[S]$, an existence predicate~$\Ex_s$, and a multi-valued representation $\delta_S$. Each determines the other two by
 %
 \begin{equation*}
-  r \rz_S x \iff
+  r \rz[S] x \iff
   r \in \Ex_S(x) \iff
   x \in \delta_S(r).
 \end{equation*}
@@ -326,7 +326,7 @@ This formulation only works for modest sets. With each modest set~$S$ we may ass
 %
 \begin{equation*}
   q \per_S r \iff
-  \some{x \in S} q \rz_S x \land r \rz_S x.
+  \some{x \in S} q \rz[S] x \land r \rz[S] x.
 \end{equation*}
 %
 The pair $(|S|, {\per_S})$ suffices for the reconstruction of the
@@ -365,7 +365,7 @@ equivalence class $[r]_S$, $\defined{p\,r}$ and $[p\,r]_T = f([r]_S)$.
   %
   Suppose $\asm{S}$ is an assembly, $T$ is a set, and $f : T \to S$ is
   a bijection. Then $\asm{S}$ is isomorphic to $\asm{T} = (T, |S|,
-  {\rz_T})$ where $r \rz_T x$ is defined as $r \rz_S f(x)$.
+  {\rz[T]})$ where $r \rz[T] x$ is defined as $r \rz[S] f(x)$.
 \end{lemma}
 
 
@@ -391,10 +391,10 @@ equivalence class $[r]_S$, $\defined{p\,r}$ and $[p\,r]_T = f([r]_S)$.
 
   In the other direction the functor $G : \Per{\AA, \subAA} \to
   \Mod{\AA, \subAA}$ sends a per $(|T|, {\per_T})$ to the modest set
-  $(\|T\|/{\per_T}, |T|, {\rz_T})$ whose realizability relation is
+  $(\|T\|/{\per_T}, |T|, {\rz[T]})$ whose realizability relation is
   %
   \begin{equation*}
-    r \rz_T [q] \iff r \per_T q.
+    r \rz[T] [q] \iff r \per_T q.
   \end{equation*}
   %
   A morphism $[p] : (S, {\per_S}) \to (T, {\per_T})$ is mapped to the
@@ -406,7 +406,7 @@ equivalence class $[r]_S$, $\defined{p\,r}$ and $[p\,r]_T = f([r]_S)$.
   verified. A modest set~$\xasm{S}$ is isomorphic to
   $G(F(S))$ by \cref{lemma:iso-assembly} applied to the bijection
   which takes an $x \in S$ to $[r]_{G(F(S))}$, where $r \in \xAtyp{S}$
-  is any realizer such that $r \rz_S x$. We leave the verification
+  is any realizer such that $r \rz[S] x$. We leave the verification
   that the isomorphisms are natural as exercise.
 \end{proof}
 
@@ -446,12 +446,12 @@ A simulation $\rho: (\EE, \subEE) \pcato (\FF, \subFF)$ induces an \defemph{appl
   \ff{\rho}: \Asm{\EE, \subEE} \longrightarrow \Asm{\FF, \subFF}
 \end{equation*}
 %
-which maps an assembly $\asm{S} = (S, {\rz_S})$ over $(\EE, \subEE)$ to the assembly
+which maps an assembly $\asm{S} = (S, {\rz[S]})$ over $(\EE, \subEE)$ to the assembly
 $\ff{\rho} \, \asm{S}$ over $(\FF, \subFF)$, whose underlying set is $S$ and
 %
 \begin{align*}
-  q \rz_{\ff{\rho} \asm{S}} x
-  \iff \some{r \in \EE} q \in \rho[r] \land r \rz_S x.
+  q \rz[\ff{\rho \asm{S}}] x
+  \iff \some{r \in \EE} q \in \rho[r] \land r \rz[S] x.
 \end{align*}
 %
 That is, $\ff{\rho}$ replaces realizers in~$\EE$ with their simulations in~$\FF$.

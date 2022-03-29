@@ -84,17 +84,17 @@ $\asm{S}$ and~$\asm{T}$ is the assembly
 %
 \begin{equation*}
   \asm{S} \times \asm{T} =
-  (S \times T, |S| \times |T|, {\rz_{S \times T}})
+  (S \times T, |S| \times |T|, {\rz[S \times T]})
 \end{equation*}
 %
 with the realizability relation
 %
 \begin{equation*}
-  p \rz_{S \times T} (x,y)
+  p \rz[S \times T] (x,y)
   \iff
-  \combFst\,q \rz_S x
+  \combFst\,q \rz[S] x
   \land
-  \combSnd\,q \rz_T y.
+  \combSnd\,q \rz[T] y.
 \end{equation*}
 %
 and the projection maps $\pi_1 : S \times T \to S$, $\pi_1 : (x,y)
@@ -112,15 +112,15 @@ for~$h$, and $\R{h} =
 job:
 %
 \begin{align*}
-  \R{u} \rz_U u
+  \R{u} \rz[U] u
   &\implies
-  \R{f}\,\R{u} \rz_S f\,u
+  \R{f}\,\R{u} \rz[S] f\,u
   \land
-  \R{g}\,\R{u} \rz_T g\,u \\
+  \R{g}\,\R{u} \rz[T] g\,u \\
   &\implies
-  \combPair\, (\R{f}\,\R{u})\, (\R{g}\,\R{u}) \rz_{S \times T} (f\,u, g\,u) \\
+  \combPair\, (\R{f}\,\R{u})\, (\R{g}\,\R{u}) \rz[S \times T] (f\,u, g\,u) \\
   &\iff
-  \R{h}\,\R{u} \rz_{S \times T} h(u).
+  \R{h}\,\R{u} \rz[S \times T] h(u).
 \end{align*}
 
 We may form $n$-ary products $S_1 \times \cdots \times S_n$ for $n \geq 1$ as nested binary products. The case $n = 0$ corresponds to the \defemph{terminal object},
@@ -173,10 +173,10 @@ to augment this with realizers. The equalizer of $f, g : \asm{S} \to
   \asm{E} =
   (\set{x \in S \such f\,x = g\,x},
    |S|,
-   {\rz_E})
+   {\rz[E]})
 \end{equation}
 %
-where $\R{x} \rz_E x$ if, and only if, $\R{x} \rz_S x$. The map $e : E
+where $\R{x} \rz[E] x$ if, and only if, $\R{x} \rz[S] x$. The map $e : E
 \to S$ is the subset inclusion, $e(x) = x$. It is realized by
 $\tpcalam{x}{|S|} x$. Clearly, $e$ equalizes~$f$ and~$g$.
 
@@ -224,11 +224,11 @@ assembly
 %
 \begin{equation*}
   \asm{P} = (\set{(x,y) \in S \times T \such f\,x = g(y)}, |S| \times
-  |T|, {\rz_P})
+  |T|, {\rz[P]})
 \end{equation*}
 %
-where $p \rz_P (x,y)$ if, and only if, $\combFst\,p
-\rz_S x$ and $\combSnd\,p \rz_T y$.
+where $p \rz[P] (x,y)$ if, and only if, $\combFst\,p
+\rz[S] x$ and $\combSnd\,p \rz[T] y$.
 
 Finite products, the terminal object, equalizers, and pullbacks are
 special cases of \defemph{finite limits}. A category which has all finite
@@ -401,22 +401,22 @@ underlying tpcas.
   with sums. The coproduct of $\asm{S}$ and $\asm{T}$ is the assembly
   %
   \begin{equation*}
-    \asm{S} + \asm{T} = (S + T, |S| + |T|, \rz_{S + T})
+    \asm{S} + \asm{T} = (S + T, |S| + |T|, \rz[S + T])
   \end{equation*}
   %
-  where $\rz_{S+T}$ is most easily defined in terms of the existence
+  where $\rz[S+T]$ is most easily defined in terms of the existence
   predicate $\Ex_{S+T}$:
   %
   \begin{equation*}
     \Ex_{S+T}(u) =
     \xcase{u}
-    {\iota_1(x)}{\set{\combLeft\,\R{x} \such \R{x} \rz_S x}}
-    {\iota_2(y)}{\set{\combRight\,\R{y} \such \R{y} \rz_T y}.}
+    {\iota_1(x)}{\set{\combLeft\,\R{x} \such \R{x} \rz[S] x}}
+    {\iota_2(y)}{\set{\combRight\,\R{y} \such \R{y} \rz[T] y}.}
   \end{equation*}
   %
   That is, the realizers for $\iota_1(x)$ are of the form
-  $\combLeft\,\R{x}$ where $\R{x} \rz_S x$, and the realizers for
-  $\iota_2(y)$ are of the form $\combRight\,\R{y}$ where $\R{y} \rz_T
+  $\combLeft\,\R{x}$ where $\R{x} \rz[S] x$, and the realizers for
+  $\iota_2(y)$ are of the form $\combRight\,\R{y}$ where $\R{y} \rz[T]
   y$. The canonical inclusions $\iota_1 : S \to S + T$ and $\iota_2 :
   T \to S + T$ are realized by $\combLeft_{|S|,|T|}$ and
   $\combRight_{|S|,|T|}$, respectively.
@@ -439,10 +439,10 @@ underlying tpcas.
   $t$, define the assembly
   %
   \begin{equation*}
-    \asm{A}_t = (\Atyp{t}, t, {\rz_t})
+    \asm{A}_t = (\Atyp{t}, t, {\rz[t]})
   \end{equation*}
   %
-  with $r \rz_t q \iff r = q$. For types $s$ and $t$ let $s+t$ be the
+  with $r \rz[t] q \iff r = q$. For types $s$ and $t$ let $s+t$ be the
   underlying type of the coproduct $\asm{A}_s + \asm{A}_t$,
   %
   \begin{equation*}
@@ -620,10 +620,10 @@ The other finite colimits are more easily dealt with. The initial
 object is the \defemph{empty assembly}
 %
 \begin{equation*}
-  \zero = (\emptyset, o, \rz_\zero)
+  \zero = (\emptyset, o, \rz[\zero])
 \end{equation*}
 %
-where $o$ is any type.\sidenote{We need not specify $\rz_\zero$
+where $o$ is any type.\sidenote{We need not specify $\rz[\zero]$
   because there is only one relation between $\Atyp{o}$ and
   $\emptyset$.} Its universal property is that there is exactly one
 morphism $\zero \to \asm{S}$ for every assembly~$\asm{S}$. The
@@ -663,11 +663,11 @@ equivalence class $[y]_{\equiv}$.
 In $\AsmA$ the coequalizer of $f, g : \asm{S} \to \asm{T}$ is the
 assembly $\asm{T}/{\equiv}$ where $T/{\equiv}$ is the coequalizer of
 $f$ and $g$ computed in sets, as described above, $|\asm{T}/{\equiv}|
-= |T|$, and $\rz_{T/{\equiv}}$ is defined by
+= |T|$, and $\rz[T/{\equiv}]$ is defined by
 %
 \begin{equation*}
-  \R{y} \rz_{T/{\equiv}} [z]_{\equiv} \iff
-  \some{y}{T}{\R{y} \rz_T y \land y \equiv z}.
+  \R{y} \rz[X] [z]_{\equiv} \iff
+  \some{y \in T} \R{y} \rz[T] y \land y \equiv z.
 \end{equation*}
 %
 The canonical quotient map $q : T \to T/{\equiv}$ is realized by
@@ -719,11 +719,11 @@ are precisely the injective and surjective maps, respectively.
   $\AsmA$ if it is mono in $\Set$. Conversely, suppose $f$ is mono in
   $\AsmA$, and consider maps $g, h : U \to T$ in $\Set$ such that $f
   \circ g = f \circ h$. Define the assembly $\asm{U} = (U, |S| \times
-  |S|, {\rz_U})$ with the realizability relation
+  |S|, {\rz[U]})$ with the realizability relation
   % 
   \begin{equation*}
-    p \rz_U u
-    \iff \combFst\,p \rz_S f\,u \land \combSnd\,p \rz_S g\,u.
+    p \rz[U] u
+    \iff \combFst\,p \rz[S] f\,u \land \combSnd\,p \rz[S] g\,u.
   \end{equation*}
   % 
   The maps $g$ and $h$ are morphisms from $\asm{U}$ to $\asm{S}$
@@ -768,9 +768,9 @@ Recall that $f : \asm{S} \to \asm{T}$ is a \defemph{regular mono} if
 there are $g, h : \asm{T} \to \asm{U}$ such that~$f$ is their
 equalizer. Regular monos are well behaved, and we can think of them as
 subspace embeddings. Given an assembly $\asm{T}$ and a subset $T'
-\subseteq T$, define the assembly $\asm{T}' = (T', |T|, {\rz_{T'}})$
-as the restriction of $\asm{T}$, i.e., $\R{x} \rz_{T'} x$ if, and only
-if $x \in T'$ and $\R{x} \rz_T x$. The subset inclusion $\iota : T'
+\subseteq T$, define the assembly $\asm{T}' = (T', |T|, {\rz[T']})$
+as the restriction of $\asm{T}$, i.e., $\R{x} \rz[T'] x$ if, and only
+if $x \in T'$ and $\R{x} \rz[T] x$. The subset inclusion $\iota : T'
 \to T$ is a morphism of assemblies because it is realized by
 $\tpcalam{x}{|T|} x$, and it is a regular mono because it is
 the equalizer of the maps $g, h : T \to \nabla \two$, defined by
@@ -807,8 +807,8 @@ The following characterization of regular monos is often useful.
   A realized map $f : \asm{S} \to \asm{T}$ is a regular mono if, and
   only if, $f$ is injective and there exists $\R{i} \in \subAtyp{|T|
     \to |S|}$ such that, for all $x \in S$ and $\R{y} \in \Atyp{|T|}$,
-  if $\R{y} \rz_T f\,x$ then $\R{i}\,\R{y}$ is defined and
-  $\R{i}\,\R{y} \rz_S x$.
+  if $\R{y} \rz[T] f\,x$ then $\R{i}\,\R{y}$ is defined and
+  $\R{i}\,\R{y} \rz[S] x$.
 \end{proposition}
 
 \begin{proof}
@@ -818,8 +818,8 @@ The following characterization of regular monos is often useful.
   equalizer of~$g$ and~$h$, as computed in~\eqref{eq:asm-equalizer}:
   %
   \begin{align*}
-    \asm{E} &= (\set{y \in T \such g(y) = h(y)}, |T|, {\rz_E}), \\
-    \R{y} \rz_E y &\iff \R{y} \rz_T y, \\
+    \asm{E} &= (\set{y \in T \such g(y) = h(y)}, |T|, {\rz[E]}), \\
+    \R{y} \rz[E] y &\iff \R{y} \rz[T] y, \\
     e(y) &= y.
   \end{align*}
   %
@@ -827,8 +827,8 @@ The following characterization of regular monos is often useful.
   \asm{E} \to \asm{S}$ such that $e = f \circ i$. We claim that any
   realizer $\R{i} \in \subAtyp{|T| \to |S|}$ of~$i$ has the desired
   property. Suppose $x \in S$, $\R{y} \in \Atyp{|T|}$, and $\R{y}
-  \rz_T f\,x$. Because $g(f\,x) = h(f\,x)$, $f\,x \in E$ and so $\R{y}
-  \rz_E f\,x$. Then $\R{i}\,\R{y}$ is defined and $\R{i}\,\R{y} \rz_S
+  \rz[T] f\,x$. Because $g(f\,x) = h(f\,x)$, $f\,x \in E$ and so $\R{y}
+  \rz[E] f\,x$. Then $\R{i}\,\R{y}$ is defined and $\R{i}\,\R{y} \rz[S]
   i(f\,x)$. This is what we want because $f(i(f\,x)) = e(f\,x) =
   f\,x$, from which $i(f\,x) = x$ follows by injectivity of~$f$.
 
@@ -855,8 +855,8 @@ Note that that in the construction of coequalizers, as described
 above, we may start with an arbitrary equivalence relation: given an
 assembly $\asm{T}$ and an equivalence relation $\equiv$ on~$T$, define
 the \defemph{quotient assembly} $\asm{T}/{\equiv} = (T/{\equiv}, |T|,
-\rz_{T/{\equiv}})$ whose realizability relation satisfies $\R{x}
-\rz_{T/{\equiv}} [y]$ if, and only if, $\R{x} \rz_T x$ and $x \equiv
+\rz[T/{\equiv}])$ whose realizability relation satisfies $\R{x}
+\rz[T/{\equiv}] [y]$ if, and only if, $\R{x} \rz[T] x$ and $x \equiv
 y$ for some $x \in T$. The quotient map $q : T \to T/{\equiv}$ is
 realized by $\tpcalam{x}{|T|} x$, and is a coequalizer of $g,
 h : \asm{V} \to \asm{T}$ where\sidenote{You should convince yourself
@@ -865,9 +865,9 @@ h : \asm{V} \to \asm{T}$ where\sidenote{You should convince yourself
 %
 \begin{align*}
   \asm{V} &= (\set{(x,y) \in T \times T \such x \equiv y},
-             |T| \times |T|, {\rz_V}),\\
-  p \rz_V (x,y) &\iff
-  \combFst\,p \rz_T x \land \combSnd\,p \rz_T y, \\
+             |T| \times |T|, {\rz[V]}),\\
+  p \rz[V] (x,y) &\iff
+  \combFst\,p \rz[T] x \land \combSnd\,p \rz[T] y, \\
   g (x, y) &= x,\\
   h (x, y) &= y.
 \end{align*}
@@ -886,8 +886,8 @@ There is another characterization of regular epis which is used often.
   \label{prop:reg-epi-when}%
   in $\AsmA$ a morphism $f : \asm{T} \to \asm{U}$ is a regular epi
   if, and only if, there exists $\R{i} \in \subAtyp{|U| \to |T|}$
-  such that, whenever $\R{y} \rz_U y$ then $\defined{\R{i}\,\R{y}}$
-  and there is $x \in f^{-1}(y)$ such that $\R{i}\,\R{y} \rz_T x$.
+  such that, whenever $\R{y} \rz[U] y$ then $\defined{\R{i}\,\R{y}}$
+  and there is $x \in f^{-1}(y)$ such that $\R{i}\,\R{y} \rz[T] x$.
 \end{proposition}
 
 \begin{proof}
@@ -905,12 +905,12 @@ There is another characterization of regular epis which is used often.
   $q$ both equalize $g$ and $h$, there exists a unique isomorphism $i
   : \asm{U} \to \asm{T}/{\equiv}$ such that $q = i \circ f$. Let
   $\R{i} \in \subAtyp{|U| \to |T|}$ be a realizer for~$i$. We claim
-  that it has the required properties. If $\R{y} \rz_U y$ then
-  $\defined{\R{i}\,\R{y}}$ and $\R{i}\,\R{y} \rz_{T/{\equiv}} i(y)$.
+  that it has the required properties. If $\R{y} \rz[U] y$ then
+  $\defined{\R{i}\,\R{y}}$ and $\R{i}\,\R{y} \rz[T/{\equiv}] i(y)$.
   Because $f$ is surjective there exists $x' \in T$ such that $f(x') =
   y$, from which we get $i(y) = i(f(x')) = q(x') = [x']$. Since
-  $\R{i}\,\R{y} \rz_{T/{\equiv}} [x']$ there is $x \in T$ such that
-  $\R{i}\,\R{y} \rz_T x$ and $x \equiv x'$. The element~$x$ is the one
+  $\R{i}\,\R{y} \rz[T/{\equiv}] [x']$ there is $x \in T$ such that
+  $\R{i}\,\R{y} \rz[T] x$ and $x \equiv x'$. The element~$x$ is the one
   we are looking for because $x \equiv x'$ implies $f\,x = f(x') = y$.
 
   Conversely, suppose $\R{i}$ is as in the statement of the
@@ -966,7 +966,7 @@ mono. Indeed, we may take $\asm{U} = \asm{S}/{\equiv}$, where $x
 \equiv y \iff f\,x = f(y)$, and $q : \asm{S} \to \asm{S}/{\equiv}$ the
 canonical quotient map. The assembly $\asm{V}$ is the restriction
 of~$\asm{T}$ to the subset $V = \set{y \in T \such \some{x}{S}{f\,x =
-    y}}$ so that $|V| = |T|$ and $\R{y} \rz_V y \iff \R{y} \rz_T y$
+    y}}$ so that $|V| = |T|$ and $\R{y} \rz[V] y \iff \R{y} \rz[T] y$
 for all $y \in V$. The map $i : V \to T$ is the subset inclusion.
 Finally, $b : U \to V$ is characterized by $b([x]_{\equiv}) = f\,x$.
 It is realized by the same realizers as~$f$.
@@ -1078,18 +1078,18 @@ feature of assemblies.
   %
   \begin{equation*}
     \asm{P} = (\set{(x,y) \in S \times T \such f\,x \equiv y},
-               |S| \times |T|, {\rz_P}),
+               |S| \times |T|, {\rz[P]}),
   \end{equation*}
   %
-  $\combPair\,\R{x}\,\R{y} \rz_P (x,y)$ if, and only if, $\R{x} \rz_S
-  x$ and $\R{y} \rz_T y$ and $r : (x,y) \mapsto x$. Let us use
+  $\combPair\,\R{x}\,\R{y} \rz[P] (x,y)$ if, and only if, $\R{x} \rz[S]
+  x$ and $\R{y} \rz[T] y$ and $r : (x,y) \mapsto x$. Let us use
   \cref{prop:reg-epi-when} to show that~$r$ is regular epi.
   The realizer $\R{i} =
   \tpcalam{x}{|S|}{\combPair\,x\,(\R{f}\,x)}$ satisfies the
-  conditions of the proposition: if $x \in S$ and $\R{x} \rz_S x$ then
+  conditions of the proposition: if $x \in S$ and $\R{x} \rz[S] x$ then
   $\R{i}\,\R{x} = \combPair\,\R{x}\,(\R{f}\,\R{x})$ is defined. There
   is $y \in T$ such that $f\,x = [y]_{\equiv}$, hence $r (x, y) = x$,
-  and also $\R{i}\,\R{x} \rz_P (x, y)$.
+  and also $\R{i}\,\R{x} \rz[P] (x, y)$.
 \end{proof}
 
 The regular structure of assemblies is important for at least two
@@ -1169,19 +1169,19 @@ map satisfying this property.
   \begin{equation*}
     \asm{T}^{\asm{S}} =
     (\set{f : S \to T \such \text{$f$ is realized}},
-     |S| \to |T|, {\rz_{S \to T}})
+     |S| \to |T|, {\rz[S \to T]})
   \end{equation*}
   %
   where
   %
   \begin{equation*}
-    \R{f} \rz_{S \to T} f
+    \R{f} \rz[S \to T] f
     \iff
     \all{x}{S}{
       \all{\R{x} \in |S|}
-          (\R{x} \rz_S x \implies
+          (\R{x} \rz[S] x \implies
           \defined{\R{f}\,\R{x}} \land
-          \R{f}\,\R{x} \rz_T f\,x)
+          \R{f}\,\R{x} \rz[T] f\,x)
       }.
   \end{equation*}
   %
@@ -1551,13 +1551,13 @@ In symbols, an assembly $S$ is canonically projective when, for all
 $x, y \in S$, $r \in A_{|S|}$,
 %
 \begin{equation*}
-  r \rz_S x \land r \rz_S y \implies x = y.
+  r \rz[S] x \land r \rz[S] y \implies x = y.
 \end{equation*}
 %
 The canonically projective assemblies are, up to isomorphism,
 precisely the projective objects of the category of assemblies.
 
-A canonically projective modest set $(S, |S|, {\rz_S})$ is determined,
+A canonically projective modest set $(S, |S|, {\rz[S]})$ is determined,
 up to isomorphism, by the set of the total realizers~$\|S\|$. This
 follows from \cref{lemma:iso-assembly} and the fact that
 projectivity ensures that $S$ and $\|S\|$ are in bijective

@@ -42,20 +42,20 @@ Given a uniform family $(\asm{S}_i)_{i \in \asm{I}}$, we may form the
 %
 \begin{equation*}
   \dsum_{i \in \asm{I}} \asm{S}_i =
-  (\dsum_{i \in I} S_i, |I| \times |S|, \rz_{\dsum_{i \in I} S_i})
+  (\dsum_{i \in I} S_i, |I| \times |S|, \rz[\dsum_{i \in I S_i}])
 \end{equation*}
 %
 where $\dsum_{i \in I} S_i = \set{(i,x) \such i \in I \land x \in
   S_i}$ is the disjoint sum of the sets $S_i$ and
 %
 \begin{equation*}
-  \combPair\;\R{i}\;\R{x} \rz_{\dsum_{i \in I} S_i} (i, x)
+  \combPair\;\R{i}\;\R{x} \rz[\dsum_{i \in I S_i}] (i, x)
   \iff
-  \R{i} \rz_I i
+  \R{i} \rz[I] i
   \land
   x \in S_i
   \land
-  \R{x} \rz_{S_i} x.  
+  \R{x} \rz[S_i] x.  
 \end{equation*}
 %
 Similarly, we may form the \defemph{dependent product} of a uniform
@@ -70,18 +70,18 @@ is
   }.
 \end{equation*}
 %
-Let $\rz_{\dprod_{i \in I} S_i}$ be the relation between $\Atyp{|I|
+Let $\rz[\dprod_{i \in I S_i}]$ be the relation between $\Atyp{|I|
   \to |S|}$ and $\dprod_{i \in I} S_i$, defined by
 %
 \begin{equation*}
-  \R{f} \rz_{\dprod_{i \in I} S_i} f
+  \R{f} \rz[\dprod_{i \in I S_i}] f
   \iff
   \all{\R{i}}{\Atyp{|I|}}{
     \all{i \in I}
-      (\R{i} \rz_I i
+      (\R{i} \rz[I] i
       \implies
       \defined{\R{f}\;\R{i}} \land
-      \R{f}\;\R{i} \rz_{S_i} f(i))
+      \R{f}\;\R{i} \rz[S_i] f(i))
   }.
 \end{equation*}
 %
@@ -90,9 +90,9 @@ Finally, define the dependent product of the family to be the assembly
 \begin{equation*}
   \dprod_{i \in \asm{I}} \asm{S}_i =
   (\set{f \in \dprod_{i \in I} S_i \such
-    \some{\R{f}}{\Atyp{|I| \to |S|}}{\R{f} \rz_{\dprod_{i \in I} S_i}
+    \some{\R{f}}{\Atyp{|I| \to |S|}}{\R{f} \rz[\dprod_{i \in I S_i}]
       f}},
-  |I| \to |S|, {\rz_{\dprod_{i \in I} S_i}}).
+  |I| \to |S|, {\rz[\dprod_{i \in I S_i}]}).
 \end{equation*}
 %
 Notice how at the level of underlying types the dependency on the

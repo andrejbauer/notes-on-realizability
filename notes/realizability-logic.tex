@@ -128,8 +128,8 @@ assembly $\asm{S}_p$ by
 \begin{align*}
   S_p &= \set{x \in S \such \some{\R{r}}{\Atyp{|p|}}{\R{r} \in p(x)}}, \\
   |S_p| &= |S| \times |p|, \\
-  \combPair\;\R{x}\;\R{r} \rz_{S_p} x &\iff
-  \R{r} \in p(x) \land \R{x} \rz_S x.
+  \combPair\;\R{x}\;\R{r} \rz[S_p] x &\iff
+  \R{r} \in p(x) \land \R{x} \rz[S] x.
 \end{align*}
 %
 The subset inclusion $\iota_p : S_p \to S$ is realized by $\combFst$.
@@ -146,7 +146,7 @@ The mono $\iota_p : \asm{S}_p \to \asm{S}$ is called a \defemph{standard
   %
   \begin{equation*}
     p(x) = \tbigcup_{y \in \inv{u}(x)} \Ex_U(y) =
-    \set{\R{y} \in \Atyp{|p|} \such \some{y}{U}{u(y) = x \land \R{y} \rz_U y}}.
+    \set{\R{y} \in \Atyp{|p|} \such \some{y}{U}{u(y) = x \land \R{y} \rz[U] y}}.
   \end{equation*}
   %
   We claim that the standard mono $\iota_p : \asm{S}_p \to \asm{S}$ is
@@ -174,9 +174,9 @@ $\iota_p \leq \iota_q$.
 \begin{lemma}
   \label{lemma:realizability-predicate-leq}%
   For realizability predicates $p$ and $q$ on an assembly $\asm{S}$,
-  $p \leq q$ if, and only if, there exists $\R{f} \in \compAtyp{|S|
+  $p \leq q$ if, and only if, there exists $\R{f} \in \subAtyp{|S|
     \to |p| \to |q|}$ such that, for all $x \in S$, whenever $\R{x}
-  \rz_S x$ and $\R{r} \rz p(x)$ then $\defined{\R{f}\;\R{x}\;\R{r}}$
+  \rz[S] x$ and $\R{r} \rz p(x)$ then $\defined{\R{f}\;\R{x}\;\R{r}}$
   and $\R{f}\;\R{x}\;\R{r} \rz q(x)$. We say that $\R{f}$
   \defemph{witnesses} $p \leq q$.
 \end{lemma}
@@ -184,17 +184,17 @@ $\iota_p \leq \iota_q$.
 \begin{proof}
   Suppose first that $p \leq q$. Then $\iota_p \leq \iota_q$, which
   means that $S_p \subseteq S_q$ and that the subset inclusion $i :
-  S_p \to S_q$ is realized, say by $\R{i} \in \compAtyp{|S| \times |p|
+  S_p \to S_q$ is realized, say by $\R{i} \in \subAtyp{|S| \times |p|
     \to |S| \times |q|}$. Let $\R{f} = \tpcalam{x}{|S|}
     \tpcalam{r}{|p|}{\combSnd\;(\R{i}\;(\combPair\;x\;r))}$. Suppose $x
-  \in S$, $\R{x} \in \Atyp{|S|}$, $\R{r} \rz p(x)$, and $\R{x} \rz_S
-  x$. Then $\combPair\;\R{x}\;\R{r} \rz_{S_p} x$, therefore
-  $\R{i}\;(\combPair\;\R{x}\;\R{r}) \rz_{S_q} x$, which implies
+  \in S$, $\R{x} \in \Atyp{|S|}$, $\R{r} \rz p(x)$, and $\R{x} \rz[S]
+  x$. Then $\combPair\;\R{x}\;\R{r} \rz[S_p] x$, therefore
+  $\R{i}\;(\combPair\;\R{x}\;\R{r}) \rz[S_q] x$, which implies
   $\R{f}\;\R{x}\;\R{r} \rz q(x)$ because $\R{f}\;\R{x}\;\R{r} =
   \combSnd\;(\R{i}\;(\combPair\;\R{x}\;\R{r}))$.
 
   Conversely, let $\R{f}$ be a realizer as in the statement of the
-  lemma, and suppose $\R{x} \rz_S x$ and $\R{r} \rz p(x)$. Because
+  lemma, and suppose $\R{x} \rz[S] x$ and $\R{r} \rz p(x)$. Because
   $\R{f}\;\R{x}\;\R{r} \rz q(x)$, we see that $x \in S_q$. Hence $S_p
   \subseteq S_q$. A realizer for the inclusion map $i : S_p \to S_q$
   is $\R{i} = \tpcalam{u}{|S| \times
@@ -259,7 +259,7 @@ equivalent ones.
 
 \begin{proof}
   Let $\asm{S}$ be an assembly and $\unit$ any type with an element
-  $\ttunit \in \compAtyp{\unit}$. Define the predicates $\bot, \top :
+  $\ttunit \in \subAtyp{\unit}$. Define the predicates $\bot, \top :
   \asm{S} \to \pow{\Atyp{\unit}}$ by
   % 
   \begin{equation*}
@@ -333,8 +333,8 @@ equivalent ones.
   \leq q$ is witnessed by $\tpcalam{x}{|S|} \tpcalam{w}{(|p| \to
       |q|) \times |p|}{(\combFst\;w)\; (\combSnd\;w)}$. If $r \land p
   \leq q$ is witnessed by $\R{f}$ then $r \leq p \lthen q$ is witnessed
-  by $\tpcalam{x}{|S|} \pcalam{w}{|r|}
-    \tannot{u}{|p|}{\R{f}\;(\combPair\;w\;u)}$.
+  by $\tpcalam{x}{|S|} \tpcalam{w}{|r|}
+    \tpcalam{u}{|p|} \R{f}\;(\combPair\;w\;u)$.
 \end{proof}
 
 \section{Quantifiers}
@@ -389,7 +389,7 @@ $\exists_{\asm{T}} q \in \Pred{\asm{S}}$ defined by
   |\exists_{\asm{T}} q| &= |T| \times |q| \\
   (\exists_{\asm{T}} q)(x) &=
   \set{ \combPair\;\R{y}\;\R{r} \in \Atyp{|T| \times |q|} \such
-    \some{y}{T}{\R{y} \rz_T y \land \R{r} \rz q(x,y)}
+    \some{y}{T}{\R{y} \rz[T] y \land \R{r} \rz q(x,y)}
   }.
 \end{align*}
 %
@@ -413,7 +413,7 @@ Similarly, the universal quantifier $\forall_{\asm{T}}$ maps $q \in
   \set{ \R{r} \in \Atyp{|T| \to |q|} \such
     \all{\R{y}}{\Atyp{|T|}}{
       \all{y \in T}
-        (\R{y} \rz_T y \implies
+        (\R{y} \rz[T] y \implies
         \defined{\R{r}\;\R{y}} \land
         \R{r}\;\R{y} \rz q(x,y))
     }
@@ -599,12 +599,12 @@ The realizability relation $\R{r} \rz \phi$, where $\R{r} \in
     \defined{\R{r}\;\R{s}} \land \R{r}\;\R{s} \rz \phi_2)
   \\
   \combPair\;\R{u}\;\R{r} \rz \some{x}{\asm{T}}{\phi} &\iff
-  \some{u \in T} \R{u} \rz_T u \land \R{r} \rz \subst{\phi}{x \subto u}
+  \some{u \in T} \R{u} \rz[T] u \land \R{r} \rz \subst{\phi}{x \subto u}
   \\
   \R{r} \rz \all{x}{\asm{T}}{\phi} &\iff
   \all{\R{u}}{\Atyp{|T|}}{
     \all{u \in T}
-      (\R{u} \rz_T u \implies
+      (\R{u} \rz[T] u \implies
       \defined{\R{r}\;\R{u}} \land \R{r}\;\R{u} \rz \subst{\phi}{x \subto u})
     }.
 \end{align*}

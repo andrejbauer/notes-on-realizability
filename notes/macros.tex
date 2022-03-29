@@ -227,7 +227,7 @@
 
 % Realizability
 \newcommand{\comp}[1]{#1_{\#}}
-\newcommand{\rz}{\Vdash}
+\newcommand{\rz}[1][]{\Vdash_{#1}}
 \newcommand{\Ex}{\mathsf{E}}
 \newcommand{\per}{\approx}
 
@@ -240,8 +240,10 @@
 \newcommand{\eff}[1]{\effsym #1}
 
 \newcommand{\R}[1]{\mathtt{#1}}
-\newcommand{\xasm}[1]{(#1, |#1|, {\rz_{#1}})}
-\newcommand{\asm}[1]{\mathbf{#1}}
+\newcommand{\asmset}[1]{|#1|}
+\newcommand{\asmty}[1]{\|#1\|}
+\newcommand{\xasm}[1]{(\asmset{#1|}, \asmty{#1}, {\rz[#1]})}
+\newcommand{\asm}[1]{#1}
 
 \newcommand{\rep}[1]{\mathbf{#1}}
 \newcommand{\xrep}[1]{(#1, \delta_{#1})}
