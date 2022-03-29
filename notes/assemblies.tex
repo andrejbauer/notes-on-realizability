@@ -446,19 +446,17 @@ A simulation $\rho: (\EE, \subEE) \pcato (\FF, \subFF)$ induces an \defemph{appl
   \ff{\rho}: \Asm{\EE, \subEE} \longrightarrow \Asm{\FF, \subFF}
 \end{equation*}
 %
-which maps an assembly $\asm{S} = \xasm{S}$ over $(\EE, \subEE)$ to the assembly
+which maps an assembly $\asm{S} = (S, {\rz_S})$ over $(\EE, \subEE)$ to the assembly
 $\ff{\rho} \, \asm{S}$ over $(\FF, \subFF)$, whose underlying set is $S$ and
 %
 \begin{align*}
-  |\ff{\rho} \asm{S}| &= |S|,
-  &
   q \rz_{\ff{\rho} \asm{S}} x
   \iff \some{r \in \EE} q \in \rho[r] \land r \rz_S x.
 \end{align*}
 %
 That is, $\ff{\rho}$ replaces realizers in~$\EE$ with their simulations in~$\FF$.
 
-Suppose $r \in \subFF$ is a realizer for~$\rho$. An assembly map $f: \asm{S} \to \asm{T}$, realized by $\mathtt{f} \in \typ{\EE}{|S| \to |T|}$, is mapped by $\ff{\rho}$ to the same underlying map $\ff{\rho}\,f = f$, which is realized by $r \, \mathtt{g}$ for any $\mathtt{g} \in \rho[\mathtt{f}]$.
+Suppose $r \in \subFF$ is a realizer for~$\rho$. An assembly map $f: \asm{S} \to \asm{T}$, realized by $\mathtt{f} \in \subEE$, is mapped by $\ff{\rho}$ to the same underlying map $\ff{\rho}\,f = f$, which is realized by $r \, \mathtt{g}$ for any $\mathtt{g} \in \rho[\mathtt{f}]$.
 
 \begin{exercise}
   Prove that and applicative functor induced by a \emph{discrete} simulation restricts to modest sets.

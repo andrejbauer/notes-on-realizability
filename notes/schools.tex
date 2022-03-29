@@ -1,12 +1,8 @@
 \section{Schools of Computable Mathematics}
 \label{sec:schools}
 
-Computable mathematics was developed by several ``schools'', mostly
-independent of each other, and each coming from its own tradition.
-Realizability covers most approaches to computable mathematics that
-have been proposed. To get a particular variation we just choose an
-appropriate tpca with sub-tpca. We look at some of them and relate the
-traditional terminology and notions to ours.
+Realizability is a unifying framework for several ``schools'' of computable mathematics.
+To get a particular variation we just choose an appropriate tpca with sub-tpca. We look at some of them and relate the traditional terminology and notions to ours.
 
 \subsection{Recursive Mathematics}
 \label{sec:recursive-math}
@@ -15,9 +11,9 @@ traditional terminology and notions to ours.
   one effectivity} or \emph{Russian constructivism}~\sidecite{russ}, is
 computable mathematics done with type 1 machines, cf.\
 \cref{sec:type-1}. In our settings it corresponds to the
-category $\Rep{\NN}$ of representations over the first Kleene algebra.
+category $\Rep{\klone}$ of representations over the first Kleene algebra.
 
-An object of $\Rep{\NN}$ is called a \defemph{numbered set}. It is a pair
+An object of $\Rep{\klone}$ is called a \defemph{numbered set}. It is a pair
 $(S, \delta_S)$, where $S$ is a set $\delta_S : \NN \parto S$ a
 partial surjection, called a \defemph{numbering} of~$S$. A function $f :
 S \to T$ is \defemph{realized} by $n \in \NN$ when, for all $m \in
@@ -27,15 +23,13 @@ S \to T$ is \defemph{realized} by $n \in \NN$ when, for all $m \in
   \text{$\defined{\pr{n}{m}}$ and $\delta_T(\pr{n}{m}) = f(\delta_S(m))$.}
 \end{equation*}
 %
-A numbered set $(S, \delta_S)$ has countably many elements because it
-is covered by the countable set~$\dom{\delta_S}$. This is sometimes
-considered a disadvantage and a reason for preferring type~2 machines,
-which are able to compute with uncountable structures such as real
-numbers. However, in \cref{countable-sets} we will see that a
-numbered set may be \emph{internally uncountable}, i.e., it appears to
-be uncountable inside the category of numbered sets. In fact, it is
-perfectly possible to develop analysis in this setting. One gets an
-unusual variant which is a rich source of counter-examples.
+A numbered set $(S, \delta_S)$ has countably many elements because it is covered by the
+countable set~$\dom{\delta_S}$. This is sometimes considered a disadvantage and a reason
+for preferring type~2 machines, which are able to compute with uncountable structures such
+as real numbers. However, \emph{internally} to the category the reals form a
+Cauchy-complete archimedean ordered field, on top of which it is perfectly possible to
+develop a version of compute analysisg. One gets an unusual variant which is a rich source
+of counter-examples.
 
 \subsection{Equilogical spaces}
 \label{sec:equilogical-spaces}
@@ -47,25 +41,23 @@ maps between countably-based spaces. In \cref{sec:tte} we
 relate equilogical spaces to Type Two Effectivity, which is another
 school of computability on general topological spaces.
 
-Recall that a topological space is \emph{countably-based} if it has a
-countable topological basis. Equivalently, a space is countably-based
+Recall that a topological space is \defemph{countably based} or \defemph{2-countable} if it has a countable topological basis. Equivalently, a space is countably based
 when it has a countable \emph{subbasis}. We prefer to work with
 subbases because they simplify the treatment of computable maps
-between spaces. Thus we define a countably-based space to be a pair
+between spaces. Thus we define a countably based space to be a pair
 $(X, (U_i)_{i \in \NN})$ where $X$ is a topological space and
 $(U_i)_{i \in \NN}$ is an enumeration of \emph{subbasic} open sets.
 These generate the topology of $X$ by taking finite intersections and
 arbitrary unions. While we usually omit an explicit mention of the
-subbasis $(U_i)_{i \in \NN}$, we do insist that a countably-based
+subbasis $(U_i)_{i \in \NN}$, we do insist that a countably based
 space always be given \emph{together with} a particular subbasis. This
 allows us to avoid the axiom of choice.
 
-The graph model~$\Scott$ is a countably-based space. We always take it
-with the subbasis $(\upper{n})_{n \in \NN}$. Recall that $\upper{n} =
-\set{A \subseteq \NN \such n \in A}$.
+The graph model~$\Scott$ is a countably based space. We always take its
+subbasic open sets to be $\upper{n} = \set{A \subseteq \NN \such n \in A}$, for $n \in \NN$.
 
-A \defemph{(countably-based) equilogical space} $(X, (U_i)_{i \in \NN},
-{\equiv_X})$ is a countably-based topological space~$(X, (U_i)_{i \in
+A \defemph{(countably based) equilogical space} $(X, (U_i)_{i \in \NN},
+{\equiv_X})$ is a countably based topological space~$(X, (U_i)_{i \in
   \NN})$ with an equivalence relation~$\equiv_X$. We usually do not
 bother writing the subbasis $(U_i)_{i \in \NN}$. The canonical
 quotient map $q_X : X \to X/{\equiv_X}$ maps each $x \in X$ to its
@@ -91,12 +83,12 @@ commutes, i.e., $f([x]_X) = [g(x)]_Y$ for all $x \in X$. Morphisms
 compose as expected. The category of equilogical spaces and morphisms
 between them is denoted by~$\Equ$.
 
-A countably-based topological space $X$ may be construed as an
+A countably based topological space $X$ may be construed as an
 equilogical space $(X, {=_X})$ with equality as the equivalence
 relation. A morphism $f : (X, {=_X}) \to (Y, {=_Y})$ is the same
 thing as a continuous map $f : X \to Y$ so that we have a full and
 faithful embedding $\wTop \to \Equ$ of the category $\wTop$ of
-countably-based spaces into the category $\Equ$.
+countably based spaces into the category $\Equ$.
 
 Let us show that $\Equ$ and $\Asm{\Scott}$ are equivalent. A
 \defemph{pre-embedding} $e : X \to Y$ between topological spaces is a
@@ -285,8 +277,8 @@ topological spaces are $T_0$-spaces.
 \end{proof}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Computable countably-based spaces}
-\label{sec:computable-countably-based-spaces}
+\subsection{Computable countably based spaces}
+\label{sec:computable-countably based-spaces}
 
 We have so far studied the \emph{continuous} version of realizability
 over the graph model in which the realizers for morphisms may be
@@ -294,7 +286,7 @@ arbitrary continuous maps. But what about the \emph{mixed}
 version~$\Asm{\Scott, \comp{\Scott}}$, is it also equivalent to a
 version of equilogical spaces? To see that the answer to the question
 is affirmative, we first need to define computable maps between
-countably-based spaces.
+countably based spaces.
 
 Recall from \cref{sec:graph-model} that an enumeration operator
 $g: \Scott \to \Scott$ is computable when its graph $\Gamma(g)$ is a
@@ -323,7 +315,7 @@ maps.
   %
   \indexdef{computable continuous map}%
   %
-  A continuous map $f : X \to Y$ between countably-based spaces $(X,
+  A continuous map $f : X \to Y$ between countably based spaces $(X,
   (U_i)_{i \in \NN})$ and $(Y, (V_j)_{j \in \NN})$ is
   \defemph{computable} when there exists a c.e.~set $F \subseteq \NN
   \times \NN$ such that:
@@ -408,7 +400,7 @@ Theorems.
   \index{Theorem!Computable Embedding Theorem}%
   \index{computable!Computable Embedding Theorem}%
   %
-  Every countably-based space can be computably pre-embedded
+  Every countably based space can be computably pre-embedded
   into~$\Scott$.
 \end{theorem}
 
@@ -444,7 +436,7 @@ Theorems.
   \index{Theorem!Computable Extension Theorem}%
   \index{computable!Computable Extension Theorem}%
   %
-  Let $X$ and $Y$ be countably-based topological spaces and $f: X \to
+  Let $X$ and $Y$ be countably based topological spaces and $f: X \to
   Y$ a computable map between them. Then there exists a computable map
   $g: \Scott \to \Scott$ such that the following diagram commutes:
   %
@@ -476,15 +468,16 @@ Theorems.
   commute. For any $x \in X$,
   %
   \begin{align*}
-    m \in g(e_X(x)) &\iff
-      \some{i_1, \ldots, i_n}{\NN}{
+    m &\in g(e_X(x)) \\
+      &\liff
+      \some{i_1, \ldots, i_n \in \NN}{
         x \in U_{i_1} \cap \cdots \cap U_{i_n} \land
         (\code{\set{i_1, \ldots, i_n}}, m) \in F
       } \\
-      &\iff
+      &\liff
       f(x) \in V_m
       \\
-      &\iff
+      &\liff
       m \in e_Y(f(x)).
   \end{align*}
   %
@@ -546,7 +539,7 @@ that~$\comp{\Equ}$ is equivalent to $\Asm{\Scott, \comp{\Scott}}$.
   extend computable maps to computable enumeration operators.
 \end{proof}
 
-The category $\comp{\wTop}$ of countably-based spaces and computable
+The category $\comp{\wTop}$ of countably based spaces and computable
 maps is embedded fully and faithfully into $\comp{\Equ}$. The
 embedding works as in the continuous case: a topological space~$X$ is
 mapped to the equilogical space $(X, {=_X})$, and a computable
@@ -640,11 +633,11 @@ depth~\sidecite{Schroeder,Weihrauch}. We only mention a basic result whose
 proof is not too complicated.
 
 \begin{proposition}
-  Every countably-based $T_0$-space has an admissible representation.
+  Every countably based $T_0$-space has an admissible representation.
 \end{proposition}
 
 \begin{proof}
-  Suppose $(X, (U_i)_{i \in \NN})$ is a countably-based $T_0$-space,
+  Suppose $(X, (U_i)_{i \in \NN})$ is a countably based $T_0$-space,
   and let $e_X : X \to \Scott$ be the neighborhood filter. Define the
   representation $\delta_X : \Baire \parto X$ by
   %
