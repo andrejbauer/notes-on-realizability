@@ -434,108 +434,69 @@ topological spaces.
 \section{Applicative functors}
 \label{sec:applicative-functors}
 
-\begin{proposition}
-  \label{th:applicative_morphism_induce_functor}%
-  %
-  \index{functor!induced by applicative morphism}%
-  \index{applicative!morphism!functor induced by}%
-  %
-  A discrete applicative morphism $\rho: (\EE, \subEE) \pcato (\FF,
-  \subFF)$ induces a functor
-                                %
-  \begin{equation*}
-     \ff{\rho}: \Mod{\EE, \subEE} \longrightarrow \Mod{\FF, \subFF},
-  \end{equation*}
-                                %
-  defined as follows. For $S \in \Mod{\EE, \subEE}$, let
-                                %
-  \begin{align*}
-    |\ff{\rho} S| &= |S|,
-    &
-    \Ex_{\ff{\rho} S} t &= \bigcup_{u \in \Ex_S t} \rho(u).
-  \end{align*}
-                                %
-  A realized function $f: S \to T$ is mapped to $\ff{\rho} f = f:
-  |\ff{\rho} S| \to |\ff{\rho} T|$.
-\end{proposition}
 
-\begin{proof}
-  Because $\rho$ is discrete $\ff{\rho} S$ is indeed a modest set.
-  Let~$r$ be a realizer for~$\rho$. The function $\ff{\rho} f :
-  \ff{\rho} S \to \ff{\rho} T$ is realized because if $u \rz_{S \to T}
-  f$ then there exists $x \in \subFF$ such that $\rho(u, x)$, and $r
-  \cdot x \rz_{\ff{\rho} S \to \ff{\rho} T} f$.
-\end{proof}
+\index{functor!induced by applicative morphism}%
+\index{applicative!morphism!functor induced by}%
 
-All applicative morphism that we are going to consider are
-discrete.
+Categories of assemblies themselves form a category whose morphisms are functors induced by simulations, known as \emph{applicative functors}. These were defined and studied by John Longley~\cite{Longley:94}, and are the appropriate notion of morphisms of assemblies, as well as realizability toposes. We review their definition and several basic results about them, which we cannot do without assuming some knowledge of basic category theory.
+
+A simulation $\rho: (\EE, \subEE) \pcato (\FF, \subFF)$ induces an \defemph{applicative functor}
+%
+\begin{equation*}
+  \ff{\rho}: \Asm{\EE, \subEE} \longrightarrow \Asm{\FF, \subFF}
+\end{equation*}
+%
+which maps an assembly $\asm{S} = \xasm{S}$ over $(\EE, \subEE)$ to the assembly
+$\ff{\rho} \, \asm{S}$ over $(\FF, \subFF)$, whose underlying set is $S$ and
+%
+\begin{align*}
+  |\ff{\rho} \asm{S}| &= |S|,
+  &
+  q \rz_{\ff{\rho} \asm{S}} x
+  \iff \some{r \in \EE} q \in \rho[r] \land r \rz_S x.
+\end{align*}
+%
+That is, $\ff{\rho}$ replaces realizers in~$\EE$ with their simulations in~$\FF$.
+
+Suppose $r \in \subFF$ is a realizer for~$\rho$. An assembly map $f: \asm{S} \to \asm{T}$, realized by $\mathtt{f} \in \typ{\EE}{|S| \to |T|}$, is mapped by $\ff{\rho}$ to the same underlying map $\ff{\rho}\,f = f$, which is realized by $r \, \mathtt{g}$ for any $\mathtt{g} \in \rho[\mathtt{f}]$.
+
+\begin{exercise}
+  Prove that and applicative functor induced by a \emph{discrete} simulation restricts to modest sets.
+\end{exercise}
+
+The properties of the induced applicative functor depend on the properties of the simulation, as follows. (We presume existence of categorical structure on assemblies which will only be established in \cref{cha:categ-structure}.)
 
 \begin{proposition}
-  \label{th:applicative_morphisms_properties}%
+  \label{th:applicative_functor_properties}%
   %
-  Let $\gamma: (\EE, \subEE) \pcato
-  (\FF, \subFF)$ be a discrete applicative morphism.
-  %
+  Let $\rho: (\EE, \subEE) \pcato (\FF, \subFF)$ be a simulation.
+  % 
   \begin{enumerate}
-  \item[(1)] The induced functor $\ff{\gamma}: \Mod{\EE, \subEE} \to
-    \Mod{\FF, \subFF}$ is faithful, and it preserves finite limits,
-    and coequalizers of kernel pairs.
-  \item[(2)] If $\gamma$ is projective then $\ff{\gamma}$ preserves
-    projective objects.
-  \item[(3)] If $\gamma$ is decidable then $\ff{\gamma}$ preserves
-    finite colimits and the natural numbers object.
+  \item
+    %
+    The functor $\ff{\rho}$ is faithful  and it preserves finite limits.
+  \item
+    %
+    If $\rho$ is projective then $\ff{\rho}$ preserves projective objects.
+  \item
+    %
+    If $\rho$ is decidable then $\ff{\rho}$ preserves finite colimits and the natural numbers object.
   \end{enumerate}
 \end{proposition}
 
 \begin{proof}
-  (1) $\ff{\gamma}$ preserves finite limits
-  by~\cite[Proposition~2.2.2]{Longley:94}, and coequalizers of kernel
-  pairs by~\cite[Proposition~2.2.3]{Longley:94}. It is faithful
+  The functor $\ff{\gamma}$ preserves finite limits
+  by~\cite[Proposition~2.2.2]{Longley:94}. It is faithful
   because it acts trivially on morphisms.
   %
-  (2) See~\cite[Theorem~2.4.12]{Longley:94}.
-  %
-  (3) See~\cite[Theorem~2.4.19]{Longley:94}.
+  For the second claim see~\cite[Theorem~2.4.12]{Longley:94}, and for the third one~\cite[Theorem~2.4.19]{Longley:94}.
 \end{proof}
 
-
-\begin{theorem}
-  \label{th:applicative_morphisms_tfae}%
-  If $(\EE, \subEE)$ and $(\FF, \subFF)$ are equivalent via discrete
-  applicative morphisms
-                                %
-  \begin{align*}
-    \delta &: (\EE, \subEE) \pcato (\FF, \subFF),
-    &
-    \gamma &: (\FF, \subFF) \pcato (\EE, \subEE),
-  \end{align*}
-                                %
-  then $\Mod{\EE, \subEE}$ and $\Mod{\FF, \subFF}$ are equivalent
-  via the induced functors
-                                %
-  \begin{equation*}
-    \xymatrix{
-      **[l]{\Mod{\EE, \subEE}} \ar@<0.5ex>[r]^{\ff{\delta}}
-      &
-      **[r]{\Mod{\FF, \subFF}} \ar@<0.5ex>[l]^{\ff{\gamma}}
-      }
-  \end{equation*}
-                                %
-\end{theorem}
-
-\begin{proof}
-  By Corollary~\ref{th:corollary2_applicative_morphisms_properties},
-  there exist functions $\gamma: \EE \to \FF$ and $\delta: \FF \to
-  \EE$ which are applicative morphisms. It is straightforward to check
-  that~$\ff{\gamma}$ and~$\ff{\delta}$ constitute an equivalence of
-  $\Mod{\EE, \subEE}$ and $\Mod{\FF, \subFF}$. See also~\cite[Theorem
-  2.5.6]{Longley:94}.
-\end{proof}
-
+Adjunctions and equivalences between simulations carry over to the induced morphisms.
 
 \begin{theorem}
   \label{th:applicative_adjunction_functor_adjunction}%
-  Suppose we have discrete applicative morphisms
+  Consider simulations
                                 %
   \begin{align*}
     \delta &: (\EE, \subEE) \pcato (\FF, \subFF),
@@ -544,60 +505,64 @@ discrete.
   \end{align*}
                                 %
   \begin{enumerate}
-  \item[(1)] If $\gamma \dashv \delta$ is an adjoint pair, then
-    $\ff{\gamma} \dashv \ff{\delta}$ is an adjunction.
+  \item If $\gamma \dashv \delta$ is an adjoint pair, then
+    $\ff{\gamma} \dashv \ff{\delta}$ is an adjunction of functors.
     %
-    \index{adjunction!induced by applicative adjunction}%
+    \index{adjunction!induced by simulation adjunction}%
     %
-    In
-    addition,~$\ff{\gamma}$ preserves finite limits, and~$\ff{\delta}$
-    preserves regular epis.
+  \item If $\gamma \dashv \delta$ is an adjoint inclusion then the counit of the adjunction $\ff{\gamma} \dashv \ff{\delta}$ is a natural isomorphism.
     %
-  \item[(2)] If $\gamma \dashv \delta$ is an inclusion then the counit 
-    $\ff{\gamma} \circ \ff{\delta} \natto \one_{\Mod{\EE, \subEE}}$ is 
-    a natural isomorphism.
-    %
-  \item[(3)] If $\gamma \dashv \delta$ is a retraction then the unit
-    $\one_{\Mod{\FF, \subFF}} \natto \ff{\delta} \circ \ff{\gamma}$ is
-    a natural isomorphism.
+  \item If $\gamma \dashv \delta$ is an adjoint retraction then the unit of the adjunction $\ff{\gamma} \dashv \ff{\delta}$ is a natural isomorphism.
+  \item If $\gamma$ and $\delta$ form an equivalence, then so do $\ff{\gamma}$ and
+    $\ff{\delta}$.
   \end{enumerate}
 \end{theorem}
 
 \begin{proof}
-  This is the easy part of~\cite[Proposition 2.5.9]{Longley:94},
-  except that we are using the extended notion of applicative
-  morphism. Also, we are restricting attention to categories of modest
-  sets, whereas~\cite[Proposition 2.5.9]{Longley:94} is stated for
-  functors between realizability toposes. This is not a problem
-  because by
-  Corollary~\ref{th:corollary1_applicative_morphisms_properties} the
-  applicative morphisms~$\gamma$ and~$\delta$ are discrete, therefore
-  the induced functors between toposes restrict to functors between
-  modest sets.
+  The first three claims are subsumed by the easy part of~\cite[Proposition 2.5.9]{Longley:94}, except that we are using simulations on pcas with sub-pcas. Also, we are restricting attention to categories of assemblies rather than realizability toposes, but this is not a problem because by applicative functors on realizability toposes restrict to assemblies.
+
+  That equivalences of simulations induce equivalences of categories is shown in~\cite[Theorem 2.5.6]{Longley:94}.
 \end{proof}
 
+The construction of assemblies and induced applicative functors extends to a 2-functor between 2-categories. Indeed, given $\gamma, \delta : (\EE, \subEE) \pcato (\FF, \subFF)$ such that $\gamma \preceq \delta$, there is an induced natural transformation $\zeta : \ff{\gamma} \natto \ff{\delta}$ defined by
+%
+\begin{equation*}
+  \zeta_{\asm{S}} = \id[S] : \ff{\gamma}\,\asm{S} \to \ff{\delta}\,\asm{S}.
+\end{equation*}
+%
+This is a valid definition, for if $t \in \subFF$ is a translation witnessing $\gamma \preceq \delta$, then $t$ tracks every $\zeta_{\asm{S}}$, and the naturality condition is trivial.
 
-\begin{proposition}
-  \label{th:inclusion_retraction_properties}%
-  \textnormal{\cite[Proposition 2.5.11]{Longley:94}} For discrete
-  applicative morphisms $\gamma: \EE \pcato \FF$ and $\delta: \FF
-  \pcato \EE$:
-  %
-  \begin{enumerate}
-  \item[(1)] If $(\gamma \vdash \delta)$ is an applicative inclusion
-    then~$\ff{\delta}$ is full and faithful and preserves
-    exponentials.
-  \item[(2)] If $(\gamma \vdash \delta)$ is an applicative retraction
-    then~$\ff{\delta}$ preserves finite colimits, and~$\ff{\gamma}$
-    reflects isomorphisms.
-  \end{enumerate}
-\end{proposition}
-
-\begin{proof}
-  See \cite[Proposition 2.5.11]{Longley:94}.
-\end{proof}
-
-
+An applicative functor induced by $\rho : (\EE, \subEE) \pcato (\FF, \subFF)$ commutes up to natural isomorphism with the constant assembly functor~$\nabla$ from \cref{sec:nabla},
+%
+\begin{equation*}
+  \xymatrix{
+    {\Asm{\EE, \subEE}}
+    \ar[rr]^{\ff{\rho}}
+    & &
+    {\Asm{\FF, \subFF}}
+    \\
+    & {\Set}
+    \ar[ur]_{\nabla}
+    \ar[ul]^{\nabla}
+  }
+\end{equation*}
+%
+as well as with the underlying set functor~$\Gamma$,
+%
+\begin{equation*}
+  \xymatrix{
+    {\Asm{\EE, \subEE}}
+    \ar[rr]^{\ff{\rho}}
+    \ar[dr]_{\Gamma}
+    & &
+    {\Asm{\FF, \subFF}}
+    \ar[dl]^{\Gamma}
+    \\
+    & {\Set}
+  }
+\end{equation*}
+%
+See \cite[Proposition 2.2.4]{Longley:94} for the proof.
 
 %%% Local Variables: 
 %%% mode: latex
