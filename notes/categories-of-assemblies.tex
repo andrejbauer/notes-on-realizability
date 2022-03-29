@@ -108,19 +108,19 @@ property, suppose $f : \asm{U} \to \asm{S}$ and $g : \asm{U} \to
 U \to S \times T$ for which $f = \pi_1 \circ h$ and $g = \pi_2 \circ g$,
 namely $h(u) = \pair{f,g}(u) = (f(u), g(u))$. We only need a realizer
 for~$h$, and $\R{h} =
-\tpcalam{u}{|U|}{\combPair\;(\R{f}\;u)\;(\R{g}\;u)}$ does the
+\tpcalam{u}{|U|}{\combPair\,(\R{f}\,u)\,(\R{g}\,u)}$ does the
 job:
 %
 \begin{align*}
   \R{u} \rz_U u
   &\implies
-  \R{f}\;\R{u} \rz_S f(u)
+  \R{f}\,\R{u} \rz_S f(u)
   \land
-  \R{g}\;\R{u} \rz_T g(u) \\
+  \R{g}\,\R{u} \rz_T g(u) \\
   &\implies
-  \combPair\; (\R{f}\;\R{u})\; (\R{g}\;\R{u}) \rz_{S \times T} (f(u), g(u)) \\
+  \combPair\, (\R{f}\,\R{u})\, (\R{g}\,\R{u}) \rz_{S \times T} (f(u), g(u)) \\
   &\iff
-  \R{h}\;\R{u} \rz_{S \times T} h(u).
+  \R{h}\,\R{u} \rz_{S \times T} h(u).
 \end{align*}
 
 We may form $n$-ary products $S_1 \times \cdots \times S_n$ for $n \geq 1$ as nested binary products. The case $n = 0$ corresponds to the \defemph{terminal object},
@@ -227,7 +227,7 @@ assembly
   |T|, {\rz_P})
 \end{equation*}
 %
-where $\combPair\;\R{x}\;\R{y} \rz_P (x,y)$ if, and only if, $\R{x}
+where $\combPair\,\R{x}\,\R{y} \rz_P (x,y)$ if, and only if, $\R{x}
 \rz_S x$ and $\R{y} \rz_T y$.
 
 Finite products, the terminal object, equalizers, and pullbacks are
@@ -384,10 +384,10 @@ underlying tpcas.
   satisfying, for all $x$, $y$, $f$, $g$ of appropriate types,
   %
   \begin{align*}
-    \defined{\combLeft_{s,t}\;x} &, \\
-    \defined{\combRight_{s,t}\;y} &,\\
-    \combCase_{s,t,u}\;(\combLeft_{s,t}\;x)\;f\;g &\klgeq f\;x, \\
-    \combCase_{s,t,u}\;(\combRight_{s,t}\;y)\;f\;g &\klgeq g\;y.
+    \defined{\combLeft_{s,t}\,x} &, \\
+    \defined{\combRight_{s,t}\,y} &,\\
+    \combCase_{s,t,u}\,(\combLeft_{s,t}\,x)\,f\,g &\klgeq f\,x, \\
+    \combCase_{s,t,u}\,(\combRight_{s,t}\,y)\,f\,g &\klgeq g\,y.
   \end{align*}
   %
   We say that the elements $\combLeft$, $\combRight$, and $\combCase$
@@ -419,13 +419,13 @@ underlying tpcas.
   \begin{equation*}
     \Ex_{S+T}(u) =
     \xcase{u}
-    {\iota_1(x)}{\set{\combLeft\;\R{x} \such \R{x} \rz_S x}}
-    {\iota_2(y)}{\set{\combRight\;\R{y} \such \R{y} \rz_T y}.}
+    {\iota_1(x)}{\set{\combLeft\,\R{x} \such \R{x} \rz_S x}}
+    {\iota_2(y)}{\set{\combRight\,\R{y} \such \R{y} \rz_T y}.}
   \end{equation*}
   %
   That is, the realizers for $\iota_1(x)$ are of the form
-  $\combLeft\;\R{x}$ where $\R{x} \rz_S x$, and the realizers for
-  $\iota_2(y)$ are of the form $\combRight\;\R{y}$ where $\R{y} \rz_T
+  $\combLeft\,\R{x}$ where $\R{x} \rz_S x$, and the realizers for
+  $\iota_2(y)$ are of the form $\combRight\,\R{y}$ where $\R{y} \rz_T
   y$. The canonical inclusions $\iota_1 : S \to S + T$ and $\iota_2 :
   T \to S + T$ are realized by $\combLeft_{|S|,|T|}$ and
   $\combRight_{|S|,|T|}$, respectively.
@@ -440,7 +440,7 @@ underlying tpcas.
   \end{equation*}
   %
   is realized by
-  $\tpcalam{u}{|S|+|T|}{\combCase\;u\;\R{f}\;\R{g}}$. It is the
+  $\tpcalam{u}{|S|+|T|}{\combCase\,u\,\R{f}\,\R{g}}$. It is the
   unique morphism satisfying $h \circ \iota_1 = f$ and $h \circ
   \iota_2 = g$.
 
@@ -470,21 +470,21 @@ underlying tpcas.
     a = \tpcalam{x}{s}
         \tpcalam{f}{s \to u}
         \tpcalam{g}{t \to u}
-        f\;x
+        f\,x
    \qquad\text{and}\qquad
     b = \tpcalam{x}{s}
         \tpcalam{f}{s \to u}
         \tpcalam{g}{t \to u}
-        g\;x.
+        g\,x.
   \end{equation*}
   %
-  The map $x \mapsto a\;x$ is a morphism from $\asm{A}_s$ to
+  The map $x \mapsto a\,x$ is a morphism from $\asm{A}_s$ to
   $\asm{A}_{(s \to u) \to (t \to u) \to u}$ because it is realized
-  by~$a$. Similarly, the map $y \mapsto b\;y$ is a morphism from
+  by~$a$. Similarly, the map $y \mapsto b\,y$ is a morphism from
   $\asm{A}_t$ to $\asm{A}_{(s \to u) \to (t \to u) \to u}$, realized
   by~$b$. There is a unique morphism $h : \asm{A}_s + \asm{A}_t \to
   \asm{A}_{(s \to u) \to (t \to u) \to u}$ such that $h(\iota(x)) =
-  a\;x$ and $h(\iota(y)) = b\;y$ for all $x \in \asm{A}_s$ and $y \in
+  a\,x$ and $h(\iota(y)) = b\,y$ for all $x \in \asm{A}_s$ and $y \in
   \asm{A}_t$. There exists
   %
   \begin{equation*}
@@ -493,19 +493,19 @@ underlying tpcas.
   %
   which realizes~$h$. We claim that $\combLeft_{s,t}$,
   $\combRight_{s,t}$, and $\combCase_{s,t,u}$ have the desired
-  properties. It is obvious that $\defined{\combLeft_{s,t}\;x}$ and
-  $\defined{\combRight_{s,t}\;y}$ for all $x \in \Atyp{s}$, $y \in
+  properties. It is obvious that $\defined{\combLeft_{s,t}\,x}$ and
+  $\defined{\combRight_{s,t}\,y}$ for all $x \in \Atyp{s}$, $y \in
   \Atyp{t}$. Next, because $\combCase_{s,t,u}$ realizes $h$,
-  $\combLeft_{s,t}$ realizes $\iota_1$, and $h(\iota_1(x)) = a\;x$, we
-  have $\combCase_{s,t,u}\;(\combLeft_{s,t}\;x) = a\;x$, therefore
+  $\combLeft_{s,t}$ realizes $\iota_1$, and $h(\iota_1(x)) = a\,x$, we
+  have $\combCase_{s,t,u}\,(\combLeft_{s,t}\,x) = a\,x$, therefore
   %
   \begin{equation*}
-    \combCase_{s,t,u}\;(\combLeft_{s,t}\;x)\;f\;g \kleq
-    a\;x\;f\;g \kleq f\;x
+    \combCase_{s,t,u}\,(\combLeft_{s,t}\,x)\,f\,g \kleq
+    a\,x\,f\,g \kleq f\,x
   \end{equation*}
   %
   for all $x$, $f$, and $g$ of relevant types. Similarly,
-  $\combCase_{s,t,u}\;(\combRight_{s,t}\;y)\;f\;g \kleq g\;y$ holds
+  $\combCase_{s,t,u}\,(\combRight_{s,t}\,y)\,f\,g \kleq g\,y$ holds
   as well.
 \end{proof}
 
@@ -528,9 +528,9 @@ that covers the instances we care about.
   satisfying, for all $x, y \in \Atyp{t}$,
   %
   \begin{equation*}
-    \combIf_t\;\combTrue\;x\;y = x
+    \combIf_t\,\combTrue\,x\,y = x
     \qquad\text{and}\qquad
-    \combIf_t\;\combFalse\;x\;y = y.
+    \combIf_t\,\combFalse\,x\,y = y.
   \end{equation*}
   %
   We say that $\combFalse$, $\combTrue$, $\combIf_t$ are
@@ -555,12 +555,12 @@ that covers the instances we care about.
   %
   \begin{align*}
     \ttbool &= o + o, \\
-    \combTrue &= \combLeft\;\omega_o, \\
-    \combFalse &= \combRight\;\omega_o \\
+    \combTrue &= \combLeft\,\omega_o, \\
+    \combFalse &= \combRight\,\omega_o \\
     \combIf_t &= \tpcalam{b}{\ttbool}
                  \tpcalam{x}{t}
                  \tpcalam{y}{t}
-                 \combCase_{o,t,t}\;b\;(\combK_{o,t}\;x)\;(\combK_{o,t}\;y)
+                 \combCase_{o,t,t}\,b\,(\combK_{o,t}\,x)\,(\combK_{o,t}\,y)
   \end{align*}
   %
   It is easy to check that these satisfy the conditions from
@@ -573,16 +573,16 @@ that covers the instances we care about.
   \begin{align*}
     s + t &= \ttbool \times (s \times t),\\
     \combLeft_{s,t} &=
-      \tpcalam{x}{s}{\combPair\;\combTrue\;(\combPair\;x \; \omega_t)} \\
+      \tpcalam{x}{s}{\combPair\,\combTrue\,(\combPair\,x \, \omega_t)} \\
     \combRight_{s,t} &=
-      \tpcalam{y}{t}{\combPair\;\combFalse\;(\combPair \; \omega_s \; y)} \\
+      \tpcalam{y}{t}{\combPair\,\combFalse\,(\combPair \, \omega_s \, y)} \\
     \combCase_{s,t,u} &=
       \tpcalam{z}{s+t}
       \tpcalam{f}{s \to u}
       \tpcalam{g}{s \to u}
-      \combIf\;(\combFst\;z)\;
-               (f\;(\combFst\;(\combFst\;z)))\;
-               (g\;(\combSnd\;(\combFst\;z)))
+      \combIf\,(\combFst\,z)\,
+               (f\,(\combFst\,(\combFst\,z)))\,
+               (g\,(\combSnd\,(\combFst\,z)))
   \end{align*}
   %
   These have the required properties, as is easily checked.
@@ -604,8 +604,8 @@ that covers the instances we care about.
     \combIf_t &= \tpcalam{b}{\ttbool}
                  \tpcalam{x}{t}
                  \tpcalam{y}{t}
-                 \combRec_t \; y \;
-                 (\tpcalam{n}{\ttnat} \tpcalam{z}{t} x) \; b
+                 \combRec_t \, y \,
+                 (\tpcalam{n}{\ttnat} \tpcalam{z}{t} x) \, b
   \end{align*}
   %
   Again, it is easy to check that these have the desired properties.
@@ -635,7 +635,7 @@ where $o$ is any type.\sidenote{If you are wondering what $\rz_\zero$
   $\emptyset$.} Its universal property is that there is exactly one
 morphism $\zero \to \asm{S}$ for every assembly~$\asm{S}$. The
 property holds because there is a unique map $\emptyset \to S$, which
-is realized by $\combK_{|S|,o}\;a$, where $a \in \subAtyp{o}$.
+is realized by $\combK_{|S|,o}\,a$, where $a \in \subAtyp{o}$.
 
 A \defemph{coequalizer} of morphisms $f, g : S \to T$ is an object $Q$
 with a morphism $q : T \to Q$ that equalizes~$f$ and $g$, which means
@@ -725,7 +725,7 @@ are precisely the injective and surjective maps, respectively.
   |S|, {\rz_U})$ with the realizability relation
   % 
   \begin{equation*}
-    \combPair\;\R{x}\;\R{y} \rz_U u
+    \combPair\,\R{x}\,\R{y} \rz_U u
     \iff \R{x} \rz_S f(u) \land \R(y) \rz_S g(u).
   \end{equation*}
   % 
@@ -810,8 +810,8 @@ The following characterization of regular monos is often useful.
   A realized map $f : \asm{S} \to \asm{T}$ is a regular mono if, and
   only if, $f$ is injective and there exists $\R{i} \in \subAtyp{|T|
     \to |S|}$ such that, for all $x \in S$ and $\R{y} \in \Atyp{|T|}$,
-  if $\R{y} \rz_T f(x)$ then $\R{i}\;\R{y}$ is defined and
-  $\R{i}\;\R{y} \rz_S x$.
+  if $\R{y} \rz_T f(x)$ then $\R{i}\,\R{y}$ is defined and
+  $\R{i}\,\R{y} \rz_S x$.
 \end{proposition}
 
 \begin{proof}
@@ -831,7 +831,7 @@ The following characterization of regular monos is often useful.
   realizer $\R{i} \in \subAtyp{|T| \to |S|}$ of~$i$ has the desired
   property. Suppose $x \in S$, $\R{y} \in \Atyp{|T|}$, and $\R{y}
   \rz_T f(x)$. Because $g(f(x)) = h(f(x))$, $f(x) \in E$ and so $\R{y}
-  \rz_E f(x)$. Then $\R{i}\;\R{y}$ is defined and $\R{i}\;\R{y} \rz_S
+  \rz_E f(x)$. Then $\R{i}\,\R{y}$ is defined and $\R{i}\,\R{y} \rz_S
   i(f(x))$. This is what we want because $f(i(f(x))) = e(f(x)) =
   f(x)$, from which $i(f(x)) = x$ follows by injectivity of~$f$.
 
@@ -869,7 +869,7 @@ h : \asm{V} \to \asm{T}$ where\sidenote{You should convince yourself
 \begin{align*}
   \asm{V} &= (\set{(x,y) \in T \times T \such x \equiv y},
              |T| \times |T|, {\rz_V}),\\
-  \combPair\;\R{x}\;\R{y} \rz_V (x,y) &\iff
+  \combPair\,\R{x}\,\R{y} \rz_V (x,y) &\iff
   \R{x} \rz_T x \land \R{y} \rz_T y, \\
   g (x, y) &= x,\\
   h (x, y) &= y.
@@ -889,8 +889,8 @@ There is another characterization of regular epis which is used often.
   \label{prop:reg-epi-when}%
   in $\AsmA$ a morphism $f : \asm{T} \to \asm{U}$ is a regular epi
   if, and only if, there exists $\R{i} \in \subAtyp{|U| \to |T|}$
-  such that, whenever $\R{y} \rz_U y$ then $\defined{\R{i}\;\R{y}}$
-  and there is $x \in f^{-1}(y)$ such that $\R{i}\;\R{y} \rz_T x$.
+  such that, whenever $\R{y} \rz_U y$ then $\defined{\R{i}\,\R{y}}$
+  and there is $x \in f^{-1}(y)$ such that $\R{i}\,\R{y} \rz_T x$.
 \end{proposition}
 
 \begin{proof}
@@ -909,11 +909,11 @@ There is another characterization of regular epis which is used often.
   : \asm{U} \to \asm{T}/{\equiv}$ such that $q = i \circ f$. Let
   $\R{i} \in \subAtyp{|U| \to |T|}$ be a realizer for~$i$. We claim
   that it has the required properties. If $\R{y} \rz_U y$ then
-  $\defined{\R{i}\;\R{y}}$ and $\R{i}\;\R{y} \rz_{T/{\equiv}} i(y)$.
+  $\defined{\R{i}\,\R{y}}$ and $\R{i}\,\R{y} \rz_{T/{\equiv}} i(y)$.
   Because $f$ is surjective there exists $x' \in T$ such that $f(x') =
   y$, from which we get $i(y) = i(f(x')) = q(x') = [x']$. Since
-  $\R{i}\;\R{y} \rz_{T/{\equiv}} [x']$ there is $x \in T$ such that
-  $\R{i}\;\R{y} \rz_T x$ and $x \equiv x'$. The element~$x$ is the one
+  $\R{i}\,\R{y} \rz_{T/{\equiv}} [x']$ there is $x \in T$ such that
+  $\R{i}\,\R{y} \rz_T x$ and $x \equiv x'$. The element~$x$ is the one
   we are looking for because $x \equiv x'$ implies $f(x) = f(x') = y$.
 
   Conversely, suppose $\R{i}$ is as in the statement of the
@@ -1084,15 +1084,15 @@ feature of assemblies.
                |S| \times |T|, {\rz_P}),
   \end{equation*}
   %
-  $\combPair\;\R{x}\;\R{y} \rz_P (x,y)$ if, and only if, $\R{x} \rz_S
+  $\combPair\,\R{x}\,\R{y} \rz_P (x,y)$ if, and only if, $\R{x} \rz_S
   x$ and $\R{y} \rz_T y$ and $r : (x,y) \mapsto x$. Let us use
   \cref{prop:reg-epi-when} to show that~$r$ is regular epi.
   The realizer $\R{i} =
-  \tpcalam{x}{|S|}{\combPair\;x\;(\R{f}\;x)}$ satisfies the
+  \tpcalam{x}{|S|}{\combPair\,x\,(\R{f}\,x)}$ satisfies the
   conditions of the proposition: if $x \in S$ and $\R{x} \rz_S x$ then
-  $\R{i}\;\R{x} = \combPair\;\R{x}\;(\R{f}\;\R{x})$ is defined. There
+  $\R{i}\,\R{x} = \combPair\,\R{x}\,(\R{f}\,\R{x})$ is defined. There
   is $y \in T$ such that $f(x) = [y]_{\equiv}$, hence $r (x, y) = x$,
-  and also $\R{i}\;\R{x} \rz_P (x, y)$.
+  and also $\R{i}\,\R{x} \rz_P (x, y)$.
 \end{proof}
 
 The regular structure of assemblies is important for at least two
@@ -1183,8 +1183,8 @@ map satisfying this property.
     \all{x}{S}{
       \all{\R{x} \in |S|}
           (\R{x} \rz_S x \implies
-          \defined{\R{f}\;\R{x}} \land
-          \R{f}\;\R{x} \rz_T f(x))
+          \defined{\R{f}\,\R{x}} \land
+          \R{f}\,\R{x} \rz_T f(x))
       }.
   \end{equation*}
   %
@@ -1194,7 +1194,7 @@ map satisfying this property.
   %
   \begin{equation*}
     \R{e} = \tpcalam{p}{(|S| \to |T|) \times |S| \to
-      |T|}{(\combFst\;p)\;(\combSnd\;p)}.
+      |T|}{(\combFst\,p)\,(\combSnd\,p)}.
   \end{equation*}
   %
   The transpose of $f : \asm{U} \times \asm{S} \to \asm{T}$, realized
@@ -1202,7 +1202,7 @@ map satisfying this property.
   by
   %
   \begin{equation*}
-    \R{\curry{f}} = \tpcalam{z}{|U|} \tpcalam{x}{|S|} \R{f}\;(\combPair\;z\;x).
+    \R{\curry{f}} = \tpcalam{z}{|U|} \tpcalam{x}{|S|} \R{f}\,(\combPair\,z\,x).
   \end{equation*}
 \end{proof}
 
@@ -1212,7 +1212,7 @@ To every $g : \asm{U} \to \asm{T}^{\asm{S}}$ we may assign
 $\uncurry{g} : \asm{U} \times \asm{S} \to \asm{T}$, defined by
 $\uncurry{g}(z,x) = g(z)(x)$. If $g$ is realized by $\R{g}$ then
 $\uncurry{g}$ is realized by $\uncurry{\R{g}} = \tpcalam{p}{|U|
-    \times |S|}{\R{g}\;(\combFst\;p)\;(\combSnd\;p)}$. It is easy to
+    \times |S|}{\R{g}\,(\combFst\,p)\,(\combSnd\,p)}$. It is easy to
 check that $\uncurry{\curry{f}} = f$ and $\curry{\uncurry{g}} = g$.
 The operation $f \mapsto \curry{f}$ is also known as \defemph{currying}
 and its inverse $g \mapsto \uncurry{g}$ as \defemph{uncurrying}.
@@ -1285,7 +1285,7 @@ S_n$:
     }
   \end{equation*}
   %
-\item The interpretation of an application $e_1\;e_2$, where $e_1$ has
+\item The interpretation of an application $e_1\,e_2$, where $e_1$ has
   type $\asm{U} \to \asm{T}$ and $e_2$ has type $\asm{U}$, is the map
   %
   \begin{equation*}
@@ -1364,32 +1364,32 @@ we write
   \lam{(x,y) \of \asm{S} \times \asm{T}}{\ldots}
 \end{equation*}
 %
-and replace each occurrence of $\combFst\;p$ by $x$, of $\combSnd\;p$
+and replace each occurrence of $\combFst\,p$ by $x$, of $\combSnd\,p$
 by $y$, and all other occurrences of~$p$ by $(x,y)$. For instance, we
 would write
 %
 \begin{equation*}
   \lam{(f,g) \of (\asm{T} \to \asm{U}) \times (\asm{S} \to \asm{T})}{
-    \lam{x \of \asm{S}}{f\;(g\;x)}}
+    \lam{x \of \asm{S}}{f\,(g\,x)}}
 \end{equation*}
 %
 instead of
 %
 \begin{equation*}
   \lam{p \of (\asm{T} \to \asm{U}) \times (\asm{S} \to \asm{T})}{
-    \lam{x \of \asm{S}}{(\combFst\;p)\;(\combSnd\;p)\;x}}.
+    \lam{x \of \asm{S}}{(\combFst\,p)\,(\combSnd\,p)\,x}}.
 \end{equation*}
 %
 It is also useful to write the definition of a function as
 %
 \begin{equation*}
-  f\;x_1\;\ldots\; x_n = e
+  f\,x_1\,\ldots\, x_n = e
 \end{equation*}
 %
 instead of
 %
 \begin{equation*}
-  f = \lam{x_1\;\ldots\; x_n}{e}.
+  f = \lam{x_1\,\ldots\, x_n}{e}.
 \end{equation*}
 
 When $\AsmA$ has coproducts, and in most cases of interest it does,
@@ -1577,7 +1577,7 @@ Let $\subcat{\AA, \subAA}$ be the category whose objects are pairs
 $(S, |S|)$ where $|S|$ is a type and $S \subseteq \Atyp{|S|}$. A morphism
 $f : (S, |S|) \to (T, |T|)$ is a map $f : S \to T$ which is tracked by
 some $p \in \subAtyp{|S| \to |T|}$, i.e., for all $p \in S$,
-$\defined{p\;r}$ and $p\;r \in T$. This category is equivalent to the
+$\defined{p\,r}$ and $p\,r \in T$. This category is equivalent to the
 full subcategory of $\Mod{\AA, \subAA}$ on the canonically projective
 modest sets.
 
