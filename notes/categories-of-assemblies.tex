@@ -442,7 +442,7 @@ underlying tpcas.
     A_t = (\Atyp{t}, t, {\rz[t]})
   \end{equation*}
   %
-  with $r \rz[t] q \iff r = q$. For types $s$ and $t$ let $s+t$ be the
+  with $r \rz[t] q \liff r = q$. For types $s$ and $t$ let $s+t$ be the
   underlying type of the coproduct $A_s + A_t$,
   %
   \begin{equation*}
@@ -964,7 +964,7 @@ mono. Indeed, we may take $U = S/{\equiv}$, where $x
 \equiv y \iff f\,x = f(y)$, and $q : S \to S/{\equiv}$ the
 canonical quotient map. The assembly $V$ is the restriction
 of~$T$ to the subset $V = \set{y \in T \such \some{x}{S}{f\,x =
-    y}}$ so that $\T{V} = \T{T}$ and $\R{y} \rz[V] y \iff \R{y} \rz[T] y$
+    y}}$ so that $\T{V} = \T{T}$ and $\R{y} \rz[V] y \liff \R{y} \rz[T] y$
 for all $y \in V$. The map $i : V \to T$ is the subset inclusion.
 Finally, $b : U \to V$ is characterized by $b([x]_{\equiv}) = f\,x$.
 It is realized by the same realizers as~$f$.
@@ -1104,7 +1104,7 @@ $\Hom{S, T}$ carries additional structure that turns it into an object
 of the category. For example, in the category of partially ordered
 sets and monotone maps, the set $\Hom{P,Q}$ of monotone maps between
 $(P, {\leq_P})$ and $(Q, {\leq_Q})$ is partially ordered by $f \leq g
-\iff \all{x}{P}{f\,x \leq_Q g\,x}$. The following definition explains
+\liff \all{x}{P}{f\,x \leq_Q g\,x}$. The following definition explains
 what it means for an object to correspond to the the set of morphisms.
 
 \begin{definition}
@@ -1175,7 +1175,7 @@ map satisfying this property.
     \iff
     \all{x}{S}{
       \all{\R{x} \in \T{S}}
-          (\R{x} \rz[S] x \implies
+          (\R{x} \rz[S] x \lthen
           \defined{\R{f}\,\R{x}} \land
           \R{f}\,\R{x} \rz[T] f\,x)
       }.
@@ -1547,7 +1547,7 @@ In symbols, an assembly $S$ is canonically projective when, for all
 $x, y \in S$, $r \in A_{\T{S}}$,
 %
 \begin{equation*}
-  r \rz[S] x \land r \rz[S] y \implies x = y.
+  r \rz[S] x \land r \rz[S] y \lthen x = y.
 \end{equation*}
 %
 The canonically projective assemblies are, up to isomorphism,
