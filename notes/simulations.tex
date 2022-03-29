@@ -424,7 +424,7 @@ is computable. The enumeration operator $p : \Scott \times \Scott \to \Scott$, d
 % 
 is computable and is (the curried form of) a realizer for~$\iota$.
 
-Let $\delta: \Scott \pcato \Baire$ be the applicative morphism defined by
+Let $\delta: \Scott \pcato \Baire$ be the simulation defined by
 %
 \begin{equation*}
   \delta[A] =
@@ -435,8 +435,7 @@ Let $\delta: \Scott \pcato \Baire$ be the applicative morphism defined by
 %
 In words, $\alpha$ is a $\delta$-simulation of~$A$ when it
 enumerates~$A$, where the trick with adding~$1$ to~$n$ in the above definition makes it possible to enumerate the empty set. Clearly, if $\alpha \in \comp{\Baire}$
-then~$A \in \comp{\Scott}$. In order for~$\delta$ to be an applicative
-morphism, it suffices to find a partial computable map $f : \Baire \times \Baire \parto \Baire$ such that,
+then~$A \in \comp{\Scott}$. In order for~$\delta$ to be a simulation, it suffices to find a partial computable map $f : \Baire \times \Baire \parto \Baire$ such that,
 for all $A, B \in \Scott$,
 % 
 \begin{equation*}

@@ -1,19 +1,19 @@
 \section{Schools of Computable Mathematics}
 \label{sec:schools}
 
-Realizability is a unifying framework for several ``schools'' of computable mathematics.
-To get a particular variation we just choose an appropriate tpca with sub-tpca. We look at some of them and relate the traditional terminology and notions to ours.
+Realizability is a unifying framework for several ``schools'' of computable mathematics~\sidecite{bridges87:_variet_const_mathem}.
+To get a particular variation we just choose an appropriate tpca with sub-tpca. We look at some of them and relate the traditional terminology and notions to ours. The material should be of interest to those who care about computability on topological spaces.
 
 \subsection{Recursive Mathematics}
 \label{sec:recursive-math}
 
-\emph{Recursive Mathematics}~\sidecite{type-1}, also known as \emph{type
-  one effectivity} or \emph{Russian constructivism}~\sidecite{russ}, is
+\emph{Recursive Mathematics}, also known as \emph{type
+  one effectivity} or \emph{Russian constructivism}~\sidecite{sanin68:_const_real_number_const_funct_spaces,kusner84:_lectur_const_mathem_analy,Spreen:98}, is
 computable mathematics done with type 1 machines, cf.\
 \cref{sec:type-1}. In our settings it corresponds to the
 category $\Rep{\klone}$ of representations over the first Kleene algebra.
 
-An object of $\Rep{\klone}$ is called a \defemph{numbered set}. It is a pair
+An object of $\Rep{\klone}$ is called a \defemph{numbered set}~\sidecite{ersov99:_handb_comput_theor}. It is a pair
 $(S, \delta_S)$, where $S$ is a set $\delta_S : \NN \parto S$ a
 partial surjection, called a \defemph{numbering} of~$S$. A function $f :
 S \to T$ is \defemph{realized} by $n \in \NN$ when, for all $m \in
@@ -212,7 +212,7 @@ will always denote the subbasic neighobrhood filter.
 \noindent
 %
 The Embedding and Extension theorems now give us the desired
-equivalence~\sidecite{Simpson-Menni}.
+equivalence~\sidecite{menni02:_topol_limit_space_subcat_count}.
 
 \begin{proposition}
   \label{prop:equ-equiv-asm-scott}%
@@ -551,10 +551,10 @@ continuous map $f : X \to Y$ is the same thing as a morphism $f : (X,
 \subsection{Type Two Effectivity}
 \label{sec:tte}
 
-A popular realizability model is Kleene's~\sidecite{KV65} \defemph{function
-  realizability}, which is better known by its newer name \defemph{Type
-  Two Effectivity (TTE)}~\sidecite{Wei00}. As the names say, it is the
-model of realizability based on functions and type 2 machines. 
+A popular realizability model is Kleene-Vesley \defemph{function
+  realizability}~\sidecite{KV65}, also known as \defemph{Type
+  Two Effectivity (TTE)}~\sidecite{Wei00,brattka21:_handb_comput_compl_analy}. As the names say, it is the
+model of realizability based on functions and type 2 machines.
 
 TTE is traditionally expressed as a theory of representations. There
 are actuallly three variations:
@@ -585,7 +585,7 @@ $\delta_T$-name of $f(x)$.
 
 In the case of equilogical spaces there was a straightforward way of
 turning a topological space into an equilogical space. The present
-situation is less obvious. One obvious idea is to represent a
+situation is less obvious. One idea is to represent a
 topological space~$X$ by a representation $\delta_X : \Baire \parto X$
 for which $\delta_X$ is a quotient map. However, this is too weak a
 requirement. To see this, suppose $\delta_X : \Baire \parto X$ and
@@ -628,9 +628,7 @@ are very well behaved. For example, if $\delta_X : \Baire \parto X$
 and $\delta_Y : \Baire \parto Y$ are admissible, the continuous maps
 $f : X \to Y$ coincide with the realized maps.
 
-The spaces which have admissible representations have been studied in
-depth~\sidecite{Schroeder,Weihrauch}. We only mention a basic result whose
-proof is not too complicated.
+The spaces which have admissible representations have been studied in depth~\sidecite{schroder21:_handb_comput_compl_analy}. We only mention a basic result whose proof is not too complicated.
 
 \begin{proposition}
   Every countably based $T_0$-space has an admissible representation.
@@ -653,143 +651,42 @@ proof is not too complicated.
   leave admissibility of~$\delta_X$ as an exercise.
 \end{proof}
 
-Further reading: Weihrauch degrees.
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{A relationship between equilogical spaces and TTE}
+\subsubsection{A relationship between equilogical spaces and TTE}
 \label{sec:equ-tte}
 
-Type~2 representations, or more precisely $\Asm{\Baire,
-  \comp{\Baire}}$ are embedded in $\Asm{\Scott, \comp{\Scott}}$ by a
-full and faithful embedding. The embedding has a right adjoint. We
-outline the relationship here and refer to~\sidecite{Bauer:equ-tte} for
-details.\sidenote{The general topic of comparing realizability models
-  is important but excluded from these lecture notes, for the time
-  being.}
-
-We would like to translate assemblies over $\Scott$ to asemblies over
-$\Baire$, and vice versa. This can be done systematically if can
-``simulate'' the pca $\Baire$ within the pca $\Scott$, and vice versa.
-%
-Define the map $\iota : \Baire \to \Scott$ by
-%                                %
-\begin{equation*}
-  \iota(\alpha) =
-  \set{ \code{\seg{\alpha}{n}} \such n \in \NN}.
-\end{equation*}
-                                %
-An infinite sequence $\alpha$ is represented as the set (of codes) of
-its finite prefixes. This is a topological embedding, as can be easily
-verified. Observe also that if $\alpha \in \comp{\Baire}$ then
-$\iota(\alpha) \in \comp{\Scott}$, hence $\iota$ restricts to a map
-$\comp{\Baire} \to \comp{\Scott}$.
-%
-The map $\iota$ is computable if we equip $\Baire$ with the subbasic
-open sets $U_{\code{i,j}} = \set{\alpha \in \Baire \such \alpha(i) =
-  j}$. Next we seek a computable continuous map $p : \Scott \times
-\Scott \to \Scott$ which simulates application in~$\Baire$, i.e.,
-whenever $\fpr{\alpha}{\beta}$ is defined then
+In \cref{sec:retraction-PP-BB} we constructed an adjoint retraction
 %
 \begin{equation*}
-  p (\iota(\alpha), \iota(\beta)) = \iota(\fpr{\alpha}{\beta}).
+  \xymatrix{
+    {(\Scott, \comp{\Scott})}
+    \ar@<+0.25em>[r]^{\delta}
+    &
+    {(\Baire, \comp{\Baire})}
+    \ar@<+0.25em>[l]^{\iota}
+  }
 \end{equation*}
 %
-The existence of~$p$ may be inferred from \cref{th:computable_extension_theorem} by noting that the map
-$(\alpha, \beta) \mapsto \fpr{\alpha}{\beta}$ is continuous and
-computable, where defined.
-
-The map $\iota$ transfers realizers in~$\Baire$ to realizers
-in~$\Scott$ and so induces a functor
+where
 %
 \begin{equation*}
-  I : \Asm{\Baire, \comp{\Baire}} \to \Asm{\Scott, \comp{\Scott}}
+  \iota \, \alpha =
+  \set{ \code{a} \such
+    a \in \NN^{*} \land a \sqsubseteq \alpha
+    }
 \end{equation*}
 %
-which maps an assembly $(S, {\rz_S})$ to $I(S) = (S, {\rz_{I(S)}})$
-where $\rz_{I(S)}$ is characterized as
+and
 %
 \begin{equation*}
-  \alpha \rz_S x \iff
-  \iota(\alpha) \rz_{I(S)} x,
-\end{equation*}
-%
-for $x \in S$ and $\alpha \in \Baire$.
-%
-Suppose $f : (S, {\rz_S}) \to (T, {\rz_T})$ is a morphism in
-$\Asm{\Baire, \comp{\Baire}}$, realized by $\gamma \in \comp{\Baire}$.
-Then $f$ is realized as a morphism $I(f) = f : I(S) \to I(T)$ by the
-computable enumeration operator $A \mapsto p(\iota(\gamma), A)$
-because
-%
-\begin{multline*}
-  \iota(\alpha) \rz_{I(S)} x \implies
-  \alpha \rz_S x \implies
-  \fpr{\gamma}{\alpha} \rz_T f(x) \implies {}\\
-  \iota(\fpr{\gamma}{\alpha}) \rz_T f(x) \implies
-  p(\iota(\gamma), \iota(\alpha)) \rz_T f(x).
-\end{multline*}
-%
-The embedding $I$ is full and faithful.
-
-To get a functor $D : \Asm{\Scott, \comp{\Scott}} \to \Asm{\Baire,
-  \comp{\Baire}}$ we use a similar idea, except this time the
-simulation $\delta : \Scott \multito \Baire$ is a multi-valued map.
-Define
-%
-\begin{equation*}
-  \delta(A) = \set{\alpha \in \Baire \such
-    \all{n \in \NN} (n \in A \iff \some{m}{\NN}{\alpha(m) = n + 1})
+  \delta[A] =
+  \set{ \alpha \in \Baire \such
+        A = \set{n \in \NN \such \some{k \in \NN} \alpha\,k = n + 1}
   }.
 \end{equation*}
 %
-A set $A \subseteq \NN$ is represented by any enumeration $\alpha$ of
-its elements, where we used the usual trick of adding~$1$ so that the
-empty set is represented. Again, it does not take much effort to see
-that there is a computable map $q : \Baire \times \Baire \to \Baire$
-which simulates application in~$\Scott$,
-%
-\begin{equation*}
-  \alpha \in \delta(A) \land
-  \beta \in \delta(B) \implies q(\alpha, \beta) \in \delta(A \cdot B).
-\end{equation*}
-%
-The functor $D$ maps an assembly $(S, {\rz_S})$ over~$\Scott$ to the
-assembly $D(S) = (S, {\rz_{D(S)}})$ over $\Baire$ whose realizability
-relation is characterized by
-%
-\begin{equation*}
-  \alpha \rz_{D(S)} x \iff
-  \alpha \in \delta(A) \land A \rz_S x,
-\end{equation*}
-%
-for $\alpha in \Baire$, $A \in \Scott$, and $x \in S$. If $f : (S,
-{\rz_S}) \to (T, {\rz_T})$ is realized by a computable enumeration
-operator $g : \Scott \to \Scott$, then it is realized as a morphism
-$D(f) = f : D(S) \to D(T)$ by the computable map $\alpha \mapsto
-q(\gamma, \alpha)$ where $\gamma$ is any member of
-$\delta(\Gamma(g))$. The functor $D$ is faithful but is not full.
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Other schools}
-\label{sec:other-schools}
-
-There are other schools of computable mathematics which fall within
-our framework. We only mention two:
-%
-\begin{enumerate}
-\item
-  %
-  Closely related to the previous case is $\xasm{U, \comp{U}}$ where
-  $U$ is a universal Scott domain~\sidecite{GunterScott} and $\comp{U}$ is
-  its computable counterpart. This model has been studied under the
-  name of \defemph{domain representations}~\sidecite{Bla97,Bla97a}.
-\item
-  The case $A = \PCFinf$ and $\comp{A} = \PCF$ was used by
-  Mart{\'\i}n Escard\'o in his investigations of compact, exhaustible
-  and searchable sets~\sidecite{Escardo}.
-\end{enumerate}
+The induced functors $\ff{\iota}$ and $\ff{\delta}$ give an adjunction between equilogical spaces and TTE, see~\sidecite{Bauer02} for details.
 
 
 %%% Local Variables:
