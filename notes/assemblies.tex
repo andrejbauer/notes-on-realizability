@@ -281,17 +281,17 @@ Assemblies and modest sets have several equivalent formulations, which were form
 \label{sec:existence-predicates}
 
 A realizability relation $\rz[S]$ is a subset of $\xAtyp{S} \times \S{S}$. By transposition it may be equivalently expressed
-as a map $\Ex_S : \S{S} \to \pow{\xAtyp{S}}$. The correspondence is
+as a map $\Ex{S} : \S{S} \to \pow{\xAtyp{S}}$. The correspondence is
 %
 \begin{equation*}
-  \R{x} \rz[S] x \iff \R{x} \in \Ex_S(x).
+  \R{x} \rz[S] x \iff \R{x} \in \Ex{S}(x).
 \end{equation*}
 %
-Because every $x$ is realized by something, $\Ex_S(x)$ always contains at least one element. Thus an assembly $\xasm{S}$ may be equivalently presented as a triple $(\S{S}, \T{S}, \Ex_S)$ where $\Ex_S : S \to \pow{\xAtyp{S}}$ is a map, called the \defemph{existence predicate}, such that $\Ex_S(x)$ contains at least one element for every $x \in \S{S}$. The name suggests that the elements of $\Ex_S(x)$ are computational witnesses for ``existence of~$x$''.
+Because every $x$ is realized by something, $\Ex{S}(x)$ always contains at least one element. Thus an assembly $\xasm{S}$ may be equivalently presented as a triple $(\S{S}, \T{S}, \Ex{S})$ where $\Ex{S} : S \to \pow{\xAtyp{S}}$ is a map, called the \defemph{existence predicate}, such that $\Ex{S}(x)$ contains at least one element for every $x \in \S{S}$. The name suggests that the elements of $\Ex{S}(x)$ are computational witnesses for ``existence of~$x$''.
 
-An assembly $S$ is modest if, and only if, $\Ex_S(x) \cap \Ex_S(y) \neq \emptyset$ implies $x = y$.
+An assembly $S$ is modest if, and only if, $\Ex{S}(x) \cap \Ex{S}(y) \neq \emptyset$ implies $x = y$.
 
-Under this formulation a map $f : S \to T$ is realized if there exists $\R{f} \in \subAtyp{\T{S} \to \T{T}}$ such that, for all $x \in \S{S}$ and $\R{x} \in \Ex_S(x)$, $\defined{\R{f}\,\R{x}}$ and $\R{f}\,\R{x} \in \Ex_T(f(x))$.
+Under this formulation a map $f : S \to T$ is realized if there exists $\R{f} \in \subAtyp{\T{S} \to \T{T}}$ such that, for all $x \in \S{S}$ and $\R{x} \in \Ex{S}(x)$, $\defined{\R{f}\,\R{x}}$ and $\R{f}\,\R{x} \in \Ex{T}(f(x))$.
 
 \subsection{Representations}
 \label{sec:representations}
@@ -316,11 +316,11 @@ When we transpose $\rz[S]$ for a a general assembly $S$ the result is a \defemph
 %
 The map is surjective in the sense that for every $x \in \S{S}$ there is $r \in \xAtyp{S}$ such that $x \in \delta_S(r)$.
 
-To summarize, there are three ways of specifying the realizability structure of an assembly: with a realizability relation $\rz[S]$, an existence predicate~$\Ex_s$, and a multi-valued representation $\delta_S$. Each determines the other two by
+To summarize, there are three ways of specifying the realizability structure of an assembly: with a realizability relation $\rz[S]$, an existence predicate~$\Ex{S}$, and a multi-valued representation $\delta_S$. Each determines the other two by
 %
 \begin{equation*}
   r \rz[S] x \iff
-  r \in \Ex_S(x) \iff
+  r \in \Ex{S}(x) \iff
   x \in \delta_S(r).
 \end{equation*}
 

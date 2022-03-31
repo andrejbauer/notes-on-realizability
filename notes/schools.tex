@@ -222,17 +222,17 @@ equivalence~\sidecite{menni02:_topol_limit_space_subcat_count}.
 \begin{proof}
   Suppose $(X, {\equiv_X})$ is an equilogical space, and let $e_X : X
   \to \Scott$ be the subbasic neighborhood filter pre-embedding.
-  Define the assembly $F(X) = (X/{\equiv_X}, \Ex_{F(X)})$ by
-  $\Ex_{F(x)} = \set{e_X(y) \such x \equiv_X y}$. To make $F$ into a
+  Define the assembly $F(X) = (X/{\equiv_X}, \Ex{F(X)})$ by
+  $\Ex{F(x)} = \set{e_X(y) \such x \equiv_X y}$. To make $F$ into a
   functor we define $F(f) = f$ for a morphism $f : (X, {\equiv_X}) \to
   (Y, {\equiv_Y})$. If $f$ is tracked by $g : X \to Y$, then $F(f)$ is
   realized by a continuous extension of $e_Y \circ g : X \to \Scott$
   along~$e_X$, which exists by \cref{thm:scott-extension}.
 
   The functor $G : \Asm{\Scott} \to \Equ$ is defined as follows. An
-  assembly $(S, \Ex_S)$ is mapped to the equilogical space $G(S) =
+  assembly $(S, \Ex{S})$ is mapped to the equilogical space $G(S) =
   (X_S, \equiv_{G(S)})$ whose underlying space is the set $X_S =
-  \set{(x,A) \in S \times \Scott \such A \in \Ex_S(x)}$, equipped with
+  \set{(x,A) \in S \times \Scott \such A \in \Ex{S}(x)}$, equipped with
   the unique topology that makes the projection $p : X_S \to \Scott$,
   $p : (x,A) \mapsto A$, a pre-embedding. Explicitly, the open subsets
   of $X_S$ are the inverse images $\invim{p}(U)$ of open subsets $U
@@ -272,7 +272,7 @@ topological spaces are $T_0$-spaces.
   functor $\Equ_0 \to \Mod{\Scott}$.
   %
   To see that $G$ restricts to a functor $\Mod{\Scott} \to \Equ_0$,
-  observe that, for a modest assembly $(S, \Ex_S)$, the projection
+  observe that, for a modest assembly $(S, \Ex{S})$, the projection
   $X_S \to \Scott$ is an embedding, therefore $X_S$ is a $T_0$-space.
 \end{proof}
 

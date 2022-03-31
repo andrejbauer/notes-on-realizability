@@ -1,25 +1,29 @@
-\chapter{Realizability and logic}
+\chapter{Realizability logic}
 \label{sec:realizability-interpretation}
 
-The idea that the elements of a set are represented by values of a
-datatype is familiar to programmers. In the previous section we
-expressed the idea mathematically in terms of realizability relations
-and assemblies. What is perhaps less obvious is that realizability
-carries over to logic as well. To every statement $\phi$ in
-first-order logic we may assign its realizers, which are computable
-witnesses showing why $\phi$ holds.
+The idea that the elements of a set are represented by values of a datatype is familiar to programmers. In the previous chapter we expressed the idea mathematically in terms of realizability relations and assemblies. It is less obvious to the programmer in the street that realizability carries over to logic as well: a logical statement can be represented by realizers, which are computable witnesses testifying to its validity.
+
+\section{The set-theoretic interpretation of logic}
+\label{sec:interpr-logic-set-theoretic}
 
 Let us first recall how the usual interpretation of classical
-first-order logic works. A \emph{predicate} on a set~$S$ is a function
-$\phi : S \to \two$, where $\two = \set{0, 1}$ is the set of truth
-values. Such a predicate determines the subset $\set{x \in S \such
-  \phi(x) = 1} \subseteq S$, called the \emph{extension} of~$\phi$,
-and conversely, every $T \subseteq S$ determines the predicate
-$\chi_T(x) = (\cond{x \in T}{1}{0})$, called the \emph{characteristic
-  map} of~$T$. This correspondence is a bijection between $\two^S$ and
-$\pow{S}$. Either can be used to interpret logic, but $\pow{S}$ is the
-more suitable option in our case. Thus we view predicates on a set
-$S$ as elements of the powerset $\pow{S}$.
+first-order logic works.
+
+There are two ways of representing \emph{predicates} on a set~$S$,
+as Boolean functions $S \to \set{0, 1}$ or as the subset of~$S$.
+Specifically, to each predicate $\phi$ on $S$ we assign its \defemph{characteristic function} $S \to \{0, 1\}$, defined by
+%
+\begin{equation*}
+  x \mapsto
+  \begin{cases}
+    1 &\text{if $\phi(x)$,}\\
+    0 &\text{if $\lnot \phi(x)$},
+  \end{cases}
+\end{equation*}
+%
+as well as its \defemph{extension} $\set{x \in S \such \phi(x)}$. In fact, there is a bijective correspondence between predicates, characteristic functions, and subsets of~$S$.
+
+We may interpret the logical connectives either as operations on characteristic functions or subsets. The latter option is better suited for our needs.
 
 The poset $\pow{S}$, ordered by $\subseteq$, is a Boolean algebra. The
 least element is $\emptyset$, the largest $S$, the infimum of $A \in
@@ -34,21 +38,22 @@ propositions $p_i$, the meaning of $\phi$ as a subset $\sem{\phi}
 \subseteq S$ is defined inductively as follows:
 %
 \begin{align*}
+  \sem{p_i} &= P_i,\\
   \sem{\bot} &= \emptyset,\\
   \sem{\top} &= S,\\
   \sem{\phi_1 \land \phi_2} &= \sem{\phi_1} \cap \sem{\phi_2},\\
   \sem{\phi_1 \lor \phi_2} &= \sem{\phi_1} \cup \sem{\phi_2},\\
   \sem{\phi_1 \lthen \phi_2} &= (S \setminus \sem{\phi_1}) \cup \sem{\phi_2},\\
-  \sem{\lnot \phi} &= S \setminus \sem{\phi},\\
-  \sem{p_i} &= P_i.
+  \sem{\lnot \phi} &= S \setminus \sem{\phi}.
 \end{align*}
 %
-The interpretation can be further extended to the classical predicate
+Because powersets are complete Boolean algebras,
+the interpretation can be extended to the classical predicate
 calculus, which involves the quantifiers $\exists$ and $\forall$.
 Suppose $\phi$ is a predicate with free variables $x$ and $y$ ranging
 over sets $S$ and $T$, respectively. Then the interpretation of $\phi$
 is a subset $\sem{\phi} \subseteq S \times T$. From it we define the
-interpretation of $\some{x \in S}{\phi}$ and $\all{x \in S}{\phi}$ to be
+interpretations of $\some{x \in S}{\phi}$ and $\all{x \in S}{\phi}$ as
 the subsets of~$T$ given by
 %
 \begin{align*}
@@ -73,7 +78,7 @@ The interpretation of logic in the category of assemblies goes much
 along the same lines, except that we use monos instead of subsets. For
 monos $u : U \monoto S$ and $t : T \monoto S$,
 write $u \leq t$, or somewhat less precisely $U \leq T$,
-if $u$ factors through $t$, i.e., there exists a realized $f : U
+if $u$ factors through $t$, i.e., there exists an assembly map $f : U
 \to T$ such that
 %
 \begin{equation*}
@@ -92,7 +97,7 @@ if $u$ factors through $t$, i.e., there exists a realized $f : U
   }
 \end{equation*}
 %
-commutes. If~$f$ exists then it is unique and is a mono.\sidenote{Such
+commutes. Such an~$f$ is unique if it exists and is a mono.\sidenote{Such
   basic category-theoretic observations are excellent exercises. You
   should prove them yourself.} If $u \leq t$ and $t \leq u$ we say
 that $u$ and $t$ are \emph{isomorphic} and write $u \equiv t$. The
@@ -104,121 +109,70 @@ preorder because $\leq$ is reflexive and transitive.\sidenote{By
   work with equivalence classes.}
 
 While the powerset $\pow{S}$ is a complete Boolean algebra,
-$\Mono{S}$ is neither complete nor Boolean. However, it is a
+$\Mono{S}$ is neither complete nor Boolean, although it is a
 \emph{Heyting prealgebra}, which is enough to interpret
-\emph{intuitionistic} propositional calculus, and as we shall see, the
-quantifiers may be interpreted too.
+\emph{intuitionistic} propositional calculus, and quantifiers too.
+%
+We first replace the Heyting prealgebra of monos with an equivalent one that more directly expresses the idea that realizers witness validity of statement.
 
-We would like the interpretation of logic in $\AsmA$ to be in specific
-form, for which we first need to focus on a particular kind of monos.
-Let $S$ be an assembly, $\T{p}$ a type, and $p : S \to
-\pow{\Atyp{\T{p}}}$ a function. We call $p$ a \defemph{realizability
-  predicate} on $S$ and $\T{p}$ its \defemph{underlying type}. The
-map $p$ is equivalently given as a relation ${-} \rz p({-})$ between
-$\Atyp{\T{p}}$ and $S$. The correspondence between the map and the
-relation is
-%
-\begin{equation*}
-  \R{r} \rz p(x) \iff \R{r} \in p(x).
-\end{equation*}
-%
-Read $\R{r} \rz p(x)$ as ``$\R{r}$ realizes $p(x)$''. Now define the
-assembly $S_p$ by
-%
-\begin{align*}
-  S_p &= \set{x \in S \such \some{\R{r} \in \Atyp{\T{p}}}{\R{r} \in p(x)}}, \\
-  \T{S_p} &= \T{S} \times \T{p}, \\
-  \combPair\;\R{x}\;\R{r} \rz[S_p] x &\iff
-  \R{r} \in p(x) \land \R{x} \rz[S] x.
-\end{align*}
-%
-The subset inclusion $\iota_p : S_p \to S$ is realized by $\combFst$.
-The mono $\iota_p : S_p \to S$ is called a \defemph{standard
-  mono}.
+\begin{definition}
+  A \defemph{realizability predicate} on an assembly $S$ is given by a type $\T{p}$ and a
+  map $p : \S{S} \to \pow{\Atyp{\T{p}}}$.
+\end{definition}
 
-\begin{proposition}
-  In $\AsmA$ every mono is equivalent to a standard one.
-\end{proposition}
+Note that~$p$ need not be realized. It is customary to write $\R{r} \rz p\,x$ instead of $\R{r} \in p\,x$ and to read this as ``$\R{r}$ realizes $p\,x$''.
+
+The set $\Pred{S} = \pow{\Atyp{\T{p}}}^{\S{S}}$ of all realizability predicates on~$S$ is a preorder for the relation~$\entails$, defined as follows. Given $p, q \in \Pred{S}$, assert $p \entails q$ when there exists $\R{i} \in \subAtyp{\T{S} \to \T{p} \to T{q}}$, called a \defemph{witness}, such that whenever $\R{x} \rz[S] x$ and $\R{r} \rz p\,x$ then $\defined{\R{i}\,\R{x}\,\R{r}}$ and $\R{i}\,\R{x}\,\R{r} \rz q\,x$.
+
+\begin{exercise}
+  Verify that $\entails$ is reflexive and transitive.
+\end{exercise}
+
+\begin{theorem}
+  The preorders $\Mono{S}$ and $\Pred{S}$ are equivalent.
+\end{theorem}
 
 \begin{proof}
-  Let $u : U \monoto S$ be a mono, realized by $\R{u}$.
-  Let $\T{p} = \T{U}$ and
+  Given $p \in \Pred{S}$, define the assembly $S_p$ by
+  %
+  \begin{align*}
+    \S{S_p} &= \set{x \in S \such \some{\R{r} \in \Atyp{\T{p}}}{\R{r} \in p\,x}}, \\
+    \T{S_p} &= \T{S} \times \T{p}, \\
+    q \rz[S_p] x &\iff
+                   \combFst\,q \in p \, x \land \combSnd \, q \rz[S] x.
+  \end{align*}
+  %
+  The subset inclusion $\S{S_p} \subseteq \S{S}$ is realized by $\combFst$.
+  The corresponding assembly map $i_p : S_p \to S$ is called a \defemph{extension} of~$p$.
+
+  It is easy to check that $p \entails q$ implies $i_p \leq i_q$, therefore the assignment $p \to S_p$ consistutes a monotone map $\Pred{S} \to \Mono{S}$.
+  To verify that it is an equivalence, it suffices to show that a mono
+  $u : U \monoto S$, realized by $\R{u}$, is equivalent to the extension of a predicate.
+  %
+  Define the predicate~$p$ on~$S$ by $\T{p} = \T{U}$ and
   %
   \begin{equation*}
-    p(x) = \tbigcup_{y \in \inv{u}(x)} \Ex_U(y) =
-    \set{\R{y} \in \Atyp{\T{p}} \such \some{y \in U}{u(y) = x \land \R{y} \rz[U] y}}.
+    \R{r} \rz p \, x 
+    \iff
+    \some{y \in U} u\,y = x \land \R{y} \rz[U] y.
   \end{equation*}
   %
-  We claim that the standard mono $\iota_p : S_p \to S$ is
-  isomorphic to~$u$. The function $u : U \to S$ restricts to a
-  bijection $u : U \to S_p$, which is realized as a map from $U$
-  to $S_p$ by
-  $\tpcalam{y}{\T{U}} \combPair\;(\R{u}\;y)\;y$. The inverse
-  $\inv{u} : S_p \to U$ is realized as a map from $S_p$ to
-  $U$ by $\combSnd$.
+  We claim that~$i_p$ and~$u$ are isomorphic monos.
+  %
+  The injection $u : \S{U} \to \S{S}$ restricts to a
+  bijection $u : \S{U} \to \S{S_p}$, which is realized as a map from $U \to
+  S_p$ by
+  $\tpcalam{y}{\T{U}} \combPair\,(\R{u}\,y)\,y$. Its inverse
+  $\inv{u} : \S{S_p} \to \S{U}$ is realized by $\combSnd$.
 \end{proof}
-
-For the purposes of logic we may limit attention to standard monos,
-because the interpretation of a predicate is determined only up to
-isomorphism of monos. Furthermore, since a standard mono $S_p
-\to S$ is uniquely determined by the corresponding realizability
-predicate $p : S \to \pow{\Atyp{\T{p}}}$, we may express the
-realizability intepretation of logic directly in terms of
-realizability predicates.
-
-Let $p$ and $q$ be realizability predicates on $S$, with the
-corresponding monos $\iota_p : S_p \monoto S$ and $\iota_q
-: S_q \monoto S$. We define $p \leq q$ to mean that
-$\iota_p \leq \iota_q$.
-
-\begin{lemma}
-  \label{lemma:realizability-predicate-leq}%
-  For realizability predicates $p$ and $q$ on an assembly $S$,
-  $p \leq q$ if, and only if, there exists $\R{f} \in \subAtyp{\T{S}
-    \to \T{p} \to \T{q}}$ such that, for all $x \in S$, whenever $\R{x}
-  \rz[S] x$ and $\R{r} \rz p(x)$ then $\defined{\R{f}\;\R{x}\;\R{r}}$
-  and $\R{f}\;\R{x}\;\R{r} \rz q(x)$. We say that $\R{f}$
-  \defemph{witnesses} $p \leq q$.
-\end{lemma}
-
-\begin{proof}
-  Suppose first that $p \leq q$. Then $\iota_p \leq \iota_q$, which
-  means that $S_p \subseteq S_q$ and that the subset inclusion $i :
-  S_p \to S_q$ is realized, say by $\R{i} \in \subAtyp{\T{S} \times \T{p}
-    \to \T{S} \times \T{q}}$. Let $\R{f} = \tpcalam{x}{\T{S}}
-    \tpcalam{r}{\T{p}}{\combSnd\;(\R{i}\;(\combPair\;x\;r))}$. Suppose $x
-  \in S$, $\R{x} \in \Atyp{\T{S}}$, $\R{r} \rz p(x)$, and $\R{x} \rz[S]
-  x$. Then $\combPair\;\R{x}\;\R{r} \rz[S_p] x$, therefore
-  $\R{i}\;(\combPair\;\R{x}\;\R{r}) \rz[S_q] x$, which implies
-  $\R{f}\;\R{x}\;\R{r} \rz q(x)$ because $\R{f}\;\R{x}\;\R{r} =
-  \combSnd\;(\R{i}\;(\combPair\;\R{x}\;\R{r}))$.
-
-  Conversely, let $\R{f}$ be a realizer as in the statement of the
-  lemma, and suppose $\R{x} \rz[S] x$ and $\R{r} \rz p(x)$. Because
-  $\R{f}\;\R{x}\;\R{r} \rz q(x)$, we see that $x \in S_q$. Hence $S_p
-  \subseteq S_q$. A realizer for the inclusion map $i : S_p \to S_q$
-  is $\R{i} = \tpcalam{u}{\T{S} \times
-      \T{p}}{\combPair\;(\combFst\;u)\;(\R{f}\;(\combFst\;u)\;(\combSnd\;u))}$,
-  as is easily verified.
-\end{proof}
-
-The lemma is our main tool for analyzing the preorder $\leq$. For
-example, let us show that it is reflexive and transitive, i.e., that
-the family $\Pred{S}$ of all realizability predicates on
-$S$ is a \emph{preorder}. Reflexivity $p \leq p$ is witnessed by
-the realizer $\tpcalam{x}{\T{S}} \tpcalam{u}{\T{p}}{u}$. For
-transitivity, suppose $p \leq q$ and $q \leq r$ are witnessed by
-$\R{f}$ and $\R{g}$. Then $p \leq r$ is witnessed by
-$\tpcalam{x}{\T{S}} \tpcalam{u}{\T{p}}{\R{g}\;x\;(\R{f}\;x\;u))}$.
 
 
 \section{The Heyting prealgebra of realizability predicates}
 \label{sec:heyting-prealgebra}
 
-We would like to give an interpretation of the intuitionistic
-propositional calculus in the preorder $\Pred{S}$. Such an
-interpretation is sound only if $\Pred{S}$ is a Heyting
-prealgebra. Let us recall the definition.
+We would like to give an interpretation of the intuitionistic propositional calculus in
+the preorder $\Pred{S}$, for which we require it to carry the structure of a Heyting
+prealgebra.
 
 \begin{definition}
   A \defemph{Heyting prealgebra} $(H, {\leq})$ is a preorder (reflexive
@@ -226,7 +180,7 @@ prealgebra. Let us recall the definition.
   meet $\land$, join $\lor$, and implication $\lthen$ such that, for all
   $p, q, r \in H$:
   %
-  \begin{enumerate}
+  \begin{itemize}
   \item $\bot$ is a smallest and $\top$ a largest element: $\bot \leq
     p \leq \top$,
   \item $p \land q$ is an infimum of $p$ and $q$: $p \land q \leq p$,
@@ -238,7 +192,7 @@ prealgebra. Let us recall the definition.
   \item $p \lthen {-}$ is right adjoint to $p \land {-}$: $(p \lthen q)
     \land p \leq q$ and whenever $r \land p \leq q$ then $r \leq p
     \lthen q$.
-  \end{enumerate}
+  \end{itemize}
   %
   A \defemph{Heyting algebra} is a Heyting prealgebra which is partially
   ordered.
@@ -277,19 +231,19 @@ equivalent ones.
   \T{q}$ and
   %
   \begin{equation*}
-    p(x) \land q(x) = \set{\combPair\;\R{u}\;\R{v} \such
+    p(x) \land q(x) = \set{\combPair\,\R{u}\,\R{v} \such
     \text{$\R{u} \rz p(x)$ and $\R{v} \rz q(x)$}}.
   \end{equation*}
   % 
   Here we wrote $p(x) \land q(x)$ instead of $(p \land q)(x)$. Let us
   verify that $p \land q$ is the infimum of $p$ and $q$. The
   inequalities $p \land q \leq p$ and $p \land q \leq q$ are witnessed
-  by $\tpcalam{x}{\T{S}} \tpcalam{u}{\T{p} \times \T{q}}{\combFst\;u}$
+  by $\tpcalam{x}{\T{S}} \tpcalam{u}{\T{p} \times \T{q}}{\combFst\,u}$
   and $\tpcalam{x}{\T{S}} \tpcalam{u}{\T{p} \times
-      \T{q}}{\combSnd\;u}$, respectively. Suppose $r \leq p$ and $r
+      \T{q}}{\combSnd\,u}$, respectively. Suppose $r \leq p$ and $r
   \leq q$ are witnessed by $\R{f}$ and $\R{g}$, respectively. Then $r
   \leq p \land q$ is witnessed by $\tpcalam{x}{\T{S}}
-    \tpcalam{u}{\T{r}}{\combPair\; (\R{f}\;x\;u)\; (\R{g}\;x\;u)}$.
+    \tpcalam{u}{\T{r}}{\combPair\, (\R{f}\,x\,u)\, (\R{g}\,x\,u)}$.
 
   Next we consider suprema. Define $p \lor q$ to be the predicate
   whose realizers have the type $\T{p \land q} = \T{p} + \T{q}$. There are
@@ -297,19 +251,19 @@ equivalent ones.
   %
   \begin{equation*}
     p(x) \lor q(x) =
-    \set{\combLeft\;\R{u} \such \R{u} \rz p(x)} \cup
-    \set{\combRight\;\R{v} \such \R{v} \rz q(x)}.
+    \set{\combLeft\,\R{u} \such \R{u} \rz p(x)} \cup
+    \set{\combRight\,\R{v} \such \R{v} \rz q(x)}.
   \end{equation*}
   %
   The inequalities $p \leq p \lor q$ and $q \leq p \lor q$ are
-  witnessed by $\tpcalam{x}{\T{S}} \tpcalam{u}{\T{p}}{\combLeft\;u}$
-  and $\tpcalam{x}{\T{S}} \tpcalam{v}{\T{q}}{\combRight\;v}$,
+  witnessed by $\tpcalam{x}{\T{S}} \tpcalam{u}{\T{p}}{\combLeft\,u}$
+  and $\tpcalam{x}{\T{S}} \tpcalam{v}{\T{q}}{\combRight\,v}$,
   respectively. If $p \leq r$ and $q \leq r$ are witnessed by $\R{f}$
   and $\R{g}$ then $p \lor q \leq r$ is witnessed by
   %
   \begin{equation*}
     \tpcalam{x}{\T{S}} \tpcalam{w}{\T{p}+\T{q}}{
-      \combCase\;w\;(\R{f}\;x)\;(\R{g}\;x)
+      \combCase\,w\,(\R{f}\,x)\,(\R{g}\,x)
     }.
   \end{equation*}
   
@@ -322,8 +276,8 @@ equivalent ones.
       \all{\R{u} \in \Atyp{\T{p}}}
         (\R{u} \rz p(x)
         \lthen
-        \defined{\R{f}\;\R{u}} \land
-        \R{f}\;\R{u} \rz q(x))
+        \defined{\R{f}\,\R{u}} \land
+        \R{f}\,\R{u} \rz q(x))
     }.
   \end{equation*}
   %
@@ -331,10 +285,10 @@ equivalent ones.
   Note that $\R{f}$ need not be computable. Let us show that $p \lthen
   q$ has the desired properties. The inequality $(p \lthen q) \land p
   \leq q$ is witnessed by $\tpcalam{x}{\T{S}} \tpcalam{w}{(\T{p} \to
-      \T{q}) \times \T{p}}{(\combFst\;w)\; (\combSnd\;w)}$. If $r \land p
+      \T{q}) \times \T{p}}{(\combFst\,w)\, (\combSnd\,w)}$. If $r \land p
   \leq q$ is witnessed by $\R{f}$ then $r \leq p \lthen q$ is witnessed
   by $\tpcalam{x}{\T{S}} \tpcalam{w}{\T{r}}
-    \tpcalam{u}{\T{p}} \R{f}\;(\combPair\;w\;u)$.
+    \tpcalam{u}{\T{p}} \R{f}\,(\combPair\,w\,u)$.
 \end{proof}
 
 \section{Quantifiers}
@@ -388,7 +342,7 @@ $\exists_{T} q \in \Pred{S}$ defined by
 \begin{align*}
   \T{\exists_{T} q} &= \T{T} \times \T{q} \\
   (\exists_{T} q)(x) &=
-  \set{ \combPair\;\R{y}\;\R{r} \in \Atyp{\T{T} \times \T{q}} \such
+  \set{ \combPair\,\R{y}\,\R{r} \in \Atyp{\T{T} \times \T{q}} \such
     \some{y \in T}{\R{y} \rz[T] y \land \R{r} \rz q(x,y)}
   }.
 \end{align*}
@@ -397,11 +351,11 @@ Let us verify that we have a left adjoint to weakening. Suppose $p \in
 \Pred{S \times T}$ and $q \in \Pred{S}$. If $p \leq
 q \times T$ is witnessed by $\R{f}$ then $\exists_{T} p
 \leq q$ is witnessed by $\tpcalam{x}{\T{S}} \tpcalam{e}{\T{T} \times
-    \T{p}}{\R{f}\; (\combPair \; x \; (\combFst\; e)) \; (\combSnd \; e)}$.
+    \T{p}}{\R{f}\, (\combPair \, x \, (\combFst\, e)) \, (\combSnd \, e)}$.
 Conversely, if $\exists_{T} p \leq q$ is witnessed by $\R{g}$
 then $p \leq q \times T$ is witnessed by $\tpcalam{r}{\T{S}
-    \times \T{T}} \tpcalam{s}{\T{p}}{\R{g} \;
-  (\combFst\;r)\; (\combPair \; (\combSnd \; r) \; s)}$.
+    \times \T{T}} \tpcalam{s}{\T{p}}{\R{g} \,
+  (\combFst\,r)\, (\combPair \, (\combSnd \, r) \, s)}$.
 
 Similarly, the universal quantifier $\forall_{T}$ maps $q \in
 \Pred{S \times T}$ to $\forall_{T} q \in
@@ -414,8 +368,8 @@ Similarly, the universal quantifier $\forall_{T}$ maps $q \in
     \all{\R{y} \in \Atyp{\T{T}}}{
       \all{y \in T}
         (\R{y} \rz[T] y \lthen
-        \defined{\R{r}\;\R{y}} \land
-        \R{r}\;\R{y} \rz q(x,y))
+        \defined{\R{r}\,\R{y}} \land
+        \R{r}\,\R{y} \rz q(x,y))
     }
   }.
 \end{align*}
@@ -424,10 +378,10 @@ To verify that this is the right adjoint, suppose $p \in \Pred{S
   \times T}$ and $q \in \Pred{S}$. If $q \times T
 \leq p$ is witnessed by $\R{f}$ then $q \leq \forall_{T} p$ is
 witnessed by $\tpcalam{x}{\T{S}} \tpcalam{r}{\T{q}}
-  \tpcalam{y}{\T{T}}{\R{f} \; (\combPair \; x \; y) \; r}$. Conversely,
+  \tpcalam{y}{\T{T}}{\R{f} \, (\combPair \, x \, y) \, r}$. Conversely,
 if $q \leq \forall_{T} p$ is witnessed by $\R{g}$ then $q \times
 T \leq p$ is witnessed by $\tpcalam{s}{\T{S} \times \T{T}}
-  \tpcalam{r}{\T{q}}{\R{g} \; (\combFst \; s) \; r \; (\combSnd \; s)}$.
+  \tpcalam{r}{\T{q}}{\R{g} \, (\combFst \, s) \, r \, (\combSnd \, s)}$.
 
 It is customary to write $\some{y \in T}{q(x,y)}$ and
 $\all{y \in T}{q(x,y)}$ instead of $\exists_{T} q$ and
@@ -590,22 +544,22 @@ The realizability relation $\R{r} \rz \phi$, where $\R{r} \in
   \R{r} \rz \bot &\iff \bot\\
   \R{r} \rz \top &\iff \top\\
   \ttunit \rz t_1 = t_2 &\iff t_1 = t_2\\
-  \combPair\;\R{r}_1\;\R{r}_2 \rz \phi_1 \land \phi_2 &\iff
+  \combPair\,\R{r}_1\,\R{r}_2 \rz \phi_1 \land \phi_2 &\iff
   \R{r}_1 \rz \phi_1 \land \R{r}_2 \rz \phi_2\\
-  \combLeft\;\R{r} \rz \phi_1 \lor \phi_2 &\iff \R{r} \rz \phi_1\\
-  \combRight\;\R{r} \rz \phi_1 \lor \phi_2 &\iff \R{r} \rz \phi_2\\
+  \combLeft\,\R{r} \rz \phi_1 \lor \phi_2 &\iff \R{r} \rz \phi_1\\
+  \combRight\,\R{r} \rz \phi_1 \lor \phi_2 &\iff \R{r} \rz \phi_2\\
   \R{r} \rz \phi_1 \lthen \phi_2 &\iff
   \all{\R{s} \in \Atyp{\T{\phi_1}}} (\R{s} \rz \phi_1 \lthen
-    \defined{\R{r}\;\R{s}} \land \R{r}\;\R{s} \rz \phi_2)
+    \defined{\R{r}\,\R{s}} \land \R{r}\,\R{s} \rz \phi_2)
   \\
-  \combPair\;\R{u}\;\R{r} \rz \some{x \in T}{\phi} &\iff
+  \combPair\,\R{u}\,\R{r} \rz \some{x \in T}{\phi} &\iff
   \some{u \in T} \R{u} \rz[T] u \land \R{r} \rz \subst{\phi}{x \subto u}
   \\
   \R{r} \rz \all{x \in T}{\phi} &\iff
   \all{\R{u} \in \Atyp{\T{T}}}{
     \all{u \in T}
       (\R{u} \rz[T] u \lthen
-      \defined{\R{r}\;\R{u}} \land \R{r}\;\R{u} \rz \subst{\phi}{x \subto u})
+      \defined{\R{r}\,\R{u}} \land \R{r}\,\R{u} \rz \subst{\phi}{x \subto u})
     }.
 \end{align*}
 %

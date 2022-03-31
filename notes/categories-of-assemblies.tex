@@ -1,23 +1,15 @@
-\chapter{The category-theoretic structure}
+\chapter{Realizability categories}
 \label{cha:categ-structure}
 
-
 In \cref{chap:realizability} we defined assemblies as our basic
-structures of interest. To learn more about them we study which
-operations on assemblies are supported by the category $\AsmA$. It
-turns out that there is not only a rich collection of constructions
-available, but also an interpretation of first-order logic that
-assigns to a logical formula its computational meaning.
-
+structures of interest. To learn more about them we study the category-theoretic structure of~$\AsmA$. 
 
 In their everyday lives mathematicians use a limited set of
 constructions on sets: products, disjoint sums, subsets, quotient
 sets, images, function spaces, inductive and coinductive definitions,
 powersets, unions, intersections, and complements. For all of these,
 except powersets, there are analogous constructions of assemblies.
-Therefore, if we need a computable version of a given mathematical
-structure, may just mimic its set-theoretic definition in the
-category of assemblies.
+Therefore, many familiar set-theoretic constructions carry over to assemblies.
 
 \section{The cartesian structure}
 \label{sec:cartesian-structure}
@@ -405,10 +397,10 @@ underlying tpcas.
   \end{equation*}
   %
   where $\rz[S+T]$ is most easily defined in terms of the existence
-  predicate $\Ex_{S+T}$:
+  predicate $\Ex{S+T}$:
   %
   \begin{equation*}
-    \Ex_{S+T}(u) =
+    \Ex{S+T}(u) =
     \xcase{u}
     {\iota_1(x)}{\set{\combLeft\,\R{x} \such \R{x} \rz[S] x}}
     {\iota_2(y)}{\set{\combRight\,\R{y} \such \R{y} \rz[T] y}.}
@@ -1583,7 +1575,7 @@ We say that $P$ has \emph{the lifting property} with respect to morphisms, becau
     \S{P} = \set{ (\R{x}, x) \in \Atyp{\T{S}} \times \S{S} \such \R{x} \rz[S] x},
   \end{equation*}
   %
-  and the existence predicate is $\Ex_P(x, \R{x}) = \set{\R{x}}$.
+  and the existence predicate is $\Ex{P}(x, \R{x}) = \set{\R{x}}$.
   The first projection $e : \S{P} \to \S{S}$, $e : (x, \R{x}) \mapsto x$ is realized by $\combFst$ and is a regular epi by \cref{prop:reg-epi-when}.
   %
   It is called the \defemph{canonical cover} of~$S$.
