@@ -885,7 +885,7 @@ There is another characterization of regular epis which is used often.
   in $\AsmA$ a morphism $f : T \to U$ is a regular epi
   if, and only if, there exists $\R{i} \in \subAtyp{\T{U} \to \T{T}}$
   such that, whenever $\R{y} \rz[U] y$ then $\defined{\R{i}\,\R{y}}$
-  and there is $x \in f^{-1}(y)$ such that $\R{i}\,\R{y} \rz[T] x$.
+  and there is $x \in \invim{f}(y)$ such that $\R{i}\,\R{y} \rz[T] x$.
 \end{proposition}
 
 \begin{proof}
@@ -1535,41 +1535,108 @@ and exponentials.
 \section{Projective assemblies}
 \label{sec:projective-assemblies}
 
-% Presentation axiom
-
-\begin{definition}
-  An assembly is \defemph{canonically projective} if each element has
-  precisely one realizer.
-\end{definition}
-
-\noindent
-In symbols, an assembly $S$ is canonically projective when, for all
-$x, y \in S$, $r \in A_{\T{S}}$,
+An object $P$ is \defemph{(regular) projective} when for every regular epi $e : A \to B$ and $P : A \to B$ there is $\overline{f} : P \to A$ such that $f = e \circ \overline{f}$:
 %
 \begin{equation*}
-  r \rz[S] x \land r \rz[S] y \lthen x = y.
+  \xymatrix{
+    &
+    {A}
+    \ar[d]^{e}
+    \\
+    {B}
+    \ar[r]_{f}
+    \ar[ru]^{\overline{f}}
+    &
+    {P}
+  }
 \end{equation*}
 %
-The canonically projective assemblies are, up to isomorphism,
-precisely the projective objects of the category of assemblies.
+We say that $P$ has \emph{the lifting property} with respect to morphisms, because every~$f$ ``lifts`` to $\overline{f}$, as in the diagram.\sidenote{In a general category an object is called \emph{projective} if it has the lifting property with respect to \emph{all} epis, and \emph{regular projective} if it has the liftiing property with respect to \emph{regular} epis. However, we are only interested in the regular projective objects, so we drop the qualifier ``regular''.}  Which assemblies are projective?
 
-A canonically projective modest set $(S, \T{S}, {\rz[S]})$ is determined,
-up to isomorphism, by the set of the total realizers~$\|S\|$. This
-follows from \cref{lemma:iso-assembly} and the fact that
-projectivity ensures that $S$ and $\|S\|$ are in bijective
-correspondence. This combined with the fact that every modest set is a
-quotient of a canonically projective one leads to the following
-definition.
+\begin{definition}
+  An assembly $S$ is \defemph{partitioned} if each element has precisely one realizer:
+  if $r \rz[S] x$ and $r \rz[S] y$ then $x = y$.
+\end{definition}
 
-Let $\subcat{\AA, \subAA}$ be the category whose objects are pairs
-$(S, \T{S})$ where $\T{S}$ is a type and $S \subseteq \Atyp{\T{S}}$. A morphism
-$f : (S, \T{S}) \to (T, \T{T})$ is a map $f : S \to T$ which is tracked by
-some $p \in \subAtyp{\T{S} \to \T{T}}$, i.e., for all $p \in S$,
-$\defined{p\,r}$ and $p\,r \in T$. This category is equivalent to the
-full subcategory of $\Mod{\AA, \subAA}$ on the canonically projective
-modest sets.
+\begin{proposition}
+  \label{prop:partitioned-projective}
+  A partitioned assemly is projective.
+\end{proposition}
+
+\begin{proof}
+  Suppose that $P$ is a partitioned assembly, $e : A \to B$ is a regular epi and $f : P \to B$ is realized by~$\R{f} \in \subAtyp{\T{P} \to \T{B}}$.
+  %
+  By \cref{prop:reg-epi-when} there is $\R{i} \in \subAtyp{\T{B} \to \T{A}}$ such that whenever $\R{z} \rz[B] z$ then $\R{i}\,\R{z} \rz[A] z$ for some $y \in \invim{e}(z)$.
+  %
+  Because $e : \S{A} \to \S{B}$ is surjective, there exists by the axiom of choice a map $\overline{f} : \S{P} \to \S{A}$ such that $e(\overline{f}\, x) = f(x)$ for all $x \in \S{P}$. The map $\overline{f}$ is realized by $\tpcalam{x}{\T{P}} \R{i}\,(\R{f}\,x)$ because $P$ is partitioned.
+\end{proof}
+
+\begin{proposition}
+  \label{prop:partitioned-covers}
+  Every assembly is a quotient of a partitioned assembly.
+\end{proposition}
+
+\begin{proof}
+  Given an assembly $S$, let $P$ be the partitioned assembly whose underlying type is $\T{P} = \T{S}$, the underlying set is the extension of $\rz[S]$,
+  %
+  \begin{equation*}
+    \S{P} = \set{ (\R{x}, x) \in \Atyp{\T{S}} \times \S{S} \such \R{x} \rz[S] x},
+  \end{equation*}
+  %
+  and the existence predicate is $\Ex_P(x, \R{x}) = \set{\R{x}}$.
+  The first projection $e : \S{P} \to \S{S}$, $e : (x, \R{x}) \mapsto x$ is realized by $\combFst$ and is a regular epi by \cref{prop:reg-epi-when}.
+  %
+  It is called the \defemph{canonical cover} of~$S$.
+\end{proof}
 
 
+\begin{exercise}
+  Is canonical cover functorial?
+\end{exercise}
+
+The following notion is useful when one has to compute with concrete realizers.
+
+\begin{definition}
+  An assembly $S$ has \defemph{canonical realizers} when there exists $\R{c} \in \subAtyp{\T{S} \to \T{S}}$ such that, for all $x \in \S{S}$ and $\R{x} \in \T{S}$,
+  if $\R{x} \rz[S] x$ then $\defined{\R{c}\,\R{x}}$, $\R{c}\,\R{x} \rz[S] x$, and $\R{c} \, (\R{c}\,\R{x}) = \R{c}\,\R{x}$. We say that $\R{c}$ \defemph{computes canonical realizers} for~$S$.
+\end{definition}
+
+Not every assembly has canonical realizers. In fact, having them is equivalent to projectivity, as shown by the following characterization of projective assemblies.
+
+\begin{theorem}
+  \label{thm:when-projective}%
+  The following are equivalent for an assembly $S$:
+  %
+  \begin{enumerate}
+  \item \label{it:when-projective-1} $S$ is projective.
+  \item \label{it:when-projective-2} $S$ the canonical cover is split.\sidenote{A morphism $f : X \to Y$ is \defemph{split} if there is $g : Y \to X$ such that $f \circ g = \id[Y]$.}
+  \item \label{it:when-projective-3} $S$ has canonical realizers.
+  \item \label{it:when-projective-4} $S$ is isomorphic to a partitioned assembly.
+  \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+  %
+  To show that the first statement implies the second one, let $S$ be a projective assembly and $e : P \to S$ the regular epimorphism constructed in \cref{prop:partitioned-covers}.
+  %
+  Because $S$ is projective, $\id[S]$ lifts along~$e$ to an assembly map $d : S \to P$ such that $e \circ d = \id[S]$, hence~$e$ is split.
+
+  If the canonical cover~$e : P \to S$ is split by $d : S \to P$ then any realizer of~$d$ computes canonical realiers for~$S$.
+
+  If $\R{c}$ computes canonical realizers for~$S$ then $S$ is isomorphic to the partitioned assembly~$Q$, defined by $\S{Q} = \S{S}$, $\T{Q} = \T{S}$ and
+  %
+  \begin{equation*}
+    \R{y} \rz[Q] x
+    \iff
+    \some{\R{x} \in \T{S}} \R{x} \rz[S] x \land \R{y} = \R{c}\,\R{x}.
+  \end{equation*}
+
+  Finally, the fourth statement implies the first one because projectivity is preserved by isomorphism and partitioned assemblies are projective by \cref{prop:partitioned-projective}.
+\end{proof}
+
+\begin{exercise}
+  Show that the full subcategory on the projective modest sets is equivalent to the category of \emph{sets of realizers}, whose objects are pairs $(\S{S}, \T{S})$ where $\T{S}$ is a type and $\S{S} \subseteq \Atyp{\T{S}}$. A morphism $f : (\S{S}, \T{S}) \to (\S{T}, \T{T})$ is a map $f : \S{S} \to \S{T}$ that has a realizer $\R{f} \in \subAtyp{\T{S} \to \T{T}}$ satisfying $\defined{\R{f}\,\R{x}}$ and $\R{f}\,\R{x} \in \S{T}$ for all $\R{x} \in \S{S}$.
+\end{exercise}
 
 %%% Local Variables:
 %%% mode: latex
