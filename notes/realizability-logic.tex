@@ -1,85 +1,35 @@
 \chapter{Realizability logic}
 \label{sec:realizability-interpretation}
 
-The idea that the elements of a set are represented by values of a datatype is familiar to programmers. In the previous chapter we expressed the idea mathematically in terms of realizability relations and assemblies. It is less obvious to the programmer in the street that realizability carries over to logic as well: a logical statement can be represented by realizers, which are computable witnesses testifying to its validity.
+The idea that the elements of a set are represented by values of a datatype is familiar to programmers. In the previous chapter we expressed the idea mathematically in terms of realizability relations and assemblies. Programmers are less aware of, but still use, the fact that realizability carries over to logic as well: a logical statement can be validated by realizers.
 
 \section{The set-theoretic interpretation of logic}
 \label{sec:interpr-logic-set-theoretic}
 
 Let us first recall how the usual interpretation of classical
 first-order logic works.
-
-There are two ways of representing \emph{predicates} on a set~$S$,
-as Boolean functions $S \to \set{0, 1}$ or as the subset of~$S$.
-Specifically, to each predicate $\phi$ on $S$ we assign its \defemph{characteristic function} $S \to \{0, 1\}$, defined by
+%
+A \emph{predicate} on a set~$S$ is a Boolean function $S \to \two$, where $\two = \set{\bot, \top}$ is the Boolean algebra on two elements. The Boolean algebra structure carries over from~$\two$ to predicates, e.g., the conjunction of $p, q : S \to \two$ is computed element-wise as
 %
 \begin{equation*}
-  x \mapsto
-  \begin{cases}
-    1 &\text{if $\phi(x)$,}\\
-    0 &\text{if $\lnot \phi(x)$},
-  \end{cases}
+  (p \land q) x = p x \land q x,
 \end{equation*}
 %
-as well as its \defemph{extension} $\set{x \in S \such \phi(x)}$. In fact, there is a bijective correspondence between predicates, characteristic functions, and subsets of~$S$.
+and similarly for other predicates. With this much structure we can interpret the propositional calculus. The quantifiers $\exists$ and $\forall$ can be interpreted too, because~$\two$ is complete: given a predicate $p : S \times T \to \two$, define $\exists_S p : T \to \two$ and $\forall_S p : T \to \two$ by
+%
+\begin{equation*}
+  (\exists_S p) y = \bigvee\nolimits_{x \in S} p(x, y)
+  \qquad\text{and}\qquad
+  (\forall_S p) y = \bigwedge\nolimits_{x \in S} p(x, y).
+\end{equation*}
+%
+Categorical logic teaches us that the essential characteristic of the quantifiers is not their relation to infima and suprema, but rather an \emph{adjunction}: $\exists_S p$ is the least predicate on~$T$ such that $p(x, y) \leq (\exists_S p) y$ for all $x \in S$, $y \in T$, and $\forall_S p$ is the largest predicate on~$T$ such that $(\forall_S p) y \leq p(x, y)$ for all $x \in S$, $y \in T$. The adjunction will carry over to the realizability logic, but completeness will not.
 
-We may interpret the logical connectives either as operations on characteristic functions or subsets. The latter option is better suited for our needs.
-
-The poset $\pow{S}$, ordered by $\subseteq$, is a Boolean algebra. The
-least element is $\emptyset$, the largest $S$, the infimum of $A \in
-\pow{S}$ and $B \in \pow{S}$ is their intersection $A \cap B$, the
-supremum is the union $A \cup B$, and the complement of~$A$ is the
-set-theoretic complement $S \setminus A$. This structure is used in
-the interpretation of classical propositional calculus. Suppose $\phi$
-is a proposition built from $\bot$, $\top$, $\land$, $\lor$,
-$\lthen$, $\lnot$, and \emph{atomic propositions} $p_1, \ldots,
-p_n$. As soon as we assign subsets $P_i \subseteq S$ to the atomic
-propositions $p_i$, the meaning of $\phi$ as a subset $\sem{\phi}
-\subseteq S$ is defined inductively as follows:
-%
-\begin{align*}
-  \sem{p_i} &= P_i,\\
-  \sem{\bot} &= \emptyset,\\
-  \sem{\top} &= S,\\
-  \sem{\phi_1 \land \phi_2} &= \sem{\phi_1} \cap \sem{\phi_2},\\
-  \sem{\phi_1 \lor \phi_2} &= \sem{\phi_1} \cup \sem{\phi_2},\\
-  \sem{\phi_1 \lthen \phi_2} &= (S \setminus \sem{\phi_1}) \cup \sem{\phi_2},\\
-  \sem{\lnot \phi} &= S \setminus \sem{\phi}.
-\end{align*}
-%
-Because powersets are complete Boolean algebras,
-the interpretation can be extended to the classical predicate
-calculus, which involves the quantifiers $\exists$ and $\forall$.
-Suppose $\phi$ is a predicate with free variables $x$ and $y$ ranging
-over sets $S$ and $T$, respectively. Then the interpretation of $\phi$
-is a subset $\sem{\phi} \subseteq S \times T$. From it we define the
-interpretations of $\some{x \in S}{\phi}$ and $\all{x \in S}{\phi}$ as
-the subsets of~$T$ given by
-%
-\begin{align*}
-  \sem{\some{x \in S}{\phi}} &=
-  \sem{b \in T \such \some{a \in S}{(a,b) \in \sem{\phi}}}, \\
-  \sem{\all{x \in S}{\phi}} &=
-  \sem{b \in T \such \all{a \in S}{(a,b) \in \sem{\phi}}}.
-\end{align*}
-%
-Observe that $\sem{\some{x \in S}{\phi}}$ is the least subset of~$T$
-such that $\sem{\phi} \subseteq S \times \sem{\some{x \in S}{\phi}}$,
-and that $\sem{\all{x \in S}{\phi}}$ is the largest subset of~$T$ such
-that $S \times \sem{\all{x \in S}{\phi}} \subseteq \sem{\phi}$. We shall
-use these characterizations of $\exists$ and $\forall$ in the setting
-of realizability.
 
 \section{Realizability predicates}
 \label{sec:realizability-predicates}
 
-
-The interpretation of logic in the category of assemblies goes much
-along the same lines, except that we use monos instead of subsets. For
-monos $u : U \monoto S$ and $t : T \monoto S$,
-write $u \leq t$, or somewhat less precisely $U \leq T$,
-if $u$ factors through $t$, i.e., there exists an assembly map $f : U
-\to T$ such that
+In a category a predicate on an object $S$ is represented by a mono with codomain~$S$. These form a preorder, where $u : T \monoto S$ is below $t : U \monoto S$, written $u \leq t$ or somewhat less precisely $U \leq T$, whhen $u$ factors through $t$, i.e., there exists a morphism $f : U \to T$ such that
 %
 \begin{equation*}
   \xymatrix{
@@ -97,38 +47,29 @@ if $u$ factors through $t$, i.e., there exists an assembly map $f : U
   }
 \end{equation*}
 %
-commutes. Such an~$f$ is unique if it exists and is a mono.\sidenote{Such
-  basic category-theoretic observations are excellent exercises. You
-  should prove them yourself.} If $u \leq t$ and $t \leq u$ we say
-that $u$ and $t$ are \emph{isomorphic} and write $u \equiv t$. The
-collection $\Mono{S}$ of all monos with codomain~$S$ is a
-preorder because $\leq$ is reflexive and transitive.\sidenote{By
-  quotienting $\Mono{S}$ by $\equiv$ we get the partial order
-  $\Sub{S} = \Mono{S}/{\cong}$ of \emph{subobjects}
-  of~$S$, but we shall not do that because it is cumbersome to
-  work with equivalence classes.}
+commutes. Such an~$f$ is unique if it exists and is a mono.\sidenote{Such basic category-theoretic observations are excellent exercises. You should prove them yourself.} If $u \leq t$ and $t \leq u$ we say that $u$ and $t$ are \emph{isomorphic} and write $u \equiv t$. The induced partial order $\Sub{S} = \Mono{S}/{\cong}$ of \emph{subobjects} can be used if one cares about antisymmetry, which we do not.
 
-While the powerset $\pow{S}$ is a complete Boolean algebra,
-$\Mono{S}$ is neither complete nor Boolean, although it is a
-\emph{Heyting prealgebra}, which is enough to interpret
-\emph{intuitionistic} propositional calculus, and quantifiers too.
+In the case of assemblies $\Mono{S}$ forms a \emph{Heyting prealgebra}, which is enough to interpret \emph{intuitionistic} propositional calculus, and there is enough additional structure to interpret the quantifiers too.
 %
-We first replace the Heyting prealgebra of monos with an equivalent one that more directly expresses the idea that realizers witness validity of statement.
+
+However, rather than working with the Heyting prealgebra of monos, we shall replace it with an equivalent one that expresses the predicates as maps into Heyting prelagebras.
 
 \begin{definition}
   A \defemph{realizability predicate} on an assembly $S$ is given by a type $\T{p}$ and a
   map $p : \S{S} \to \pow{\Atyp{\T{p}}}$.
 \end{definition}
 
-Note that~$p$ need not be realized. It is customary to write $\R{r} \rz p\,x$ instead of $\R{r} \in p\,x$ and to read this as ``$\R{r}$ realizes $p\,x$''.
+It is customary to write $\R{r} \rz p x$ instead of $\R{r} \in p x$ and to read this as ``$\R{r}$ realizes $p x$''. Realizability predicates are more informative than Boolean predicates. The latter only express truth and falshood, whereas the former provide \emph{computatational evidence} for validity of statements.
 
-The set $\Pred{S} = \pow{\Atyp{\T{p}}}^{\S{S}}$ of all realizability predicates on~$S$ is a preorder for the relation~$\entails$, defined as follows. Given $p, q \in \Pred{S}$, assert $p \entails q$ when there exists $\R{i} \in \subAtyp{\T{S} \to \T{p} \to T{q}}$, called a \defemph{witness}, such that whenever $\R{x} \rz[S] x$ and $\R{r} \rz p\,x$ then $\defined{\R{i}\,\R{x}\,\R{r}}$ and $\R{i}\,\R{x}\,\R{r} \rz q\,x$.
+The set $\Pred{S} = \pow{\Atyp{\T{p}}}^{\S{S}}$ of all realizability predicates on~$S$ is a preorder for the \defemph{entailment} relation~$\entails$, defined as follows. Given  $p, q \in \Pred{S}$, we define $p \entails q$ to hold when there exists $\R{i} \in \subAtyp{\T{S} \to \T{p} \to \T{q}}$ such that whenever $\R{x} \rz[S] x$ and $\R{r} \rz p x$ then $\defined{\R{i}\,\R{x}\,\R{r}}$ and $\R{i}\,\R{x}\,\R{r} \rz q x$.
+Thus, $\R{i}$ converts computational evidence of $p x$ to computational evidence of~$q x$. Note that $\R{i}$ recieves as input both a realizer for~$x$ and the evidence of~$p x$.
 
 \begin{exercise}
   Verify that $\entails$ is reflexive and transitive.
 \end{exercise}
 
 \begin{theorem}
+  \label{thm:mono-equiv-pred}%
   The preorders $\Mono{S}$ and $\Pred{S}$ are equivalent.
 \end{theorem}
 
@@ -136,77 +77,68 @@ The set $\Pred{S} = \pow{\Atyp{\T{p}}}^{\S{S}}$ of all realizability predicates 
   Given $p \in \Pred{S}$, define the assembly $S_p$ by
   %
   \begin{align*}
-    \S{S_p} &= \set{x \in S \such \some{\R{r} \in \Atyp{\T{p}}}{\R{r} \in p\,x}}, \\
+    \S{S_p} &= \set{x \in \S{S} \such \some{\R{r} \in \Atyp{\T{p}}}{\R{r} \in p x}}, \\
     \T{S_p} &= \T{S} \times \T{p}, \\
-    q \rz[S_p] x &\iff
-                   \combFst\,q \in p \, x \land \combSnd \, q \rz[S] x.
+    q \rz[S_p] x &\iff \combFst \, q \rz[S] x \land \combSnd\,q \rz p x.
   \end{align*}
   %
   The subset inclusion $\S{S_p} \subseteq \S{S}$ is realized by $\combFst$.
-  The corresponding assembly map $i_p : S_p \to S$ is called a \defemph{extension} of~$p$.
+  The corresponding assembly map $i_p : S_p \to S$ is called the \defemph{extension} of~$p$.
 
-  It is easy to check that $p \entails q$ implies $i_p \leq i_q$, therefore the assignment $p \to S_p$ consistutes a monotone map $\Pred{S} \to \Mono{S}$.
-  To verify that it is an equivalence, it suffices to show that a mono
+  It is easy to check that $p \entails q$ is equuvalent to $i_p \leq i_q$, therefore the assignment $p \mapsto S_p$ consistutes a monotone embedding $\Pred{S} \to \Mono{S}$.
+  We still have to show that it is essentially surjective, i.e., that every mono
   $u : U \monoto S$, realized by $\R{u}$, is equivalent to the extension of a predicate.
   %
-  Define the predicate~$p$ on~$S$ by $\T{p} = \T{U}$ and
+  Define the predicate~$p_u$ on~$S$ by $\T{p_u} = \T{U}$ and
   %
   \begin{equation*}
-    \R{r} \rz p \, x 
+    \R{r} \rz p_u \, x
     \iff
     \some{y \in U} u\,y = x \land \R{y} \rz[U] y.
   \end{equation*}
   %
-  We claim that~$i_p$ and~$u$ are isomorphic monos.
+  We claim that~$i_{p_u}$ and~$u$ are isomorphic monos.
   %
   The injection $u : \S{U} \to \S{S}$ restricts to a
-  bijection $u : \S{U} \to \S{S_p}$, which is realized as a map from $U \to
-  S_p$ by
+  bijection $u : \S{U} \to \S{S_{p_u}}$, which is realized as a morphism $U \to
+  S_{p_u}$ by
   $\tpcalam{y}{\T{U}} \combPair\,(\R{u}\,y)\,y$. Its inverse
-  $\inv{u} : \S{S_p} \to \S{U}$ is realized by $\combSnd$.
+  $\inv{u} : \S{S_{p_u}} \to \S{U}$ is realized by $\combSnd$.
 \end{proof}
 
 
 \section{The Heyting prealgebra of realizability predicates}
 \label{sec:heyting-prealgebra}
 
-We would like to give an interpretation of the intuitionistic propositional calculus in
-the preorder $\Pred{S}$, for which we require it to carry the structure of a Heyting
-prealgebra.
+Recall that a \defemph{Heyting prealgebra} $(H, {\entails})$ is a preorder (reflexive and transitive) with elements $\bot$, $\top$ and binary operations $\land$, $\lor$, and $\lthen$ governed by the following rules of inference:\sidenote{These ``fractions'' are inference rules stating that the bottom statement follows from the conjunction of the top ones. The double line indicates a two-way rule which additionally states that the bottom statement implies the conjunction of the top ones.}
+%
+\begin{mathpar}
+  \inferrule{ }{\bot \entails p}
 
-\begin{definition}
-  A \defemph{Heyting prealgebra} $(H, {\leq})$ is a preorder (reflexive
-  and transitive) with elements $\bot$, $\top$ and binary operations
-  meet $\land$, join $\lor$, and implication $\lthen$ such that, for all
-  $p, q, r \in H$:
-  %
-  \begin{itemize}
-  \item $\bot$ is a smallest and $\top$ a largest element: $\bot \leq
-    p \leq \top$,
-  \item $p \land q$ is an infimum of $p$ and $q$: $p \land q \leq p$,
-    $p \land q \leq q$, and whenever $r \leq p$ and $r \leq q$ then $r
-    \leq p \land q$,
-  \item $p \lor q$ is a supremum of $p$ and $q$: $p \leq p \lor q$, $q
-    \leq p \lor q$, and whenever $p \leq r$ and $q \leq r$ then $p
-    \lor q \leq r$,
-  \item $p \lthen {-}$ is right adjoint to $p \land {-}$: $(p \lthen q)
-    \land p \leq q$ and whenever $r \land p \leq q$ then $r \leq p
-    \lthen q$.
-  \end{itemize}
-  %
-  A \defemph{Heyting algebra} is a Heyting prealgebra which is partially
-  ordered.
-\end{definition}
+  \inferrule{ }{p \entails \top}
 
-We say that elements $p, q \in H$ are \defemph{equivalent}, written $p
-\equiv q$, if $p \leq q$ and $q \leq p$. The operations of a Heyting
-prealgebra are determined only up to isomorphism. For example, there
-may be many smallest elements, but they are all equivalent to each
-other. We are not bothered by this.
+  \mprset{fraction={===}}
+  \inferrule
+  { r \entails p \\ r \entails q}
+  { r \entails p \land q }
+
+  \inferrule
+  { p \entails r \\ q \entails r}
+  { p \lor q \entails r }
+
+  \inferrule
+  { r \land p \entails q}
+  { r \entails p \Rightarrow q }
+\end{mathpar}
+%
+We say that elements $p, q \in H$ are \defemph{equivalent}, written $p \bientails q$, if
+$p \entails q$ and $q \entails p$. A \defemph{Heyting algebra} is a Heyting prealgebra in which equivalence is equality, which just means that the preorder is also antisymmetric.
+
+In a Heyting prealgebra there may be many smallest elements, but they are all equivalent to~$\bot$. Similarly, the binary infima and suprema may exist in many copies, all of which are equivalent.
+
 
 \begin{proposition}
-  The preorder $\Pred{S}$ of realizability predicates on an
-  assembly $S$ is a Heyting prealgebra.
+  The preorder $\Pred{S}$ is a Heyting prealgebra.
 \end{proposition}
 
 \begin{proof}
@@ -215,96 +147,92 @@ other. We are not bothered by this.
   S \to \pow{\Atyp{\unit}}$ by
   % 
   \begin{equation*}
-    \bot(x) = \emptyset
+    \bot x= \emptyset
     \qquad\text{and}\qquad
-    \top(x) = \Atyp{\unit}.
+    \top x = \Atyp{\unit}.
   \end{equation*}
   % 
   That is, $\bot$ is realized by nothing and $\top$ by everything. It is
-  easy to check that $\bot \leq p \leq \top$ for all $p \in
+  easy to check that $\bot \entails p \entails \top$ for all $p \in
   \Pred{S}$.
 
   For predicates $p$ and $q$ on $S$, let $p \land q$ be the
-  predicate whose realizers have the type $\T{p \land q} = \T{p} \times
+  predicate with $\T{p \land q} = \T{p} \times
   \T{q}$ and
   %
   \begin{equation*}
-    p(x) \land q(x) = \set{\combPair\,\R{u}\,\R{v} \such
-    \text{$\R{u} \rz p(x)$ and $\R{v} \rz q(x)$}}.
+    \R{r} \rz (p \land q) \, x
+    \iff
+    \combFst\,\R{r} \rz p \land \combSnd\,\R{r} \rz q.
   \end{equation*}
-  % 
-  Here we wrote $p(x) \land q(x)$ instead of $(p \land q)(x)$. Let us
-  verify that $p \land q$ is the infimum of $p$ and $q$. The
-  inequalities $p \land q \leq p$ and $p \land q \leq q$ are witnessed
-  by $\tpcalam{x}{\T{S}} \tpcalam{u}{\T{p} \times \T{q}}{\combFst\,u}$
-  and $\tpcalam{x}{\T{S}} \tpcalam{u}{\T{p} \times
-      \T{q}}{\combSnd\,u}$, respectively. Suppose $r \leq p$ and $r
-  \leq q$ are witnessed by $\R{f}$ and $\R{g}$, respectively. Then $r
-  \leq p \land q$ is witnessed by $\tpcalam{x}{\T{S}}
-    \tpcalam{u}{\T{r}}{\combPair\, (\R{f}\,x\,u)\, (\R{g}\,x\,u)}$.
+  %
+  It is customary to write $p \, x \land q \, x$ instead of $(p \land q) \, x$, which we shall do henceforth, including for other connectives.
+  %
+  Let us verify that $p \land q$ is the infimum of $p$ and $q$. If $r \entails p$ and
+  $r \entails q$ are witnessed by $\R{a}$ and $\R{b}$, respectively, then $r \entails p \land q$
+  is witnessed by $\tpcalam{x}{\T{S}} \tpcalam{u}{\T{r}} \combPair\,(\R{a}\,x\,u)\,(\R{b}\,x\,u)$.
+  %
+  Conversely, if $\R{c}$ witnesses $r \entails p \land q$ then
+  $\tpcalam{x}{\T{S}} \tpcalam{u}{\T{r}} \combFst\,(\R{c}\,x\,u)$ witnesses $r \entails p$ and $\tpcalam{x}{\T{S}} \tpcalam{u}{\T{r}} \combSnd\,(\R{c}\,x\,u)$ witnesses $r \entails q$.
 
-  Next we consider suprema. Define $p \lor q$ to be the predicate
-  whose realizers have the type $\T{p \land q} = \T{p} + \T{q}$. There are
-  two ways to realize $p(x) \lor q(x)$:
+  Next, define $p \lor q$ to be the predicate with $\T{p \land q} = \T{p} + \T{q}$ and
   %
   \begin{equation*}
-    p(x) \lor q(x) =
-    \set{\combLeft\,\R{u} \such \R{u} \rz p(x)} \cup
-    \set{\combRight\,\R{v} \such \R{v} \rz q(x)}.
+    \R{r} \rz p x \lor q x
+    \iff
+    \begin{aligned}[t]
+      & (\some{\R{u}} \R{r} = \combLeft\,\R{u} \land \R{u} \rz p x)
+      \lor {} \\
+      & (\some{\R{v}} \R{r} = \combRight\,\R{v} \land \R{v} \rz q x).
+    \end{aligned}
   \end{equation*}
   %
-  The inequalities $p \leq p \lor q$ and $q \leq p \lor q$ are
-  witnessed by $\tpcalam{x}{\T{S}} \tpcalam{u}{\T{p}}{\combLeft\,u}$
-  and $\tpcalam{x}{\T{S}} \tpcalam{v}{\T{q}}{\combRight\,v}$,
-  respectively. If $p \leq r$ and $q \leq r$ are witnessed by $\R{f}$
-  and $\R{g}$ then $p \lor q \leq r$ is witnessed by
+  If $\R{a}$ and $\R{b}$ witness $p \entails r$ and $q \entails r$, respectively, then
+  $p \lor q \entails r$ is witnessed by
   %
   \begin{equation*}
     \tpcalam{x}{\T{S}} \tpcalam{w}{\T{p}+\T{q}}{
-      \combCase\,w\,(\R{f}\,x)\,(\R{g}\,x)
+      \combCase\,w\,(\R{a}\,x)\,(\R{b}\,x)
     }.
   \end{equation*}
-  
-  Finally, define $p \lthen q$ to be the predicate whose realizers have
-  the type $\T{p \lthen q} = \T{p} \to \T{q}$ and
+  %
+  Conversely, if $\R{c}$ witnesses $p \lor q \entails r$ then
+  $p \entails r$ and $q \entails r$ are witnessed by
+  $\tpcalam{x}{\T{S}} \tpcalam{u}{\T{p}}{\R{c}\,x\,(\combLeft\,u})$
+  and
+  $\tpcalam{x}{\T{S}} \tpcalam{v}{\T{q}}{\R{c}\,x\,(\combRight\,v})$,
+  respectively.
+
+  Finally, define $p \lthen q$ to be the predicate with $\T{p \lthen q} = \T{p} \to \T{q}$ and
   %
   \begin{equation*}
-    p(x) \lthen q(x) = \set{
-      \R{f} \in \Atyp{\T{p} \to \T{q}} \such
+    \R{r} \rz (p x \lthen q x)
+    \iff
       \all{\R{u} \in \Atyp{\T{p}}}
-        (\R{u} \rz p(x)
+        \R{u} \rz p x
         \lthen
-        \defined{\R{f}\,\R{u}} \land
-        \R{f}\,\R{u} \rz q(x))
-    }.
+        \R{r}\,\R{u} \rz q x.
   \end{equation*}
   %
-  That is, $\R{f}$ maps realizers for $p(x)$ to realizers for $q(x)$.
-  Note that $\R{f}$ need not be computable. Let us show that $p \lthen
-  q$ has the desired properties. The inequality $(p \lthen q) \land p
-  \leq q$ is witnessed by $\tpcalam{x}{\T{S}} \tpcalam{w}{(\T{p} \to
-      \T{q}) \times \T{p}}{(\combFst\,w)\, (\combSnd\,w)}$. If $r \land p
-  \leq q$ is witnessed by $\R{f}$ then $r \leq p \lthen q$ is witnessed
-  by $\tpcalam{x}{\T{S}} \tpcalam{w}{\T{r}}
-    \tpcalam{u}{\T{p}} \R{f}\,(\combPair\,w\,u)$.
+  That is, $\R{r}$ maps realizers for $p x$ to realizers for $q x$.
+  %
+  Note that $\R{r} \in \Atyp{\T{p} \to \T{q}}$ and \emph{not} $\R{u} \in \subAtyp{\T{p} \to \T{q}}$, so we have an example of entailment~$\entails$ and implication~$\lthen$ not ``being the same thing'' (about which students of logic often wonder about).
 \end{proof}
+
+\begin{exercise}
+  Finish the proof by checking that the definition of $\lthen$ validates the inference rules for implication.
+\end{exercise}
 
 \section{Quantifiers}
 \label{sec:quantifiers}
 
-To get an interpretation of the quantifiers we apply methods of
-categorical logic. In general the existential and universal
-quantifiers are defined as left and right adjoints to weakening. Let
-us explain what this means.
+Categorical logic teaches us that the existential and universal quantifiers are defined as the left and right adjoints to weakening. Let us explain what this means.
 
-Weakening along the projection $\pi_1 : S \times T \to
-S$ is an operation which maps a mono $V \monoto S$
-to the mono $V \times T \monoto S \times T$.
-This is a monotone map from $\Mono{S}$ to $\Mono{S \times
-  T}$. Existential quantification is its left adjoint, i.e., a
-monotone map $\exists_{T} : \Mono{S \times T} \to
-\Mono{S}$ such that, for all monos $U \monoto S
-\times T$ and $V \monoto S$,
+Weakening along the projection $\pi_1 : S \times T \to S$ is an operation which maps a
+mono $V \monoto S$ to the mono $V \times T \monoto S \times T$. This is a monotone map
+from $\Mono{S}$ to $\Mono{S \times T}$. Existential quantification is its left adjoint,
+i.e., a monotone map $\exists_{T} : \Mono{S \times T} \to \Mono{S}$ such that, for all
+monos $U \monoto S \times T$ and $V \monoto S$,
 %
 \begin{equation*}
   U \leq V \times T
@@ -320,30 +248,31 @@ Similarly, universal quantification is the right adjoint:
   V \leq \forall_{T} U.
 \end{equation*}
 %
-We verify that such adjoints really exist in $\AsmA$ but work with
-realizability predicates instead of monos.
+From the above adjunctions the usual laws of inference for the existential and universal quantifiers follow. We verify that such adjoints for the Heyting prealgebras of realizability predicates.
 
-Weakening along $\pi_1 : S \times T \to S$ takes $p
-\in \Pred{S}$ to the predicate $p \times T \in
-\Pred{S \times T}$ defined by
+Weakening along $\pi_1 : S \times T \to S$ takes $p \in \Pred{S}$ to the predicate
+$p \times T \in \Pred{S \times T}$ defined by
 %
 \begin{equation*}
   \T{p \times T} = \T{p}
   \qquad\text{and}\qquad
-  (p \times T)(x,y) = p(x),
+  (p \times T)(x,y) = p x,
 \end{equation*}
 %
 where $x \in S$ and $y \in T$. We claim that the left adjoint
 $\exists_{T}$ maps $q \in \Pred{S \times T}$ to
-$\exists_{T} q \in \Pred{S}$ defined by
+$\exists_{T} q \in \Pred{S}$ with
 %
-\begin{align*}
-  \T{\exists_{T} q} &= \T{T} \times \T{q} \\
-  (\exists_{T} q)(x) &=
-  \set{ \combPair\,\R{y}\,\R{r} \in \Atyp{\T{T} \times \T{q}} \such
-    \some{y \in T}{\R{y} \rz[T] y \land \R{r} \rz q(x,y)}
-  }.
-\end{align*}
+$\T{\exists_{T} q} = \T{T} \times \T{q}$
+%
+and
+%
+\begin{equation*}
+  \R{r} \rz (\exists_{T} q)(x)
+  \iff
+  \some{y \in \S{T}}
+    \combFst\,R{r} \rz[T] y \land \combSnd\,\R{r} \rz q(x,y).
+\end{equation*}
 %
 Let us verify that we have a left adjoint to weakening. Suppose $p \in
 \Pred{S \times T}$ and $q \in \Pred{S}$. If $p \leq
@@ -357,19 +286,13 @@ then $p \leq q \times T$ is witnessed by $\tpcalam{r}{\T{S}
 
 Similarly, the universal quantifier $\forall_{T}$ maps $q \in
 \Pred{S \times T}$ to $\forall_{T} q \in
-\Pred{S}$ defined by
+\Pred{S}$ with $\T{\forall_{T} q} = \T{T} \to \T{q}$ and
 %
 \begin{align*}
-  \T{\forall_{T} q} &= \T{T} \to \T{q} \\
-  (\forall_{T} q)(x) &=
-  \set{ \R{r} \in \Atyp{\T{T} \to \T{q}} \such
-    \all{\R{y} \in \Atyp{\T{T}}}{
-      \all{y \in T}
-        (\R{y} \rz[T] y \lthen
-        \defined{\R{r}\,\R{y}} \land
-        \R{r}\,\R{y} \rz q(x,y))
-    }
-  }.
+  \R{r} \rz (\forall_{T} q)(x)
+  \iff
+    \all{y \in \S{T}} \all{\R{y} \in \Atyp{\T{T}}}
+     \R{y} \rz[T] y \lthen \R{r}\,\R{y} \rz q(x,y).
 \end{align*}
 %
 To verify that this is the right adjoint, suppose $p \in \Pred{S
@@ -385,186 +308,154 @@ It is customary to write $\some{y \in T}{q(x,y)}$ and
 $\all{y \in T}{q(x,y)}$ instead of $\exists_{T} q$ and
 $\forall_{T} q$.
 
-\begin{proposition}
-  The operations $\exists_{T}$ and $\forall_{T}$
-  respectively give a sound interpretation of the existential and
-  universal quantifier with respect to first-order intuitionistic
-  logic.
-\end{proposition}
+\begin{exercise}
+  Show that the usual inference rules for quantifiers follow form them being adjoint to weakneing.
+\end{exercise}
 
-\begin{proof}
-  This follows from the fact that $\exists_{T}$ and
-  $\forall_{T}$ are the left and the right adjoint to weakening.
-\end{proof}
 
-\section{Substitution and the Beck-Chevalley condition}
+\section{Substitution}
 \label{sec:beck-chevalley}
 
 We have so far ignored the most basic logical operation of all, which
-is \emph{substitution}. There are two kinds of substitution in
-first-order logic: of terms into terms and of terms into formulas.
+is \emph{substitution}. Terms may be substituted into terms and into formulas.
+
 
 Substitution of terms into terms is interpreted as composition.
-Suppose $s$ is a term of type $T$ with a free variable $x$ of
-type $S$, and $t$ is a term of type $U$ with a free
-varaible $y$ of type $U$. The terms $s$ and $t$ determine
-realized maps
+Think of a term $s(x)$ of type~$S$ with a free variable~$x$ of type~$T$ as a map $s : T \to S$. Given $t : U \to T$, construed as a term $t(y)$ of type $T$ with a free variable~$y$ of type~$U$, the substitution of $t(y)$ for $x$ in $s(x)$ yields $s(t(y))$, which is just $(s \circ t)(y)$, so $s \circ t : U \to S$.
+
+Substitution of terms into predicates corresponds to composition too, by an analogous argument. Think about how it works in $\Set$. Given a predicate $p : T \to \two$ on a set~$S$ and a term $t : S \to T$, the composition $p \circ t : S \to \two$ corresponds to substituting~$t$ into~$p$. Indeed, if we replace $y$ with $t(x)$ in the formula $p(x)$ we obtain $p (t(y))$, which is just $(p \circ t)(y)$.
+
+\begin{exercise}
+  You may have heard the slogan ``substitution is pullback''.
+  Explain how the slogan arises when predicates are viewed as subsets, rather than maps into~$\two$
+\end{exercise}
+
+Let us introduce a notation for substitution. Given assembly maps $t : U \to T$ and $s : T \to S$, and $p \in \Pred{T}$, define the \defemph{substitution} of~$t$ into~$s$ and $p$ to be precomposition with~$t$:
 %
 \begin{equation*}
-  \xymatrix{
-    {S}
-    \ar[r]^{\sem{s}}
-    &
-    {T}
-    \ar[r]^{\sem{t}}
-    &
-    {U}
-  }
+ \invim{t} s = s \circ t : U \to S
+ \qquad\text{and}\qquad
+ \invim{t} p = p \circ t \in \Pred{U}.
 \end{equation*}
 %
-A fairly routine induction on the structure of~$t$ shows that
-$\sem{\subst{t}{x \subto s}} = \sem{t} \circ \sem{s}$, i.e.,
-substitution of terms into terms correponds to composition.
-Simultaneous substitution of several variables is treated similarly.
-
-Substition of terms into predicates is more interesting. To see what
-operation it corresponds to, we first look at predicates in $\Set$.
-Suppose $P \subseteq T$ is a subset of a set~$S$ and $t : S \to T$ is
-a function. If we think of $P$ as a predicate $P(y)$ in variable $y
-\in T$ and $t$ as a term $t(x)$ with a free variable $x \in S$ then
-$P(t(x))$ should be a subset of $S$. A moment's thought shows that it
-is the inverse image $\invim{t}(P) = \set{x \in S \such t(x) \in P}$.
-The category-theoretic equivalent of inverse image is pullback.
-
-Now let $p \in \Pred{T}$ be a realizability predicate, $\iota_p
-: T_p \monoto T$ the corresponding mono, and $t : S
-\to T$ a realized map. If we think of~$p$ as a formula $p(y)$
-with variable $y : T$ and $t(x)$ as a term with a variable $x :
-S$ then the substitution of $t(x)$ for $y$ gives us a formula
-$p(t(x))$ with variable $x : S$. As in the case of sets,
-$p(t(x))$ corresponds the pullback $\invim{t}(T_p) \monoto
-S$, as in the diagram
+We still have some work to do, namely check that substitution is functorial and that it commutes with the logical connective and the quantifiers. The former guarantees that the identity substitution and compositions of substitutions act in the expected way, and the latter that substituting preserves the logical structure of a formula. Functoriality means that
 %
 \begin{equation*}
-  \xymatrix{
-    {\invim{t}(T_p)}
-    \pbcorner
-    \ar[r]
-    \ar@{ >->}[d]
-    &
-    {T_p}
-    \ar@{ >->}[d]
-    \\
-    {S}
-    \ar[r]_{t}
-    &
-    {T}
-  }
-\end{equation*}
-%
-The realizability predicate $\invim{t}(p) \in \Pred{S}$ which
-determined the mono $\invim{t}(T_p) \monoto S$ is given by
-%
-\begin{equation*}
-  \T{\invim{t}(p)} = \T{p}
+  \invim{\id[S]} s = s
   \qquad\text{and}\qquad
-  \invim{t}(p)(x) = p(t(x)).
+  \invim{(u \circ t)} s = \invim{t} (\invim{u} s),
 \end{equation*}
 %
-\newcommand{\xtot}{\overline{x} \to \overline{t}}%
-This defines substitution as an operation on realizability predicates.
-However, substitution is also a syntactic transformation and we need
-to check that the two notions fit together. Let $\xtot$ stand for a
-simultaneous substitution $x_1 \subto t_1, \ldots, x_n \subto t_n$.
-Substitution into first-order formulas is defined inductively on the
-structure of the formula:
+which is of course the case.\sidenote{Substitution is \emph{contra-variant} because it reverses the order of composition.}
+
+As far as the logical structure is concerned, we need to check
 %
 \begin{align*}
-  \subst{\top}{\xtot} &= \top,\\
-  \subst{\bot}{\xtot} &= \bot,\\
-  \subst{(a = b)}{\xtot} &= \subst{a}{\xtot} = \subst{b}{\xtot},\\
-  \subst{(\phi \land \psi)}{\xtot} &= 
-  (\subst{\phi}{\xtot}) \land (\subst{\psi}{\xtot}), \\
-  \subst{(\phi \lor \psi)}{\xtot} &= 
-  (\subst{\phi}{\xtot}) \lor (\subst{\psi}{\xtot}), \\
-  \subst{(\phi \lthen \psi)}{\xtot} &= 
-  (\subst{\phi}{\xtot}) \lthen (\subst{\psi}{\xtot}), \\
-  \subst{(\some{y \in T}{\phi})}{\xtot} &= 
-  \some{y \in T} \subst{\phi}{\xtot},\\
-  \subst{(\all{y \in T}{\phi})}{\xtot} &= 
-  \all{y \in T} \subst{\phi}{\xtot}.
+  \invim{t} \top &= \top,\\
+  \invim{t} \bot &= \bot,\\
+  \invim{t} (p \land q) &= \invim{t} p \land \invim{t} q,\\
+  \invim{t} (p \lor q) &= \invim{t} p \lor \invim{t} q,\\
+  \invim{t} (p \lthen q) &= \invim{t} p \lthen \invim{t} q,\\
+  \invim{t} (\exists_{T} p) &= \exists_{T} \invim{t} p,\\
+  \invim{t} (\forall_{T} p) &= \forall_{T} \invim{t} p.
 \end{align*}
 %
-In the last two cases we assume that $x_1, \ldots, x_n$ and the free
-variables appearing in $t_1, \ldots, t_n$ are distinct from~$y$. The
-above rules are sound for the realizability interpretation only if the
-corresponding equations hold for realizability predicates and
-substitution along a realized map $t$:
+All but the last two hold because they are defined pointwise. For instance, given $p, q \in \Pred{T}$, define $\land' : \pow{\Atyp{\T{p}}} \times \pow{\Atyp{\T{q}}} \to \pow{\Atyp{\T{p} \times \T{q}}}$ by
+%
+\begin{equation*}
+  A \land' B =
+  \set{ \R{r} \in \Atyp{\T{p} \times \T{q}} \such
+    \combFst\,\R{r} \in A \land \combSnd\,\R{r} \in B },
+\end{equation*}
+%
+and observe that $p \land q = \land' \circ \pair{p, q}$ therefore, for any $t : U \to T$,
+%
+\begin{equation*}
+  \invim{t}(p \land q) = \land' \circ \pair{p, q} \circ t
+  = \land' \circ \pair{p \circ t, q \circ t} = \invim{t} p \land \invim{t} q.
+\end{equation*}
+%
+The other connectives are dealt with analogously.
+The remaining two quantifier equations are called the \defemph{Beck-Chevalley conditions}.
+
+\begin{exercise}
+  Verify the Beck-Chevalley conditions for $\forall_T$ and $\exists_T$.
+\end{exercise}
+
+\section{Equality}
+\label{sec:equality}
+
+In a category, equality qua binary predicate on an object $S$ is represented by the diagonal morphism $\Delta : S \to S \times S$. In assemblies this is the map $\Delta(x) = (x, x)$, which is realized by $\tpcalam{x}{\T{S}} \combPair\,x\,x$.
+%
+We claim that the corresponding realizability predicate $\mathrm{eq} \in \Pred{S \times S}$ is given by $\T{e} = \unit$ and
+%
+\begin{equation*}
+  \star \rz \mathrm{eq} (x, y)
+  \iff
+  x = y.
+\end{equation*}
+%
+To verify the claim, we need to factor $\Delta$ and $i_\mathrm{eq} : S_\mathrm{eq} \to S$ from \cref{thm:mono-equiv-pred} through each other. We have
 %
 \begin{align*}
-  \invim{t}(\top) &\equiv \top,\\
-  \invim{t}(\bot) &\equiv \bot,\\
-  \invim{t}(a = b) &\equiv (a \circ t = b \circ t),\\
-  \invim{t}(p \land q) &\equiv \invim{t}(p) \land \invim{t}(q),\\
-  \invim{t}(p \lor q) &\equiv \invim{t}(p) \lor \invim{t}(q),\\
-  \invim{t}(p \lthen q) &\equiv \invim{t}(p) \lthen \invim{t}(q),\\
-  \invim{t}(\exists_{T} p) &\equiv \exists_{T} \invim{t}(p),\\
-  \invim{t}(\forall_{T} p) &\equiv \forall_{T} \invim{t}(p).
+  \S{S_\mathrm{eq}} &= \set{(x, y) \in \S{S} \times \S{S} \mid x = y},
+  \\
+  i_\mathrm{eq} (x,y) &= (x, y),
+  \\
+  \T{S_\mathrm{eq}} &= \T{S} \times \T{S} \times \unit,
+  \\
+  q \rz[S_\mathrm{eq}] x &\liff \combFst q \rz[S] x \and \combSnd\,q = \star.
 \end{align*}
 %
-Pullback is a finite limit, hence it commutes with those operations
-that are given as finite limits, namely $\top$, $=$ and $\land$. The
-remaining equations must be checked by hand. [NOT FINISHED.]
+Thus $\Delta$ and $i_\mathrm{eq}$ factor through $i_\mathrm{eq}$ via $x \mapsto (x,x)$, $i_\mathrm{eq}$ through $\Delta$ via $(x, y) \mapsto x$, each of which is easily seen to be realized.
+
+\section{Summary of realizability logic}
+\label{sec:realizability-summary}
 
 
-\section{Validity in the realizability interpretation}
-\label{sec:realizability-validity}
+We summarize the realizability interpretation of intuitionistic logic for easy lookup.
 
-Let us summarize the realizability interpretation of first-order
-intuitionistic logic. For each formula $\phi$ we define its underlying
-type $\T{\phi}$ as follows:
+Each ralizability predicate $p$ on an assembly $S$ has an underlying type $\T{p}$, which is computed as follows:
 %
 \begin{align*}
   \T{\bot} &= \unit \\
   \T{\top} &= \unit \\
-  \T{t_1 = t_2} &= \unit \\
-  \T{\phi_1 \land \phi_2} &= \T{\phi_1} \times \T{\phi_2}\\
-  \T{\phi_1 \lor \phi_2} &= \T{\phi_1} + \T{\phi_2}\\
-  \T{\phi_1 \implies \phi_2} &= \T{\phi_1} \to \T{\phi_2}\\
+  \T{s = t} &= \unit \\
+  \T{p \land q} &= \T{p} \times \T{q}\\
+  \T{p \lor q} &= \T{p} + \T{q}\\
+  \T{p \lthen q} &= \T{p} \to \T{q}\\
   \T{\all{x \in T}{\phi}} &= \T{T} \to \T{\phi} \\
   \T{\some{x \in T}{\phi}} &= \T{T} \times \T{\phi}.
 \end{align*}
 %
-The realizability relation $\R{r} \rz \phi$, where $\R{r} \in
-\Atyp{\T{\phi}}$ is defined inductively as follows:
+The realizability relation $\R{r} \rz p$ x, where $p \in \Pred{S}$, $x \in \S{S}$ and $\R{r} \in \Atyp{\T{\phi}}$, is defined inductively as follows:
 %
 \begin{align*}
-  \R{r} \rz \bot &\iff \bot\\
-  \R{r} \rz \top &\iff \top\\
-  \ttunit \rz t_1 = t_2 &\iff t_1 = t_2\\
-  \combPair\,\R{r}_1\,\R{r}_2 \rz \phi_1 \land \phi_2 &\iff
-  \R{r}_1 \rz \phi_1 \land \R{r}_2 \rz \phi_2\\
-  \combLeft\,\R{r} \rz \phi_1 \lor \phi_2 &\iff \R{r} \rz \phi_1\\
-  \combRight\,\R{r} \rz \phi_1 \lor \phi_2 &\iff \R{r} \rz \phi_2\\
-  \R{r} \rz \phi_1 \lthen \phi_2 &\iff
-  \all{\R{s} \in \Atyp{\T{\phi_1}}} (\R{s} \rz \phi_1 \lthen
-    \defined{\R{r}\,\R{s}} \land \R{r}\,\R{s} \rz \phi_2)
+  \R{r} \rz \bot &\liff \bot\\
+  \R{r} \rz \top &\liff \top\\
+  \R{r} \rz t_1 = t_2 &\liff t_1 = t_2 \land \R{r} = \star\\
+  \R{r} \rz p x \land q x &\liff
+  \combFst\,\R{r} \rz p \land \combFst\,\R{r} \rz q\\
+  \R{r} \rz p x \lor q x
+    &\liff
+    \begin{aligned}[t]
+      & (\some{\R{u}} \R{r} = \combLeft\,\R{u} \land \R{u} \rz p x)
+      \lor {} \\
+      &(\some{\R{v}} \R{r} = \combRight\,\R{v} \land \R{v} \rz q x).
+    \end{aligned}
   \\
-  \combPair\,\R{u}\,\R{r} \rz \some{x \in T}{\phi} &\iff
-  \some{u \in T} \R{u} \rz[T] u \land \R{r} \rz \subst{\phi}{x \subto u}
+  \R{r} \rz p \lthen q &\liff
+  \all{\R{s} \in \Atyp{\T{p}}} \R{s} \rz p \lthen \R{r}\,\R{s} \rz q
   \\
-  \R{r} \rz \all{x \in T}{\phi} &\iff
-  \all{\R{u} \in \Atyp{\T{T}}}{
-    \all{u \in T}
-      (\R{u} \rz[T] u \lthen
-      \defined{\R{r}\,\R{u}} \land \R{r}\,\R{u} \rz \subst{\phi}{x \subto u})
-    }.
+  \R{r} \rz \some{y \in T} p(x,y) &\liff
+  \some{y \in \S{T}} \combFst\,\R{r} \rz[T] y \land \combSnd\,\R{r} \rz p(x,y)
+  \\
+  \R{r} \rz \all{y \in T} p(x, y) &\liff
+    \all{y \in \S{T}} \all{\R{y}}
+     \R{y} \rz[T] y \lthen \R{r}\,\R{y} \rz q(x,y).
 \end{align*}
 %
-
-\section{Realizability toposes}
-\label{sec:realizability-toposes}
-
+The above clauses remind one of the Curry-Howard correspondence between logic and type theory. The similarity is not accidental, as both realizability and Martin-Löf type theory aim to formalize the Brouwer-Heyting-Kolmogorov explanation of intuitionistic logic.
 
 \section[\texorpdfstring{$\neg\neg$-stable predicates}{Not-not-stable predicates}]{$\neg\neg$-stable predicates}
 \label{sec:decidable-predicates}

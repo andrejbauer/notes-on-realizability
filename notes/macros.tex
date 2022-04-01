@@ -44,7 +44,6 @@
 \newcommand{\subst}[2]{#1[#2]}
 
 %%% Arrows
-\newcommand{\subto}{{\shortrightarrow}} % for substitution
 \newcommand{\oneto}{\mapsto}
 \newcommand{\manyto}{\oneto^{*}}
 \newcommand{\multito}{\rightrightarrows}
@@ -151,9 +150,9 @@
 \newcommand{\axiomd}[2]{\dfrac{}{#1} \; #2}
 
 % Inference rule
-\newcommand{\infer}[2]{\begin{gathered}\dfrac{#1}{#2}\end{gathered}}
-\newcommand{\inferr}[3]{\begin{gathered}\dfrac{#1\quad #2}{#3}\end{gathered}}
-\newcommand{\inferrr}[4]{\begin{gathered}\dfrac{#1\quad #2 \quad #3}{#4}\end{gathered}}
+%\newcommand{\infer}[2]{\begin{gathered}\dfrac{#1}{#2}\end{gathered}}
+%\newcommand{\inferr}[3]{\begin{gathered}\dfrac{#1\quad #2}{#3}\end{gathered}}
+%\newcommand{\inferrr}[4]{\begin{gathered}\dfrac{#1\quad #2 \quad #3}{#4}\end{gathered}}
 
 \newcommand{\sep}{\qquad}
 \newcommand{\fromassumption}[2]{
@@ -164,7 +163,7 @@
   \end{gathered}}
 
 % Inference rule with a side condition
-\newcommand{\inferd}[3]{\begin{gathered}\dfrac{#1}{#2} \; #3\end{gathered}}
+% \newcommand{\inferd}[3]{\begin{gathered}\dfrac{#1}{#2} \; #3\end{gathered}}
 
 %%% Domain theory
 \newcommand{\upper}[1]{{\uparrow}#1}
@@ -232,6 +231,7 @@
 \newcommand{\per}{\approx}
 
 \newcommand{\entails}{\vdash}
+\newcommand{\bientails}{\mathrel{{\dashv}{\vdash}}}
 
 \newcommand{\typ}[2]{#1_{#2}}
 \newcommand{\Atyp}[1]{\typ{\AA}{#1}}
