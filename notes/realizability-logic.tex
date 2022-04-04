@@ -566,6 +566,22 @@ It is useful to have a simple syntactic criterion for recognizing classical form
   Prove \cref{prop:almost-negative-stable} \emph{without} resorting to realizability. You should just give suitable intuitionistic proofs. For extra credit, do it in a proof assistant.
 \end{exercise}
 
+The classical predicates can be used to interpret classical logic.
+
+\begin{exercise}
+  Consider the following preorders:
+  %
+  \begin{itemize}
+  \item the sub-preorder $\mathsf{RegMono}(S) \subseteq \Mono{S}$ on the \emph{regular} monos,
+  \item the sub-preorder $\mathsf{Pred}_{\lnot\lnot}(S) \subseteq \Pred{S}$ on the classical predicates,
+  \item the powerset $\pow{\S{S}}$ ordered by~$\leq$.
+  \end{itemize}
+  %
+  Show that these preorders are equivalent, and hence complete Boolean algebras.
+  For extra credit, explain in what sense the equivalence is \emph{functorial}.
+\end{exercise}
+
+
 \subsection{Decidable predicates}
 \label{sec:decidable-predicates}
 
@@ -670,6 +686,21 @@ For a specific choices of two-element assemblies we obtain known classes of pred
   The hard part of the proof was already done in \cref{prop:decidable-when}, and we leave the rest as an exercise.
 \end{proof}
 
+The \defemph{law of excluded middle} states that all predicates are decidable. It is never realized.
+
+\begin{proposition}
+  There exists a non-decidable predicate.
+\end{proposition}
+
+\begin{proof}
+  Consider the predicate classified by $\id[\nabla \two]$.
+  More precisely, it is the predicate $p \in \Pred{\nabla \two}$ defined by
+  $\T{p} = \unit$ and $p 0 = \emptyset$, $p 1 = \Atyp{\unit}$.
+  It is not decidable because every assembly map $\nabla \two \to \Bool$ is constant, since $\Bool$ is modest.
+\end{proof}
+
+The \defemph{law of double negation} states that all predicates are classical. Because it is inter-derivable with excluded middle, it cannot be valid in realizability logic.
+
 \begin{exercise}
   Say that a predicate $p \in \Pred{S}$ is \defemph{semidecidable} if it is classified by the Rosolini dominance $\Sigma^0_1$. 
   %
@@ -684,7 +715,11 @@ For a specific choices of two-element assemblies we obtain known classes of pred
   Show that a predicate is semidecidable if, and only if, it is equivalent to some~$q_{\R{r}}$.
 \end{exercise}
 
-One might ask whether \emph{all} predicates are classified by a two-element assembly, as that would imply that assemblies form a topos. Alas, this is not the case.
+\begin{exercise}
+  Is there a pca~$\AA$ such that in $\Asm{\AA}$ the decidable and semidecidable predicates coincide?
+\end{exercise}
+
+One might ask whether there is a two-element assembly~$\Omega$ which classifies \emph{all} predicates, as that would imply that assemblies form a topos. Alas, this is not the case.
 
 \begin{proposition}
   If a predicate is classified by a two-element assembly then it is $\lnot\lnot$-stable.
@@ -706,20 +741,6 @@ The point is that not all predicates are $\lnot\lnot$-stable.
 
 \subsection{Excluded middle is not valid}
 \label{sec:excluded-middle}
-
-The law of excluded middle states that all predicates are decidable.
-
-\begin{proposition}
-  There exists a non-decidable predicate.
-\end{proposition}
-
-\begin{proof}
-  Consider the predicate $x \mapsto (x = 1)$ on the assembly $\nabla \two$.
-  More precisely, it is the predicate $p \in \Pred{\nabla \two}$ defined by
-  $\T{p} = \unit$ and $p 0 = \emptyset$, $p 1 = \Atyp{\unit}$.
-\end{proof}
-
-The law of double negation states that all predicates are classical. Because it is inter-derivable with excluded middle, it cannot be valid in realizability logic.
 
 
 \subsection{Epis and monos}
