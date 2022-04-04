@@ -1,4 +1,4 @@
-\chapter{Realizability}
+\chapter{Realizability categories}
 \label{chap:realizability}
 
 \section{Motivation}
@@ -73,7 +73,7 @@ Programmers intuitively know what this mean, namely to implement, or realize, a 
 We now give a precise definition of the ideas presented in the previous section.
 
 \begin{definition}
-  An \defemph{assembly} over~$(\AA, \subAA)$ a tpca with a sub-tpca is a triple
+  An \defemph{assembly} over~$(\AA, \subAA)$ an tpca with a sub-tpca is a triple
   $S = \xasm{S}$ where $\S{S}$ is its \defemph{underlying set}, $\T{S}$ its \defemph{underlying type} from~$\AA$, and $\rz[S]$ is a relation between $\xAtyp{S}$ and~$\S{S}$
   satisfying: for every $x \in \S{S}$ there is $\R{x} \in \xAtyp{S}$ such that $\R{x} \rz[S] x$.
 
@@ -84,7 +84,7 @@ We now give a precise definition of the ideas presented in the previous section.
 
 \noindent
 %
-We sometimes indulge in writing the underlying set $\S{S}$ of an assembly~$S$ simply as~$S$.
+We sometimes require that the underlying tpca with sub-tpca $(\AA, \subAA)$ is in fact an n-tpca, or an nr-tpca with a chosen substructure. Even though we may not be explicit about the requirement, it should be apparent from our using the type~$\ttnat$ and the fixed-point combinators~$\combY$.
 
 We often use the same letter for an element and its realizer, but differentiate between them by using different fonts, for instance the elements $x$, $y$, $f$, $g$ would have realizers $\R{x}$, $\R{y}$, $\R{f}$, $\R{g}$, respectively.
 
@@ -136,34 +136,31 @@ to prohibit such anomalies.
 
 Most structures in computable mathematics turn out to be modest, but assemblies are needed also, and they form a richer category than the modest sets.
 
-\subsection{First examples of assemblies}
-\label{sec:examples-assemblies}
-
-To gain a bit of intuition about assemblies, we look at several concrete examples. Unless stated otherise, we assume that all assemblies are constructed over a chosen pca with sub-pca $(\AA, \subAA)$.
-
-\subsubsection{The unit assembly}
+\subsection{The unit assembly $\One$}
 \label{sec:asm-unit}
 
-Let $\unit$ be a type such that $\subAtyp{\unit}$ is inhabited.
+To gain a bit of intuition about assemblies, we look at several concrete examples of assemblies.
+
+Let $\unit$ be a type with an element $\ttunit \in \subAtyp{\unit}$.
 It always exists, because there is at least one type $s$, and then
 $\Atyp{s \to s \to s}$ contains $\combK_{s,s}$.
-%
-The \defemph{terminal assembly} $\one = (\set{\star}, \unit, {\rz[\one]})$ has the trivial realizability relation, $r \rz[\one] \star$ for all $r \in \subAtyp{t}$.
+
+The \defemph{terminal assembly} $\One = (\set{\star}, \unit, {\rz[\One]})$ has the trivial realizability relation, $r \rz[\One] \star$ for all $r \in \subAtyp{t}$.
 
 \begin{exercise}
-  Show that $\one$ is the terminal object\sidenote{An object $T$ in a category is \defemph{terminal} when there is precisely one morphism to $T$ from every object.}
-  in $\AsmA$. Conclude from this that a different choice of $\unit$ results in an isomorphic copy of~$\one$.
+  Show that $\One$ is the terminal object\sidenote{An object $T$ in a category is \defemph{terminal} when there is precisely one morphism to $T$ from every object.}
+  in $\AsmA$. Conclude from this that a different choice of $\unit$ results in an isomorphic copy of~$\One$.
 \end{exercise}
 
-The morphisms $\one \to S$ corresponds to those elements of~$\S{S}$ that are realized by elements of $\subAtyp{\T{S}}$. Indeed, if $f : \star \to S$ is realized by $\R{f} \in \subAtyp{\unit \to \T{S}}$ then $f \, \star$ is realized by $\R{f} \, t \in \subAtyp{\T{S}}$, for any $t \in \subAtyp{\unit}$. Conversely, if $a \in \S{S}$ is realized by $\R{a} \in \subAtyp{\T{S}}$ then $\star \mapsto a$ is $\tpcalam{x}{\unit}{\R{a}}$.
+The morphisms $\One \to S$ corresponds to those elements of~$\S{S}$ that are realized by elements of $\subAtyp{\T{S}}$. Indeed, if $f : \star \to S$ is realized by $\R{f} \in \subAtyp{\unit \to \T{S}}$ then $f \, \star$ is realized by $\R{f} \, t \in \subAtyp{\T{S}}$, for any $t \in \subAtyp{\unit}$. Conversely, if $a \in \S{S}$ is realized by $\R{a} \in \subAtyp{\T{S}}$ then $\star \mapsto a$ is $\tpcalam{x}{\unit}{\R{a}}$.
 
-This may be a good moment to point out the difference between the \defemph{global points} of~$S$, which is the set of morphisms $\one \to S$, and the \defemph{underlying set~$\S{S}$} of~$S$. Both induce functors $\AsmA \to \Set$, which need not be equivalent, unless $\AA = \subAA$.
+This may be a good moment to point out the difference between the \defemph{global points} of~$S$, which is the set of morphisms $\One \to S$, and the \defemph{underlying set~$\S{S}$} of~$S$. Both induce functors $\AsmA \to \Set$, which need not be equivalent, unless $\AA = \subAA$.
 
 
-\subsubsection{Natural numbers}
+\subsection{Natural numbers}
 \label{sec:asm-natural-numbers}
 
-Suppose $(\AA, \subAA)$ is an n-tpca. Let $N = (\NN, \ttnat, {\rz[N]})$ be the set of natural numbers~$\NN$ realized by the numerals, for all $r \in \Atyp{\ttnat}$ and $n \in \NN$,
+Suppose $(\AA, \subAA)$ is an n-tpca with a sub-n-tpca. Let $N = (\NN, \ttnat, {\rz[N]})$ be the set of natural numbers~$\NN$ realized by the numerals, for all $r \in \Atyp{\ttnat}$ and $n \in \NN$,
 %
 \begin{equation*}
   r \rz[N] n \iff
@@ -182,55 +179,10 @@ The assembly $\mathbb{N}$ is the natural numbers object. Indeed, given an assemb
 %
 is realized by $\combRec \, \mathtt{z} \, \mathtt{f}$.
 
-
-\subsubsection{Boolean, semidecidable, and classical truth values}
-\label{sec:asm-two-element}
-
-Let us work in the category $\Asm{\klone}$ over Kleene's first algebra and look at assembly structures on the set $2 = \set{0, 1}$.
-
-First, we have the trivial structure, namely the assembly of \defemph{classical truth values} $\nabla 2 = (2, {\rz[\nabla 2]})$ -- the notation will become clear in \cref{sec:nabla}, and the nomenclature a bit later -- with the trivial realizability relation $n \rz[\nabla \two] b$ for all $k \in \NN$ and $b \in 2$.
-
-Second, we have the assembly of \defemph{Boolean values} $\two = (2, {\rz[2]})$ where $n \rz[2] b$ if, and only if $n = b$.
-
-The assemblies $\nabla 2$ and $\two$ are \emph{not} isomorphic because every assembly map $\nabla 2 \to \two$ is constant, although the identity map is an assembly map $\two \to \nabla 2$.
-
-There are still more two-element assemblies, for instance the assembly of \defemph{semidecidable values} $\mathbb{S} = (2, {\rz[S]})$ given by
-%
-\begin{equation*}
-  n \rz b \iff
-  (\divergent{\pr{n}{n}} \land b = 0) \lor (\defined{\pr{n}{n}} \land b = 1).
-\end{equation*}
-%
-Again, the identity map is realized as an assembly map $\two \to \mathbb{S}$, but not the other way around.
-
 \begin{exercise}
-  Why is identity not an assembly map $\mathbb{S} \to \two$?
+  Suppose $(\AA, \subAA)$ is an tpca with a sub-tpca such that $\AsmA$ has a natural numbers object. Show that $(\AA, \subAA)$ is an n-tpca with a sub-n-tpca.
 \end{exercise}
 
-
-\subsubsection{Real numbers}
-\label{sec:asm-real-numbers}
-
-As our third example we ask how to equip the real numbers with a realizability structure. Here we give the correct answer, but leave it unexplained for the time being.
-
-We work with an nr-tpca $\AA$ with a sub-n-tpca $\subAA$. Intuitively speaking, a realizer for $x \in \RR$ should allow us to compute arbitrarily good approximations of~$x$, so we define the relation $\rz[R]$ between $\Atyp{\ttnat \to \ttnat \times \ttnat \times \ttnat}$ by stipulating that $\R{x} \rz[R] x$ holds if, and only if,
-%
-\begin{equation*}
-  \all{k \in \NN} \some{a, b, c \in \NN}
-  \R{x} \, \overline{k} = (\overline{a}, \overline{b}, \overline{c})
-  \land |x - \frac{a - b}{1 + b}| < 2^{-k}.
-\end{equation*}
-%
-The triple of numbers $(a, b, c)$ is just a clumsy way of encoding the rational $\frac{a - b}{c}$, so in essence $\R{x}$ computes a sequence of rationals such that the $k$-th term is within~$2^{-k}$ of~$x$.
-
-The assembly of real numbers $R = (\RR_{\mathrm{rz}}, \ttnat \to \ttnat \times \ttnat \times \ttnat, {\rz[R]})$ has as its underlying set the realized reals
-%
-\begin{equation*}
-  \RR^{\mathrm{rz}}
-  = \set{x \in \RR \such \some{\R{x} \in \Atyp{\ttnat \to \ttnat \times \ttnat \times \ttnat}} \R{x} \rz[R] x}.
-\end{equation*}
-%
-Which reals are so realized depends on the choice of~$\AA$. For example, first Kleene algebra realizes the \defemph{Turing computable reals}, whereas the second Kleene algebra realizes all reals.
 
 \subsection{The constant assemblies}
 \label{sec:nabla}
@@ -271,6 +223,83 @@ the realizers we cannot compute anything interesting regarding~$X$.
   aseembly map the underlying set-theoretic function. Show that~$\Gamma$ is left adjoint to~$\Delta$.
 \end{exercise}
 
+
+\subsection{Two-element assemblies}
+\label{sec:two-elem-asm}
+
+We explore a bit what the two-element assemblies are like. For simplicity we consider the non-relative case $\Asm{\AA}$ of assemblies on a pca~$\AA$.
+
+Without loss of generality we may assume that a two-element assembly~$T$ has $\S{T} = \two = \{0, 1\}$ as its underlying set. Such an assembly is determined by the sets of realizers $\Ex{T} 0 \subseteq \AA$ and $\Ex{T} 1 \subseteq \AA$, which must both be inhabited.
+
+We may partially order all two-element assemblies by stipulating that $T \leq U$, where $\S{T} = \S{U} = \two$ when $\id[\two]$ is realized as an assembly map $T \to U$.
+That is, $T \leq U$ holds when the realizers of~$T$ are more informative than the realizers of~$U$.
+
+With respect to this ordering the largest two-element assembly is $\nabla \two$, since every map into a constant assembly is realized. We call $\nabla \two$ the \defemph{classical truth values} because it comes from classical set theory, where~$\two$ is the object of truth values.
+
+The least two-element assembly is $\Bool = (\two, {\rz[\Bool]})$ where, for $\R{r} \in \AA$ and $b \in \two$,
+%
+\begin{equation*}
+  \R{r} \rz[\Bool] b
+  \iff
+  (\R{r} = \combFalse \land b = 0) \lor
+  (\R{r} = \combTrue \land b = 1).
+\end{equation*}
+%
+Indeed $\two \leq U$ is realized by $\pcalam{\R{r}} \combIf\,\R{r},\R{a}\,\R{b}$ where $\R{a} \rz[U] 0$ and $\R[b] \rz[U] 1$.
+%
+The assembly $\Bool$ is the assembly of \defemph{Booleans} or \defemph{decidable truth values}.
+
+There are plenty of assemblies between $\Bool$ and $\nabla \two$, for example the assembly $\Sigma^0_1$ of the \defemph{semidecidable\sidenote{ We need to be careful about the meaning of ``semidecidable'' because it depends on~$\AA$. For example, in assemblies over~$\klone$ the Rosolini dominance really does embody semidecidability, whereas in assemblies over~$\Baire$ it is an admissible representation of the Sierpinski space, see \cref{def:admissible-representation}.} truth values}, also known as the \defemph{Rosolini dominance}, is defined as
+%
+\begin{equation*}
+  \R{r} \rz[\Sigma^0_1] b
+  \iff
+  \begin{aligned}[t]
+  & (\all{n} \R{r}\,\overline{n} \in \set{\combFalse, \combTrue})
+  \land {} \\
+  & (b = 1 \liff \some{n} \R{r}\,\overline{n} = \combTrue).
+  \end{aligned}
+\end{equation*}
+%
+Its realizers compute infinite sequence of bits. Such a realizer represents~$1$ if, and only if, it computes a sequence that contains~$\combTrue$.
+
+\begin{exercise}
+  Define two-element assemblies that correspond to the truth values in the \emph{arithmetical hierarchy}, defined inductively as follows:
+  %
+  \begin{itemize}
+  \item $\Sigma^0_0 = \Pi^0_0 = \set{\bot, \top}$ are the \emph{decidable truth values},
+  \item $\Sigma^0_{n+1}$ are the truth values of the form $\some{n} p n$ where $p : \NN \to \Pi^0_n$,
+  \item $\Pi^0_{n+1}$ are the truth values of the form $\all{n} p n$ where $p : \NN \to \Sigma^0_n$.
+  \end{itemize}
+  %
+  In your definition you should replace the maps~$p$ with suitable realizers~$\R{r}$.
+  Above we already constructed $\Sigma_0^1 = \Pi^0_0 = \Bool$ and $\Sigma^0_1$. Show that $\Sigma^0_n \leq \Pi^0_{n+1}$ and $\Pi^0_n \leq \Sigma^0_{n+1}$.
+\end{exercise}
+
+
+\subsubsection{Real numbers}
+\label{sec:asm-real-numbers}
+
+As our third example we ask how to equip the real numbers with a realizability structure. Here we give the correct answer, but leave it unexplained for the time being.
+
+We work with an nr-tpca $\AA$ with a sub-n-tpca $\subAA$. Intuitively speaking, a realizer for $x \in \RR$ should allow us to compute arbitrarily good approximations of~$x$, so we define the relation $\rz[R]$ between $\Atyp{\ttnat \to \ttnat \times \ttnat \times \ttnat}$ by stipulating that $\R{x} \rz[R] x$ holds if, and only if,
+%
+\begin{equation*}
+  \all{k \in \NN} \some{a, b, c \in \NN}
+  \R{x} \, \overline{k} = (\overline{a}, \overline{b}, \overline{c})
+  \land |x - \frac{a - b}{1 + b}| < 2^{-k}.
+\end{equation*}
+%
+The triple of numbers $(a, b, c)$ is just a clumsy way of encoding the rational $\frac{a - b}{c}$, so in essence $\R{x}$ computes a sequence of rationals such that the $k$-th term is within~$2^{-k}$ of~$x$.
+
+The assembly of real numbers $R = (\RR_{\mathrm{rz}}, \ttnat \to \ttnat \times \ttnat \times \ttnat, {\rz[R]})$ has as its underlying set the realized reals
+%
+\begin{equation*}
+  \RR^{\mathrm{rz}}
+  = \set{x \in \RR \such \some{\R{x} \in \Atyp{\ttnat \to \ttnat \times \ttnat \times \ttnat}} \R{x} \rz[R] x}.
+\end{equation*}
+%
+Which reals are so realized depends on the choice of~$\AA$. For example, first Kleene algebra realizes the \defemph{Turing computable reals}, whereas the second Kleene algebra realizes all reals.
 
 \section{Equivalent formulations}
 \label{sec:equivalent-formulations}

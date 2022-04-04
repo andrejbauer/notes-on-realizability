@@ -142,9 +142,7 @@ In a Heyting prealgebra there may be many smallest elements, but they are all eq
 \end{proposition}
 
 \begin{proof}
-  Let $S$ be an assembly and $\unit$ any type with an element
-  $\ttunit \in \subAtyp{\unit}$. Define the predicates $\bot, \top :
-  S \to \pow{\Atyp{\unit}}$ by
+  Define the predicates $\bot, \top : S \to \pow{\Atyp{\unit}}$ on an assembly~$S$ by
   % 
   \begin{equation*}
     \bot x= \emptyset
@@ -222,6 +220,18 @@ In a Heyting prealgebra there may be many smallest elements, but they are all eq
 \begin{exercise}
   Finish the proof by checking that the definition of $\lthen$ validates the inference rules for implication.
 \end{exercise}
+
+In intuitionistic logic \defemph{negation} $\neg p$ is an abbreviation for $p \lthen \bot$. The following holds:
+%
+\begin{align*}
+  r \rz \neg p x
+  &\iff
+  \lnot \some{\R{s} \in \Atyp{\T{p}}} \R{s} \rz p x, \\
+  r \rz \neg \neg p x
+  &\iff
+  \some{\R{s} \in \Atyp{\T{p}}} \R{s} \rz p x.
+\end{align*}
+
 
 \section{Quantifiers}
 \label{sec:quantifiers}
@@ -346,37 +356,55 @@ We still have some work to do, namely check that substitution is functorial and 
   \invim{(u \circ t)} s = \invim{t} (\invim{u} s),
 \end{equation*}
 %
-which is of course the case.\sidenote{Substitution is \emph{contra-variant} because it reverses the order of composition.}
+which is of course the case.\sidenote{Substitution is \emph{contravariant} because it reverses the order of composition.}
 
-As far as the logical structure is concerned, we need to check
-%
-\begin{align*}
-  \invim{t} \top &= \top,\\
-  \invim{t} \bot &= \bot,\\
-  \invim{t} (p \land q) &= \invim{t} p \land \invim{t} q,\\
-  \invim{t} (p \lor q) &= \invim{t} p \lor \invim{t} q,\\
-  \invim{t} (p \lthen q) &= \invim{t} p \lthen \invim{t} q,\\
-  \invim{t} (\exists_{T} p) &= \exists_{T} \invim{t} p,\\
-  \invim{t} (\forall_{T} p) &= \forall_{T} \invim{t} p.
-\end{align*}
-%
-All but the last two hold because they are defined pointwise. For instance, given $p, q \in \Pred{T}$, define $\land' : \pow{\Atyp{\T{p}}} \times \pow{\Atyp{\T{q}}} \to \pow{\Atyp{\T{p} \times \T{q}}}$ by
-%
-\begin{equation*}
-  A \land' B =
-  \set{ \R{r} \in \Atyp{\T{p} \times \T{q}} \such
-    \combFst\,\R{r} \in A \land \combSnd\,\R{r} \in B },
-\end{equation*}
-%
-and observe that $p \land q = \land' \circ \pair{p, q}$ therefore, for any $t : U \to T$,
-%
-\begin{equation*}
-  \invim{t}(p \land q) = \land' \circ \pair{p, q} \circ t
-  = \land' \circ \pair{p \circ t, q \circ t} = \invim{t} p \land \invim{t} q.
-\end{equation*}
-%
-The other connectives are dealt with analogously.
-The remaining two quantifier equations are called the \defemph{Beck-Chevalley conditions}.
+\begin{proposition}
+  Realizability predicates and substitution constitute a functor
+  %
+  \begin{equation*}
+    \opcat{\AsmA} \to \mathsf{Heyt}
+  \end{equation*}
+  %
+  from (the opposite category of) assemblies to the category of Heyting prealgebras.
+  Moreover, substitution preserves the quantifiers.
+\end{proposition}
+
+\begin{proof}
+  We already checked that substitution is functorial, but we still need to verify
+  that it yields a homomorphism of Heyting prealgebras, i.e.,
+  %
+  \begin{align*}
+    \invim{t} \top &= \top,\\
+    \invim{t} \bot &= \bot,\\
+    \invim{t} (p \land q) &= \invim{t} p \land \invim{t} q,\\
+    \invim{t} (p \lor q) &= \invim{t} p \lor \invim{t} q,\\
+    \invim{t} (p \lthen q) &= \invim{t} p \lthen \invim{t} q.
+  \end{align*}
+  % 
+  These hold because they are defined pointwise. For instance, given $p, q \in \Pred{T}$, define $\land' : \pow{\Atyp{\T{p}}} \times \pow{\Atyp{\T{q}}} \to \pow{\Atyp{\T{p} \times \T{q}}}$ by
+  % 
+  \begin{equation*}
+    A \land' B =
+    \set{ \R{r} \in \Atyp{\T{p} \times \T{q}} \such
+      \combFst\,\R{r} \in A \land \combSnd\,\R{r} \in B },
+  \end{equation*}
+  % 
+  and observe that $p \land q = \land' \circ \pair{p, q}$ therefore, for any $t : U \to T$,
+  % 
+  \begin{equation*}
+    \invim{t}(p \land q) = \land' \circ \pair{p, q} \circ t
+    = \land' \circ \pair{p \circ t, q \circ t} = \invim{t} p \land \invim{t} q.
+  \end{equation*}
+  % 
+  The other connectives are dealt with analogously.
+
+  Preservation of quantifier amounts to checking the \defemph{Beck-Chevalley conditions}:
+  %
+  \begin{align*}
+    \invim{t} (\exists_{T} p) &= \exists_{T} (\invim{t} p),\\
+    \invim{t} (\forall_{T} p) &= \forall_{T} (\invim{t} p). \qedhere
+  \end{align*}
+\end{proof}
 
 \begin{exercise}
   Verify the Beck-Chevalley conditions for $\forall_T$ and $\exists_T$.
@@ -385,7 +413,7 @@ The remaining two quantifier equations are called the \defemph{Beck-Chevalley co
 \section{Equality}
 \label{sec:equality}
 
-In a category, equality qua binary predicate on an object $S$ is represented by the diagonal morphism $\Delta : S \to S \times S$. In assemblies this is the map $\Delta(x) = (x, x)$, which is realized by $\tpcalam{x}{\T{S}} \combPair\,x\,x$.
+Equality qua binary predicate on an object $S$ is represented by the diagonal morphism $\Delta : S \to S \times S$. In assemblies this is the map $\Delta x = (x, x)$, which is realized by $\tpcalam{x}{\T{S}} \combPair\,x\,x$.
 %
 We claim that the corresponding realizability predicate $\mathrm{eq} \in \Pred{S \times S}$ is given by $\T{e} = \unit$ and
 %
@@ -404,36 +432,52 @@ To verify the claim, we need to factor $\Delta$ and $i_\mathrm{eq} : S_\mathrm{e
   \\
   \T{S_\mathrm{eq}} &= \T{S} \times \T{S} \times \unit,
   \\
-  q \rz[S_\mathrm{eq}] x &\liff \combFst q \rz[S] x \and \combSnd\,q = \star.
+  q \rz[S_\mathrm{eq}] x &\liff \combFst q \rz[S] x \land \combSnd\,q = \star.
 \end{align*}
 %
-Thus $\Delta$ and $i_\mathrm{eq}$ factor through $i_\mathrm{eq}$ via $x \mapsto (x,x)$, $i_\mathrm{eq}$ through $\Delta$ via $(x, y) \mapsto x$, each of which is easily seen to be realized.
+Thus $\Delta$ factors through $i_\mathrm{eq}$ via $x \mapsto (x,x)$ and $i_\mathrm{eq}$ through $\Delta$ via $(x, y) \mapsto x$, each of which is easily seen to be realized.
 
 \section{Summary of realizability logic}
 \label{sec:realizability-summary}
 
-
 We summarize the realizability interpretation of intuitionistic logic for easy lookup.
 
-Each ralizability predicate $p$ on an assembly $S$ has an underlying type $\T{p}$, which is computed as follows:
+A realizability predicate~$p$ on an assembly $S$ is given by a type $\T{p}$ and a map $p : \S{S} \to \pow{\T{p}}$. The collection of all realizability predicates on~$S$ is denoted $\Pred{S}$. Given $p, q \in \Pred{S}$, $p$ entails $q$, written $p \entails q$, when there is $\R{i} \in \subAtyp{\T{S} \to \T{p} \to \T{q}}$ such that
+%
+\begin{equation*}
+  \all{x \in \S{S}}
+  \all{\R{x} \in \T{S}}
+  \all{\R{r} \in \T{p}}
+  \R{r} \rz[S] x
+  \land
+  \R{r} \rz p
+  \lthen
+  \R{i}\,\R{x}\,\R{r} \rz q x.
+\end{equation*}
+%
+The entailment relation is a preorder.
+
+The underlying types of connectives are computed as follows, where $p, q \in \Pred{S}$ and $r \in \Pred{T \times S}$:
 %
 \begin{align*}
-  \T{\bot} &= \unit \\
-  \T{\top} &= \unit \\
-  \T{s = t} &= \unit \\
-  \T{p \land q} &= \T{p} \times \T{q}\\
-  \T{p \lor q} &= \T{p} + \T{q}\\
-  \T{p \lthen q} &= \T{p} \to \T{q}\\
-  \T{\all{x \in T}{\phi}} &= \T{T} \to \T{\phi} \\
-  \T{\some{x \in T}{\phi}} &= \T{T} \times \T{\phi}.
+  \T{\bot} &= \unit, \\
+  \T{\top} &= \unit, \\
+  \T{s = t} &= \unit, \\
+  \T{p \land q} &= \T{p} \times \T{q},\\
+  \T{p \lor q} &= \T{p} + \T{q},\\
+  \T{p \lthen q} &= \T{p} \to \T{q}.\\
+  \T{\all{x \in T}{r(x, {-})}} &= \T{T} \to \T{r}, \\
+  \T{\some{x \in T}{r(x, {-})}} &= \T{T} \times \T{r}.
 \end{align*}
 %
-The realizability relation $\R{r} \rz p$ x, where $p \in \Pred{S}$, $x \in \S{S}$ and $\R{r} \in \Atyp{\T{\phi}}$, is defined inductively as follows:
+We write $\R{r} \rz p x$ instead of $\R{r} \in p x$.
+The Heyting prealgebra structure on $\Pred{S}$ is as follows, where $p, q \in \Pred{S}$,
+$r \in \Pred{T \times S}$, and $s, t \in \S{S}$:
 %
 \begin{align*}
   \R{r} \rz \bot &\liff \bot\\
   \R{r} \rz \top &\liff \top\\
-  \R{r} \rz t_1 = t_2 &\liff t_1 = t_2 \land \R{r} = \star\\
+  \R{r} \rz s = t &\liff s = t \land \R{r} = \star\\
   \R{r} \rz p x \land q x &\liff
   \combFst\,\R{r} \rz p \land \combFst\,\R{r} \rz q\\
   \R{r} \rz p x \lor q x
@@ -444,7 +488,7 @@ The realizability relation $\R{r} \rz p$ x, where $p \in \Pred{S}$, $x \in \S{S}
       &(\some{\R{v}} \R{r} = \combRight\,\R{v} \land \R{v} \rz q x).
     \end{aligned}
   \\
-  \R{r} \rz p \lthen q &\liff
+  \R{r} \rz (p \lthen q) &\liff
   \all{\R{s} \in \Atyp{\T{p}}} \R{s} \rz p \lthen \R{r}\,\R{s} \rz q
   \\
   \R{r} \rz \some{y \in T} p(x,y) &\liff
@@ -455,36 +499,228 @@ The realizability relation $\R{r} \rz p$ x, where $p \in \Pred{S}$, $x \in \S{S}
      \R{y} \rz[T] y \lthen \R{r}\,\R{y} \rz q(x,y).
 \end{align*}
 %
-The above clauses remind one of the Curry-Howard correspondence between logic and type theory. The similarity is not accidental, as both realizability and Martin-Löf type theory aim to formalize the Brouwer-Heyting-Kolmogorov explanation of intuitionistic logic.
+We have the following soundness theorem.
+
+\begin{theorem}
+  The realizability interpretation of intuitionistic logic is sound.
+\end{theorem}
+
+\begin{proof}
+  We already proved the theorem when we checked that the predicates form Heyting prealgebras and that the quantifiers validate the desired inference rules.
+\end{proof}
+ 
+Let us spell out what the theorem says: if a formula $\phi$ is intuitionistically
+provable then there exists $\R{r} \in \subAtyp{\T{\phi}}$ such that $\R{r} \rz \phi$.
+Moreover, the realizer~$\R{r}$ can be constructed from the proof of~$\phi$, one just has
+to follow the inference steps and apply the corresponding realizability constructions.
+
+The above clauses are reminiscent of the Curry-Howard correspondence between logic and type theory. The similarity is not accidental, as both realizability and Martin-Löf type theory aim to formalize the Brouwer-Heyting-Kolmogorov explanation of intuitionistic logic. Let us not forget, however, that realizability was the first such rigorous explanation.
 
 
-\section{Some special predicates}
+\section{Classical and decidable predicates}
 \label{sec:special-predicates}
 
+Some classes of predicates are of special interest.
 
-
-\subsection[\texorpdfstring{$\neg\neg$-stable predicates}{Not-not-stable predicates}]{$\neg\neg$-stable predicates}
+\subsection[\texorpdfstring{$\neg\neg$-stable predicates}{Not-not-stable predicates}]{Classical predicates}
 \label{sec:stable-predicates}
 
-\subsection{Excluded middle}
-\label{sec:excluded-middle}
+A formula $\phi$ is \defemph{classical}\sidenote{The terminology is non-standard but is vindicated below by the fact that $\nabla\two$ classifies the classical predicates. In any case, almost any terminology seems better than ``$\lnot\lnot$-stable''.} or \defemph{$\lnot\lnot$-stable} when $\lnot\lnot \phi \lthen \phi$. (We do not require $\phi \lthen \lnot\lnot \phi$ because it holds anyway.)
+
+\begin{proposition}
+  \label{prop:when-stable}
+  A predicate $p \in \Pred{S}$ is classical if, and only if, there exists $\R{q} \in \subAtyp{\T{S} \to \T{p}}$ such that, if $\R{x} \rz[S] x$ and  $p x \neq \emptyset$ then $\R{q}\,\R{x} \rz p x$.
+\end{proposition}
+
+\begin{exercise}
+  Prove \cref{prop:when-stable}. More precisely, you need to show that the stated condition is equivalent to $\top \entails \lnot\lnot p \lthen p$.
+\end{exercise}
+
+Thus a predicate is classical when its realizers can be computed at will, when they exist.
+%
+An important fact about assemblies is the following.
+
+\begin{proposition}
+  Equality on an assembly is classical.
+\end{proposition}
+
+\begin{proof}
+  Apply \cref{prop:when-stable} with $\R{r} = \combK\,\ttunit$.
+\end{proof}
+
+It is useful to have a simple syntactic criterion for recognizing classical formulas. Say that a formula is \defemph{almost negative}\sidenote{A \defemph{negative} formula is like an almost negative one, except that the antecedent in an implication is required to be negative, too.} when it has one of the following forms:
+%
+\begin{itemize}
+\item $\bot$, $\top$, $s = t$,
+\item $\phi \land \psi$ where $\phi$ and $\psi$ are almost negative,
+\item $\all{x \in S} \phi$ where $\phi$ is almost negative,
+\item $\phi \lthen \psi$ where $\psi$ is almost negative.
+\end{itemize}
+
+\begin{proposition}
+  \label{prop:almost-negative-stable}
+  An almost negative formula is classical.
+\end{proposition}
+
+\begin{exercise}
+  Prove \cref{prop:almost-negative-stable} \emph{without} resorting to realizability. You should just give suitable intuitionistic proofs. For extra credit, do it in a proof assistant.
+\end{exercise}
 
 \subsection{Decidable predicates}
 \label{sec:decidable-predicates}
 
-\subsection{Semidecidable predicates}
-\label{sec:semidecidable-predicates}
+Recall that a formula $\phi$ is \defemph{decidable}\sidenote{
+  Every decidable statement is classical, but the converse cannot be shown intuitionistically.
+  %
+  If you are confused, you might be thinking of the equivalence between
+  excluded middle (``all predicates are decidable'') and double-negation elimination (``all predicates are $\lnot\lnot$-stable'').
+} when $\phi \lor \lnot \phi$.
 
-\subsection{Stability of equality}
-\label{sec:stability-equality}
+\begin{proposition}
+  \label{prop:decidable-when}
+  A predicate $p \in \Pred{S}$ is decidable if, and only if, there exists
+  $\R{d} \in \subAtyp{\T{S} \to \ttbool}$ such that, for all $x \in \S{S}$ and $\R{x} \in \T{S}$, if $\R{x} \rz[S] x$ then $\defined{\R{d}\,\R{x}}$ and
+  %
+  \begin{equation*}
+    \R{d}\,\R{x} =
+    \begin{cases}
+      \combTrue & \text{if $p x \neq \emptyset$,} \\
+      \combFalse & \text{if $p x = \emptyset$.}
+    \end{cases}
+  \end{equation*}
+\end{proposition}
 
-\subsection{Negative and almost negative formulas}
-\label{sec:negat-almost-negat}
+\begin{proof}
+  If $\R{r} \rz p \lor \lnot p$ then we may take
+  %
+  \begin{equation*}
+    \R{d} = \tpcalam{\R{x}}{\T{S}} \combCase\,(\R{r}\,\R{x})\,\combTrue\,\combFalse.
+  \end{equation*}
+  %
+  Conversely, suppose $\R{d}$ with the stated property exists. Because a decidable predicate is stable, by \cref{prop:when-stable} there exists $\R{q} \in \subAtyp{\T{S} \to \T{p}}$ such that, if $\R{x} \rz[S] x$ and $p x \neq \emptyset$ then $\R{r}\,\R{x} \rz p x$. Now the realizer
+  %
+  \begin{equation*}
+    \tpcalam{\_}{\unit}
+    \tpcalam{\R{x}}{\T{S}}
+      \combIf\,
+        (\R{d}\,\R{x})\,
+        (\combLeft (\R{q}\,\R{x}))\,
+        (\combRight (\tpcalam{\_}{\T{S}}{\combK}))
+  \end{equation*}
+  %
+  witnesses $\top \entails p \lor \lnot p$.
+\end{proof}
 
+The realizer $\R{d}$ from \cref{prop:decidable-when} can be thought of as a decision procedure for~$p$, although what that means depends on the underlying model of computation. If~$\AA$ retracts to~$\klone$, see \cref{sec:decidable-simulations}, then~$\R{d}$ does indeed correspond to an algorithm in the usual sense of the word. But a topological model of computation, such as the graph model or Kleene's second algebra, $\R{d}$ amounts to having a \emph{topological separation} of the underlying space into two disjoint open sets.
+
+
+\subsection{Predicates classified by two-element assemblies}
+\label{sec:predicates-classified}
+
+Consider a two-element assembly~$T$ with $\S{T} = \set{0,1}$, like we did in \cref{sec:two-elem-asm}. Say that a predicate $p \in \Pred{S}$ is \defemph{classified} by an assembly map $c : S \to T$, called the \defemph{characteristic map} of~$p$, when
+%
+\begin{equation*}
+  \top \entails \all{x \in S} p x \liff c x = 1
+\end{equation*}
+%
+is realized. Because the above is a negative formula, it is $\neg\neg$-stable and so its realizers are uninformative. In other words, the statement is realized if, and only if,
+%
+\begin{equation*}
+  \all{x \in \S{S}} p x \neq \emptyset \liff c x = 1.
+\end{equation*}
+
+\begin{exercise}
+  Show that a predicate has at most one characteristic map.
+\end{exercise}
+
+For a specific choices of two-element assemblies we obtain known classes of predicates.
+
+\begin{proposition}
+  $\nabla \two$ and $\Bool$ classify the classical and decidable predicates, respectively.
+\end{proposition}
+
+\begin{proof}
+  Let us show that $\nabla \two$ classifies the classical predicates on an assembly~$S$.
+  %
+  Given an assembly map $f : S \to \nabla \two$, defined $p_f \in \Pred{S}$ by $\T{p_f} = \unit$ and
+  % 
+  \begin{equation*}
+    \R{r} \rz p_f x
+    \iff
+    f x = 1.
+  \end{equation*}
+  % 
+  Obviously, $p_f$ is $\neg\neg$-stable. Conversely, given a classical $p \in \Pred{S}$, define $f_p : S \to \nabla \two$ by
+  % 
+  \begin{equation*}
+    f_p x =
+    \begin{cases}
+      1 & \text{if $p x \neq \emptyset$,} \\
+      0 & \text{if $p x = \emptyset$.}
+    \end{cases}
+  \end{equation*}
+  % 
+  The map $f_p$ is realized because every map into a constant assembly is.
+  %
+  We claim that $f \mapsto p_f$ and $p \mapsto f_p$ form a bijective correspondence.
+  It is easy to check that $f = f_{p_f}$ for all $f : S \to \nabla \two$.
+  For the other direction, we need to show that a classical $p \in \Pred{S}$ satisfies $p \bientails p_{f_p}$. One direction is easy, and other one not much harder with the help of \cref{prop:when-stable}.
+
+  It remains to be checked that $\Bool$ classifies the decidable predicates.
+  The hard part of the proof was already done in \cref{prop:decidable-when}, and we leave the rest as an exercise.
+\end{proof}
+
+\begin{exercise}
+  Say that a predicate $p \in \Pred{S}$ is \defemph{semidecidable} if it is classified by the Rosolini dominance $\Sigma^0_1$. 
+  %
+  Suppose $\R{r} \in \subAtyp{\T{S} \to \ttnat \to \ttbool}$ is such that
+  whenever $\R{x} \rz[S] x$ and $n \in \NN$ then $\R{r}\,\R{x}\,\overline{n} \in \set{\combTrue, \combFalse}$. Define $q_{\R{r}} \in \Pred{S}$ by $\T{q_{\R{r}}} = \unit$ and
+  %
+  \begin{equation*}
+    \ttunit \rz q_{\R{r}}\,x
+    \iff \some{n \in \NN} \R{r}\,\R{x}\,\overline{n} = \combTrue.
+  \end{equation*}
+  %
+  Show that a predicate is semidecidable if, and only if, it is equivalent to some~$q_{\R{r}}$.
+\end{exercise}
+
+One might ask whether \emph{all} predicates are classified by a two-element assembly, as that would imply that assemblies form a topos. Alas, this is not the case.
+
+\begin{proposition}
+  If a predicate is classified by a two-element assembly then it is $\lnot\lnot$-stable.
+\end{proposition}
+
+\begin{proof}
+  If a predicate is classified by $T$ then it is also classified by~$\nabla \two$, therefore it is $\lnot\lnot$-stable.
+\end{proof}
+
+The point is that not all predicates are $\lnot\lnot$-stable.
+
+\begin{exercise}
+  Give an example of a realizability predicate which is not $\lnot\lnot$-stable.
+\end{exercise}
 
 
 \section{The internal language at work}
 \label{sec:internal-language-at}
+
+\subsection{Excluded middle is not valid}
+\label{sec:excluded-middle}
+
+The law of excluded middle states that all predicates are decidable.
+
+\begin{proposition}
+  There exists a non-decidable predicate.
+\end{proposition}
+
+\begin{proof}
+  Consider the predicate $x \mapsto (x = 1)$ on the assembly $\nabla \two$.
+  More precisely, it is the predicate $p \in \Pred{\nabla \two}$ defined by
+  $\T{p} = \unit$ and $p 0 = \emptyset$, $p 1 = \Atyp{\unit}$.
+\end{proof}
+
+The law of double negation states that all predicates are classical. Because it is inter-derivable with excluded middle, it cannot be valid in realizability logic.
+
 
 \subsection{Epis and monos}
 \label{sec:epis-monos}

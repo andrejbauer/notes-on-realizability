@@ -1,8 +1,5 @@
-\chapter{Realizability categories}
-\label{cha:categ-structure}
-
-In \cref{chap:realizability} we defined assemblies as our basic
-structures of interest. To learn more about them we study the category-theoretic structure of~$\AsmA$. 
+\section{The categorical structure of assemblies}
+\label{sec:categ-structure}
 
 In their everyday lives mathematicians use a limited set of
 constructions on sets: products, disjoint sums, subsets, quotient
@@ -11,7 +8,7 @@ powersets, unions, intersections, and complements. For all of these,
 except powersets, there are analogous constructions of assemblies.
 Therefore, many familiar set-theoretic constructions carry over to assemblies.
 
-\section{The cartesian structure}
+\subsection{Cartesian structure}
 \label{sec:cartesian-structure}
 
 A construction which makes a new set, space, or an algebraic structure
@@ -243,7 +240,7 @@ limits is called \defemph{cartesian} or \defemph{finitely
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Cocartesian structure}
+\subsection{Cocartesian structure}
 \label{sec:cocartesian-structure}
 
 
@@ -691,7 +688,7 @@ coproduct, as recorded in the following proposition.
 \end{proof}
 
 
-\section{Monos and epis}
+\subsection{Monos and epis}
 \label{sec:monos-epis}
 
 Recall that $f$ is a \defemph{monomorphism (mono)} when it can be
@@ -921,7 +918,7 @@ There is another characterization of regular epis which is used often.
   each other and that $q = i \circ f$ holds.
 \end{proof}
 
-\section{The regular structure}
+\subsection{Regular structure}
 \label{sec:regular-structure}
 
 In the category of sets every function $f : S \to T$ may be factored
@@ -1086,7 +1083,7 @@ and it provides an interpretation of existential quantifiers, cf.\
 \cref{sec:realizability-interpretation}.
 
 
-\section{Cartesian closed structure}
+\subsection{Cartesian closed structure}
 \label{sec:ccc}
 
 
@@ -1433,18 +1430,18 @@ The following equations hold:
 %
 \begin{align*}
   (\case{\iota_1(e)}{\iota_1(x)}{e_1}{\iota_2(y)}{e_2}) &=
-  \subst{e_1}{x \subto e}, \\
+  \subst{e_1}{e/x}, \\
   (\case{\iota_2(e)}{\iota_1(x)}{e_1}{\iota_2(y)}{e_2}) &=
-  \subst{e_2}{y \subto e}, \\
+  \subst{e_2}{e/y}, \\
   (\case{e_1}
-  {\iota_1(x)}{\subst{e_2}{z \subto \iota_1(x)}}
-  {\iota_2(y)}{\subst{e_2}{z \subto \iota_2(y)}}
-  ) &= \subst{e_2}{z \subto e_1}, \\
-  \subst{e}{z \subto (\case{e_1}{\iota_1(x)}{e_2}{\iota_2(y)}{e_3})} &= \\
+  {\iota_1(x)}{\subst{e_2}{\iota_1(x)/z}}
+  {\iota_2(y)}{\subst{e_2}{\iota_2(y)/z}}
+  ) &= \subst{e_2}{e_1/z}, \\
+  \subst{e}{(\case{e_1}{\iota_1(x)}{e_2}{\iota_2(y)}{e_3})/z} &= \\
   \qquad
   \xcase{e_1}
-  {\iota_1(x)}{\subst{e}{z \subto e_2}}
-  {\iota_2(y)}{\subst{e}{z \subto e_3}}
+  {\iota_1(x)}{\subst{e}{e_2/z}}
+  {\iota_2(y)}{\subst{e}{e_3/z}}
 \end{align*}
 
 We conclude by using the cartesian closed structure of $\AsmA$ to
@@ -1524,7 +1521,7 @@ You are invited to redo the proof by drawing the relevant commutative
 diagrams and using the universal properties of products, coproducts,
 and exponentials.
 
-\section{Projective assemblies}
+\subsection{Projective assemblies}
 \label{sec:projective-assemblies}
 
 An object $P$ is \defemph{(regular) projective} when for every regular epi $e : A \to B$ and $P : A \to B$ there is $\overline{f} : P \to A$ such that $f = e \circ \overline{f}$:
