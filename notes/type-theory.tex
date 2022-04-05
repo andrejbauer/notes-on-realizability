@@ -1,37 +1,99 @@
 \chapter{Realizability and type theory}
 \label{cha:type-theory-real}
 
+In everyday mathematics \emph{parametrized} constructions are commonplace. For
+example, when a mathematical text says ``consider a continuous map $f
+: [a,b] \to \RR$'', there is an
+implicit use of the parametrized set $[a,b] = \set{x \in \RR \such a
+  \leq x \leq b}$, where $a$ and $b$ are the parameters. 
+And whenever in algebra we say ``the cyclic group $\ZZ_n$'', that is not a single group, but a \emph{family} of groups parameterized by $n \in \NN$.
+
+A parametrized set is given by an \defemph{index set~$I$}
+and a correspondence which assigns a set $T_i$ to each $i \in I$. This
+is also known as a \defemph{family} of sets. In the present chapter we shall study families of assemblies, which provide a rich source of models of type theory.
+
+\section{Families of sets}
+\label{sec:families-sets}
+
+We first recall how families of sets provide a model of type theory. A \defemph{family of sets} is a map $A : I \to \Set$ from an \defemph{index set}~$I$ to the class of all sets. We say that \emph{$A$ is indexed by~$I$} or that it is \emph{a family over base~$I$}.\sidenote{The terminology ``a family over a base'' $I$ has geometric origins, where \emph{display maps} play the role of families, and these are drawn vertically so that~$I$ is at the bottom, so a base.} Let $\Fam{I}$ be the class of all families indexed by~$I$.
+
+Each $\Fam{I}$ is a category whose objects are the families indexed by~$I$. A morphism $f : A \to B$, where $A, B \in \Fam{I}$, is an $I$-indexed families of maps $(f_i : A_i \to B_i)_{i \in I}$. Morphisms are composed index-wise.
+
+A map $r : J \to I$, induces \defemph{reindexing} $\invim{r} : \Fam{I} \to \Fam{J}$ by precomposition, $\invim{r} A = A \circ r$. Reindexing is contravariantly functorial,
+%
+\begin{equation*}
+  \invim{\id[I]} A  = A
+  \qquad\text{and}\qquad
+  \invim{(s \circ r)} A = \invim{r} (\invim{s} A).
+\end{equation*}
+%
+Therefore, families and reindexings form a functor\sidenote{To keep the material introductory, we restrain category theory to basic observations.} $\opcat{\Set} \to \Cat$.
+
+The two fundamental operations on families of sets are the cartesian products and sums. We require them in their indexed form, where the product and the sum is taken over one index, while the other is left intact, as follows.
+%
+If $A : J \times I \to \Set$ is indexed by two parameters, then we may form the \defemph{product} $\Pi_J A : I \to \Set$ and the \defemph{sum} $\Sigma_J A : I \to \Set$, defined by
+%
+\begin{align*}
+  (\Pi_J A)_i &=
+    \set{ f : J \to \textstyle\bigcup_{j \in J} A_{j,i} \such \all{j \in J} f j \in A_{j,i} }
+  \\
+  (\Sigma_J A)_i &= \set{ (j, x) \such j \in J \land x \in A_{i,j} }.
+\end{align*}
+
+\begin{exercise}
+  Show that $\Pi_J : \Fam{I \times J} \to \Fam{I}$ is a functor by providing a suitable action on the morphisms, and similarly for $\Sigma_J$.
+\end{exercise}
+
+The distinguishing feature of products and sums is that they are adjoint to reindexing along the second projection $\pi_2 : J \times I \to I$, i.e.,
+%
+\begin{equation}
+  \label{eq:sigma-pi2-pi}
+  \Sigma_J \dashv \invim{\pi_2} \dashv \Pi_J.
+\end{equation}
+%
+These adjunctions summarize precisely what is needed to interpret $\Sigma_J$ and $\Pi_J$ as the type-theoretic dependent sums and products, respectively.
+
+Concretely, \eqref{eq:sigma-pi2-pi} amounts to having isomorphisms, natural in $A \in \Fam{J \times I}$ and $B \in \Fam{I}$,
+%
+\begin{equation*}
+  \Hom[\Fam{I}]{\Sigma_J A, B}
+  \cong
+  \Hom[\Fam{J \times I}]{A, \invim{\pi_2} B}
+\end{equation*}
+%
+and
+%
+\begin{equation*}
+  \Hom[\Fam{I}]{B, \Pi_J A}
+  \cong
+  \Hom[\Fam{J \times I}]{\invim{\pi_2} B, A}.
+\end{equation*}
+%
+We spell out the second isomorphism and leave the first one as an exercise.
+%
+Given $(f_i : B_i \to (\Pi_J A)_i)_{i \in I}$, define $(\hat{f}_{j,i} : B_i \to A_{j,i})_{(j,i) \in J \times I}$ by $\hat{f}_{j,i} x = f_i x j$, and given $(g_{j,i} : B_i \to A_{j,i})_{(j,i) \in J \times I}$ define $(\check{g}_i : B_i \to (\Pi_J A)_i)_{i \in I}$ by $\check{g}_i x j = g_{j,i} x$. It is easy to see that $f \mapsto \hat{f}$ and $g \mapsto \check{g}$ form an isomorphism. Checking naturality is less pleasant but instructive.
+
+\begin{exercise}
+  Complete the verification of the adjunctions $\Sigma_J \dashv \invim{\pi_2} \dashv \Pi_J$.
+\end{exercise}
+
+
 \section{Families of assemblies}
 \label{sec:families-assemblies}
 
-In everyday mathematics \emph{parametrized} sets are commonplace. For
-example, when a mathematical text says ``consider a continuous map $f
-: [a,b] \to \RR$ where $a < b$ are real numbers'', there is an
-implicit use of the parametrized set $[a,b] = \set{x \in \RR \such a
-  \leq x \leq b}$, where $a$ and $b$ are the parameters. In general, a
-parametrized set $(T_i)_{i \in I}$ is given by an \defemph{index set~$I$}
-and a correspondence which assigns a set $T_i$ to each $i \in I$. This
-is also known as a \defemph{family} of sets.
-
-We would like a corresponding notion of parametrized assemblies. One
-possibility is to take a family $(S_i)_{i \in I}$ of assemblies
-$S_i$ indexed by a \emph{set}~$I$. This is known as an
-\emph{external} family of assemblies, because the index set~$I$ is not
-an assembly. We would prefer the index $i$ to range over an assembly.
-This works out well if we also impose a uniformity condition on the
-assemblies $S_i$.
+We now formulate a suitable notion of families of assemblies.
+%
+One possibility is to simply take families of assemblies indexed by sets, but this is not a good choice\sidenote{A family of objects in a category which is indexed by a set is sometimes called an \emph{external} family, because the indexing set is ``outside of the category''.} because we should be using an assembly for indexing too. It turns out that we also need to require all members of the family to share the same underlying type.
 
 \begin{definition}
-  A \defemph{uniform family} of assemblies $(S_i)_{i \in I}$
-  is given by an \defemph{index assembly~$I$}, and for each $i \in
-  I$ an assembly $S_i = \xasm{S_i}$, such that $\T{S_i} = \T{S_j}$
-  for all $i, j \in I$.
+  A \defemph{(uniform family of assemblies} $A : I \to \AsmA$ is given by an
+  \defemph{index assembly~$I$}, an \defemph{underlying type} $\T{S}$, and for each
+  $i \in \S{I}$ an assembly $S_i$ such that $\T{S_i} = \T{S}$.
 \end{definition}
 
-We only consider uniform families $(S_i)_{i \in I}$, and
-write the underlying type of $S_i$'s as $\T{S}$. From an
-implementation point of view uniformity is a reasonable condition.
+In case of untyped realizability the underlying type plays no role, in which case a family $A : I \to \AsmA$ is given by an assignment $A_i$ of an assembly for each $i \in \S{I}$.
 
+Reindexing, products and sums of families of assemblies mimic the set-theoretic constructions. We only need to make sure that all the needed realizers are there.
 
 \section{Dependent sums and products}
 \label{sec:depend-sums-prod}
