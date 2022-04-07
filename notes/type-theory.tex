@@ -14,9 +14,33 @@ The language of such parameterized constructions is \defemph{(dependent) type th
 \section{Families of sets}
 \label{sec:families-sets}
 
-To set the scene, let us review the set-theoretic model of type theory. A \defemph{family of sets} is a map $A : I \to \Set$ from an \defemph{index set}~$I$ to the class of all sets. We say that \emph{$A$ is indexed by~$I$} or that it is \emph{a family over base~$I$}.\sidenote{The terminology ``a family over a base'' $I$ has geometric origins, where \emph{display maps} play the role of families, and these are drawn vertically so that~$I$ is at the bottom, so a base.} Let $\Fam{I}$ be the class of all families indexed by~$I$.
+To set the scene, let us review the set-theoretic model of type theory. A \defemph{family of sets} is a map $A : I \to \Set$ from an \defemph{index set}~$I$ to the class of all sets. We say that \emph{$A$ is indexed by~$I$} or that it is \emph{a family over base~$I$}. Let $\Fam{I}$ be the class of all families indexed by~$I$.
 
-Each $\Fam{I}$ is a category whose objects are the families indexed by~$I$. A morphism $f : A \to B$, where $A, B \in \Fam{I}$, is an $I$-indexed families of maps $(f_i : A_i \to B_i)_{i \in I}$. Morphisms are composed index-wise.
+Each $\Fam{I}$ is a category whose objects are the families indexed by~$I$. A morphism $f : A \to B$, where $A, B \in \Fam{I}$, is a \defemph{map of families} $f : A \to B$, which is a family of maps $f_i : A_i \to B_i$, parameterized by $i \in I$. Such maps are composed index-wise.
+
+\begin{exercise}
+  Recall the definition of the \defemph{slice category} $\Set/I$: an object is a map $a : A \to I$ with codomain~$I$, and a morphism a map $f : A \to B$ such that $b \circ f = a$:
+  %
+  \begin{equation*}
+    \xymatrix@-1em{
+      {A} \ar[rr]^{f}
+      \ar[dr]_{a}
+      & &
+      {B}
+      \ar[dl]^{b}
+      \\
+      & {I}
+    }
+  \end{equation*}
+  %
+  A map into~$I$ is called a \defemph{display map} over the \defemph{base~$I$}, and its domain the \defemph{total space}. (The terminology is inspired by a geometric picture of a bundle over a space.)
+
+  For each $i \in I$ we define the \defemph{fiber} of~$a$ at~$i$ to be the inverse image $\invim{a} \set{i} = \set{x \in A \such a x = i}$. Thus a display map~$a$ over~$I$ yields an $I$-indexed family $i \mapsto \invim{a} \set{i}$ of fibers.
+  %
+  Conversely, a family $A : I \to \Set$ determines the display map, namely the first projection $\Sigma_I A \to I$.
+
+  Verify that the passages between $\Fam{I}$ and $\Set/I$ constitute an equivalence of categories. As a first step you should determine how the equivalence acts on morphisms.
+\end{exercise}
 
 A map $r : J \to I$, induces \defemph{reindexing} $\invim{r} : \Fam{I} \to \Fam{J}$ by precomposition, $\invim{r} A = A \circ r$. Reindexing is contravariantly functorial,
 %
@@ -28,7 +52,22 @@ A map $r : J \to I$, induces \defemph{reindexing} $\invim{r} : \Fam{I} \to \Fam{
 %
 Therefore, families and reindexings form a functor $\opcat{\Set} \to \Cat$.
 
-The two fundamental operations on families of sets are the cartesian products and sums. We require them in a generalized form, where the product and the sum is taken with respect to a reindexing, as follows.
+\subsection{Products and sums of families of sets}
+\label{sec:prod-sums-sets}
+
+The two fundamental operations on families of sets are the cartesian products and sums. 
+Given a family $A \in \Fam{I}$, its \defemph{product} $\Pi_I A$ and \defemph{sum} $\Sigma_I A$ are respectively the sets
+%
+\begin{align*}
+  \Pi_I A &= 
+  \textstyle
+  \set{ u : I \to \bigcup_{i \in I} A_i \such \all{i \in I} u i \in A_i }, \\
+  \Sigma_I A &= \set{ (i, a) \such i \in I \land a \in A_i }.
+\end{align*}
+%
+The elements of the product are called \defemph{choice maps}.
+
+We shall need their generalized forms, where the product and the sum is taken with respect to a reindexing, as follows.
 %
 Consider $r : J \to I$ and $A \in \Fam{J}$. For $K \subseteq I$ write\sidenote{Careful, the notation $\invim{r}$ is used both for $\invim{r} : \pow{I} \to \pow{J}$ and $\invim{r} : \Fam{I} \to \Fam{J}$. The coincidence is not accidental.} $\invim{r} K = \set{ j \in J \such r j \in K}$, and define the \defemph{product} $\Pi_r A \in \Fam{I}$ and the \defemph{sum} $\Sigma_r A \in \Fam{I}$ by
 %
@@ -43,11 +82,14 @@ Consider $r : J \to I$ and $A \in \Fam{J}$. For $K \subseteq I$ write\sidenote{C
   (\Sigma_J A)_i &= \set{ (j, x) \such j \in \invim{r} \set{i} \land x \in A_j }.
 \end{align}
 %
-The usual product and sum of a family are recovered when $r : J \to \one$.
 
 \begin{exercise}
   Show that $\Pi_r : \Fam{J} \to \Fam{I}$ is a functor by providing a suitable action on the morphisms, and similarly for $\Sigma_r$.
 \end{exercise}
+
+
+
+
 
 The distinguishing feature of products and sums is that they are adjoint to reindexing,
 %
@@ -73,7 +115,21 @@ and
 %
 We spell out the second isomorphism and leave the first one as an exercise.
 %
-Given $(f_i : B_i \to (\Pi_r A)_i)_{i \in I}$, define $(\hat{f}_j : B_{r j} \to A_j)_{j \in J}$ by $\hat{f}_j x = f_{r j} x j$, and given $(g_j : B_{r j} \to A_j)_{j \in J}$ define $(\check{g}_i : B_i \to (\Pi_r A)_i)_{i \in I}$ by $\check{g}_i x j = g_j x$. It is easy to see that $f \mapsto \hat{f}$ and $g \mapsto \check{g}$ are inverses of each other. Checking naturality is less pleasant but instructive.
+Given a map of families $f : B \to \Pi_r A$, define $\hat{f} : \invim{r} B \to A$ by
+%
+\begin{equation}
+  \label{eq:sub-adj-pi-hat}
+  \hat{f}_j x = f_{r j} x j,
+\end{equation}
+%
+and given $g : \invim{r} B \to A$ define $\check{g} : B \to \Pi_r A$ by 
+%
+\begin{equation}
+  \label{eq:sub-adj-pi-check}
+  \check{g}_i x j = g_j x.
+\end{equation}
+%
+It is easy to see that $f \mapsto \hat{f}$ and $g \mapsto \check{g}$ are inverses of each other. Checking naturality is less pleasant but instructive.
 
 \begin{exercise}
   Complete the verification of $\Sigma_r \dashv \invim{r} \dashv \Pi_r$.
@@ -88,41 +144,40 @@ Having identified the relevant set-theoretic structure, we can now interpret the
 \label{sec:contexts}
 
 In type theory the index sets are called \defemph{contexts}. In practice they are not arbitrary sets (although they can be), but are rather built up by introduction of new parameters in an inductive fashion:
+%
 \begin{itemize}
 \item the empty context is the singleton\sidenote{A family of sets which does not depend on any parameters is just a fixed set, so an element of $\Fam{\one}$. If you think the empty context should be $\emptyset$, consider what $\Fam{\emptyset}$ is like.} $\emptyCtx = \set{\star}$,
-\item given a context $\Gamma$ a family of sets $A \in \Fam{\Gamma}$ and a fresh\sidenote{A variable is \defemph{fresh} if it has not yet been used anywhere else. We can avoid variables names altogether by referring to the components of a context by their positions, a technique known as ``de Bruijn indices''. In practice we prefer to name parameters.} parameter~$x$, the \defemph{extended context} is the set
-  %
-  \begin{equation*}
-    (\Gamma, x \of A) = \set{ (\gamma, a) \such \gamma \in \Gamma \land a \in A_\gamma }.
-  \end{equation*}
-  %
+\item given a context $\Gamma$ and a family of sets $A \in \Fam{\Gamma}$, the \defemph{extended context} is the sum $\Sigma_\Gamma A$.
 \end{itemize}
-%
+
 By iterating context extension we obtain a \defemph{telescope}
 %
 \begin{equation*}
-  (((\emptyCtx, x_1 \of A_1), x_2 \of A_2), \ldots, x_n \of A_n),
+  \Sigma_{\Sigma_{\cdots \Sigma_{\Sigma_{\emptyCtx} \cdots} A_{n-2}} A_{n-1}} A_n.
 \end{equation*}
 %
-which we write in flattened form and without parentheses as
+Such a nested sum is unwieldy, so we write it as
 %
 \begin{equation*}
   x_1 \of A_1, x_2 \of A_2, \ldots, x_n \of A_n.
 \end{equation*}
 %
-It is a set whose elements are tuples\sidenote{To be quite precise, the elements are nested pairs $(((\star, a_1), a_2) \cdots, a_n)$ but we might as well use these as the definition of $n$-tuples $(a_1, \ldots, a_n)$.} $(a_1, \ldots, a_n)$ such that $a_i \in A_{(a_1, \ldots, a_{i-1})}$ for $i = 1, \ldots, n$.
+where $x_1, \ldots, x_n$ are distinct variable names. This way we may access the components of the telescope by referring to the variables, rather than having to use iterated projections.
+%
+The elements of a telescope are tuples\sidenote{To be quite precise, the elements are nested pairs $(((\star, a_1), a_2) \cdots, a_n)$ but we might as well use these as the definition of $n$-tuples $(a_1, \ldots, a_n)$.} $(a_1, \ldots, a_n)$ such that $a_i \in A_{(a_1, \ldots, a_{i-1})}$ for $i = 1, \ldots, n$.
 %
 Once again, ``context'' is a synonym for ``set'', but in practice we use telescopes.
 
 \begin{example}
+  \label{example:context}
+  %
   Suppose a mathematical text says
   %
   \begin{quote}
     \emph{``Consider a continuous $f : [a, b] \to \RR$ bounded by $M \in \RR$.''}
   \end{quote}
   %
-  What precisely is the context? It is implied that $a, b \in \RR$ and that $a < b$, so
-  at first we might think that the context is
+  What precisely is the context? It is implied that $a, b \in \RR$, so at first we might think that the context is
   %
   \begin{equation*}
     a \of \RR, \quad
@@ -131,8 +186,11 @@ Once again, ``context'' is a synonym for ``set'', but in practice we use telesco
     M \of \RR.
   \end{equation*}
   %
-  We would be led astray by mathematical traditions which demands that proofs and hypotheses be considered second-class entities. Indeed, notice how the text introduces names $a, b, f, M$ for all the entities \emph{except} the assumptions of continuity and boundedness.
-  The correct context, written vertically for readability is
+  However, there are also three \emph{hypotheses}, namely that $a < b$, that $f$ is continuous, and that~$f$ is bounded by~$M$.
+  %
+  Mathematical tradition would have us ignore these, because it demands that proofs and logical statements be considered second-class. Indeed, notice how the text introduces names $a, b, f, M$ for all the entities \emph{except} the hypotheses, and even these notes refer to theorems by mere unmemorable numbers, as if it were forbidden to name them.
+  %
+  The correct context is, written vertically for readability,
   %
   \begin{align*}
     & a : \RR, \\
@@ -144,56 +202,59 @@ Once again, ``context'' is a synonym for ``set'', but in practice we use telesco
     & r : \all{x \in [a,b]} f(x) \leq M
   \end{align*}
   %
-  However, we now face a difficulty: in what sense are logical formulas, such as $a < b$ and $\mathsf{continuous(f)}$ families of sets? They must be, if they are to appear in contexts. We shall resolve the matter in \cref{propositions-as-types}.
+  However, we now face a difficulty: in what sense are logical formulas, such as $a < b$ and $\mathsf{continuous(f)}$ families of sets? They must be, if they are to appear in contexts. We shall resolve the matter in \cref{{sec:prop-trunc}}.
 \end{example}
 
 \subsubsection{Type families and their elements}
 \label{sec:type-families}
 
-When type theory is used to talk about set theory, we prefer to say \defemph{type} and \defemph{type family} instead of ``set'' and ``set family'', and we even write $\Type{\Gamma}$ instead of $\Fam{\Gamma}$. An alternative notation for $A \in \Fam{\Gamma}$ is
+When type theory is used to talk about set theory, we prefer to say \defemph{type} and \defemph{type family} instead of ``set'' and ``set family'', and write
 %
 \begin{equation*}
-  \Gamma \types A \istype.
+  \Gamma \types A \istype
 \end{equation*}
 %
-A \defemph{choice map} for the family~$A$ is a map $t : \Gamma \to \bigcup_{\gamma \in \Gamma} A_\gamma$ such that $t \gamma \in A_\gamma$ for all $\gamma \in \Gamma$.
-We write
+for $A \in \Fam{\Gamma}$.
+%
+The \defemph{elements} of~$A$ are its choice maps. We write
 %
 \begin{equation*}
   \Gamma \types t : A
 \end{equation*}
 %
-when $t$ is such a choice map, and call it an \defemph{element} of~$A$.
+when $t$ is such a choice map.
 
 \begin{example}
-  Let us translate the statement
+  To see why it makes sense to call the choice maps ``elements'',
+  we translate the statement
   %
   \begin{quote}
     \emph{``$(a + b)/2$ is an element of the closed interval $[a,b]$.''}
   \end{quote}
   %
-  to the type-theoretic terminology. First, the text expects us to guess that~$a$ and~$b$ are reals such that $a \leq b$, so the context is
+  to the type-theoretic terminology. First, the text expects us to guess that~$a$ and~$b$ are reals such that $a < b$, so the context is
   %
   \begin{equation*}
-    a \of \RR, b \of \RR, p \of (a \leq b).
+    a \of \RR,\quad b \of \RR,\quad p \of (a < b).
   \end{equation*}
   %
-  Over this context we define a type family~$C$ of closed intervals by
+  Over this context we define a type family~$C$ of closed intervals by\sidenote{Dragging along the argument~$p$ seems a little bureaucratic. In practice we would of course drop it, and in a proof assistant we might use one of several mechanisms that hide it.}
   %
   \begin{equation*}
-    C(a, b, p) = [a, b] = \set{x \in \RR \such a \leq x \leq b}.
+    C_{(a, b, p)} = [a, b] = \set{x \in \RR \such a \leq x \leq b}.
   \end{equation*}
   %
-  The mid-point is indeed an element of~$C$, i.e., it is the choice map~$m$ for~$C$ defined by $m(a, b, p) = (a + b)/2$.
+  The mid-point is map~$m$ which assigns to each interval its mid-point, $m(a, b, p) = (a + b)/2$, which of course is just a choice map for~$C$.
 \end{example}
 
 \subsubsection{Dependent products and sums}
 \label{sec:depend-sums-prod-in-sets}
 
-The cartesian product of a family $A : I \to Set$ is the set of all choice maps of~$A$, a familiar definition. However, quite often we need to form the product of a family indexed by several parameters with respect to one of them. We can do so with the help of products along reindexings~\eqref{eq:pi-r}.
-
-Suppose $\Gamma, x \of A \types B \istype$ us a type family over $(\Gamma, x \of A)$.
-Let $p : (\Gamma, x \of A) \to \Gamma$ be the first projection $p(\gamma, a) = \gamma$.
+If a family is indexed by a telescope with parameters $x_1, \ldots, x_n$, we may wish to form the cartesian product with respect to just~$x_n$,
+which is accomplished by taking the product~\eqref{eq:pi-r} along a suitable reindexing.
+%
+Suppose $\Gamma, x \of A \types B \istype$ and let $p : (\Gamma, x \of A) \to \Gamma$ be the first projection $p(\gamma, a) = \gamma$.
+%
 Define the \defemph{product} of~$B$ to be the type family $\Gamma \types \Pi_p B \istype$.
 Unfolding the definitions shows that, for $\gamma \in \Gamma$,
 %
@@ -219,20 +280,20 @@ A similar line of though show that the \defemph{sum} of a family $\Gamma, x \of 
   \set{ (\delta, b) \such \delta \in \invim{\gamma} \set{\gamma} \land b \in B_\delta }
   \\
   &\cong
-  \set{ (a, b) \such a \in A_\gamma \land b \in B_{\gamma, a)}}.
+  \set{ (a, b) \such a \in A_\gamma \land b \in B_{(\gamma, a)}}.
 \end{align*}
 
 \begin{exercise}
   Explicitly write down the isomorphisms appearing in the above calculations
-  of $\Pi_p B$ and $\Sigma_p B$.
+  of $\Pi_p B$ and $\Sigma_p B$. Does it matter which of the two isomorphic versions of products and sums we use?
 \end{exercise}
 
 \section{Families of assemblies}
 \label{sec:families-assemblies}
 
-The interpretation of type theory in sets can be mimicked in assemblies, we only need to make sure that the set-theoretic constructions are realized. However, we must first define what a family of assemblies is.
+The interpretation of type theory in assemblies proceeds much as in sets, we only need to make sure that the set-theoretic maps are realized. However, we must first define what a family of assemblies is.
 
-We could define a family of assemblies simply to be a collection of assemblies indexed by an assembly. This almost works: we additionally require that all the assemblies in the family share the same underlying type.\sidenote{The assemblies must all share the same type because tpcas are simply typed. By having all the assemblies in the family share the same type, we facilitate the construction of its product, whose underlying type may be taken to be a simple function type, see \cref{sec:depend-sums-prod}.}
+Defining a family of assemblies to be a collection of assemblies indexed by (the underlying set of) an assembly almost works, we just have to additionally require that all the assemblies in the family share the same underlying type.\sidenote{This is so because tpcas are simply typed. By making all the assemblies in the family share the same type, we facilitate the construction of its product, whose underlying type may then be the (non-dependent) function type, see \cref{sec:depend-sums-prod}.}
 
 \begin{definition}
   A \defemph{(uniform) family of assemblies} $S : I \to \AsmA$ is given by an
@@ -256,7 +317,7 @@ We write $\Fam[\AA, \subAA]{I}$ or just $\Fam{I}$ for the collection of all fami
 
 The definition endows each $\Fam{I}$ with the structure of a category.
 %
-Reindexing is still precomposition. And assembly map $r : J \to I$ induces a map $\invim{r} : \Fam{I} \to \Fam{J}$, defined by
+An assembly map $r : J \to I$ induces a \defemph{reindexing} $\invim{r} : \Fam{I} \to \Fam{J}$, defined by
 %
 \begin{equation*}
   \invim{r} A = A \circ r.
@@ -265,81 +326,111 @@ Reindexing is still precomposition. And assembly map $r : J \to I$ induces a map
 There is nothing here to be realized, but we shall use realizers for~$r$ in the construction of products and sums.
 
 \begin{exercise}
-  Verify that reindexing is a contravariantly functorial.
+  Verify that reindexing is contravariantly functorial.
 \end{exercise}
 
 
-\subsection{Dependent sums and products}
-\label{sec:depend-sums-prod}
+\subsection{Products and sums of families of assemblies}
+\label{sec:depend-sums-prod-asm}
 
-
-Given a uniform family $(S_i)_{i \in I}$, we may form the
-\defemph{dependent sum}
+Consider a family of assemblies $S \in \Fam{I}$. It has an underlying family of sets $\S{S} \in \Fam{I}$, defined by $i \mapsto \S{S_i}$. Given an assembly map $r : J \to I$
+and $i \in \S{I}$, say that $u \in \Pi_r \S{S}$ is \defemph{realized} by $\R{u} \in \Atyp{\T{J} \to \T{S}}$ when, for all $j \in \invim{r} \set{i}$ and $\R{j} \in \Atyp{\T{J}}$,
 %
 \begin{equation*}
-  \dsum_{i \in I} S_i =
-  (\dsum_{i \in I} S_i, \T{I} \times \T{S}, \rz[\dsum_{i \in I S_i}])
+  \R{j} \rz[J] j \implies
+  \R{u}\,\R{j} \rz[S_i] u j.
 \end{equation*}
 %
-where $\dsum_{i \in I} S_i = \set{(i,x) \such i \in I \land x \in
-  S_i}$ is the disjoint sum of the sets $S_i$ and
+When this is the case, we write $\R{u} \rz[\Pi_r S] u$.
 %
-\begin{equation*}
-  \combPair\;\R{i}\;\R{x} \rz[\dsum_{i \in I S_i}] (i, x)
-  \iff
-  \R{i} \rz[I] i
-  \land
-  x \in S_i
-  \land
-  \R{x} \rz[S_i] x.  
-\end{equation*}
+Now define the \defemph{product} $\Pi_r S \in \Fam{J}$ to be the family whose realizability relation is~$\rz[\Pi_r S]$ and
 %
-Similarly, we may form the \defemph{dependent product} of a uniform
-family $(S_i)_{i \in I}$. First recall that the
-set-theoretic product of the family of \emph{sets} $(S_i)_{i \in I}$
-is
+\begin{align*}
+  \T{\Pi_r S} &= \T{J} \to \T{S}, \\
+  \S{\Pi_r S} &= 
+    \set{ u \in \Pi_r \S{S} \such
+       \some{\R{u} \in \Atyp{\T{J} \to \T{S}}} \R{u} \rz[\Pi_r S] u
+    }.
+\end{align*}
 %
-\begin{equation*}
-  \dprod_{i \in I} S_i =
-  \set{f : I \to \tbigcup_{i \in I} S_i \such
-    \all{i}{I}{f(i) \in S_i}
-  }.
-\end{equation*}
+Define the \defemph{sum} $\Sigma_r S \in \Fam{J}$ to be the family
 %
-Let $\rz[\dprod_{i \in I S_i}]$ be the relation between $\Atyp{\T{I}
-  \to \T{S}}$ and $\dprod_{i \in I} S_i$, defined by
-%
-\begin{equation*}
-  \R{f} \rz[\dprod_{i \in I S_i}] f
-  \iff
-  \all{\R{i}}{\Atyp{\T{I}}}{
-    \all{i \in I}
-      (\R{i} \rz[I] i
-      \implies
-      \defined{\R{f}\;\R{i}} \land
-      \R{f}\;\R{i} \rz[S_i] f(i))
-  }.
-\end{equation*}
-%
-Finally, define the dependent product of the family to be the assembly
-%
-\begin{equation*}
-  \dprod_{i \in I} S_i =
-  (\set{f \in \dprod_{i \in I} S_i \such
-    \some{\R{f}}{\Atyp{\T{I} \to \T{S}}}{\R{f} \rz[\dprod_{i \in I S_i}]
-      f}},
-  \T{I} \to \T{S}, {\rz[\dprod_{i \in I S_i}]}).
-\end{equation*}
+\begin{align*}
+  \T{\Sigma_r S} &= \T{J} \times \T{S}, \\
+  \S{\Sigma_r S} &= \Sigma_r \S{S}, \\
+  \R{r} \rz[\Sigma_r S] (j, x) &\liff
+  \combFst\,\R{r} \rz[J] j \land \combSnd\,\R{r} \rz[S_j] x.
+\end{align*}
 %
 Notice how at the level of underlying types the dependency on the
-parameter~$i$ disappears because we required the families to be
-uniform. This is fortunate, as most programming languages are not
-equipped with dependent types.
+parameter disappears because we required the families to be
+uniform.
 
-The dependent sums and products have their universal properties which
-are somewhat complicated to state. Suffice it to say that they are the
-constructions needed to show that $\AsmA$ is \defemph{locally
-  cartesian-closed (lccc)}, cf.\ \sidecite{background-lccc}.
+\begin{exercise}
+  Verify the adjunctions
+  %
+  \begin{equation*}
+    \Sigma_r \dashv \invim{r} \dashv \Pi_r.
+  \end{equation*}
+  %
+  Half of work has been done in \cref{sec:prod-sums-sets}.
+  You still need to check that the map of families $\hat{f}$ defined in~\eqref{eq:sub-adj-pi-hat} is realized when~$f$ is realized, and similarly for $\check{g}$ defined in~\eqref{eq:sub-adj-pi-check}.
+\end{exercise}
+
+Products and sums along arbitrary reindexings are perhaps a bit unintuitive. For better understanding we spell out the non-parameterize sum and products.
+
+Given a family $S \in \Fam{I}$, its \defemph{product} $\Pi_I S$ is the assembly
+%
+\begin{align*}
+  \T{\Pi_I S} &= \T{I} \to \T{S}, \\
+  \S{\Pi_I S} &= \textstyle
+     \set{u \in \Pi_{\S{I}} \S{S} \such
+          \some{\R{u} \in \Atyp{\T{I} \to \T{S}}} \R{u} \rz[\Pi_I S] u
+     },\\
+  \R{u} \rz[\Pi_I S] u &\liff
+  \all{i \in \S{I}, \R{i} \in \Atyp{\T{I}}}
+    \R{i} \rz[I] i \lthen \R{u}\,\R{i} \rz[S_i] u i.
+\end{align*}
+%
+The \defemph{sum} $\Sigma_I S$ is the assembly
+%
+\begin{align*}
+  \T{\Sigma_I S} &= \T{I} \times \T{S}, \\
+  \S{\Sigma_I S} &= \Sigma_{\S{I}} \S{S}, \\
+  \R{r} \rz[\Sigma_I S] (i, x) &\liff
+    \combFst\,\R{r} \rz[I] i \land
+    \combSnd\,\R{r} \rz[S_i] x.
+\end{align*}
+%
+These are indeed just the familiar set-theoretic constructions embellished with realizers.
+
+\subsection{Contexts of assemblies}
+\label{sec:contexts-assemblies}
+
+Contexts of assemblies are built the same was as contexts of sets, as iterated sums.
+Thus a telescope
+%
+\begin{equation*}
+  \Gamma = (x_1 : S_1, \ldots, x_n : S_n)
+\end{equation*}
+%
+is the assembly
+%
+\begin{align*}
+  \T{\Gamma} &= \T{S_1} \times \cdots \times \T{S_n}, \\
+  \S{\Gamma} &= \set{(a_1, \ldots, a_n) \such \all{i \leq n} a_i \in \S{(S_i)_{(a_1, \ldots, a_{i-1})}}} \\
+  \R{r} \rz[\Gamma] (a_1, \ldots, a_n)
+  &\liff
+  \all{i \leq n} \pcacomb{proj}_{n,i}\,\R{r} \rz[(S_i)_{(a_1, \ldots, a_{i-1})}] a_i,
+\end{align*}
+%
+where $\pcacomb{proj}_{n,i}$ is the $i$-th projection from an $n$-tuple.
+
+\section{Propositions and propositional truncation}
+\label{sec:prop-trunc}
+
+
+
 
 \section{Identity types}
 \label{sec:identity-types}
@@ -355,9 +446,6 @@ constructions needed to show that $\AsmA$ is \defemph{locally
 \section{Inductive and coinductive types}
 \label{sec:inductive-counductive-types}
 
-
-\section{Propositional truncation}
-\label{sec:prop-trunc}
 
 \subsection{Logic from type theory}
 \label{sec:logic-from-type}
