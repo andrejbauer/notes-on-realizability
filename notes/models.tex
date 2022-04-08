@@ -1335,7 +1335,7 @@ There are no constants, numbers, or other constants -- we are studying the \emph
 Expressions which only differ in the naming of bound variables are
 equal, thus $\lam{x}{y\, x} = \lam{z}{y\, z} \neq \lam{y}{y\,
   y}$. Substitution replaces free variables with expressions. We write
-$\subst{e}{x_1 \subto e_1, \ldots, x_n \subto e_n}$ for a
+$\subst{e}{e_1/x_1, \ldots, e_n/x_n}$ for a
 simultaneous substitution of expressions $e_1, \ldots, e_n$ for
 variables $x_1, \ldots, x_n$ in $e$, respectively. The usual rules for
 bound variables must be observed when we perform
@@ -1346,7 +1346,7 @@ substitutions.\sidenote{It is notoriously easy to commit errors when
 The basic axiom of $\lambda$-calculus is \defemph{$\beta$-reduction}:
 %
 \begin{equation*}
-  (\lam{x}{e_1})\, e_2 = \subst{e_1}{x \subto e_2}.
+  (\lam{x}{e_1})\, e_2 = \subst{e_1}{e_2/x}.
 \end{equation*}
 %
 It says that the application of a function $\lam{x}{e_1}$ to an
@@ -1362,7 +1362,7 @@ provided $x$ does not occur freely in~$e$. We will \emph{not} assume
 $\eta$-reduction unless explicitly stated otherwise.
 
 A sub-expression of the form $(\lam{x}{e_1})\, e_2$ is called a \defemph{$\beta$-redex}.
-If~$e$ contains such a redex, we may replace it by $\subset{e_1}{x \subto e_2}$ to obtain a new expression~$e'$. We say that we performed a \defemph{$\beta$-reduction} and write
+If~$e$ contains such a redex, we may replace it by $\subset{e_1}{e_2/x}$ to obtain a new expression~$e'$. We say that we performed a \defemph{$\beta$-reduction} and write
 %
 \begin{equation*}
   e \mapsto e'
@@ -1610,7 +1610,7 @@ The denotations of $\lambda$-expressions in a reflexive domain~$D$ are given by~
   &= (b \mapsto \sem{\vec{x}, y \ctx e_1} \, (\vec{a}, b))
      \, (\sem{\vec{x} \ctx e_2} \, \vec{a}) \\
   &= \sem{\vec{x}, y \ctx e_1} \, (\vec{a}, (\sem{\vec{x} \ctx e_2} \, \vec{a})) \\
-  &= \sem{\vec{x} \ctx \subst{e_1}{y \subto e_2}} \, \vec{a}.
+  &= \sem{\vec{x} \ctx \subst{e_1}{e_2/y}} \, \vec{a}.
 \end{align*}
 
 \begin{exercise}
@@ -1618,7 +1618,7 @@ The denotations of $\lambda$-expressions in a reflexive domain~$D$ are given by~
   %
   \begin{equation*}
     \sem{\vec{x}, y \ctx e_1} \, (\vec{a}, \sem{\vec{x} \ctx e_2} \, \vec{a}) =
-    \sem{\vec{x}, y \ctx \subst{e_1}{y \subto e_2}} \, \vec{a},
+    \sem{\vec{x}, y \ctx \subst{e_1}{e_2/y}} \, \vec{a},
   \end{equation*}
   %
   which we used in the last line above. You may proceed by induction on the structure of~$e_1$, but should first generalize the statement so that the induction case of $\lambda$-abstraction works out.
@@ -1761,7 +1761,7 @@ $x_1, \ldots, x_n$, we write $\defined{e}$ when, for all $a_1, \ldots,
 a_n \in \AA$, the closed expression
 %
 \begin{equation*}
-  \subst{e}{x_1 \subto a_1, \ldots, x_n \subto a_n}
+  \subst{e}{a_1/x_1, \ldots, a_n/x_n}
 \end{equation*}
 %
 is defined. If $e$ and $e'$ are expressions whose variables are among
@@ -1769,8 +1769,8 @@ $x_1, \ldots, x_n$, we write $e \kleq e'$ when, for all $a_1, \ldots,
 a_n \in \AA$,
 %
 \begin{equation*}
-  \subst{e}{x_1 \subto a_1, \ldots, x_n \subto a_n} \kleq
-  \subst{e'}{x_1 \subto a_1, \ldots, x_n \subto a_n}.
+  \subst{e}{a_1/x_1, \ldots, a_n/x_n} \kleq
+  \subst{e'}{a_1/x_1, \ldots, a_n/x_n}.
 \end{equation*}
 
 \begin{theorem}[Combinatory completeness]
@@ -1778,7 +1778,7 @@ a_n \in \AA$,
   Let $(\AA, {\cdot})$ be a pca. For every variable $x$ and expression
   $e$ over $\AA$ there is an expression $e'$ over $\AA$ whose variables
   are those of~$e$ excluding~$x$ such that $\defined{e'}$ and $e'
-  \cdot a \kleq \subst{e}{x \subto a}$ for all $a \in \AA$.
+  \cdot a \kleq \subst{e}{a/x}$ for all $a \in \AA$.
 \end{theorem}
 
 \begin{proof}
@@ -2216,15 +2216,14 @@ A closed expression $e$ of type~$t$ is defined, written $\defined{e}$,
 when all applications appearing in it are defined. Such an expression
 denotes an element of~$\AA_t$. If $e$ contains variables
 $\annot{x_1}{t_1}, \ldots, \annot{x_n}{t_n}$, we write $\defined{e}$
-when $\subst{e}{x_1 \subto a_1, \ldots, x_n \subto a_n}$ is defined
+when $\subst{e}{a_1/x_1, \ldots, a_n/x_n}$ is defined
 for all $a_1 \in \AA_{t_1}, \ldots, a_n \in \AA_{t_n}$.
 
 \begin{theorem}[Combinatory completeness]
   Let $\AA$ be a tpca. For every expression $e$ over~$\AA$ of type~$u$ and
   every variable $\annot{x}{t}$ there is an expression $e'$ of type $t
   \to u$ whose variables are those of~$e$ excluding~$\annot{x}{t}$
-  such that $\defined{e'}$ and $e' \cdot a \kleq \subst{e}{x \subto
-    a}$ for all $a \in \AA_t$.
+  such that $\defined{e'}$ and $e' \cdot a \kleq \subst{e}{a/x}$ for all $a \in \AA_t$.
 \end{theorem}
 
 \begin{proof}
@@ -2298,7 +2297,7 @@ As in the untyped version, here too we have the rule of
 $\beta$-reduction
 %
 \begin{equation*}
-  (\lam{x \of t}{e_1}) e_2 = \subst{e_1}{x \subto e_2}.
+  (\lam{x \of t}{e_1}) e_2 = \subst{e_1}{e_2/x}.
 \end{equation*}
 %
 There is also a corresponding $\eta$-reduction rule, for an expression
