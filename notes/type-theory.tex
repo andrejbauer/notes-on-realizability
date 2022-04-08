@@ -333,23 +333,22 @@ There is nothing here to be realized, but we shall use realizers for~$r$ in the 
 \subsection{Products and sums of families of assemblies}
 \label{sec:depend-sums-prod-asm}
 
-Consider a family of assemblies $S \in \Fam{I}$. It has an underlying family of sets $\S{S} \in \Fam{I}$, defined by $i \mapsto \S{S_i}$. Given an assembly map $r : J \to I$
-and $i \in \S{I}$, say that $u \in \Pi_r \S{S}$ is \defemph{realized} by $\R{u} \in \Atyp{\T{J} \to \T{S}}$ when, for all $j \in \invim{r} \set{i}$ and $\R{j} \in \Atyp{\T{J}}$,
+Consider a family of assemblies $S \in \Fam{J}$. It has an associated family of underling sets $\S{S} \in \Fam{J}$, defined by $j \mapsto \S{S_j}$. Given an assembly map $r : J \to I$, $i \in \S{I}$, and $u \in (\Pi_r \S{S})_i$, say that $u$ is \defemph{realized} by $\R{u} \in \Atyp{\T{J} \to \T{S}}$ when, for all $j \in \invim{r} \set{i}$ and $\R{j} \in \Atyp{\T{J}}$,
 %
 \begin{equation*}
   \R{j} \rz[J] j \implies
   \R{u}\,\R{j} \rz[S_i] u j.
 \end{equation*}
 %
-When this is the case, we write $\R{u} \rz[\Pi_r S] u$.
+When this is the case, we write $\R{u} \rz[(\Pi_r S)_i] u$.
 %
-Now define the \defemph{product} $\Pi_r S \in \Fam{J}$ to be the family whose realizability relation is~$\rz[\Pi_r S]$ and
+Now define the \defemph{product} $\Pi_r S \in \Fam{I}$ to be the family whose realizability relation at $i \in \S{I}$ is~$\rz[(\Pi_r S) i]$ and
 %
 \begin{align*}
   \T{\Pi_r S} &= \T{J} \to \T{S}, \\
-  \S{\Pi_r S} &= 
-    \set{ u \in \Pi_r \S{S} \such
-       \some{\R{u} \in \Atyp{\T{J} \to \T{S}}} \R{u} \rz[\Pi_r S] u
+  \S{(\Pi_r S)_i} &= 
+    \set{ u \in (\Pi_r \S{S})_i \such
+       \some{\R{u} \in \Atyp{\T{J} \to \T{S}}} \R{u} \rz[(\Pi_r S)_i] u
     }.
 \end{align*}
 %
@@ -357,8 +356,8 @@ Define the \defemph{sum} $\Sigma_r S \in \Fam{J}$ to be the family
 %
 \begin{align*}
   \T{\Sigma_r S} &= \T{J} \times \T{S}, \\
-  \S{\Sigma_r S} &= \Sigma_r \S{S}, \\
-  \R{r} \rz[\Sigma_r S] (j, x) &\liff
+  \S{(\Sigma_r S)_i} &= (\Sigma_r \S{S})_i, \\
+  \R{r} \rz[(\Sigma_r S)_i] (j, x) &\liff
   \combFst\,\R{r} \rz[J] j \land \combSnd\,\R{r} \rz[S_j] x.
 \end{align*}
 %
@@ -378,7 +377,7 @@ uniform.
 \end{exercise}
 
 Products and sums along arbitrary reindexings are perhaps a bit unintuitive. For better understanding we spell out the non-parameterize sum and products.
-
+%
 Given a family $S \in \Fam{I}$, its \defemph{product} $\Pi_I S$ is the assembly
 %
 \begin{align*}
@@ -407,8 +406,8 @@ These are indeed just the familiar set-theoretic constructions embellished with 
 \subsection{Contexts of assemblies}
 \label{sec:contexts-assemblies}
 
-Contexts of assemblies are built the same was as contexts of sets, as iterated sums.
-Thus a telescope
+Contexts of assemblies are built as iterated sums, the same was as contexts of sets.
+Thus a telescope of assemblies
 %
 \begin{equation*}
   \Gamma = (x_1 : S_1, \ldots, x_n : S_n)
@@ -426,11 +425,219 @@ is the assembly
 %
 where $\pcacomb{proj}_{n,i}$ is the $i$-th projection from an $n$-tuple.
 
-\section{Propositions and propositional truncation}
-\label{sec:prop-trunc}
+\section{Propositions as assemblies}
+\label{sec:prop-as-assemblies}
+
+In \cref{example:context} we placed a hypothesis into the context, but for this to make sense in needs to be a type family. How can a proposition be a type?
+
+In classical logic a predicate $\phi$ on a set~$A$ is a Boolean function $\phi : S \to \{\bot, \top\}$. If we encode the truth values $\bot$ and $\top$ with sets, $\phi$ becomes a family of sets, which is what we want. A choice that works well is to take~$\bot$ to be~$\emptyset$ and~$\top$ to be~$\set{\star}$. An even better idea is to allow any singleton set to represent truth, they are all isomorphic anyhow. We may do the same with assemblies.
+
+\begin{definition}
+  An assembly is a \defemph{proposition} if all of its elements are equal.\sidenote{Even though ``all elements are equal'' is equivalent to ``empty or singleton'', the choice of wording matters once we bring in realizability logic, where excluded middle is not valid.}
+  %
+  A \defemph{predicate} on an assembly~$S$ is a family of assemblies $P \in \Fam{S}$ such that $P x$ is a predicate for all $x \in \S{S}$.
+\end{definition}
+
+To see that the definition works, note that the following logical operations can be expressed with standard constructions on assemblies:
+%
+\begin{equation}
+  \label{eq:prop-as-type-negative}
+  \begin{aligned}
+    \bot &\;=\; \Zero, \\
+    \top &\;=\; \One, \\
+    P \land Q &\;=\; P \times Q, \\
+    P \lthen Q &\;=\; P \to Q,, \\
+    \forall_S R &\;=\; \Pi_S R.
+  \end{aligned}
+\end{equation}
+%
+For instance, $P \times Q$ is inhabited if, and only if, both~$P$ and~$Q$ are, which is precisely how conjunction is supposed to be.
+%
+Similarly, the product $\Pi_S R$ has a choice map only if\sidenote{We did \emph{not} say ``if and only if'' because in assemblies choice maps must also be realized. It is quite possible that there is no realized choice map for a family of assemblies, even though every one of its member is inhabited. Even so, $\Pi_S R$ satisfies the rules of universal quantification, and so can be used as such.} all the assemblies $R x$ are inhabited, which again characterizes the universal quantifier.
+
+Disjunction and the existential quantifier present a bit of a challenge. How about
+%
+\begin{equation*}
+  P \lor Q \;=\; P + Q
+  \qquad\text{and}\qquad
+  \exists_S R \;=\; \Sigma_S R \ ?
+\end{equation*}
+%
+The definitions seem to work: $P + Q$ is inhabited if, and only if, $P$ or $Q$ is inhabited; and $\Sigma_S R$ is inhabited if, and only if, there is $x \in \S{S}$ for which $P x$ has an element.\sidenote{We are a bit sloppy with these statements because we should also think about realizers.} The problem is that $P + Q$ and $\Sigma_S R$ need not be propositions because they may have more than one element. There are two ways to fix the deficiency.
+
+Firstly, we can force any assembly $P$ to become a proposition $\Trunc{P}$ by quotienting it with respect to the trivial equivalence relation. Disjunction and existential quantification are then defined as
+%
+\begin{equation}
+  \label{eq:trunc-or-exists}
+  \begin{aligned}
+    P \lor Q &\;=\; \Trunc{P \lor Q}, \\
+    \exists_S R &\;=\; \Trunc{\Sigma_S R}.
+  \end{aligned}
+\end{equation}
+%
+This option is explored in \cref{sec:prop-trunc-asm}.
+
+Secondly, why do we insist that propositions must have at most one element? We could use \emph{all} assemblies as if they were propositions, with the empty assembly representing falsehood and the inhabited assemblies truth. The correspondence~\eqref{eq:prop-as-type-negative} still holds and can even be extended to
+%
+\begin{align*}
+  P \lor Q &\;=\; P + Q, \\
+  \exists_S R &\;=\; \Sigma_S R.
+\end{align*}
+%
+This approach is taken in Martin-Löf type theory and goes by the name \defemph{propositions as types}.
+
+Which definition of $\lor$ and $\exists$ should we adopt? Mathematical practice uses both. The truncated sum $\Trunc{\Sigma_S R}$ is a form of \emph{abstract existence} because its element, when it exists, reveals no specific $x \in \S{S}$ for which $R x$ is inhabited; whereas $\Sigma_S R$ is \emph{concrete existence} because its elements provide witnesses. Similarly, $\Trunc{P + Q}$ states that one or the other disjunct holds without revealing which one, whereas an element of $P + Q$ makes a specific choice of one or the other.
+
+Judicious use of propositional truncation thus makes it possible to formalize aspects of mathematical practice that are not easily incorporated into traditional first-order logic, which provides only abstract existence and disjunction, nor into traditional Martin-Löf type theory, which provides only concrete existence and disjunction.
+
+\subsection{Propositional truncation of an assembly}
+\label{sec:prop-trunc-asm}
+
+Propositional truncation works both for sets and assemblies. The propositional truncation $\Trunc{A}$ of a set $A$ is the quotient $A/{\sim}$ by the full relation~$\sim$ on~$A$.
+%
+The quotient map takes an element $x \in A$ to its equivalence class $\trunc{x} = A$.
+%
+Thus, if $A$ has an element then $\Trunc{A} = \set{A}$ and if $A$ is empty then $\Trunc{A} = \emptyset$.
+%
+A category theorist would postulate $\Trunc{A}$ as the coequalizer
+%
+\begin{equation*}
+  \xymatrix{
+    {A \times A}
+    \ar@<0.5ex>[r]^{\pi_1}
+    \ar@<-0.5ex>[r]_{\pi_2}
+    &
+    {A}
+    \ar@{->>}[r]^{\trunc{{-}}}
+    &
+    {\Trunc{A}}
+  }
+\end{equation*}
+%
+This construction works in categories other than sets. It takes an assembly $S$ to its \defemph{propositional truncation} $\Trunc{S}$ where\sidenote{It is too late to disentangle the conflicting notations for propositional truncation and the underlying type. We could insert parentheses,
+$\T{(\Trunc{S})} = \T{S}$
+and
+$\S{(\Trunc{S})} = \Trunc{(\S{S})}$, but that just ruins the fun.}
+%
+\begin{align*}
+  \T{\Trunc{S}} &= \T{S}, \\
+  \S{\Trunc{S}} &= \Trunc{\S{S}}, \\
+  \R{r} \rz[\Trunc{S}] \xi
+  &\liff
+    \some{y \in \S{S}} \R{r} \rz[S] y.
+\end{align*}
+%
+Like any worthy construction, propositional truncation has a universal property stemming from the above coequalizer diagram: if $P$ is a proposition then for every assembly map $f : S \to P$ there is a unique $\bar{f} : \Trunc{S} \to P$ such that the following diagram commutes:
+%
+\begin{equation*}
+  \xymatrix{
+    {S}
+    \ar[r]^{\trunc{{-}}}
+    \ar[rd]_{f}
+    &
+    {\Trunc{S}}
+    \ar[d]^{\bar{f}}
+    \\
+    &
+    {P}
+  }
+\end{equation*}
+
+\begin{exercise}
+  Verify that the universal property of propositional truncation holds with respect to families of assemblies. Given a family of assemblies $S \in \Fam{\Gamma}$, a predicate $P \in \Fam{\Gamma}$ and a map of families $f : S \to P$, there is a unique map of families $\bar{f} : \Trunc{S} \to P$ such that $\bar{f} \circ \trunc{{-}} = f$.
+
+  Moreover, explain what it means for propositional truncation to be functorial with respect to reindexing, then show that it is.
+\end{exercise}
 
 
+\subsection{Realizability predicates and propositions}
+\label{sec:real-pred-prop}
 
+In \cref{cha:realizability-logic} we gave a realizability interpretation of logic, with its own notions of propositions and predicates. We show that it is equivalent to truncated logic of the present chapter.
+
+Let $\PredT{S}$ be the class of predicates on~$S$ in the sense of the present chapter, i.e., families of assemblies $P \in \Fam{S}$ such that $\all{u, v \in \S{P x}} u = v$ for all $x \in \S{S}$. We endow $\PredT{S}$ with a preorder $\entails'$, defined by
+%
+\begin{equation*}
+  P \entails' Q \iff
+  \text{there is a map of families $P \to Q$}.
+\end{equation*}
+%
+In fact, there is at most one map of families $P \to Q$.
+
+\begin{exercise}
+  Verify that the preoder $\PredT{S}$ forms a Heyting prealgebra with the operations given by~\eqref{eq:prop-as-type-negative} and~\eqref{eq:trunc-or-exists}.
+\end{exercise}
+
+
+\begin{theorem}
+  \label{thm:pred-equiv-pred}
+  The Heyting prealgebras $(\Pred{S}, {\entails})$ and $(\PredT{S}, {\entails'})$ are equivalent.
+\end{theorem}
+
+\begin{proof}
+  The equivalence takes a realizability predicate $p \in \Pred{S}$ to the family
+  $P_p \in \Fam{S}$, defined by
+  %
+  \begin{align*}
+    \T{P_p} &= \T{p}, \\
+    \S{P_p x} &= \one, \\
+    \R{r} \rz[P_p x] \star &\liff \R{r} \rz p x.
+  \end{align*}
+  %
+  In the opposite direction, a predicate $P \in \PredT{S}$ is taken to the realizability predicate $p_P \in \Pred{S}$, defined by
+  %
+  \begin{align*}
+    \T{p_P} = \T{P}, \\
+    \R{r} \rz p_P x &\liff \some{\xi \in P x} \R{r} \rz[P x] \xi.
+  \end{align*}
+  %
+  To finish the proof, one would have to verify that $p \to P_p$ and $P \to p_P$ are monotone, that $p \bientails p_{P_p}$ and $P \bientails' P_{p_P}$, and that they preserve the Heyting prealgebra structure.
+\end{proof}
+
+\begin{exercise}
+  In the proof of \cref{thm:pred-equiv-pred} the passage from $P$ to realizability predicate $p_P$ works just for an arbitrary family~$P \in \Fam{S}$. Therefore, the equivalence extends to a pair of functors
+  %
+  \begin{equation*}
+    \xymatrix{
+      {\Pred{S}}
+      \ar@<0.5ex>[r]^{I}
+      &
+      {\Fam{S}}
+      \ar@<0.5ex>[l]^{T}
+    }
+  \end{equation*}
+  %
+  Show that $I$ is full and faithful, $T$ is its left adjoint, and that $I \circ T$ is naturally isomorphic to propositional truncation. How does the adjunction interact with reindexing?
+\end{exercise}
+
+The realizability logic in \cref{cha:realizability-logic} gave the simple definition of quantifiers where one of the parameters of a two-parameter predicate was quantified over. We can improve on that by defining quantification with respect to reindexing.
+
+An assembly map $r : J \to I$ induces a monotone map $\invim{r} : \Pred{J} \to \Pred{I}$ which acts by precomposition, $\invim{r} p = p \circ r$. The \defemph{universal quantification} of $p \in \Pred{J}$ \defemph{along~$r$} is the realizability predicate $\forall_r p \in \Pred{I}$, defined by
+%
+\begin{align*}
+  \T{\forall_r p} &= \T{J} \to \T{p}, \\
+  \R{u} \rz (\forall_r p) i &\liff
+    \all{j \in \invim{r} \set{i}}
+    \all{\R{j} \in \T{J}}
+    \R{j} \rz[J] j \lthen \R{u}\,\R{j} \rz p j.
+\end{align*}
+%
+Define the \defemph{existential quantification along~$r$} to be the realizability predicate $\exists_r p \in \Pred{I}$,
+%
+\begin{align*}
+  \T{\exists_r p} &= \T{J} \times \T{p}, \\
+  \R{r} \rz (\exists_r p) i &\liff
+  \some{j \in \S{J}}
+   \combFst\,\R{r} \rz[J] j
+   \land
+   \combSnd\,\R{r} \rz p j.
+\end{align*}
+%
+The quantifiers from \cref{sec:quantifiers} arise as quantification along a projection $T \times S \to S$.
+
+\begin{exercise}
+  Verify that the equivalence of $\Pred{S}$ and $\PredT{s}$ preserves the quantifiers as well.
+\end{exercise}
 
 \section{Identity types}
 \label{sec:identity-types}
@@ -438,17 +645,8 @@ where $\pcacomb{proj}_{n,i}$ is the $i$-th projection from an $n$-tuple.
 \subsection{UIP and equality reflection}
 \label{sec:uip-equal-refl}
 
-\subsection{An intensional model}
-\label{sec:an-intensional-model}
-
-
-
 \section{Inductive and coinductive types}
 \label{sec:inductive-counductive-types}
-
-
-\subsection{Logic from type theory}
-\label{sec:logic-from-type}
 
 \section{Universes}
 \label{sec:universes}
