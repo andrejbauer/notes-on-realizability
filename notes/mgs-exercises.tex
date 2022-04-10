@@ -1,0 +1,171 @@
+\documentclass{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amsthm}
+\usepackage{times}
+\usepackage[colorlinks]{hyperref}
+\usepackage{listings}
+\lstset{basicstyle=\footnotesize\ttfamily}
+
+\input{macros.tex}
+
+\title{Exercises on realizability\\
+(Midlands Graduate School 2022)}
+\author{Andrej Bauer}
+
+\begin{document}
+
+\maketitle
+
+\section*{Instructions}
+\label{sec:instructions}
+
+These are the exercises accompanying the ``Realizability'' lectures, given at the Midlands Graduate School 2022.
+During the exercise classes we shall solve them in the following way:
+%
+\begin{enumerate}
+\item I will explain the exercise and review the background knowledge.
+\item You will talk to your neighbor for 10 minutes about the exercise.
+\item We will discuss the solution together.
+\end{enumerate}
+%
+You are of course welcome to work on the exercises ahead of the class. Please consult the accompanying ``Notes on realizability'' (\href{http://www.andrej.com/zapiski/MGS-2022/notes-on-realizability.pdf}{PDF}, \href{https://github.com/andrejbauer/notes-on-realizability}{GitHub repository}) and discuss the exercises on the
+MGS Discord server.
+
+\section{Lecture 1: Models of computation}
+\label{sec:models-computation}
+
+\subsection{Dove-tailing}
+\label{sec:dove-tailing}
+
+Let $\xpr_n$ be the partial computable function computed by the Turing machine encoded by~$n \in \NN$.
+Write $\defined{e}$ to indicate that the value of~$e$ is defined.
+%
+Show that there is a partial computable function $f : \NN \parto \NN$ such that, for all $n, k \in \NN$,
+%
+\begin{equation*}
+f n = k \lthen \defined{\pr{n} k}
+\quad\text{and}\quad
+(\exists m \in \NN \,.\, \defined{\pr{n} m}) \lthen \defined{f n}.
+\end{equation*}
+%
+You are not expected to construct an actual Turing machine, but you should describe in some detail how the machine works.
+
+Is there a Haskell function $\mathtt{f} : (\mathtt{Int} \to \mathtt{Int}) \to \mathtt{Int}$ with an analogous property?
+
+\subsection{Modulus of continuity}
+\label{sec:modulus-continuity}
+
+
+Write $\code{e}$ for the encoding of entity~$e$ as a natural number, and let $\Baire = \NNNN$ be the Baire space.
+Given $\alpha \in \Baire$, let $\seg{\alpha}{k} = [\alpha 0, \ldots, \alpha (k-1)]$.
+Write $0^{(\omega)}$ for the sequence of all zeroes and $0^{(k)}$ for the list of~$k$ zeroes $[0, \ldots, 0]$.
+
+Recall how $\gamma \in \Baire$ encodes a map $\xfpr_\gamma : \Baire \parto \Baire$.
+%
+Given input $\alpha \in \Baire$ and $i \in \NN$, we compute the value of $\xfpr_\gamma \, \alpha \, i$ by looking up in succession
+%
+\begin{align*}
+  & \gamma (\code{\cons{i}{[]}}), \\
+  & \gamma (\code{\cons{i}{[\alpha 0]}}), \\
+  & \gamma (\code{\cons{i}{[\alpha 0, \alpha 1]}}), \\
+  & \gamma (\code{\cons{i}{[\alpha 0, \alpha 1]}}), \\
+  & \gamma (\code{\cons{i}{[\alpha 0, \alpha 1, \alpha 2]}}), \\
+  & \ \vdots
+\end{align*}
+%
+until we find the first non-zero one $j > 0$ and output $j - 1$.
+%
+More precisely, define $\ell(\gamma, \alpha) : \NN \parto \NN$ by
+%
+\begin{equation*}
+  \ell(\gamma, \alpha)(i) = \gamma(\code{\cons{i}{\seg{\alpha}{k}}}) - 1
+  \quad\text{where}\quad
+  k = \min\nolimits_k (\gamma(\code{\cons{i}{\seg{\alpha}{k}}}) \neq 0)
+\end{equation*}
+%
+(if not such $k$ exists then $\ell(\gamma, \alpha)(i)$ is undefined), and let the map $\xfpr_\gamma : \Baire \parto \Baire$ encoded by $\gamma$ be
+%
+\begin{equation*}
+  \fpr{\gamma}{\alpha} =
+  \begin{cases}
+    \ell(\gamma, \alpha) & \text{if $\ell(\gamma, \alpha)$ is a total map,} \\
+    \text{undefined} & \text{otherwise.}
+  \end{cases}
+\end{equation*}
+
+Suppose $f : \Baire \to \Baire$ is a \emph{total} map satisfying
+%
+\begin{equation}
+  \label{eq:modulus}%
+  \all{k \in \NN} \some{m \in \NN}
+  \all{\alpha \in \Baire} \seg{\alpha}{m} = 0^{(k)} \lthen (f \alpha) k = (f 0^{(\omega)}) k.
+\end{equation}
+%
+We say that $m$ is a \emph{modulus of continuity} for $f$ at $k$.
+
+Verify that $f$ satisfies~\eqref{eq:modulus} if, and only if, it is continuous with respect to the product topology on~$\Baire$.
+
+Construct a Type 2 Turing machine which accepts as input $\gamma \in \Baire$ and $k \in \NN$ and outputs a modulus of continuity for~$\xfpr_\gamma$ at~$k$. We assume that $\gamma$ encodes a \emph{total} map $\Baire \to \Baire$. Concretely, the read-only input tape contains~$k$ followed by~$\gamma$ (in Type 2 computability tape cells contain numbers or blanks). The machine should terminate and output a suitable~$m$. Of course, it suffices to describe the machine informally.
+
+\medskip
+
+Is there a corresponding Haskell map $\mathtt{modulus} : \mathtt{Int} \to (\mathtt{Int} \to \mathtt{Int}) \to \mathtt{Int}$?
+
+
+\subsection{Programming in $\lambda$-calculus}
+\label{sec:encod-gener-recurs}
+
+Use the online untyped $\lambda$-calculus interpreter at
+%
+\begin{quote}
+  \url{http://www.andrej.com/zapiski/MGS-2022/lambda/}
+\end{quote}
+%
+to implement a function which tests whether a given natural number is prime. Consult the notes section on the $\lambda$-calculus to get basic arithmetic and Booleans going.
+%
+If you prefer to use the much faster off-line interpreter, you can get compile the language \texttt{lambda} from the \href{http://plzoo.andrej.com/language/lambda.html}{Programming Languages Zoo} -- but refrain from looking at examples because they contain the solution.
+
+The actual programming should be done in the privacy of your computer. During the exercise class you should just write down a list of specific functions (zero testing, searching, division, etc.) that you need to implement. Assuming you have implemented those, write down the primality testing function. To get you started, consult Figure~\ref{fig:lambda} (where \lstinline|^| stands for $\lambda$):
+
+\begin{figure}[htp]
+  \centering
+\begin{lstlisting}
+-- the constant function
+K := ^ x y . x ;
+
+-- pairing
+pair := ^ a b . ^p . p a b ;
+first := ^ p . p (^x y . x) ;
+second := ^ p . p (^x y. y) ;
+
+-- Booleans
+true  := ^x y . x ;
+false := ^x y . y ;
+if := ^u . u ;
+
+-- recursive definitions
+fix := ^f . (^x . f (x x)) (^x . f (x x)) ;
+
+-- arithmetic
+0  := ^f x . x ;
+1  := ^f x . f x ;
+2  := ^f x . f (f x) ;
+3  := ^f x . f (f (f x)) ;
++ := ^n m f x . (n f) ((m f) x) ;
+* := ^n m f x . (n (m f)) x ;
+succ := ^n f x . f (n f x) ;
+pred := ^n . second (n (^p. pair (succ (first p)) (first p)) (pair 0 0)) ;
+iszero := ^n . (n (K false)) true ;
+\end{lstlisting}
+  \caption{Basic programming in \texttt{lambda}.}
+  \label{fig:lambda}
+\end{figure}
+
+
+
+
+
+
+\end{document}

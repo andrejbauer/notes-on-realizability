@@ -16,9 +16,8 @@ The notes are the main reading material for the [Midlands Graduate School 2022](
 **Contents:**
 
 * some models of computation
-* typed partial combinatory algebras
-* simulations
-* the idea of realizability
+* partial combinatory algebras
+* assemblies
 
 **Reading material:** The chapter “Models of computation” from the [notes](http://www.andrej.com/zapiski/MGS-2022/notes-on-realizability.pdf).
 
@@ -27,7 +26,7 @@ The notes are the main reading material for the [Midlands Graduate School 2022](
 
 **Time:** Monday, April 11, 2022, 10:30–11:25
 
-A selection of exercises from the chapter “Models of computation” will be announced shortly. You may also solve all of them.
+Consult the [exercise sheet](http://www.andrej.com/zapiski/MGS-2022/mgs-exercises.pdf).
 
 ### Lecture 2: Realizability categories
 
@@ -35,7 +34,6 @@ A selection of exercises from the chapter “Models of computation” will be an
 
 **Contents:**
 
-* the category of assemblies
 * modest assemblies
 * equivalent formulations
 * examples of assemblies
@@ -48,7 +46,7 @@ A selection of exercises from the chapter “Models of computation” will be an
 
 **Time:** Tuesday, April 12, 2022, 10:30–11:25
 
-A selection of exercises from the chapter “Realizability categories” will be announced shortly. You may also solve all of them.
+Consult the [exercise sheet](http://www.andrej.com/zapiski/MGS-2022/mgs-exercises.pdf).
 
 
 ### Lecture 3: Realizability and type theory
@@ -67,8 +65,7 @@ A selection of exercises from the chapter “Realizability categories” will be
 
 **Time:** Wednesday, April 13, 2022, 10:30–11:25
 
-A selection of exercises from the chapter “Realizability and type theory” will be announced shortly. You may also solve all of them.
-
+Consult the [exercise sheet](http://www.andrej.com/zapiski/MGS-2022/mgs-exercises.pdf).
 
 
 ### Lecture 4: The internal language at work
@@ -87,4 +84,4 @@ A selection of exercises from the chapter “Realizability and type theory” wi
 
 **Time:** Wednesday, April 13, 2022, 17:00–17:55
 
-A selection of exercises from the chapters “Realizability and logic” and “The internal language at work” will be announced shortly. You may also solve all of them.
+Consult the [exercise sheet](http://www.andrej.com/zapiski/MGS-2022/mgs-exercises.pdf).
