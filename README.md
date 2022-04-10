@@ -5,11 +5,11 @@ This repository contains a draft of notes on realizability theory in the [`notes
 
 The folder [`reading`](./reading) contains classic historical papers and other useful publications about realizability.
 
-## Midlands graduate school 2022
+# Midlands graduate school 2022
 
 The notes are the main reading material for the [Midlands Graduate School 2022](https://www.cs.nott.ac.uk/~psznk/events/mgs22.html) lecture series on realizability.
 
-### Lecture 1: Models of computation
+## Lecture 1: Models of computation
 
 **Time:** Sunday, April 10, 2022, 14:00–15:00
 
@@ -21,14 +21,10 @@ The notes are the main reading material for the [Midlands Graduate School 2022](
 
 **Reading material:** The chapter “Models of computation” from the [notes](http://www.andrej.com/zapiski/MGS-2022/notes-on-realizability.pdf).
 
+**Exercises:** (Monday, April 11, 2022, 10:30–11:25)
+Consult “Lecture 1” of the [exercise sheet](http://www.andrej.com/zapiski/MGS-2022/mgs-exercises.pdf).
 
-#### Exercises
-
-**Time:** Monday, April 11, 2022, 10:30–11:25
-
-Consult the [exercise sheet](http://www.andrej.com/zapiski/MGS-2022/mgs-exercises.pdf).
-
-### Lecture 2: Realizability categories
+## Lecture 2: Realizability categories
 
 **Time:** Monday, April 11, 2022, 14:00–15:00
 
@@ -42,14 +38,11 @@ Consult the [exercise sheet](http://www.andrej.com/zapiski/MGS-2022/mgs-exercise
 **Reading material:** The chapter “Realiability categories” from the [notes](http://www.andrej.com/zapiski/MGS-2022/notes-on-realizability.pdf).
 
 
-#### Exercises
-
-**Time:** Tuesday, April 12, 2022, 10:30–11:25
-
-Consult the [exercise sheet](http://www.andrej.com/zapiski/MGS-2022/mgs-exercises.pdf).
+**Exercises:** (Tuesday, April 12, 2022, 10:30–11:25)
+Consult “Lecture 2” of the [exercise sheet](http://www.andrej.com/zapiski/MGS-2022/mgs-exercises.pdf).
 
 
-### Lecture 3: Realizability and type theory
+## Lecture 3: Realizability and type theory
 
 **Time:** Tuesday, April 12, 2022, 14:00–15:00
 
@@ -63,12 +56,11 @@ Consult the [exercise sheet](http://www.andrej.com/zapiski/MGS-2022/mgs-exercise
 
 **Reading material:** The chapter “Realiability and type theory” from the [notes](http://www.andrej.com/zapiski/MGS-2022/notes-on-realizability.pdf). Disclaimer: this chapter is not complete yet.
 
-**Time:** Wednesday, April 13, 2022, 10:30–11:25
+**Exercises:** (Wednesday, April 13, 2022, 10:30–11:25)
+Consult “Lecture 3” of the [exercise sheet](http://www.andrej.com/zapiski/MGS-2022/mgs-exercises.pdf).
 
-Consult the [exercise sheet](http://www.andrej.com/zapiski/MGS-2022/mgs-exercises.pdf).
 
-
-### Lecture 4: The internal language at work
+## Lecture 4: The internal language at work
 
 **Time:** Wednesday, April 13, 2022, 14:00–15:00
 
@@ -82,6 +74,5 @@ Consult the [exercise sheet](http://www.andrej.com/zapiski/MGS-2022/mgs-exercise
 
 **Reading material:** The chapter “The internal language at work” from the [notes](http://www.andrej.com/zapiski/MGS-2022/notes-on-realizability.pdf). Disclaimer: this chapter is not written yet, but at least lecture notes will be published before the lecture.
 
-**Time:** Wednesday, April 13, 2022, 17:00–17:55
-
-Consult the [exercise sheet](http://www.andrej.com/zapiski/MGS-2022/mgs-exercises.pdf).
+**Exercises:** (Wednesday, April 13, 2022, 17:00–17:55)
+Consult “Lecture 4” of the [exercise sheet](http://www.andrej.com/zapiski/MGS-2022/mgs-exercises.pdf).
