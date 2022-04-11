@@ -2,7 +2,7 @@
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{amsmath,amsfonts,amsthm}
+\usepackage{amsmath,amsfonts,amsthm,amssymb}
 \usepackage{times}
 \usepackage[colorlinks]{hyperref}
 \usepackage{listings}
@@ -164,6 +164,96 @@ iszero := ^n . (n (K false)) true ;
 \end{figure}
 
 
+\section{Lecture 2: Assemblies}
+\label{sec:assemblies}
+
+\subsection{Assemblies of finite sets of numbers}
+\label{sec:assembl-finite-sets}
+
+We work over Kleene's first algebra, so all the realizers are numbers and we compute with Turing machines.
+Recall that $\pr{m}{n}$ is the $m$-th Turing machine applied to~$n$.
+
+A reasonable coding of pairs and lists with numbers is as follows:
+%
+\begin{align*}
+  \code{(m, n)} &= 2^m (2 n + 1), \\
+  \code{[]} &= 0, \\
+  \code{\cons{m}{\ell}} &= 2^m (2 \code{\ell} +1).
+\end{align*}
+%
+Let $$\FF = \set{ S \subseteq \NN \such \text{$S$ is finite} }$$ be the set of all finite subsets of~$\NN$. We consider 
+different ways of equipping $\FF$ with a realizability relation:
+%
+\begin{enumerate}
+\item[(a)] $F_1 = \nabla \FF$,
+
+\item[(b)] $F_2 = (\FF, {\rz[F_2]})$ where
+  %
+  \begin{equation*}
+    r \rz[F_2] S \iff
+    \some{a_1, \ldots, a_n \in \NN}
+    r = \code{[a_1, \ldots, a_n]} \land S = \set{a_1, \ldots, a_n}.
+  \end{equation*}
+  %
+  In words, $r$ realizes $S$ when it encodes a finite enumeration of the elements of~$S$.
+
+\item[(c)] $F_3 = (\FF, {\rz[F_3]})$ where
+  %
+  \begin{equation*}
+    r \rz[F_3] S \iff
+    \begin{aligned}[t]
+      & \some{a_1, \ldots, a_n \in \NN} \\
+      & \qquad a_1 < a_2 < \cdots < a_n \land {} \\
+      & \qquad r = \code{[a_1, \ldots, a_n]} \land S = \set{a_1, \ldots, a_n}.
+    \end{aligned}
+  \end{equation*}
+  %
+  In words, $r$ realizes $S$ when it encodes the elements of~$S$ in a strictly increasing order.
+
+\item[(d)] $F_4 = (\FF, {\rz[F_4]})$ where
+  %
+  \begin{equation*}
+    r \rz[F_4] S \iff
+    \begin{aligned}[t]
+      & (\all{k \in \NN} \defined{\pr{r}{k}} \land (\pr{r}{k} > 0 \lthen \pr{r}{k} - 1\in S)) \land {} \\
+      & (\all{m \in S} \some{k \in \NN} \pr{r}{k} = m + 1)
+    \end{aligned}
+  \end{equation*}
+  %
+  In words, $r$ realizes $S$ when it satisfies the following conditions:
+  %
+  \begin{enumerate}
+  \item for all $k \in \NN$, $\pr{r}{k}$ is defined,
+  \item for all $k \in \NN$, if $\pr{r}{k} > 0$ then $\pr{r}{k} - 1 \in S$,
+  \item for every $m \in S$ there is $k \in \NN$ such that $\pr{r}{k} = m + 1$.
+  \end{enumerate}
+  %
+  That is, $r$ is an infinite enumeration of the elements of~$S$, where $m + 1$ is understood to enumerate $m$, and $0$ does not enumerate anything. (This trick is needed so that $\emptyset$ has a realizer).
+\end{enumerate}
+
+The assemblies $F_1, F_2, F_3, F_4$ all share the same underlying set~$\FF$. For each $i, j \in \set{1, 2, 3, 4}$, determine whether $\id[\FF] : F_i \to F_j$ is realized.
+
+\subsection{Cantor space}
+\label{sec:cantor-space}
+
+We work with the first Kleene algebra $\klone$. Define the following assemblies:
+%
+\begin{itemize}
+\item Booleans: $\two = (\set{0,1}, {\rz[\two]})$ with $r \rz[\two] b \liff r = b$.
+\item Natural numbers: $N = (\NN, {\rz[N]})$ with $r \rz[N] n \liff r = n$.
+\end{itemize}
+%
+Explain in your own words what the elements of the exponential assembly $N \to \two$ are. Which well-known concept from computability theory does $N \to \two$ embody?
+
+
+\subsection{Epis and regular epis}
+\label{sec:epis-regular-epis}
+
+In the category of sets a map $f : X \to Y$ is an \emph{epimorphism (epi)} if, and only if, it is surjective: $\all{y \in Y} \some{x \in X} f x = y$. (In general, the epimorphisms are those morphisms that can be canceled on the right.)
+
+Verify that an assembly map $f : S \to T$ is epi if, and only if, it is epi as a map $f : \S{S} \to \T{T}$ between the underlying sets.
+
+Without having heard the lecture on realizability logic, but using your intuition for what it means to have ``computational evidence'', formulate what it would mean for an assembly map $f : S \to T$ to be ``computationally surjective'', i.e., when would you expect a realizer $\R{r}$ to witness the fact ``$f$ is surjective''?
 
 
 

@@ -595,7 +595,7 @@ In fact, there is at most one map of families $P \to Q$.
 \end{proof}
 
 \begin{exercise}
-  In the proof of \cref{thm:pred-equiv-pred} the passage from $P$ to realizability predicate $p_P$ works just for an arbitrary family~$P \in \Fam{S}$. Therefore, the equivalence extends to a pair of functors
+  In the proof of \cref{thm:pred-equiv-pred} the passage from $P$ to realizability predicate $p_P$ works for an arbitrary family~$P \in \Fam{S}$. Therefore, the equivalence extends to a pair of functors
   %
   \begin{equation*}
     \xymatrix{
@@ -644,6 +644,27 @@ Henceforth we shall use one or the other formulation of realizability predicates
 
 \section{Identity types}
 \label{sec:identity-types}
+
+In \cref{sec:equality} we defined equality on an assembly~$S$ as as predicate on $S \times S$. The corresponding family of assemblies $\Id[S] \in \Fam{S \times S}$ is given by
+%
+\begin{equation*}
+  \T{\Id[S]} = \unit
+  %
+  \qquad\text{and}\qquad
+  %
+  \Id[S](x, y) =
+  \begin{cases}
+    \One & \text{if $x = y$,} \\
+    \Zero & \text{if $x \neq y$.}
+  \end{cases}
+\end{equation*}
+%
+It is called the \defemph{identity type} of~$S$.
+
+If we compose~$\Id[S]$ with the diagonal map $S \to S \times S$ we get the family $x \mapsto \Id[S](x,x)$ which has an element $\refl[S]$, namely $\refl[S](x) = \star$, realized by $\tpcalam{x}{\T{S}}{\ttunit}$.
+
+The identity type in Martin-Löf type theory satisfies the following elimination principle. Suppose $\Gamma$ is a context and $\Gamma \types S \istype$ a type over it.
+
 
 
 
