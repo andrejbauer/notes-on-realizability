@@ -3,7 +3,6 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath,amsfonts,amsthm,amssymb}
-\usepackage{times}
 \usepackage[colorlinks]{hyperref}
 \usepackage{listings}
 \lstset{basicstyle=\footnotesize\ttfamily}
@@ -47,7 +46,7 @@ Show that there is a partial computable function $f : \NN \parto \NN$ such that,
 \begin{equation*}
 f n = k \lthen \defined{\pr{n} k}
 \quad\text{and}\quad
-(\exists m \in \NN \,.\, \defined{\pr{n} m}) \lthen \defined{f n}.
+(\some{m \in \NN} \defined{\pr{n} m}) \lthen \defined{f n}.
 \end{equation*}
 %
 You are not expected to construct an actual Turing machine, but you should describe in some detail how the machine works.
@@ -256,6 +255,118 @@ Verify that an assembly map $f : S \to T$ is epi if, and only if, it is epi as a
 Without having heard the lecture on realizability logic, but using your intuition for what it means to have ``computational evidence'', formulate what it would mean for an assembly map $f : S \to T$ to be ``computationally surjective'', i.e., when would you expect a realizer $\R{r}$ to witness the fact ``$f$ is surjective''?
 
 
+\section{Lecture 3: Realizability logic and type theory}
+\label{sec:lecture-3}
+
+
+\subsection{$\neg\neg$-stable propositions}
+\label{sec:negn-stable-prop}
+
+In intuitionistic logic negation $\neg P$ is an abbreviation for $P \lthen \bot$. A logical proposition $P$ is said to be \emph{$\neg\neg$-stable} when $\neg\neg P \lthen P$.
+
+Prove that $P \lthen \neg\neg P$ holds intuitionistically by giving a proof. You may consult a proof assistant, but at the end you should be in possession of a human-readable proof.
+
+We would like to characterize the $\neg\neg$-stable realizability predicates. Working with assemblies over an arbitrary pca $\AA$, complete the following characterizations, where $r \in \AA$, $p \in \Pred{S}$ and $x \in \S{S}$:
+%
+\begin{align*}
+  r \rz (\neg p) x &\iff \text{(insert characterization here)} \\
+  r \rz (\neg \neg p) x &\iff \text{(insert characterization here)}
+\end{align*}
+%
+For reference, here is how $\bot$ and $\lthen$ are characterized:
+%
+\begin{align*}
+  r \rz \bot &\qquad\text{never}, \\
+  r \rz (p \lthen q) x &\iff
+    \all{a, b \in \AA} \text{if $a \rz[S] x$ and $b \rz p x$ then $r \cdot a \cdot b \rz q x$}.
+\end{align*}
+%
+After that, show that the following holds:
+%
+\begin{quote}
+  \emph{A realizability predicate $p \in \Pred{S}$ is $\neg\neg$-stable if, and only if, there is $r \in \AA$ such that for all $x \in \S{S}$ and $a \in \AA$, if $a \rz[S] x$ and $p x \neq \emptyset$ then $r \cdot a \rz p x$.
+}\end{quote}
+
+
+\subsection{Markov's principle}
+\label{sec:markov-principle}
+
+Working over the first Kleene algebra~$\klone$, is the following statement realized?
+%
+\begin{equation*}
+  \all{f \in \two^\NN}
+  \neg\neg(\some{n \in \NN} f n = 1)
+  \lthen
+  \some{n \in \NN} f n = 1
+\end{equation*}
+%
+Is it also realized when we use an arbitrary pca~$\AA$?
+
+\subsection{Countable choice}
+\label{sec:countable-choice}
+
+The \emph{Axiom of Countable Choice} states that a family $A : \NN \to \Set$ of inhabited sets has a choice map:
+%
+\begin{equation*}
+  \textstyle
+  (\all{n \in \NN} \some{x \in A_n} \top) \lthen \some{u \in \prod_{n \in \NN} A_n} \top.
+\end{equation*}
+%
+Verify that the axiom is inter-derivable with the statement that every total relation $R \subseteq \NN \times B$ has a choice function:
+%
+\begin{equation*}
+  (\all{n \in \NN} \some{x \in B} R(n, x)) \lthen
+  \some{v \in B^{\NN}} \all{n \in \NN} R(n, v n).
+\end{equation*}
+%
+Finally, show that in realizability logic Countable Choice, in either one of the above forms, is realized.
+
+
+\subsection{The enumeration axiom}
+\label{sec:enumeration-axiom}
+
+Say that an assembly $S$ is \emph{enumerable} if
+%
+\begin{equation*}
+  \some{e : \NN \to \one + S}
+  \all{x \in S}
+  \some{n \in \NN}
+  e n = \iota_2 x.
+\end{equation*}
+%
+is realized. Give an explicit description of a realizer for the above statement.
+
+Let $\mathcal{E}$ be the assembly of enumerable subsets of~$\NN$, which is defined as follows. For $r \in \AA$ and $U \subseteq \NN$, define
+%
+\begin{equation*}
+  r \rz[\mathcal{E}] U
+  \iff
+  \begin{aligned}[t]
+    & (\all{n \in \NN} \defined{r \cdot \numeral{n}}) \land {} \\
+    & (\all{k \in \NN} k \in U \iff \some{n \in \NN} r \cdot \numeral{n} = \numeral{k + 1})
+  \end{aligned}
+\end{equation*}
+%
+and let $\S{\mathcal{E}} = \set{U \subseteq \NN \mid \some{r \in \AA} r \rz[\mathcal{E}] U}$.
+
+Show that $\mathcal{E}$ is isomorphic to the assembly
+%
+\begin{equation*}
+  \textstyle
+  \Sigma_{u : \NN \to \nabla \set{0,1}}
+  \some{e : \NN \to \NN}
+  \all{k \in \NN}
+  (u k = 1 \liff \some{n \in \NN} e n = k + 1).
+\end{equation*}
+%
+(Recall that $\exists$ is defined as the propositional truncation of $\Sigma$.)
+
+\medskip
+
+What well-known concept from computability theory does $\mathcal{E}$ represent in $\Asm{\klone}$?
+Show that in $\Asm{\klone}$ the statement ``$\mathcal{E}$ is countable'' is realized.
+
+What well-known concept from computability theory does $\mathcal{E}$ represent in $\Asm{\comp{\Baire}}$, where $\comp{\Baire}$ is the \emph{computable} Kleene's second algebra? Does $\Asm{\comp{\Baire}}$ realize ``$\mathcal{E}$ is countable''?
 
 
 \end{document}
