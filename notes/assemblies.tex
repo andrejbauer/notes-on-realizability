@@ -97,9 +97,7 @@ computable part of a topological pca~$\AA$, in accordance with the slogan
   \emph{``Topological data -- computable functions!''}
 \end{center}
 
-When $\subAA = \AA$ we write $\Asm{\AA}$ instead of $\Asm{\AA,\AA}$.
-
-When $\AA$ is untyped the definition of an assembly simplifies a bit because we need mention the (trivial) types.
+When $\AA$ is untyped the definition of an assembly simplifies a bit because we need not mention the (trivial) types.
 
 \begin{definition}
   An \defemph{assembly} over an untyped pca~$\AA$ is a pair $S = (\S{S}, {\rz[S]})$ where $\S{S}$ is a set and $\rz[S]$ is a relation between~$\AA$ and~$\S{S}$, such that for every $x \in \S{S}$ there is $r \in A$ and $r \rz[S] x$.
@@ -114,6 +112,8 @@ $\tpcalam{x}{\T{S}}{r\,(q\,x)} = \combS\,(\combK\,r)\,(\combS\,(\combK\,q)\,(\co
 The identity map $\id[S] : \S{S} \to \S{S}$ is realized by $\tpcalam{x}{\T{S}}{x} = \combS\,\combK\,\combK$. 
 %
 Composition is associative because it is just composition of maps.
+
+When $\subAA = \AA$ we write $\Asm{\AA}$ instead of $\Asm{\AA,\AA}$.
 
 \subsection{Modest sets}
 \label{sec:modest-sets}
