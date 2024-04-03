@@ -441,7 +441,7 @@ We may similarly define what it means for a machine to compute a multivariate pa
 \label{sec:baire-space}
 
 We recall a few basic facts about the \defemph{Baire space~$\Baire = \NNNN$}. Let $\NN^{*}$ be the set of all finite sequences of natural numbers. If $a, b \in \NN^{*}$
-we write $a \sqsubseteq b$ when $a$ is a prefix of~$b$. The length of a finite sequence $a$ is denoted by~$\T{a}$. Similarly, we write $a \sqsubseteq \alpha$ when $a$ is a prefix of an infinite sequence $\alpha \in \Baire$. Define $\seg{a}{n} = [\alpha(0), \ldots,
+we write $a \sqsubseteq b$ when $a$ is a prefix of~$b$. The length of a finite sequence $a$ is denoted by~$\T{a}$. Similarly, we write $a \sqsubseteq \alpha$ when $a$ is a prefix of an infinite sequence $\alpha \in \Baire$. Define $\seg{\alpha}{n} = [\alpha(0), \ldots,
 \alpha(n-1)]$ to be the prefix of~$\alpha$ consisting of the first~$n$ terms.
 
 Write $\cons{n}{\alpha}$ for the sequence $n, \alpha(0), \alpha(1), \alpha(2), \ldots$, and $\append{a}{\beta}$ for concatenation of the finite sequence $a \in \NN^{*}$ with the infinite sequence $\beta \in \Baire$.
@@ -511,7 +511,7 @@ for $\alpha \in \Baire$, define $\ell(\gamma, \alpha) : \NN \parto \NN$ as
   k = \min\nolimits_k (\gamma(\code{\cons{i}{\seg{\alpha}{k}}}) \neq 0)
 \end{equation*}
 %
-(if not such $k$ exists then $\ell(\gamma, \alpha)(i)$ is undefined), and let the map $\xfpr_\gamma : \Baire \parto \Baire$ encoded by $\gamma$ be
+(if no such $k$ exists then $\ell(\gamma, \alpha)(i)$ is undefined), and let the map $\xfpr_\gamma : \Baire \parto \Baire$ encoded by $\gamma$ be
 %
 \begin{equation}
   \label{eq:type2-encoding}
