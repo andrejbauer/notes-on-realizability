@@ -100,7 +100,7 @@ computable part of a topological pca~$\AA$, in accordance with the slogan
 When $\AA$ is untyped the definition of an assembly simplifies a bit because we need not mention the (trivial) types.
 
 \begin{definition}
-  An \defemph{assembly} over an untyped pca~$\AA$ is a pair $S = (\S{S}, {\rz[S]})$ where $\S{S}$ is a set and $\rz[S]$ is a relation between~$\AA$ and~$\S{S}$, such that for every $x \in \S{S}$ there is $r \in A$ and $r \rz[S] x$.
+  An \defemph{assembly} over an untyped pca~$\AA$ is a pair $S = (\S{S}, {\rz[S]})$ where $\S{S}$ is a set and $\rz[S]$ is a relation between~$\AA$ and~$\S{S}$, such that for every $x \in \S{S}$ there is $r \in \AA$ and $r \rz[S] x$.
 \end{definition}
 
 Assemblies and maps over $(\AA, \subAA)$ form a \defemph{category $\AsmA$}.
@@ -122,10 +122,10 @@ In the definition of assemblies, nothing prevents several elements from sharing 
 to prohibit such anomalies.
 
 \begin{definition}
-  An \defemph{modest} assembly $S$, also called a \defemph{modest set},\sidenote{The terminology was suggested by Dana Scott. It refers to the fact that the cardinality of a modest set~$S$ does not exceed the cardinality of $\xAtyp{S}$.} is an assembly in which elements do not share realizers:
+  A \defemph{modest} assembly $S$, also called a \defemph{modest set},\sidenote{The terminology was suggested by Dana Scott. It refers to the fact that the cardinality of a modest set~$S$ does not exceed the cardinality of $\xAtyp{S}$.} is an assembly in which elements do not share realizers:
   %
   \begin{equation*}
-    \all{r}{\xAtyp{S}}{
+    \all{r \in \xAtyp{S}}{
       \all{x,y \in \S{S}}
       (r \rz[S] x \land r \rz[S] y \lthen x = y)
     }.
@@ -152,7 +152,7 @@ The \defemph{terminal assembly} $\One = (\set{\star}, \unit, {\rz[\One]})$ has t
   in $\AsmA$. Conclude from this that a different choice of $\unit$ results in an isomorphic copy of~$\One$.
 \end{exercise}
 
-The morphisms $\One \to S$ corresponds to those elements of~$\S{S}$ that are realized by elements of $\subAtyp{\T{S}}$. Indeed, if $f : \star \to S$ is realized by $\R{f} \in \subAtyp{\unit \to \T{S}}$ then $f \, \star$ is realized by $\R{f} \, t \in \subAtyp{\T{S}}$, for any $t \in \subAtyp{\unit}$. Conversely, if $a \in \S{S}$ is realized by $\R{a} \in \subAtyp{\T{S}}$ then $\star \mapsto a$ is $\tpcalam{x}{\unit}{\R{a}}$.
+The morphisms $\One \to S$ corresponds to those elements of~$\S{S}$ that are realized by elements of $\subAtyp{\T{S}}$. Indeed, if $f : \One \to S$ is realized by $\R{f} \in \subAtyp{\unit \to \T{S}}$ then $f \, \star$ is realized by $\R{f} \, t \in \subAtyp{\T{S}}$, for any $t \in \subAtyp{\unit}$. Conversely, if $a \in \S{S}$ is realized by $\R{a} \in \subAtyp{\T{S}}$ then $\star \mapsto a$ is $\tpcalam{x}{\unit}{\R{a}}$.
 
 This may be a good moment to point out the difference between the \defemph{global points} of~$S$, which is the set of morphisms $\One \to S$, and the \defemph{underlying set~$\S{S}$} of~$S$. Both induce functors $\AsmA \to \Set$, which need not be equivalent, unless $\AA = \subAA$.
 
@@ -301,10 +301,10 @@ We work with an nr-tpca $\AA$ with a sub-n-tpca $\subAA$. Intuitively speaking, 
 \begin{equation*}
   \all{k \in \NN} \some{a, b, c \in \NN}
   \R{x} \, \overline{k} = (\overline{a}, \overline{b}, \overline{c})
-  \land |x - \frac{a - b}{1 + b}| < 2^{-k}.
+  \land |x - \frac{a - b}{1 + c}| < 2^{-k}.
 \end{equation*}
 %
-The triple of numbers $(a, b, c)$ is just a clumsy way of encoding the rational $\frac{a - b}{c}$, so in essence $\R{x}$ computes a sequence of rationals such that the $k$-th term is within~$2^{-k}$ of~$x$.
+The triple of numbers $(a, b, c)$ is just a clumsy way of encoding the rational $\frac{a - b}{1 + c}$, so in essence $\R{x}$ computes a sequence of rationals such that the $k$-th term is within~$2^{-k}$ of~$x$.
 
 The assembly of real numbers $R = (\RR_{\mathrm{rz}}, \ttnat \to \ttnat \times \ttnat \times \ttnat, {\rz[R]})$ has as its underlying set the realized reals
 %
