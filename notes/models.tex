@@ -1903,23 +1903,23 @@ In a pca we can define functions by recursion by using the
 \begin{alignat*}{2}
   W &= \pcalam{x y}{y(x\, x\, y)}, &
   \qquad
-  \combZ &= W\, W, \\
+  \combY &= W\, W, \\
   X &= \pcalam{x y z}{y (x\, x\, y) z}, &
   \qquad
-  \combY &= X\, X.
+  \combZ &= X\, X.
 \end{alignat*}
 %
 These combinators satisfy, for all $f, x \in \AA$,
 %
 \begin{equation*}
-  \combZ\, f \kleq f\, (\combZ\, f),
+  \combY\, f \kleq f\, (\combY\, f),
   \qquad
-  \defined{\combY f},
+  \defined{\combZ f},
   \qquad
-  (\combY\, f)\, x \kleq f\, (\combY f)\, x.
+  (\combZ\, f)\, x \kleq f\, (\combZ f)\, x.
 \end{equation*}
 %
-The combinator $\combZ$ can be used to implement primitive recursion on natural numbers as
+The combinator $\combY$ can be used to implement primitive recursion on natural numbers as
 %
 \index{primitive recursion, in a pca}%
 %
@@ -1928,7 +1928,7 @@ The combinator $\combZ$ can be used to implement primitive recursion on natural 
         (\pcalam{y}{f\, (\pcacomb{pred}\, m)(r\, x\, f\, (\pcacomb{pred}\, m)\,
         \combI)})}
   \\
-  \pcacomb{rec} &= \pcalam{x f m}{((\combZ\, R)\, x\, f\, m\, \combI)}.
+  \pcacomb{rec} &= \pcalam{x f m}{((\combY\, R)\, x\, f\, m\, \combI)}.
 \end{align*}
 %
 It satisfies, for all $a, f \in \AA$ and $n \in \NN$,
