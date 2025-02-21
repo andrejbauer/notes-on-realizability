@@ -1,7 +1,7 @@
 # Notes on realizability
 
 
-This repository contains a draft of notes on realizability theory in the [`notes`](./notes) folder. You may download a [**recent PDF version of the notes**](http://www.andrej.com/zapiski/MGS-2022/notes-on-realizability.pdf).
+This repository contains a draft of notes on realizability theory in the [`notes`](./notes) folder. You may download a [**recent PDF version of the notes**](https://github.com/andrejbauer/notes-on-realizability/releases/download/release/notes-on-realizability.pdf).
 
 The folder [`reading`](./reading) contains classic historical papers and other useful publications about realizability.
 
